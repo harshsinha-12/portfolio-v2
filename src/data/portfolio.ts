@@ -9,7 +9,7 @@ export const siteConfig = {
   url: "https://parthmittal.dev",
   githubUsername: "mittal-parth",
   role: "Member of Technical Staff",
-  tagline: "MTS @ Oracle · 13x Hackathon Winner · NITK'24 · PBA-5",
+  tagline: "MTS @ Oracle · 14x Hackathon Winner · NITK'24 · PBA-5",
 };
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
@@ -52,10 +52,13 @@ export const socialMedia: SocialLink[] = [
   {
     id: "social-media-4",
     platform: "twitter",
-    link: "https://www.twitter.com/mittalparth_",
+    link: "https://x.com/mittalparth_",
     label: "Twitter",
   },
 ];
+
+export const connectLink =
+  socialMedia.find((s) => s.platform === "twitter")?.link ?? "https://x.com/mittalparth_";
 
 export type IntroSegment =
   | { type: "text"; value: string }
@@ -101,9 +104,16 @@ export const introBullets: IntroBullet[] = [
       { type: "hand", value: "hackathons" },
       {
         type: "text",
-        value:
-          ". Participated in 30+, won 13 (including one of India's largest Web3 hackathons), and judged 3.",
+        value: ". Participated in 35+, won 14 (recently the Google DeepMind ",
       },
+      {
+        type: "link",
+        label: "hackathon",
+        href: "https://x.com/mittalparth_/status/2076292927882682602?s=46",
+        previewTitle: "Google DeepMind Hackathon",
+        previewDescription: "Winner announcement on X.",
+      },
+      { type: "text", value: "), and judged 3." },
     ],
   },
   {
@@ -186,7 +196,16 @@ export const experiences: Experience[] = [
         duration: "Oct 2025 - Present",
         content: [
           {
-            text: "Working in the Database as a Service Control Plane team for Oracle Cloud Infrastructure.",
+            text: "Working on various projects in the Database as a Service, Control Plane team of Oracle Cloud Infrastructure.",
+          },
+          {
+            text: "Developed a new workflow to safely delete orphaned OCI Object Storage Service backup storage, saving ~$45M / year.",
+          },
+          {
+            text: "Reduced the average ExaCS Object Storage based backup deletion time by ~70% over the past 1 year.",
+          },
+          {
+            text: "Worked on adding support for cross-region replicated backups on ExaCS",
           },
         ],
       },
@@ -195,13 +214,10 @@ export const experiences: Experience[] = [
         duration: "Jul 2024 - Sep 2025",
         content: [
           {
-            text: "Made several fixes to reduce the time taken for backup deletion from OCI Object Storage for large customers resulting in decreased costs.",
+            text: "Pending US patent application for building an AI On-Call Agent using an internal agentic framework.",
           },
           {
-            text: "Worked towards building an AI On-Call Agent using an internal agentic framework.",
-          },
-          {
-            text: "Developed a common integration test framework for ExaCS, ExaDB-XS and ExaCC, reducing code maintenance by ~67% and increased coverage by ~50%.",
+            text: "Developed a common integration test framework for ExaCS, ExaDB-XS and ExaC@C, reducing code maintenance by ~67% and increased coverage by ~50%",
           },
         ],
       },
@@ -230,11 +246,14 @@ export const experiences: Experience[] = [
         duration: "Sept 2023 - Feb 2024",
         content: [
           {
-            text: "Added support for the discoverability of Microsoft Azure assets utilising Go and Gremlin.",
+            text: "Averlon is an AI-powered platform that identifies exploitable security vulnerabilities and helps teams fix them automatically.",
           },
           {
-            text: "Extended support for Azure for reachability analysis of assets for cloud security posture management.",
+            text: "I added support for the discoverability of Microsoft Azure assets utilising Go and Gremlin..",
           },
+          {
+            text: "Worked on extending support for Azure for reachability analysis of assets for cloud security posture management.",
+          }
         ],
       },
     ],
@@ -242,18 +261,30 @@ export const experiences: Experience[] = [
   {
     id: "exp-iris",
     organisation: "IRIS, NITK",
-    logo: "/assets/placeholder-iris.svg",
-    link: "https://iris.nitk.ac.in/about_us",
+    logo: "/assets/iris-logo.png",
+    link: "https://about.iris.nitk.ac.in/",
     positions: [
       {
         title: "Tech Lead",
         duration: "Apr 2023 - Apr 2024",
         content: [
           {
-            text: "Led a team of 40+ students in digitizing administrative, academic and alumni-related work.",
+            text: "IRIS is the official MIS software of NITK, one of India's premier STEM universities. With 24K+ users, 10K+ app downloads and 55+ process digitised, it is completely developed and maintained by students.",
           },
           {
-            text: "Managed all phases of Software Development Life Cycle (SDLC) for 15+ modules.",
+            text: "Led a team of 40+ students across 5 teams as the Tech Lead in the year 2023-24.",
+          },
+          {
+            text: "Supported high-impact digitization projects such as the Testing & Consultancy module, which handled 1000+ projects from 650+ companies, and the Non-Teaching Staff Recruitment portal, which managed 2000+ applications.",
+          },
+          {
+            text: "Contributed to workflows serving large student groups, including the National Education Policy based course allocation for 2000+ students, Hostel Elections with 6.5k votes, and Hostel Complaints 2.0 with 500+ complaints filed and 350+ resolved in four months.",
+          },
+          {
+            text: "Helped scale IRIS Forms, our in-house alternative to Google Forms, which grew to 150,000+ hits during the year.",
+          },
+          {
+            text: "Collaborated closely with product managers, developers, faculty, MIS office, and institute stakeholders to continue the digital transformation at NITK.",
           },
         ],
       },
@@ -264,6 +295,15 @@ export const experiences: Experience[] = [
           {
             text: "Managed a team of 6 student developers while also overlooking multiple modules.",
           },
+          {
+            text: "Designed and developed the official recruitment portal for non-teaching staff with an admin panel, RBAC, email notifications and payment integration. Managed 2K+ applications in its first month.",
+          },
+          {
+            text: "Added product enhancements to the Placement Cell module used 1K+ users every year for managing all placement and internship related activities at NITK digitially.",
+          },
+          {
+            text: "Built the public facing website for the Career Development Centre of NITK.",
+          },
         ],
       },
       {
@@ -271,7 +311,10 @@ export const experiences: Experience[] = [
         duration: "Nov 2021 - Apr 2022",
         content: [
           {
-            text: "Added Conditional Fields support to the Forms Module.",
+            text: "Worked on adding Conditional Fields support to the Forms Module.",
+          },
+          {
+            text: "Revamped the Faculty Appraisal Module used annually by all teaching staff at NITK.",
           },
         ],
       },
@@ -301,7 +344,7 @@ export type Education = {
 export const educationList: Education[] = [
   {
     id: "education-1",
-    icon: "/assets/placeholder-nitk.svg",
+    icon: "/assets/nitk-logo.png",
     title: "National Institute of Technology Karnataka, Surathkal",
     degree: "Bachelor of Technology",
     duration: "December 2020 - May 2024",
@@ -338,93 +381,119 @@ export type Achievement = {
   rotation?: number;
 };
 
+// Hackathon list:
+
+// 1. Google DeepMind Hackathon
+// 2. Sarvam 
+// 3. Warpspeed by Lightspeed 2023
+// 4. Warpspeed: Agentic AI Hackathon | Lightspeed India
+// 5. ETHIndia'24
+// 6. ETHIndia'22
+// 7. Polkadot Hackathon: Europe Edition
+// 8. Web3 Marketing Hackathon
+// 9. September Hackathon by Dennis Ivy
+
+
 export const achievements: Achievement[] = [
   {
     id: "a-1",
-    icon: "/assets/ethindia.png",
-    event: "ETHIndia'24 | India's Largest Ethereum Hackathon",
+    icon: "/assets/google-deepmind-26.jpg",
+    photo: "/assets/google-deepmind-26.jpg",
+    event: "Google DeepMind Hackathon",
     position: "Winner",
-    highlight: "Top 10 Overall Finalists. True Network's Winner, Polkadot 1st Runner Up",
-    article:
-      "https://www.linkedin.com/posts/mittal-parth_super-stoked-to-announce-that-our-team-emerged-activity-7274735259621961729-tkq4",
-    project: "https://devfolio.co/projects/khoj-3336",
-    youtube: "https://www.youtube.com/live/qJ4OCtnvjUY?si=VkcnHEdwJTEEDlMg&t=4718",
+    highlight:
+      "1st place among 4K applications. Built an infinite RPG game generator using Nano Banana.",
+    article: "https://x.com/mittalparth_/status/2076292927882682602?s=20",
+    youtube: "https://youtu.be/8R3QYKQR10M",
     rotation: -2.5,
   },
   {
     id: "a-2",
-    icon: "/assets/ethglobal.png",
-    event: "ETHIndia'22 | World's Largest Ethereum Hackathon",
-    position: "Winner",
-    highlight: "Top 12 Winners among 20k+ registrations. Polygon's Best Public Goods",
-    article:
-      "https://www.thehindu.com/news/cities/Mangalore/nitk-iiit-delhi-team-makes-it-to-top-12-winners-in-ethindia-22/article66238923.ece",
-    project: "https://devfolio.co/projects/chargeswap-3527",
-    youtube: "https://youtu.be/9rieTya8Yds?t=3908",
+    icon: "/assets/sarvam-26.jpg",
+    photo: "/assets/sarvam-26.jpg",
+    event: "Sarvam Epoch Buildathon",
+    position: "2nd Runner Up",
+    highlight:
+      "2nd runner up among 3K applications. Built a voice-first, interactive language learning game.",
+    article: "https://x.com/mittalparth_/status/2082861864984437072?s=20",
+    youtube: "https://youtu.be/gadi-osujrs",
     rotation: 1.8,
   },
   {
     id: "a-3",
-    icon: "/assets/polkadot.jpeg",
-    event: "Polkadot Hackathon: Europe Edition",
-    position: "2nd Runner Up, ink! Smart Contracts",
-    highlight: "Built GreenTrust for organic farming certification via decentralized PGSs.",
+    icon: "/assets/ethindia_24.jpeg",
+    photo: "/assets/ethindia_24.jpeg",
+    event: "ETHIndia'24 | India's Largest Ethereum Hackathon",
+    position: "Winner",
+    highlight: "Top 10 overall finalists. True Network's winner, Polkadot 1st runner up.",
     article:
-      "https://www.linkedin.com/posts/mittal-parth_hackathon-winners-web3-activity-7048340759116214272-eJvo",
-    github: "https://github.com/pranav2305/GreenTrust",
+      "https://www.linkedin.com/posts/mittal-parth_super-stoked-to-announce-that-our-team-emerged-activity-7274735259621961729-tkq4",
+    project: "https://devfolio.co/projects/khoj-3336",
+    youtube: "https://www.youtube.com/live/qJ4OCtnvjUY?si=VkcnHEdwJTEEDlMg&t=4718",
     rotation: -1.2,
   },
   {
     id: "a-4",
-    icon: "/assets/placeholder-lightspeed.svg",
+    icon: "/assets/warpspeed-24.JPG",
+    photo: "/assets/warpspeed-24.JPG",
     event: "Warpspeed by Lightspeed 2023",
     position: "1st Runner Up",
-    highlight: "1st Runner Up Overall among 107 hackers. AWS 1st Runner Up",
+    highlight: "1st runner up overall among 107 hackers. AWS 1st runner up.",
     article: "https://shorturl.at/fhjsT",
     rotation: 2.2,
   },
   {
     id: "a-5",
-    icon: "/assets/placeholder-lightspeed.svg",
+    icon: "/assets/ethindia-22.jpg",
+    photo: "/assets/ethindia-22.jpg",
+    event: "ETHIndia'22 | World's Largest Ethereum Hackathon",
+    position: "Winner",
+    highlight: "Top 12 winners among 20k+ registrations. Polygon's best public goods.",
+    article:
+      "https://www.thehindu.com/news/cities/Mangalore/nitk-iiit-delhi-team-makes-it-to-top-12-winners-in-ethindia-22/article66238923.ece",
+    project: "https://devfolio.co/projects/chargeswap-3527",
+    youtube: "https://youtu.be/9rieTya8Yds?t=3908",
+    rotation: 1.4,
+  },
+  {
+    id: "a-6",
+    icon: "/assets/warpspeed-25.jpg",
+    photo: "/assets/warpspeed-25.jpg",
     event: "Warpspeed: Agentic AI Hackathon | Lightspeed India",
     position: "Runners Up, Base Track",
     highlight: "Built an ambient virtual assistant before ChatGPT Pulse.",
     project: "https://devfolio.co/projects/aeva-58d2",
     rotation: -1.8,
   },
-  {
-    id: "a-6",
-    icon: "/assets/placeholder-pba.svg",
-    event: "Kudos Carnival | Polkadot Blockchain Academy",
-    position: "Runner Up",
-    highlight: "Finished 2nd globally among PBA Alumni in a 6-week event.",
-    article: "https://www.morekudos.com/carnival",
-    rotation: 1.4,
-  },
+
   {
     id: "a-7",
-    icon: "/assets/polkadot.jpeg",
-    event: "Web3 Marketing Hackathon",
-    position: "Runner Up",
-    highlight: "2nd in Polkadot Challenge I. Creative Marketing Strategies.",
-    article: "https://x.com/polkadotsub0/status/1998425721916551355",
-    project:
-      "https://taikai.network/OutofOrdinary/hackathons/web3mkthack/projects/cmi0skdbk0257vu09q3n8m44u/idea",
+    icon: "/assets/polkadot-hack.jpeg",
+    photo: "/assets/polkadot-hack.jpeg",
+    event: "Polkadot Hackathon: Europe Edition",
+    position: "2nd Runner Up, ink! Smart Contracts",
+    highlight: "Built GreenTrust for organic farming certification via decentralized PGSs.",
+    article:
+      "https://www.linkedin.com/posts/mittal-parth_hackathon-winners-web3-activity-7048340759116214272-eJvo",
+    github: "https://github.com/pranav2305/GreenTrust",
     rotation: -2,
   },
   {
     id: "a-8",
-    icon: "/assets/placeholder-ai.svg",
-    event: "Global AI HackFest 2023",
-    position: "Winner",
-    highlight: "1st Position in the Education, Finance & Tech track by AI Planet.",
-    article:
-      "https://www.linkedin.com/posts/mittal-parth_happy-to-share-that-comicifyai-emerged-as-activity-7078790186435833856-88fh",
+    icon: "/assets/web3-marketing-hack.JPG",
+    photo: "/assets/web3-marketing-hack.JPG",
+    event: "Web3 Marketing Hackathon",
+    position: "Runner Up",
+    highlight: "2nd in Polkadot Challenge I. Creative marketing strategies.",
+    article: "https://x.com/polkadotsub0/status/1998425721916551355",
+    project:
+      "https://taikai.network/OutofOrdinary/hackathons/web3mkthack/projects/cmi0skdbk0257vu09q3n8m44u/idea",
     rotation: 2.5,
   },
   {
     id: "a-9",
-    icon: "/assets/placeholder-portfolio.svg",
+    icon: "/assets/september-hack.jpg",
+    photo: "/assets/september-hack.jpg",
     event: "September Hackathon by Dennis Ivy",
     position: "Winner",
     highlight: "Best portfolio website among 450+ participants globally.",
@@ -432,24 +501,16 @@ export const achievements: Achievement[] = [
     project: "https://parthmittal.netlify.app/",
     rotation: -1.5,
   },
-  {
-    id: "a-12",
-    icon: "/assets/ethglobal.png",
-    event: "ETHForAll 2023",
-    position: "Top 3 Superfluid Projects",
-    highlight: "Bounty winners among 430 projects in ETHGlobal's largest online hackathon.",
-    project: "https://devfolio.co/projects/green-trust-ed14",
-    rotation: 1.2,
-  },
 ];
 
-export type ProjectStackItem = { name: string };
+export type ProjectStackItem = { name: string; icon?: string };
 
 export type Project = {
   id: string;
   title: string;
   github?: string;
   link?: string;
+  youtube?: string;
   image?: string;
   content: string;
   stack: ProjectStackItem[];
@@ -459,12 +520,51 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "project-1",
+    title: "Sadak",
+    github: "https://github.com/mittal-parth/sadak",
+    link: "https://playsadak.vercel.app/",
+    youtube: "https://youtu.be/gadi-osujrs",
+    content:
+      "3D, voice-first, Indic language learning game.",
+    highlight: "2nd Runner Up - Sarvam Epoch Buildathon",
+    stack: [
+      { name: "TypeScript" },
+      { name: "Supabase" },
+      { name: "Next.js" },
+      { name: "Sarvam", icon: "/assets/sarvam-logo.svg" },
+      { name: "Vercel" },
+      { name: "Three.js" },
+    ],
+  },
+  {
+    id: "project-2",
+    title: "Kahani",
+    github: "https://github.com/harshagw/kahani",
+    link: "https://playkahani.vercel.app/",
+    youtube: "https://youtu.be/8R3QYKQR10M",
+    image: "/assets/kahani.png",
+    content:
+      "An RPG game generator that uses Nano Banana to create worlds and assets as you play and progress.",
+    highlight: "Winner - Google DeepMind Bangalore Hackathon",
+    stack: [
+      { name: "TypeScript" },
+      { name: "Supabase" },
+      { name: "Next.js" },
+      { name: "Gemini" },
+      { name: "Vercel" },
+      { name: "Sarvam", icon: "/assets/sarvam-logo.svg" },
+    ],
+  },
+  {
+    id: "project-3",
     title: "Khoj",
     github: "https://github.com/mittal-parth/Khoj",
     link: "https://playkhoj.com/",
+    image: "/assets/khoj.png",
+    youtube: "https://youtu.be/98OJuvBur6s",
     content:
-      "AI-personalised treasure hunts with on-chain rewards. Overall winning project at ETHIndia'24.",
-    highlight: "Winner — ETHIndia'24",
+      "A geo-location based treasure hunt app where the answer to every clue is a physical location.",
+    highlight: "Winner - ETHIndia'24, $5000 in grants",
     stack: [
       { name: "Solidity" },
       { name: "TypeScript" },
@@ -476,10 +576,12 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-2",
+    id: "project-4",
     title: "Echo",
     github: "https://github.com/imApoorva36/Echo",
     link: "https://testflight.apple.com/join/TpYrhKRy",
+    youtube: "https://www.youtube.com/watch?v=ncCJL2eEslc",
+    image: "/assets/echo-1.png",
     content:
       "A proactive AI assistant that's always listening and executes without you having to ask.",
     stack: [
@@ -491,11 +593,16 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-3",
+    id: "project-5",
     title: "Hackathon Curation AI Agent",
     github: "https://github.com/mittal-parth/hackathon-curation-agent",
+    link: "https://x.com/HackClubNITK",
+    image: "/assets/hackclub.png",
+    youtube:
+      "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
     content:
       "Curates hackathons from email newsletters, evaluates them with AI, and posts the best ones to Twitter.",
+    highlight: "Curated 100+ hackathons",
     stack: [
       { name: "Python" },
       { name: "Gemini" },
@@ -506,13 +613,14 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-4",
+    id: "project-6",
     title: "Comicify.ai",
     github: "https://github.com/ayush4345/Comicify.ai",
     link: "https://devfolio.co/projects/comicifyai-97a6",
+    youtube: "https://youtu.be/KFQLLP6u-iY",
     content:
       "Convert any academic or boring text into comic strips using GPT-3.5 and Stable Diffusion.",
-    highlight: "Winner — Global AI HackFest",
+    highlight: "#19 on Product Hunt, Warpspeed 2023 Winner",
     stack: [
       { name: "React" },
       { name: "TailwindCSS" },
@@ -521,40 +629,11 @@ export const projects: Project[] = [
       { name: "Flask" },
     ],
   },
-  {
-    id: "project-6",
-    title: "GreenTrust",
-    github: "https://github.com/mittal-parth/GreenTrust",
-    link: "https://green-trust-fantom.netlify.app/",
-    content:
-      "Novel solution for organic farming certification via decentralized Participatory Guarantee Systems.",
-    highlight: "Winner — 3 hackathons",
-    stack: [
-      { name: "React" },
-      { name: "TailwindCSS" },
-      { name: "Solidity" },
-      { name: "IPFS" },
-      { name: "Push Protocol" },
-    ],
-  },
-  {
-    id: "project-12",
-    title: "Kosh SDK",
-    github: "https://github.com/mittal-parth/kosh-sdk",
-    link: "https://ethglobal.com/showcase/kosh-hk3mp",
-    content:
-      "Simple and secure way to interact with remote MCP Servers in Trusted Execution Environments.",
-    stack: [
-      { name: "TypeScript" },
-      { name: "TailwindCSS" },
-      { name: "Python" },
-    ],
-  },
 ];
 
 export const navSections = [
   { id: "profile", label: "About" },
+  { id: "hackathons", label: "Hackathons" },
   { id: "experience", label: "Experience" },
-  { id: "achievements", label: "Wins" },
   { id: "projects", label: "Projects" },
 ];

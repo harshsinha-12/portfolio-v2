@@ -1194,7 +1194,7 @@ export const aboutMe = {
   name: "Parth Mittal",
   githubUsername: "mittal-parth",
   tagLine:
-    "MTS @ Oracle | 13x Hackathon Winner | ETHIndia'22,24 Winner | NITK'24 | PBA-5",
+    "MTS @ Oracle | 14x Hackathon Winner | ETHIndia'22,24 Winner | NITK'24 | PBA-5",
   intro:
     "Software Developer from India who is either busy improving his craft or pondering over the next big idea.",
 };
