@@ -4,6 +4,7 @@ type SectionHeadingProps = {
   id?: string;
   title: string;
   accent?: string;
+  trailing?: React.ReactNode;
   className?: string;
   onMat?: boolean;
 };
@@ -12,6 +13,7 @@ export function SectionHeading({
   id,
   title,
   accent,
+  trailing,
   className,
   onMat = false,
 }: SectionHeadingProps) {
@@ -27,19 +29,22 @@ export function SectionHeading({
     <div
       className={cn("mb-[var(--space-lg)]", onMat && "text-shadow-on-mat", className)}
     >
-      <h2
-        id={id}
-        className={cn("text-xl font-semibold tracking-tight sm:text-2xl", textColor)}
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        {title}
-        {accent && (
-          <>
-            {" "}
-            <span className={cn("font-hand text-[1.08em]", accentColor)}>{accent}</span>
-          </>
-        )}
-      </h2>
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <h2
+          id={id}
+          className={cn("text-xl font-semibold tracking-tight sm:text-2xl", textColor)}
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          {title}
+          {accent && (
+            <>
+              {" "}
+              <span className={cn("font-hand text-[1.08em]", accentColor)}>{accent}</span>
+            </>
+          )}
+        </h2>
+        {trailing}
+      </div>
       <div className={cn("mt-2 h-0.5 w-10 rounded-full", ruleColor)} aria-hidden="true" />
     </div>
   );
