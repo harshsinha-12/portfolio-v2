@@ -8,6 +8,7 @@ type PolaroidProps = {
   caption?: React.ReactNode;
   footer?: React.ReactNode;
   className?: string;
+  imageClassName?: string;
   rotation?: number;
   pinned?: boolean;
 };
@@ -18,6 +19,7 @@ export function Polaroid({
   caption,
   footer,
   className,
+  imageClassName,
   rotation = -2,
   pinned = false,
 }: PolaroidProps) {
@@ -30,7 +32,12 @@ export function Polaroid({
       style={{ transform: `rotate(${rotation}deg)` }}
     >
       {pinned && <PushPin />}
-      <div className="aspect-square overflow-hidden border border-[var(--color-paper-muted)] bg-[var(--color-polaroid-placeholder)]">
+      <div
+        className={cn(
+          "overflow-hidden border border-[var(--color-paper-muted)] bg-[var(--color-polaroid-placeholder)]",
+          imageClassName ?? "aspect-square",
+        )}
+      >
         {image ?? children}
       </div>
       {(caption || footer) && (
