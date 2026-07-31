@@ -13,6 +13,7 @@ import {
   SiGraphql,
   SiIpfs,
   SiJquery,
+  SiNextdotjs,
   SiNodedotjs,
   SiPython,
   SiReact,
@@ -21,6 +22,7 @@ import {
   SiSupabase,
   SiTailwindcss,
   SiThirdweb,
+  SiThreedotjs,
   SiTypescript,
   SiVercel,
 } from "react-icons/si";
@@ -41,11 +43,14 @@ export const stackIconMap: Record<string, IconType> = {
   Solidity: SiSolidity,
   Typescript: SiTypescript,
   TypeScript: SiTypescript,
+  "Next.js": SiNextdotjs,
   "React.js": SiReact,
   React: SiReact,
   "React Native": SiReact,
   TailwindCSS: SiTailwindcss,
   "Tailwind CSS": SiTailwindcss,
+  Vercel: SiVercel,
+  "Three.js": SiThreedotjs,
   Gemini: RiGeminiFill,
   Thirdweb: SiThirdweb,
   IPFS: SiIpfs,
@@ -71,8 +76,8 @@ export const stackIconMap: Record<string, IconType> = {
   "Dot Net Core MVC 6": SiGraphql,
 };
 
-export function getStackIcon(name: string): IconType {
-  return stackIconMap[name] ?? RiGeminiFill;
+export function getStackIcon(name: string): IconType | null {
+  return stackIconMap[name] ?? null;
 }
 
 export { AiFillGithub, AiFillYoutube };

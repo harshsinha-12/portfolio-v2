@@ -17,7 +17,7 @@ const domainIcons: Record<string, IconType> = {
 
 const localFavicons: Record<string, string> = {
   "oracle.com": "/assets/favicons/oracle.svg",
-  "nitk.ac.in": "/assets/favicons/nitk.svg",
+  "nitk.ac.in": "/assets/nitk-logo.jpeg",
   "iris.nitk.ac.in": "/assets/favicons/iris.svg",
   "about.iris.nitk.ac.in": "/assets/favicons/iris.svg",
   "polkadot.academy": "/assets/favicons/pba.svg",
