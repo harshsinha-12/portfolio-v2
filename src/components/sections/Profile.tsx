@@ -19,7 +19,7 @@ function renderSegment(segment: IntroSegment, key: number) {
       return <span key={key}>{segment.value}</span>;
     case "hand":
       return (
-        <span key={key} className="font-hand text-[var(--color-accent)]">
+        <span key={key} className="font-hand text-sm text-[var(--color-accent)] sm:text-base">
           {segment.value}
         </span>
       );

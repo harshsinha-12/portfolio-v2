@@ -1,6 +1,6 @@
 "use client";
 
-import { resumeLink, socialMedia } from "@/data/portfolio";
+import { connectLink, socialMedia } from "@/data/portfolio";
 import { socialIconMap } from "@/lib/icons";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 
@@ -27,8 +27,8 @@ export function Footer() {
         })}
       </div>
       <p className="mt-2 text-sm text-[var(--color-on-mat)]/85">
-        <LinkPreview href={resumeLink} title="Resume" description="Resume">
-          <span className="marker-link !text-[var(--color-on-mat)]">Resume</span>
+        <LinkPreview href={connectLink} title="Connect" description="Say hi on X">
+          <span className="marker-link !text-[var(--color-on-mat)]">Connect</span>
         </LinkPreview>
         {" · "}© {year} Parth Mittal
       </p>

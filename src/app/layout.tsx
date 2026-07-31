@@ -20,11 +20,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://parthmittal.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Parth Mittal - Software Developer",
+    default: "Parth Mittal",
     template: "%s | Parth Mittal",
   },
   description:
-    "Member of Technical Staff at Oracle. 13x hackathon winner. Builder of Khoj, Echo, and open-source tools.",
+    "Member of Technical Staff at Oracle. 14x hackathon winner. Builder of Khoj, Echo, and open-source tools.",
   keywords: [
     "Parth Mittal",
     "Software Developer",

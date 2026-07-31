@@ -1,6 +1,6 @@
 "use client";
 
-import { navSections, resumeLink } from "@/data/portfolio";
+import { connectLink, navSections } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
 
 export function FloatingNav() {
@@ -20,8 +20,8 @@ export function FloatingNav() {
           </a>
         ))}
         <Button asChild size="sm" className="ml-0.5 h-7 shrink-0 px-2.5 text-[11px] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs">
-          <a href={resumeLink} target="_blank" rel="noopener noreferrer">
-            Resume
+          <a href={connectLink} target="_blank" rel="noopener noreferrer">
+            Connect
           </a>
         </Button>
       </nav>

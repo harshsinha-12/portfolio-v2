@@ -18,8 +18,8 @@ export function SiteShell() {
         <FloatingNav />
         <main className="space-y-[var(--space-2xl)] lg:space-y-[var(--space-3xl)]">
           <ProfileSection />
-          <TimelineSection />
           <AchievementsSection />
+          <TimelineSection />
           <ProjectsSection />
         </main>
         <Footer />
