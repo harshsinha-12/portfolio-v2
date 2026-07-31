@@ -524,6 +524,7 @@ export const projects: Project[] = [
     github: "https://github.com/mittal-parth/sadak",
     link: "https://playsadak.vercel.app/",
     youtube: "https://youtu.be/gadi-osujrs",
+    image: "/assets/sadak.png",
     content:
       "3D, voice-first, Indic language learning game.",
     highlight: "2nd Runner Up - Sarvam Epoch Buildathon",
