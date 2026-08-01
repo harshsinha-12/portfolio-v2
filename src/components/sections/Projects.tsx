@@ -69,21 +69,23 @@ function ProjectPreview({ project }: { project: Project }) {
   );
 }
 
-function StackBadge({ tech }: { tech: ProjectStackItem }) {
+const stackIconColorClass = "text-[var(--color-ink)]/60";
+
+function StackIcon({ tech }: { tech: ProjectStackItem }) {
   const Icon = getStackIcon(tech.name);
 
   if (tech.icon) {
     return (
       <span
         title={tech.name}
-        className="inline-flex h-6 w-6 items-center justify-center overflow-hidden rounded bg-[var(--color-paper-muted)]"
+        className="inline-flex shrink-0 items-center justify-center"
       >
         <Image
           src={tech.icon}
           alt=""
-          width={16}
-          height={16}
-          className="h-4 w-4 object-contain"
+          width={14}
+          height={14}
+          className="h-3.5 w-3.5 object-contain opacity-90"
         />
         <span className="sr-only">{tech.name}</span>
       </span>
@@ -94,7 +96,7 @@ function StackBadge({ tech }: { tech: ProjectStackItem }) {
     return (
       <span
         title={tech.name}
-        className="inline-flex h-6 w-6 items-center justify-center rounded bg-[var(--color-paper-muted)] text-[10px] font-semibold text-[var(--color-ink-muted)]"
+        className={`inline-flex shrink-0 items-center justify-center text-[9px] font-semibold ${stackIconColorClass}`}
       >
         {tech.name.slice(0, 1)}
         <span className="sr-only">{tech.name}</span>
@@ -105,11 +107,67 @@ function StackBadge({ tech }: { tech: ProjectStackItem }) {
   return (
     <span
       title={tech.name}
-      className="inline-flex h-6 w-6 items-center justify-center rounded bg-[var(--color-paper-muted)] text-[var(--color-ink-muted)]"
+      className={`inline-flex shrink-0 items-center justify-center ${stackIconColorClass}`}
     >
-      {createElement(Icon, { size: 12, "aria-hidden": true })}
+      {createElement(Icon, { size: 11, "aria-hidden": true })}
       <span className="sr-only">{tech.name}</span>
     </span>
+  );
+}
+
+const projectLinkClassName =
+  "inline-flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[var(--color-paper-muted)] text-[var(--color-ink)]/80 transition-colors hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]";
+
+const projectLinkIconSize = 13;
+
+function ProjectLinks({
+  project,
+  liveLinkTitle,
+  liveLinkDescription,
+}: {
+  project: Project;
+  liveLinkTitle: string;
+  liveLinkDescription: string;
+}) {
+  const hasLinks = project.github || project.youtube || project.link;
+  if (!hasLinks) return null;
+
+  return (
+    <div className="mt-2 flex flex-wrap gap-1.5">
+      {project.github && (
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`GitHub for ${project.title}`}
+          className={projectLinkClassName}
+        >
+          <AiFillGithub size={projectLinkIconSize} aria-hidden="true" />
+        </a>
+      )}
+      {project.youtube && (
+        <a
+          href={project.youtube}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Video for ${project.title}`}
+          className={projectLinkClassName}
+        >
+          <AiFillYoutube size={projectLinkIconSize} aria-hidden="true" />
+        </a>
+      )}
+      {project.link && (
+        <LinkPreview
+          href={project.link}
+          title={liveLinkTitle}
+          description={liveLinkDescription}
+          className={projectLinkClassName}
+        >
+          <ExternalLink size={projectLinkIconSize} strokeWidth={2.25} aria-hidden="true" />
+          <span className="sr-only">Live link for {project.title}</span>
+        </LinkPreview>
+      )}
+    </div>
   );
 }
 
@@ -122,47 +180,17 @@ function ProjectCardContent({ project }: { project: Project }) {
     <>
       <ProjectPreview project={project} />
       <div className="min-w-0">
-        <div className="flex items-start justify-between gap-2">
+        <div className="flex min-w-0 items-start gap-2">
           <h3
-            className="text-sm font-semibold text-[var(--color-ink)]"
-            style={{ overflowWrap: "anywhere", minWidth: 0 }}
+            className="min-w-0 flex-1 text-base font-semibold leading-snug text-[var(--color-ink)]"
+            style={{ overflowWrap: "anywhere" }}
           >
             {project.title}
           </h3>
-          <div className="flex shrink-0 gap-1">
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`GitHub for ${project.title}`}
-                className="text-[var(--color-ink-muted)] hover:text-[var(--color-accent)]"
-              >
-                <AiFillGithub size={14} />
-              </a>
-            )}
-            {project.youtube && (
-              <a
-                href={project.youtube}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Video for ${project.title}`}
-                className="text-[var(--color-ink-muted)] hover:text-[var(--color-accent)]"
-              >
-                <AiFillYoutube size={14} />
-              </a>
-            )}
-            {project.link && (
-              <LinkPreview
-                href={project.link}
-                title={liveLinkTitle}
-                description={liveLinkDescription}
-                className="text-[var(--color-ink-muted)] hover:text-[var(--color-accent)]"
-              >
-                <ExternalLink size={14} aria-hidden="true" />
-                <span className="sr-only">Live link for {project.title}</span>
-              </LinkPreview>
-            )}
+          <div className="flex shrink-0 items-center gap-1 pt-0.5">
+            {project.stack.map((tech) => (
+              <StackIcon key={tech.name} tech={tech} />
+            ))}
           </div>
         </div>
         {project.highlight && (
@@ -173,11 +201,11 @@ function ProjectCardContent({ project }: { project: Project }) {
         <p className="mt-1.5 text-xs leading-relaxed text-[var(--color-ink-muted)]">
           {project.content}
         </p>
-        <div className="mt-2 flex flex-wrap gap-1.5">
-          {project.stack.map((tech) => (
-            <StackBadge key={tech.name} tech={tech} />
-          ))}
-        </div>
+        <ProjectLinks
+          project={project}
+          liveLinkTitle={liveLinkTitle}
+          liveLinkDescription={liveLinkDescription}
+        />
       </div>
     </>
   );

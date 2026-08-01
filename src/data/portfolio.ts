@@ -595,7 +595,7 @@ export const projects: Project[] = [
   },
   {
     id: "project-5",
-    title: "Hackathon Curation AI Agent",
+    title: "Hackathon Curation Agent",
     github: "https://github.com/mittal-parth/hackathon-curation-agent",
     link: "https://x.com/HackClubNITK",
     image: "/assets/hackclub.png",
