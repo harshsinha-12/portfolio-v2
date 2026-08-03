@@ -255,7 +255,7 @@ export function Clothesline({ children, className, swapKey = 0 }: ClotheslinePro
       >
         <div
           key={swapKey}
-          className="clothesline-swap relative px-1 sm:px-3 md:px-4"
+          className="clothesline-swap relative px-5 sm:px-3 md:px-4"
           role="list"
           aria-live="polite"
         >
@@ -317,7 +317,7 @@ export function HangingSlot({ children, index, total, className }: HangingSlotPr
     <div
       ref={slotRef}
       className={cn(
-        "flex min-w-0 max-w-[10.5rem] flex-1 flex-col items-center sm:max-w-[11.5rem] lg:max-w-[12.5rem] xl:max-w-[13.5rem]",
+        "flex min-w-0 max-w-[calc(50%-0.375rem)] flex-1 flex-col items-center sm:max-w-[16rem] lg:max-w-[12.5rem] xl:max-w-[13.5rem]",
         className,
       )}
       style={{ marginTop: layout.marginTop }}

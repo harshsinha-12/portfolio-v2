@@ -492,8 +492,8 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-9",
-    icon: "/assets/september-hack.jpg",
-    photo: "/assets/september-hack.jpg",
+    icon: "/assets/september-hack.png",
+    photo: "/assets/september-hack.png",
     event: "September Hackathon by Dennis Ivy",
     position: "Winner",
     highlight: "Best portfolio website among 450+ participants globally.",
