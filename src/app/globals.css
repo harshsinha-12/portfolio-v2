@@ -72,26 +72,27 @@ body {
   }
 }
 
-/* Highlighter-marker link style (replaces squiggle) */
+/* Squiggly underline link style */
 .marker-link {
-  position: relative;
   color: var(--color-ink);
-  text-decoration: none;
-  font-weight: 500;
-  background: linear-gradient(
-    to top,
-    var(--color-marker) 0%,
-    var(--color-marker) 38%,
-    transparent 38%
-  );
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  transition: background-size var(--dur-fast) var(--ease-out);
+  text-decoration: underline wavy var(--color-link-squiggle);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color var(--dur-fast) var(--ease-out);
 }
 
 .marker-link:hover,
 .marker-link:focus-visible {
-  background-size: 100% 110%;
+  text-decoration-color: var(--color-accent);
+}
+
+.marker-link--on-mat {
+  text-decoration-color: var(--color-link-squiggle-on-mat);
+}
+
+.marker-link--on-mat:hover,
+.marker-link--on-mat:focus-visible {
+  text-decoration-color: var(--color-accent-on-mat);
 }
 
 .font-hand {

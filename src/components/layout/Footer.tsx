@@ -28,7 +28,7 @@ export function Footer() {
       </div>
       <p className="mt-2 text-sm text-[var(--color-on-mat)]/85">
         <LinkPreview href={connectLink} title="Connect" description="Say hi on X">
-          <span className="marker-link !text-[var(--color-on-mat)]">Connect</span>
+          <span className="marker-link marker-link--on-mat !text-[var(--color-on-mat)]">Connect</span>
         </LinkPreview>
         {" · "}© {year} Parth Mittal
       </p>

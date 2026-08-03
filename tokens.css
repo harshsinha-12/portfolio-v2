@@ -14,6 +14,8 @@
   --color-heading-on-mat: oklch(96% 0.01 95);
   --color-accent-on-mat: oklch(76% 0.16 35);
   --color-marker: oklch(88% 0.14 85 / 0.45);
+  --color-link-squiggle: oklch(76% 0.06 55);
+  --color-link-squiggle-on-mat: oklch(84% 0.05 60);
 
   /* Colour — cards & ink */
   --color-paper: oklch(96% 0.01 90);
