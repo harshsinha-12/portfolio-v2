@@ -111,8 +111,19 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
       caption={
         <>
           <PositionBadge position={item.position} />
-          <h3 className="mt-1 text-xs font-semibold leading-snug text-[var(--color-ink)]">
-            {item.event}
+          <h3 className="mt-1 flex items-center gap-1.5 text-xs font-semibold leading-snug text-[var(--color-ink)]">
+            {item.companyIcon && (
+              <span className="flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+                <Image
+                  src={item.companyIcon}
+                  alt=""
+                  width={16}
+                  height={16}
+                  className="h-full w-full object-cover"
+                />
+              </span>
+            )}
+            <span className="min-w-0">{item.event}</span>
           </h3>
           <p className="mt-0.5 text-[10px] leading-relaxed text-[var(--color-ink-muted)]">
             {item.highlight}

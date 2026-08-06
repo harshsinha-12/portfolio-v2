@@ -370,6 +370,7 @@ export const educationList: Education[] = [
 export type Achievement = {
   id: string;
   icon: string;
+  companyIcon?: string;
   photo?: string;
   event: string;
   position: string;
@@ -385,8 +386,8 @@ export type Achievement = {
 
 // 1. Google DeepMind Hackathon
 // 2. Sarvam 
-// 3. Warpspeed by Lightspeed 2023
-// 4. Warpspeed: Agentic AI Hackathon | Lightspeed India
+// 3. Warpspeed'23
+// 4. Warpspeed: Agentic AI Hackathon
 // 5. ETHIndia'24
 // 6. ETHIndia'22
 // 7. Polkadot Hackathon: Europe Edition
@@ -398,6 +399,7 @@ export const achievements: Achievement[] = [
   {
     id: "a-1",
     icon: "/assets/google-deepmind-26.jpg",
+    companyIcon: "/assets/hackathon-icons/google-deepmind.png",
     photo: "/assets/google-deepmind-26.jpg",
     event: "Google DeepMind Hackathon",
     position: "Winner",
@@ -410,6 +412,7 @@ export const achievements: Achievement[] = [
   {
     id: "a-2",
     icon: "/assets/sarvam-26.jpg",
+    companyIcon: "/assets/hackathon-icons/sarvam.svg",
     photo: "/assets/sarvam-26.jpg",
     event: "Sarvam Epoch Buildathon",
     position: "2nd Runner Up",
@@ -422,10 +425,11 @@ export const achievements: Achievement[] = [
   {
     id: "a-3",
     icon: "/assets/ethindia_24.jpeg",
+    companyIcon: "/assets/hackathon-icons/ethindia.png",
     photo: "/assets/ethindia_24.jpeg",
-    event: "ETHIndia'24 | India's Largest Ethereum Hackathon",
+    event: "ETHIndia'24",
     position: "Winner",
-    highlight: "Top 10 overall finalists. True Network's winner, Polkadot 1st runner up.",
+    highlight: "Top 10 Winners at India's largest Ethereum hackathon",
     article:
       "https://www.linkedin.com/posts/mittal-parth_super-stoked-to-announce-that-our-team-emerged-activity-7274735259621961729-tkq4",
     project: "https://devfolio.co/projects/khoj-3336",
@@ -435,20 +439,23 @@ export const achievements: Achievement[] = [
   {
     id: "a-4",
     icon: "/assets/warpspeed-24.JPG",
+    companyIcon: "/assets/hackathon-icons/lightspeed.png",
     photo: "/assets/warpspeed-24.JPG",
-    event: "Warpspeed by Lightspeed 2023",
+    event: "Warpspeed'23",
     position: "1st Runner Up",
-    highlight: "1st runner up overall among 107 hackers. AWS 1st runner up.",
+    highlight: "1st runner up at Lightspeed's flagship AI hackathon, among 107 hackers.",
     article: "https://shorturl.at/fhjsT",
     rotation: 2.2,
   },
   {
     id: "a-5",
     icon: "/assets/ethindia-22.jpg",
+    companyIcon: "/assets/hackathon-icons/ethglobal.png",
     photo: "/assets/ethindia-22.jpg",
-    event: "ETHIndia'22 | World's Largest Ethereum Hackathon",
+    event: "ETHIndia'22",
     position: "Winner",
-    highlight: "Top 12 winners among 20k+ registrations. Polygon's best public goods.",
+    highlight:
+      "Top 12 Winners at the world's largest Ethereum hackathon, among 20K+ registrations.",
     article:
       "https://www.thehindu.com/news/cities/Mangalore/nitk-iiit-delhi-team-makes-it-to-top-12-winners-in-ethindia-22/article66238923.ece",
     project: "https://devfolio.co/projects/chargeswap-3527",
@@ -458,8 +465,9 @@ export const achievements: Achievement[] = [
   {
     id: "a-6",
     icon: "/assets/warpspeed-25.jpg",
+    companyIcon: "/assets/hackathon-icons/lightspeed.png",
     photo: "/assets/warpspeed-25.jpg",
-    event: "Warpspeed: Agentic AI Hackathon | Lightspeed India",
+    event: "Warpspeed: Agentic AI Hackathon",
     position: "Runners Up, Base Track",
     highlight: "Built an ambient virtual assistant before ChatGPT Pulse.",
     project: "https://devfolio.co/projects/aeva-58d2",
@@ -469,6 +477,7 @@ export const achievements: Achievement[] = [
   {
     id: "a-7",
     icon: "/assets/polkadot-hack.jpeg",
+    companyIcon: "/assets/hackathon-icons/polkadot.jpeg",
     photo: "/assets/polkadot-hack.jpeg",
     event: "Polkadot Hackathon: Europe Edition",
     position: "2nd Runner Up, ink! Smart Contracts",
@@ -481,6 +490,7 @@ export const achievements: Achievement[] = [
   {
     id: "a-8",
     icon: "/assets/web3-marketing-hack.JPG",
+    companyIcon: "/assets/hackathon-icons/web3-marketing.jpg",
     photo: "/assets/web3-marketing-hack.JPG",
     event: "Web3 Marketing Hackathon",
     position: "Runner Up",
@@ -493,6 +503,7 @@ export const achievements: Achievement[] = [
   {
     id: "a-9",
     icon: "/assets/september-hack.png",
+    companyIcon: "/assets/hackathon-icons/dennisivy.png",
     photo: "/assets/september-hack.png",
     event: "September Hackathon by Dennis Ivy",
     position: "Winner",
