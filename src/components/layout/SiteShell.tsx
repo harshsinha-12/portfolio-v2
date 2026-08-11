@@ -8,8 +8,13 @@ import { ProfileSection } from "@/components/sections/Profile";
 import { TimelineSection } from "@/components/sections/Timeline";
 import { AchievementsSection } from "@/components/sections/Achievements";
 import { ProjectsSection } from "@/components/sections/Projects";
+import type { ContributionDay } from "@/lib/githubContributions";
 
-export function SiteShell() {
+type SiteShellProps = {
+  initialContributions?: ContributionDay[];
+};
+
+export function SiteShell({ initialContributions }: SiteShellProps) {
   return (
     <>
       <CanvasBackground />
@@ -17,7 +22,7 @@ export function SiteShell() {
         <ScatterDecor />
         <FloatingNav />
         <main className="space-y-[var(--space-2xl)] lg:space-y-[var(--space-3xl)]">
-          <ProfileSection />
+          <ProfileSection initialContributions={initialContributions} />
           <AchievementsSection />
           <TimelineSection />
           <ProjectsSection />

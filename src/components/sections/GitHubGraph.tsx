@@ -1,13 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusEvent, type MouseEvent } from "react";
+import { levelFromCount, type ContributionDay } from "@/lib/githubContributions";
 import { cn } from "@/lib/utils";
-
-type ContributionDay = {
-  date: string;
-  count: number;
-  level: number;
-};
 
 type TooltipState = {
   text: string;
@@ -17,6 +12,7 @@ type TooltipState = {
 
 export type GitHubGraphProps = {
   username: string;
+  initialDays?: ContributionDay[];
   months?: number;
   cellSize?: number;
   cellGap?: number;
@@ -87,14 +83,6 @@ function formatTooltip(dateStr: string, count: number): string {
   return `${count} ${noun} on ${formatContributionDate(dateStr)}`;
 }
 
-function levelFromCount(count: number): number {
-  if (count === 0) return 0;
-  if (count <= 2) return 1;
-  if (count <= 5) return 2;
-  if (count <= 9) return 3;
-  return 4;
-}
-
 function buildWeeks(days: ContributionDay[]) {
   if (days.length === 0) return [] as (ContributionDay | null)[][];
   const weeksCount = Math.ceil(days.length / 7);
@@ -129,6 +117,7 @@ function getMonthLabels(weeks: (ContributionDay | null)[][]) {
 
 export function GitHubGraph({
   username,
+  initialDays,
   months = 12,
   cellSize = 11,
   cellGap = 3,
@@ -140,8 +129,8 @@ export function GitHubGraph({
 }: GitHubGraphProps) {
   const isMobileLayout = useMobileGraphLayout();
   const gridRef = useRef<HTMLDivElement>(null);
-  const [days, setDays] = useState<ContributionDay[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [days, setDays] = useState<ContributionDay[]>(initialDays ?? []);
+  const [loading, setLoading] = useState(!initialDays?.length);
   const [error, setError] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
@@ -153,6 +142,8 @@ export function GitHubGraph({
     : showWeekdayLabels;
 
   useEffect(() => {
+    if (initialDays?.length) return;
+
     const controller = new AbortController();
     async function fetchContributions() {
       try {
@@ -183,7 +174,7 @@ export function GitHubGraph({
     }
     fetchContributions();
     return () => controller.abort();
-  }, [username]);
+  }, [initialDays, username]);
 
   const visibleDays = useMemo(() => {
     const cutoff = new Date();

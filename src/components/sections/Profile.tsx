@@ -12,6 +12,7 @@ import { LinkPreview } from "@/components/ui/LinkPreview";
 import type { IntroSegment } from "@/data/portfolio";
 import { GitHubGraph } from "@/components/sections/GitHubGraph";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
+import type { ContributionDay } from "@/lib/githubContributions";
 
 function renderSegment(segment: IntroSegment, key: number) {
   switch (segment.type) {
@@ -115,7 +116,11 @@ function IntroList() {
   );
 }
 
-export function ProfileSection() {
+type ProfileSectionProps = {
+  initialContributions?: ContributionDay[];
+};
+
+export function ProfileSection({ initialContributions }: ProfileSectionProps) {
   return (
     <section id="profile" aria-labelledby="profile-heading" className="animate-fade-up">
       <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(0,11rem)_1fr] lg:items-start lg:gap-6">
@@ -130,8 +135,9 @@ export function ProfileSection() {
               alt="Parth Mittal"
               width={140}
               height={140}
+              sizes="(min-width: 1024px) 140px, (min-width: 640px) 80px, 64px"
               className="h-16 w-16 object-cover sm:h-20 sm:w-20 lg:h-[8.75rem] lg:w-[8.75rem]"
-              priority
+              preload
             />
           </Polaroid>
 
@@ -155,7 +161,12 @@ export function ProfileSection() {
           rotation={-0.4}
           className="w-full max-lg:!rotate-0 lg:col-start-2 lg:row-start-3 lg:w-fit lg:max-w-full [&>div]:p-3"
         >
-          <GitHubGraph username={siteConfig.githubUsername} {...githubGraphConfig} className="w-full min-w-0" />
+          <GitHubGraph
+            username={siteConfig.githubUsername}
+            {...githubGraphConfig}
+            initialDays={initialContributions}
+            className="w-full min-w-0"
+          />
         </TapedCard>
       </div>
     </section>

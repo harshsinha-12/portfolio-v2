@@ -122,7 +122,7 @@ export function Clothespin({ className }: { className?: string }) {
         aria-hidden="true"
       />
       <Image
-        src="/clip.svg"
+        src="/clip.webp"
         alt=""
         width={88}
         height={140}

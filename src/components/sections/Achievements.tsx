@@ -21,6 +21,7 @@ const MOBILE_PAGE_SIZE = 2;
 const DESKTOP_PAGE_SIZE = 5;
 const SWIPE_THRESHOLD_PX = 40;
 const ARC_TRANSITION_MS = 260;
+const ACHIEVEMENT_PHOTO_SIZES = "(min-width: 1024px) 216px, 50vw";
 
 type SlideDirection = "next" | "prev";
 
@@ -92,6 +93,7 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
             alt=""
             width={200}
             height={200}
+            sizes={ACHIEVEMENT_PHOTO_SIZES}
             loading="eager"
             className="h-full w-full object-cover"
           />
@@ -102,6 +104,7 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
               alt=""
               width={48}
               height={48}
+              sizes="48px"
               loading="eager"
               className="h-10 w-10 object-contain opacity-40 sm:h-12 sm:w-12"
             />
@@ -119,6 +122,7 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
                   alt=""
                   width={16}
                   height={16}
+                  sizes="16px"
                   className="h-full w-full object-cover"
                 />
               </span>
@@ -166,6 +170,7 @@ function AchievementImagePreloader() {
             alt=""
             width={200}
             height={200}
+            sizes={ACHIEVEMENT_PHOTO_SIZES}
             loading="eager"
           />
         );

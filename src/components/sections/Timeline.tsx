@@ -51,6 +51,7 @@ function OrgLogo({ icon }: { icon: string }) {
         alt=""
         width={32}
         height={32}
+        sizes="40px"
         className="h-[calc(var(--logo-w)-0.5rem)] w-[calc(var(--logo-w)-0.5rem)] rounded-full object-cover"
       />
     </div>

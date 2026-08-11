@@ -40,6 +40,12 @@ function useOpenGraphPreview(link?: string, enabled = true) {
   return preview;
 }
 
+function isLocalAsset(src: string) {
+  return src.startsWith("/");
+}
+
+const projectCoverSizes = "(min-width: 1280px) 30vw, (min-width: 520px) 45vw, 90vw";
+
 function ProjectPreview({ project }: { project: Project }) {
   const ogPreview = useOpenGraphPreview(project.link, !project.image);
   const previewImage = project.image ?? ogPreview?.image ?? null;
@@ -47,12 +53,22 @@ function ProjectPreview({ project }: { project: Project }) {
   if (previewImage) {
     return (
       <div className="relative mb-3 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper-muted)]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={previewImage}
-          alt=""
-          className="h-full w-full object-cover"
-        />
+        {isLocalAsset(previewImage) ? (
+          <Image
+            src={previewImage}
+            alt=""
+            fill
+            sizes={projectCoverSizes}
+            className="object-cover"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={previewImage}
+            alt=""
+            className="h-full w-full object-cover"
+          />
+        )}
       </div>
     );
   }
@@ -85,6 +101,7 @@ function StackIcon({ tech }: { tech: ProjectStackItem }) {
           alt=""
           width={14}
           height={14}
+          sizes="14px"
           className="h-3.5 w-3.5 object-contain opacity-90"
         />
         <span className="sr-only">{tech.name}</span>

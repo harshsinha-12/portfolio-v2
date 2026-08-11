@@ -398,9 +398,9 @@ export type Achievement = {
 export const achievements: Achievement[] = [
   {
     id: "a-1",
-    icon: "/assets/google-deepmind-26.jpg",
-    companyIcon: "/assets/hackathon-icons/google-deepmind.png",
-    photo: "/assets/google-deepmind-26.jpg",
+    icon: "/assets/google-deepmind-26.webp",
+    companyIcon: "/assets/hackathon-icons/google-deepmind.webp",
+    photo: "/assets/google-deepmind-26.webp",
     event: "Google DeepMind Hackathon",
     position: "Winner",
     highlight:
@@ -411,9 +411,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-2",
-    icon: "/assets/sarvam-26.jpg",
+    icon: "/assets/sarvam-26.webp",
     companyIcon: "/assets/hackathon-icons/sarvam.svg",
-    photo: "/assets/sarvam-26.jpg",
+    photo: "/assets/sarvam-26.webp",
     event: "Sarvam Epoch Buildathon",
     position: "2nd Runner Up",
     highlight:
@@ -424,9 +424,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-3",
-    icon: "/assets/ethindia_24.jpeg",
+    icon: "/assets/ethindia_24.webp",
     companyIcon: "/assets/hackathon-icons/ethindia.png",
-    photo: "/assets/ethindia_24.jpeg",
+    photo: "/assets/ethindia_24.webp",
     event: "ETHIndia'24",
     position: "Winner",
     highlight: "Top 10 Winners at India's largest Ethereum hackathon",
@@ -438,9 +438,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-4",
-    icon: "/assets/warpspeed-24.JPG",
+    icon: "/assets/warpspeed-24.webp",
     companyIcon: "/assets/hackathon-icons/lightspeed.png",
-    photo: "/assets/warpspeed-24.JPG",
+    photo: "/assets/warpspeed-24.webp",
     event: "Warpspeed'23",
     position: "1st Runner Up",
     highlight: "1st runner up at Lightspeed's flagship AI hackathon, among 107 hackers.",
@@ -449,9 +449,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-5",
-    icon: "/assets/ethindia-22.jpg",
+    icon: "/assets/ethindia-22.webp",
     companyIcon: "/assets/hackathon-icons/ethglobal.png",
-    photo: "/assets/ethindia-22.jpg",
+    photo: "/assets/ethindia-22.webp",
     event: "ETHIndia'22",
     position: "Winner",
     highlight:
@@ -464,9 +464,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-6",
-    icon: "/assets/warpspeed-25.jpg",
+    icon: "/assets/warpspeed-25.webp",
     companyIcon: "/assets/hackathon-icons/lightspeed.png",
-    photo: "/assets/warpspeed-25.jpg",
+    photo: "/assets/warpspeed-25.webp",
     event: "Warpspeed: Agentic AI Hackathon",
     position: "Runners Up, Base Track",
     highlight: "Built an ambient virtual assistant before ChatGPT Pulse.",
@@ -476,9 +476,9 @@ export const achievements: Achievement[] = [
 
   {
     id: "a-7",
-    icon: "/assets/polkadot-hack.jpeg",
+    icon: "/assets/polkadot-hack.webp",
     companyIcon: "/assets/hackathon-icons/polkadot.jpeg",
-    photo: "/assets/polkadot-hack.jpeg",
+    photo: "/assets/polkadot-hack.webp",
     event: "Polkadot Hackathon: Europe Edition",
     position: "2nd Runner Up, ink! Smart Contracts",
     highlight: "Built GreenTrust for organic farming certification via decentralized PGSs.",
@@ -489,9 +489,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-8",
-    icon: "/assets/web3-marketing-hack.JPG",
+    icon: "/assets/web3-marketing-hack.webp",
     companyIcon: "/assets/hackathon-icons/web3-marketing.jpg",
-    photo: "/assets/web3-marketing-hack.JPG",
+    photo: "/assets/web3-marketing-hack.webp",
     event: "Web3 Marketing Hackathon",
     position: "Runner Up",
     highlight: "2nd in Polkadot Challenge I. Creative marketing strategies.",
@@ -502,9 +502,9 @@ export const achievements: Achievement[] = [
   },
   {
     id: "a-9",
-    icon: "/assets/september-hack.png",
+    icon: "/assets/september-hack.webp",
     companyIcon: "/assets/hackathon-icons/dennisivy.png",
-    photo: "/assets/september-hack.png",
+    photo: "/assets/september-hack.webp",
     event: "September Hackathon by Dennis Ivy",
     position: "Winner",
     highlight: "Best portfolio website among 450+ participants globally.",
@@ -535,7 +535,7 @@ export const projects: Project[] = [
     github: "https://github.com/mittal-parth/sadak",
     link: "https://playsadak.vercel.app/",
     youtube: "https://youtu.be/gadi-osujrs",
-    image: "/assets/sadak.png",
+    image: "/assets/sadak.webp",
     content:
       "3D, voice-first, Indic language learning game.",
     highlight: "2nd Runner Up - Sarvam Epoch Buildathon",
@@ -554,7 +554,7 @@ export const projects: Project[] = [
     github: "https://github.com/harshagw/kahani",
     link: "https://playkahani.vercel.app/",
     youtube: "https://youtu.be/8R3QYKQR10M",
-    image: "/assets/kahani.png",
+    image: "/assets/kahani.webp",
     content:
       "An RPG game generator that uses Nano Banana to create worlds and assets as you play and progress.",
     highlight: "Winner - Google DeepMind Bangalore Hackathon",
@@ -572,7 +572,7 @@ export const projects: Project[] = [
     title: "Khoj",
     github: "https://github.com/mittal-parth/Khoj",
     link: "https://playkhoj.com/",
-    image: "/assets/khoj.png",
+    image: "/assets/khoj.webp",
     youtube: "https://youtu.be/98OJuvBur6s",
     content:
       "A geo-location based treasure hunt app where the answer to every clue is a physical location.",
@@ -593,7 +593,7 @@ export const projects: Project[] = [
     github: "https://github.com/imApoorva36/Echo",
     link: "https://testflight.apple.com/join/TpYrhKRy",
     youtube: "https://www.youtube.com/watch?v=ncCJL2eEslc",
-    image: "/assets/echo-1.png",
+    image: "/assets/echo-1.webp",
     content:
       "A proactive AI assistant that's always listening and executes without you having to ask.",
     stack: [
@@ -609,7 +609,7 @@ export const projects: Project[] = [
     title: "Hackathon Curation Agent",
     github: "https://github.com/mittal-parth/hackathon-curation-agent",
     link: "https://x.com/HackClubNITK",
-    image: "/assets/hackclub.png",
+    image: "/assets/hackclub.webp",
     youtube:
       "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
     content:

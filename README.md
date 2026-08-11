@@ -26,7 +26,6 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 ## Content
 
 - Live data: `src/data/portfolio.ts`
-- Reference export: `index.js`
 - Images: `public/assets/`
 
 ## Scripts
@@ -35,3 +34,4 @@ NEXT_PUBLIC_SITE_URL=https://your-domain.com
 - `pnpm build` — production build
 - `pnpm start` — serve production build
 - `pnpm lint` — ESLint
+- `pnpm optimize-images` — compress and convert large local images to WebP
