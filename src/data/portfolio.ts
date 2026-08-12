@@ -9,7 +9,7 @@ export const siteConfig = {
   url: "https://parthmittal.dev",
   githubUsername: "mittal-parth",
   role: "Member of Technical Staff",
-  tagline: "MTS @ Oracle · 14x Hackathon Winner · NITK'24 · PBA-5",
+  tagline: "MTS @ Oracle · 15x Hackathon Winner · NITK'24 · PBA-5",
 };
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
@@ -104,7 +104,7 @@ export const introBullets: IntroBullet[] = [
       { type: "hand", value: "hackathons" },
       {
         type: "text",
-        value: ". Participated in 35+, won 14 (recently the Google DeepMind ",
+        value: ". Participated in 35+, won 15 (recently the Google DeepMind ",
       },
       {
         type: "link",
@@ -384,18 +384,32 @@ export type Achievement = {
 
 // Hackathon list:
 
-// 1. Google DeepMind Hackathon
-// 2. Sarvam 
-// 3. Warpspeed'23
-// 4. Warpspeed: Agentic AI Hackathon
-// 5. ETHIndia'24
-// 6. ETHIndia'22
-// 7. Polkadot Hackathon: Europe Edition
-// 8. Web3 Marketing Hackathon
-// 9. September Hackathon by Dennis Ivy
+// 1. Anthropic Push to Prod Hackathon
+// 2. Google DeepMind Hackathon
+// 3. Sarvam
+// 4. Warpspeed'23
+// 5. Warpspeed: Agentic AI Hackathon
+// 6. ETHIndia'24
+// 7. ETHIndia'22
+// 8. Polkadot Hackathon: Europe Edition
+// 9. Web3 Marketing Hackathon
+// 10. September Hackathon by Dennis Ivy
 
 
 export const achievements: Achievement[] = [
+  {
+    id: "a-anthropic",
+    icon: "/assets/anthropic-26.webp",
+    companyIcon: "/assets/hackathon-icons/anthropic.png",
+    photo: "/assets/anthropic-26.webp",
+    event: "Anthropic Push to Prod Hackathon",
+    position: "1st Runner Up",
+    highlight:
+      "2nd among 5K+ applications for building Claude Code as a game.",
+    article: "https://x.com/mittalparth_/status/2086438075652067553?s=20/",
+    youtube: "https://youtu.be/-WVMaU1-sHE",
+    rotation: -2.2,
+  },
   {
     id: "a-1",
     icon: "/assets/google-deepmind-26.webp",
@@ -531,6 +545,23 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "project-1",
+    title: "Claude City",
+    github: "https://github.com/mittal-parth/claude-clan",
+    link: "https://playclaude.vercel.app/",
+    youtube: "https://youtu.be/-WVMaU1-sHE",
+    image: "/assets/claude-city.webp",
+    content:
+      "Turns your codebase and GitHub PRs into a live isometric city where AI agents build and review in real time.",
+    highlight: "1st Runner Up - Anthropic Push to Prod Hackathon",
+    stack: [
+      { name: "TypeScript" },
+      { name: "React" },
+      { name: "Node.js" },
+      { name: "Vercel" },
+    ],
+  },
+  {
+    id: "project-2",
     title: "Sadak",
     github: "https://github.com/mittal-parth/sadak",
     link: "https://playsadak.vercel.app/",
@@ -549,7 +580,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-2",
+    id: "project-3",
     title: "Kahani",
     github: "https://github.com/harshagw/kahani",
     link: "https://playkahani.vercel.app/",
@@ -568,7 +599,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-3",
+    id: "project-4",
     title: "Khoj",
     github: "https://github.com/mittal-parth/Khoj",
     link: "https://playkhoj.com/",
@@ -588,7 +619,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-4",
+    id: "project-5",
     title: "Echo",
     github: "https://github.com/imApoorva36/Echo",
     link: "https://testflight.apple.com/join/TpYrhKRy",
@@ -605,7 +636,7 @@ export const projects: Project[] = [
     ],
   },
   {
-    id: "project-5",
+    id: "project-6",
     title: "Hackathon Curation Agent",
     github: "https://github.com/mittal-parth/hackathon-curation-agent",
     link: "https://x.com/HackClubNITK",
@@ -623,24 +654,7 @@ export const projects: Project[] = [
       { name: "Twitter API" },
       { name: "Google Cloud Platform" },
     ],
-  },
-  {
-    id: "project-6",
-    title: "Comicify.ai",
-    github: "https://github.com/ayush4345/Comicify.ai",
-    link: "https://devfolio.co/projects/comicifyai-97a6",
-    youtube: "https://youtu.be/KFQLLP6u-iY",
-    content:
-      "Convert any academic or boring text into comic strips using GPT-3.5 and Stable Diffusion.",
-    highlight: "#19 on Product Hunt, Warpspeed 2023 Winner",
-    stack: [
-      { name: "React" },
-      { name: "TailwindCSS" },
-      { name: "OpenAI" },
-      { name: "Google Cloud Platform" },
-      { name: "Flask" },
-    ],
-  },
+  }
 ];
 
 export const navSections = [

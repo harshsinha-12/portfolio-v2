@@ -42,7 +42,7 @@ function getOptimizationPlan(relativePath) {
     return { kind: "webp", maxWidth: 128, quality: 85, minSourceBytes: HACKATHON_ICON_MIN_BYTES };
   }
 
-  if (/assets\/(sadak|kahani|khoj|echo-1|hackclub)\./i.test(normalized)) {
+  if (/assets\/(sadak|kahani|khoj|echo-1|hackclub|claude-city)\./i.test(normalized)) {
     return { kind: "webp", maxWidth: 960, quality: 82 };
   }
 
