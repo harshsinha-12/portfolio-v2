@@ -21,6 +21,11 @@ const WIRE_CONTAINER_H_PX = 64;
 
 const CLIP_SPRING_FROM_TOP_FALLBACK = 27;
 const CLIP_JAW_OVERLAP_FALLBACK = 22;
+const CLIP_SOURCE_PX = 960;
+// Square source is object-cover'd to --clip-height, so sizes must match the
+// covering edge (6rem), not the CSS width (3.25rem). Otherwise Next serves a
+// ~52px bitmap that is then upscaled to 96px and looks blurry on desktop.
+const CLIP_COVER_SIZES = "6rem";
 
 type SlotLayout = {
   marginTop: number;
@@ -124,9 +129,10 @@ export function Clothespin({ className }: { className?: string }) {
       <Image
         src="/clip.webp"
         alt=""
-        width={88}
-        height={140}
-        sizes="3.25rem"
+        width={CLIP_SOURCE_PX}
+        height={CLIP_SOURCE_PX}
+        sizes={CLIP_COVER_SIZES}
+        quality={90}
         className="relative z-[1] h-[var(--clip-height)] w-[var(--clip-width)] object-cover object-top drop-shadow-[0_3px_4px_var(--color-clothespin-shadow)]"
         aria-hidden="true"
       />

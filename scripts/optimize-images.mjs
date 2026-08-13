@@ -121,17 +121,19 @@ async function optimizeClipSvg() {
   }
 
   const before = fs.statSync(svgPath).size;
-  // clip.svg is square (480×480). Letterboxing it into a tall 104×192 canvas
-  // made the pin ~half size under CSS object-cover. Keep the square frame at
-  // native size so the clothesline crop matches the pre-optimization look.
+  // clip.svg is a 480×480 frame around a much smaller pin. Clothesline.tsx
+  // object-cover crops that square into --clip-height (6rem), so the raster
+  // must stay square or the pin shrinks. 960px (2× native, density 144) gives
+  // 3× displays enough pixels after that crop without bringing back the 476KB SVG.
+  const CLIP_RASTER_PX = 960;
   await sharp(svgPath, { density: 144 })
     .resize({
-      width: 480,
-      height: 480,
+      width: CLIP_RASTER_PX,
+      height: CLIP_RASTER_PX,
       fit: "contain",
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     })
-    .webp({ quality: 90 })
+    .webp({ quality: 90, alphaQuality: 90 })
     .toFile(webpPath);
 
   const after = fs.statSync(webpPath).size;
