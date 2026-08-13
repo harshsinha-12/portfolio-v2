@@ -121,10 +121,13 @@ async function optimizeClipSvg() {
   }
 
   const before = fs.statSync(svgPath).size;
+  // clip.svg is square (480×480). Letterboxing it into a tall 104×192 canvas
+  // made the pin ~half size under CSS object-cover. Keep the square frame at
+  // native size so the clothesline crop matches the pre-optimization look.
   await sharp(svgPath, { density: 144 })
     .resize({
-      width: 104,
-      height: 192,
+      width: 480,
+      height: 480,
       fit: "contain",
       background: { r: 0, g: 0, b: 0, alpha: 0 },
     })

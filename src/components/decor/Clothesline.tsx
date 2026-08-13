@@ -126,6 +126,7 @@ export function Clothespin({ className }: { className?: string }) {
         alt=""
         width={88}
         height={140}
+        sizes="3.25rem"
         className="relative z-[1] h-[var(--clip-height)] w-[var(--clip-width)] object-cover object-top drop-shadow-[0_3px_4px_var(--color-clothespin-shadow)]"
         aria-hidden="true"
       />
