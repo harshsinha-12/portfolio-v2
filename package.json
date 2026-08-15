@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "optimize-images": "node scripts/optimize-images.mjs"
+    "optimize-images": "node scripts/optimize-images.mjs",
+    "generate-og": "node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@radix-ui/react-hover-card": "^1.1.19",

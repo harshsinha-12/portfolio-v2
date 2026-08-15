@@ -1,6 +1,16 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async headers() {
+    return [
+      {
+        source: "/og.jpg",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=86400" },
+        ],
+      },
+    ];
+  },
   images: {
     // Prefer AVIF (smaller) and fall back to WebP for broad support.
     formats: ["image/avif", "image/webp"],

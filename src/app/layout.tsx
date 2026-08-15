@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Indie_Flower } from "next/font/google";
+import { siteConfig } from "@/data/portfolio";
+import { getSiteUrl } from "@/lib/siteUrl";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,16 +17,15 @@ const indieFlower = Indie_Flower({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://parthmittal.dev";
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Parth Mittal",
-    template: "%s | Parth Mittal",
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    "Member of Technical Staff at Oracle. 15x hackathon winner. Builder of Khoj, Echo, and open-source tools.",
+  description: siteConfig.description,
   keywords: [
     "Parth Mittal",
     "Software Developer",
@@ -33,23 +34,31 @@ export const metadata: Metadata = {
     "NITK",
     "Portfolio",
   ],
-  authors: [{ name: "Parth Mittal", url: siteUrl }],
-  creator: "Parth Mittal",
+  authors: [{ name: siteConfig.name, url: siteUrl }],
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "Parth Mittal",
-    title: "Parth Mittal - Software Developer",
-    description:
-      "Member of Technical Staff at Oracle. 12× hackathon winner. Builder of Khoj, Echo, and open-source tools.",
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    images: [
+      {
+        url: "/og.jpg",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
+        alt: `${siteConfig.name} — ${siteConfig.tagline}`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Parth Mittal — Software Developer",
-    description:
-      "Member of Technical Staff at Oracle. 12× hackathon winner.",
+    title: siteConfig.title,
+    description: siteConfig.description,
     creator: "@mittalparth_",
+    images: ["/og.jpg"],
   },
   robots: {
     index: true,

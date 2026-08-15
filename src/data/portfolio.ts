@@ -6,7 +6,7 @@ export const siteConfig = {
   title: "Parth Mittal - Software Developer",
   description:
     "Member of Technical Staff at Oracle. 13x hackathon winner. Builder of Khoj, Echo, and open-source tools.",
-  url: "https://parthmittal.dev",
+    url: "https://mittalparth.dev",
   githubUsername: "mittal-parth",
   role: "Member of Technical Staff",
   tagline: "MTS @ Oracle · 15x Hackathon Winner · NITK'24 · PBA-5",
