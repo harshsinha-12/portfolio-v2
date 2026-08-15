@@ -6,69 +6,189 @@ type MatSurfaceProps = {
   children?: React.ReactNode;
 };
 
-function RulerTicks({
-  axis,
-  count,
-  majorEvery = 5,
-}: {
-  axis: "top" | "bottom" | "left" | "right";
-  count: number;
-  majorEvery?: number;
-}) {
-  const isHorizontal = axis === "top" || axis === "bottom";
+type Axis = "top" | "bottom" | "left" | "right";
+
+/** Matches the CSS minor grid so ticks sit on the same lattice. */
+const UNIT = 24;
+const VIEW_WIDTH = 1920;
+const VIEW_HEIGHT = 1200;
+const COLS = VIEW_WIDTH / UNIT;
+const ROWS = VIEW_HEIGHT / UNIT;
+const MAJOR_EVERY = 5;
+const FRAME_INSET = 10;
+const TICK_MINOR = 7;
+const TICK_MAJOR = 14;
+const LABEL_INSET = 32;
+const ANGLE_DEGREES = [15, 30, 45, 60] as const;
+const RADIUS_UNITS = [10, 20, 30] as const;
+
+const GUIDE = "var(--color-mat-guide)";
+const GUIDE_FONT = "ui-sans-serif, system-ui, sans-serif";
+
+const overlayMaskStyle = {
+  opacity: 0.28,
+  maskImage: "radial-gradient(ellipse 65% 75% at 50% 42%, transparent 20%, black 72%)",
+  WebkitMaskImage: "radial-gradient(ellipse 65% 75% at 50% 42%, transparent 20%, black 72%)",
+} as const;
+
+function guideStroke(width: number) {
+  return {
+    stroke: GUIDE,
+    strokeWidth: width,
+    vectorEffect: "nonScalingStroke" as const,
+    fill: "none" as const,
+  };
+}
+
+function TickLabel({ x, y, children }: { x: number; y: number; children: string }) {
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      fill={GUIDE}
+      fontSize="10"
+      fontFamily={GUIDE_FONT}
+      style={{ fontVariantNumeric: "tabular-nums" }}
+    >
+      {children}
+    </text>
+  );
+}
+
+function HorizontalTicks({ axis }: { axis: "top" | "bottom" }) {
+  const isTop = axis === "top";
+  const edgeY = isTop ? FRAME_INSET : VIEW_HEIGHT - FRAME_INSET;
+  const labelY = isTop ? LABEL_INSET + 6 : VIEW_HEIGHT - LABEL_INSET + 4;
+
   return (
     <>
-      {Array.from({ length: count }).map((_, i) => {
-        const isMajor = i % majorEvery === 0 && i > 0;
-        const pos = 8 + i * (isHorizontal ? 52 : 48);
-        if (isHorizontal) {
-          return (
-            <g key={`${axis}-${i}`}>
-              <line
-                x1={pos}
-                y1={axis === "top" ? 6 : 794}
-                x2={pos}
-                y2={axis === "top" ? (isMajor ? 20 : 12) : isMajor ? 788 : 796}
-                stroke="var(--color-grid-major)"
-                strokeWidth="1"
-              />
-              {isMajor && (
-                <text
-                  x={pos}
-                  y={axis === "top" ? 32 : 778}
-                  textAnchor="middle"
-                  fill="var(--color-grid-major)"
-                  fontSize="9"
-                  fontFamily="system-ui, sans-serif"
-                >
-                  {i}
-                </text>
-              )}
-            </g>
-          );
-        }
+      {Array.from({ length: COLS + 1 }, (_, i) => {
+        const isMajor = i % MAJOR_EVERY === 0;
+        const tick = isMajor ? TICK_MAJOR : TICK_MINOR;
+        const x = i * UNIT;
+        const tickEndY = isTop ? edgeY + tick : edgeY - tick;
+        const label = isMajor && i > 0 ? String(i) : null;
+
         return (
           <g key={`${axis}-${i}`}>
+            <line x1={x} y1={edgeY} x2={x} y2={tickEndY} {...guideStroke(1)} />
+            {label ? (
+              <TickLabel x={x} y={labelY}>
+                {label}
+              </TickLabel>
+            ) : null}
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+function VerticalTicks({ axis }: { axis: "left" | "right" }) {
+  const isLeft = axis === "left";
+  const edgeX = isLeft ? FRAME_INSET : VIEW_WIDTH - FRAME_INSET;
+  const labelX = isLeft ? LABEL_INSET : VIEW_WIDTH - LABEL_INSET;
+
+  return (
+    <>
+      {Array.from({ length: ROWS + 1 }, (_, i) => {
+        const isMajor = i % MAJOR_EVERY === 0;
+        const tick = isMajor ? TICK_MAJOR : TICK_MINOR;
+        const y = VIEW_HEIGHT - i * UNIT;
+        const tickEndX = isLeft ? edgeX + tick : edgeX - tick;
+        const label = isMajor && i > 0 ? String(i) : null;
+
+        return (
+          <g key={`${axis}-${i}`}>
+            <line x1={edgeX} y1={y} x2={tickEndX} y2={y} {...guideStroke(1)} />
+            {label ? (
+              <TickLabel x={labelX} y={y + 3}>
+                {label}
+              </TickLabel>
+            ) : null}
+          </g>
+        );
+      })}
+    </>
+  );
+}
+
+function RulerTicks({ axis }: { axis: Axis }) {
+  switch (axis) {
+    case "top":
+    case "bottom":
+      return <HorizontalTicks axis={axis} />;
+    case "left":
+    case "right":
+      return <VerticalTicks axis={axis} />;
+    default: {
+      const _exhaustive: never = axis;
+      throw new Error(`Unhandled axis: ${_exhaustive}`);
+    }
+  }
+}
+
+function RadiusGuides() {
+  const originX = 0;
+  const originY = VIEW_HEIGHT;
+
+  return (
+    <>
+      {RADIUS_UNITS.map((units) => {
+        const r = units * UNIT;
+        const startX = originX + r;
+        const startY = originY;
+        const endX = originX;
+        const endY = originY - r;
+        return (
+          <path
+            key={`radius-${units}`}
+            d={`M ${startX} ${startY} A ${r} ${r} 0 0 0 ${endX} ${endY}`}
+            {...guideStroke(1)}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+function AngleGuides() {
+  const originX = 0;
+  const originY = VIEW_HEIGHT;
+  const rayLength = Math.hypot(VIEW_WIDTH, VIEW_HEIGHT);
+  const labelRadius = 16 * UNIT;
+
+  return (
+    <>
+      {ANGLE_DEGREES.map((deg) => {
+        const rad = (deg * Math.PI) / 180;
+        const cos = Math.cos(rad);
+        const sin = Math.sin(rad);
+        const endX = originX + rayLength * cos;
+        const endY = originY - rayLength * sin;
+        const labelX = originX + labelRadius * cos + 10 * sin;
+        const labelY = originY - labelRadius * sin + 10 * cos;
+
+        return (
+          <g key={`angle-${deg}`}>
             <line
-              x1={axis === "left" ? 6 : 994}
-              y1={pos}
-              x2={axis === "left" ? (isMajor ? 20 : 12) : isMajor ? 988 : 996}
-              y2={pos}
-              stroke="var(--color-grid-major)"
-              strokeWidth="1"
+              x1={originX}
+              y1={originY}
+              x2={endX}
+              y2={endY}
+              strokeDasharray="8 7"
+              {...guideStroke(1)}
             />
-            {isMajor && (
-              <text
-                x={axis === "left" ? 28 : 972}
-                y={pos + 3}
-                textAnchor="middle"
-                fill="var(--color-grid-major)"
-                fontSize="9"
-                fontFamily="system-ui, sans-serif"
-              >
-                {i}
-              </text>
-            )}
+            <text
+              x={labelX}
+              y={labelY}
+              fill={GUIDE}
+              fontSize="11"
+              fontFamily={GUIDE_FONT}
+            >
+              {deg}°
+            </text>
           </g>
         );
       })}
@@ -77,105 +197,28 @@ function RulerTicks({
 }
 
 function MatSvgOverlay() {
-  const degrees = [15, 30, 45, 60];
   return (
     <svg
-      className="absolute inset-0 h-full w-full opacity-[0.2]"
-      preserveAspectRatio="none"
-      viewBox="0 0 1000 800"
+      className="pointer-events-none absolute inset-0 hidden h-full w-full lg:block"
+      preserveAspectRatio="xMinYMax slice"
+      viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
+      style={overlayMaskStyle}
     >
-      {/* Diagonal guides */}
-      <line x1="0" y1="800" x2="1000" y2="0" stroke="var(--color-grid-major)" strokeWidth="0.8" />
-      <line x1="0" y1="680" x2="880" y2="0" stroke="var(--color-grid-major)" strokeWidth="0.6" />
-      <line x1="120" y1="800" x2="1000" y2="120" stroke="var(--color-grid-major)" strokeWidth="0.6" />
-
-      {/* Crosshair registration marks at major grid intersections */}
-      {[240, 480, 720].map((x) =>
-        [160, 320, 480, 640].map((y) => (
-          <g key={`cross-${x}-${y}`}>
-            <line x1={x - 6} y1={y} x2={x + 6} y2={y} stroke="var(--color-grid-major)" strokeWidth="0.8" />
-            <line x1={x} y1={y - 6} x2={x} y2={y + 6} stroke="var(--color-grid-major)" strokeWidth="0.8" />
-          </g>
-        )),
-      )}
-
-      {/* Bottom-left degree arcs */}
-      {degrees.map((deg, i) => {
-        const r = 80 + i * 55;
-        const endX = 80 + r * Math.cos(((90 - deg) * Math.PI) / 180);
-        const endY = 720 - r * Math.sin(((90 - deg) * Math.PI) / 180);
-        return (
-          <g key={`bl-${deg}`}>
-            <path
-              d={`M 80 720 A ${r} ${r} 0 0 1 ${endX} ${endY}`}
-              fill="none"
-              stroke="var(--color-grid-major)"
-              strokeWidth="1"
-            />
-            <text
-              x={endX + 4}
-              y={endY - 2}
-              fill="var(--color-grid-major)"
-              fontSize="10"
-              fontFamily="system-ui, sans-serif"
-            >
-              {deg}°
-            </text>
-          </g>
-        );
-      })}
-
-      {/* Bottom-right degree arcs */}
-      {degrees.map((deg, i) => {
-        const r = 80 + i * 55;
-        const endX = 920 - r * Math.cos(((90 - deg) * Math.PI) / 180);
-        const endY = 720 - r * Math.sin(((90 - deg) * Math.PI) / 180);
-        return (
-          <g key={`br-${deg}`}>
-            <path
-              d={`M 920 720 A ${r} ${r} 0 0 0 ${endX} ${endY}`}
-              fill="none"
-              stroke="var(--color-grid-major)"
-              strokeWidth="1"
-            />
-            <text
-              x={endX - 4}
-              y={endY - 2}
-              textAnchor="end"
-              fill="var(--color-grid-major)"
-              fontSize="10"
-              fontFamily="system-ui, sans-serif"
-            >
-              {deg}°
-            </text>
-          </g>
-        );
-      })}
-
-      <RulerTicks axis="top" count={18} />
-      <RulerTicks axis="bottom" count={18} />
-      <RulerTicks axis="left" count={14} />
-      <RulerTicks axis="right" count={14} />
-
-      {/* Faint cut scratches */}
-      {[
-        "M 180 220 L 195 235",
-        "M 420 510 L 438 528",
-        "M 680 180 L 698 198",
-        "M 820 420 L 835 440",
-        "M 310 680 L 325 695",
-      ].map((d, i) => (
-        <path
-          key={`scratch-${i}`}
-          d={d}
-          fill="none"
-          stroke="var(--color-grid-major)"
-          strokeWidth="0.5"
-          opacity="0.5"
-        />
-      ))}
+      <rect
+        x={FRAME_INSET}
+        y={FRAME_INSET}
+        width={VIEW_WIDTH - FRAME_INSET * 2}
+        height={VIEW_HEIGHT - FRAME_INSET * 2}
+        {...guideStroke(1)}
+      />
+      <RadiusGuides />
+      <AngleGuides />
+      <RulerTicks axis="top" />
+      <RulerTicks axis="bottom" />
+      <RulerTicks axis="left" />
+      <RulerTicks axis="right" />
     </svg>
   );
 }
@@ -207,6 +250,7 @@ export function MatSurface({ variant = "fixed", className, children }: MatSurfac
             linear-gradient(90deg, var(--color-grid-minor) 1px, transparent 1px)
           `,
           backgroundSize: "24px 24px",
+          backgroundPosition: "left bottom",
         }}
       />
       <div
@@ -217,6 +261,7 @@ export function MatSurface({ variant = "fixed", className, children }: MatSurfac
             linear-gradient(90deg, var(--color-grid-major) 1px, transparent 1px)
           `,
           backgroundSize: "120px 120px",
+          backgroundPosition: "left bottom",
         }}
       />
       <MatSvgOverlay />

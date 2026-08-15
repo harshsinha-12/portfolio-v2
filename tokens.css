@@ -10,6 +10,7 @@
   --color-mat-deep: oklch(28% 0.05 158);
   --color-grid-minor: oklch(42% 0.04 158 / 0.35);
   --color-grid-major: oklch(85% 0.12 110 / 0.22);
+  --color-mat-guide: oklch(85% 0.12 110);
   --color-on-mat: oklch(92% 0.02 95);
   --color-heading-on-mat: oklch(96% 0.01 95);
   --color-accent-on-mat: oklch(76% 0.16 35);
