@@ -8,6 +8,7 @@ import { achievements, type Achievement } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DraggableSticker } from "@/components/decor/DraggableSticker";
 import { Polaroid } from "@/components/decor/Decor";
+import { XactoKnife } from "@/components/decor/XactoKnife";
 import { useDraggableEnabled } from "@/components/decor/useDraggable";
 import {
   Clothesline,
@@ -388,6 +389,19 @@ export function AchievementsSection() {
           />
         }
       />
+
+      <div
+        className="pointer-events-none absolute inset-0 z-30 hidden xl:block"
+        aria-hidden="true"
+      >
+        <XactoKnife
+          id="xacto"
+          top="9.25rem"
+          left="max(calc(-50vw + 50% + 0.5rem), calc(50% - 45rem))"
+          rotate={-26}
+          draggable={draggable}
+        />
+      </div>
 
       {isMobile ? (
         <div className="relative min-h-[25.5rem]">

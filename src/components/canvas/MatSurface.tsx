@@ -230,7 +230,7 @@ export function MatSurface({ variant = "fixed", className, children }: MatSurfac
     <div
       className={cn(
         isFixed
-          ? "pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+          ? "pointer-events-none fixed top-0 left-0 -z-10 h-screen w-screen overflow-hidden"
           : "relative overflow-hidden rounded-[var(--radius-xl)]",
         className,
       )}

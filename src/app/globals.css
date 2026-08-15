@@ -17,7 +17,6 @@
 
 html,
 body {
-  overflow-x: clip;
   min-height: 100%;
 }
 
@@ -245,5 +244,88 @@ body {
   .arc-exit-back,
   .arc-enter-back {
     animation: none;
+  }
+}
+
+/* X-acto easter egg: mat scratches, rope snap */
+
+@keyframes mat-scratch-heal {
+  to {
+    opacity: 0;
+  }
+}
+
+.mat-scratch-heal {
+  animation: mat-scratch-heal var(--dur-scratch-heal) var(--ease-out) var(--dur-scratch-hold) forwards;
+}
+
+@keyframes rope-recoil-left {
+  to {
+    transform: rotate(-8deg) translateY(5px);
+  }
+}
+
+@keyframes rope-recoil-right {
+  to {
+    transform: rotate(8deg) translateY(5px);
+  }
+}
+
+@keyframes rope-heal-left {
+  from {
+    transform: rotate(-8deg) translateY(5px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes rope-heal-right {
+  from {
+    transform: rotate(8deg) translateY(5px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+.rope-cut-left {
+  transform-origin: 4% 18%;
+  animation: rope-recoil-left var(--dur-rope-recoil) var(--ease-out) forwards;
+}
+
+.rope-cut-right {
+  transform-origin: 96% 18%;
+  animation: rope-recoil-right var(--dur-rope-recoil) var(--ease-out) forwards;
+}
+
+.rope-cut-left.is-healing {
+  animation: rope-heal-left var(--dur-rope-heal) var(--ease-in-out) forwards;
+}
+
+.rope-cut-right.is-healing {
+  animation: rope-heal-right var(--dur-rope-heal) var(--ease-in-out) forwards;
+}
+
+.hanging-slot-inner {
+  transition: transform var(--dur-polaroid-drop) var(--ease-out);
+  transition-delay: var(--cut-delay, 0ms);
+}
+
+.hanging-slot-inner.is-cut {
+  transform: translateY(2.4rem) rotate(var(--cut-tilt, 8deg));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mat-scratch-heal,
+  .rope-cut-left,
+  .rope-cut-right,
+  .rope-cut-left.is-healing,
+  .rope-cut-right.is-healing {
+    animation: none;
+  }
+
+  .hanging-slot-inner {
+    transition: none;
   }
 }

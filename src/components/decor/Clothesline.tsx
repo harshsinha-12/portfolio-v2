@@ -4,14 +4,18 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useLayoutEffect,
   useRef,
   useState,
+  type CSSProperties,
   type ReactNode,
+  type RefObject,
 } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { WashiTape } from "@/components/decor/PushPin";
+import { useXacto, type Point } from "@/components/decor/XactoProvider";
 
 const ROPE_PATH = "M 0 5 Q 50 30 100 5";
 const ROPE_VIEW_H = 36;
@@ -26,6 +30,61 @@ const CLIP_SOURCE_PX = 960;
 // covering edge (6rem), not the CSS width (3.25rem). Otherwise Next serves a
 // ~52px bitmap that is then upscaled to 96px and looks blurry on desktop.
 const CLIP_COVER_SIZES = "6rem";
+const ROPE_SAMPLE_STEPS = 40;
+const ROPE_SNAP_HOLD_MS = 3200;
+const ROPE_HEAL_MS = 700;
+const HACKATHON_ROPE_TARGET = "hackathon-rope";
+
+type RopeStatus =
+  | { kind: "intact" }
+  | { kind: "cut"; phase: "snapped" | "healing"; leftPoints: string; rightPoints: string };
+
+function samplePathInViewport(path: SVGPathElement): Point[] {
+  const length = path.getTotalLength();
+  const ctm = path.getScreenCTM();
+  if (!ctm || length === 0) return [];
+  const steps = Math.max(ROPE_SAMPLE_STEPS, Math.ceil(length / 4));
+  const points: Point[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const p = path.getPointAtLength((i / steps) * length);
+    const mapped = new DOMPoint(p.x, p.y).matrixTransform(ctm);
+    points.push({ x: mapped.x, y: mapped.y });
+  }
+  return points;
+}
+
+function polylineFromPath(path: SVGPathElement, fromStep: number, toStep: number, steps: number): string {
+  const length = path.getTotalLength();
+  if (length === 0 || toStep < fromStep) return "";
+  const coords: string[] = [];
+  for (let i = fromStep; i <= toStep; i++) {
+    const p = path.getPointAtLength((i / steps) * length);
+    coords.push(`${p.x},${p.y}`);
+  }
+  return coords.join(" ");
+}
+
+function splitPathAtPoint(path: SVGPathElement, at: Point): { leftPoints: string; rightPoints: string } | null {
+  const samples = samplePathInViewport(path);
+  if (samples.length < 2) return null;
+  let closest = 0;
+  let best = Number.POSITIVE_INFINITY;
+  for (let i = 0; i < samples.length; i++) {
+    const sample = samples[i];
+    if (!sample) continue;
+    const d = Math.hypot(sample.x - at.x, sample.y - at.y);
+    if (d < best) {
+      best = d;
+      closest = i;
+    }
+  }
+  const steps = samples.length - 1;
+  const split = Math.min(steps - 1, Math.max(1, closest));
+  return {
+    leftPoints: polylineFromPath(path, 0, split, steps),
+    rightPoints: polylineFromPath(path, split, steps, steps),
+  };
+}
 
 type SlotLayout = {
   marginTop: number;
@@ -106,6 +165,7 @@ type ClotheslineLayoutContextValue = {
   layouts: SlotLayout[];
   registerSlot: (index: number, el: HTMLDivElement | null) => void;
   slotCount: number;
+  ropeCut: boolean;
 };
 
 const ClotheslineLayoutContext = createContext<ClotheslineLayoutContextValue | null>(null);
@@ -146,7 +206,131 @@ type ClotheslineProps = {
   swapKey?: number;
 };
 
-function RopeWire() {
+type RopeStrokeLayersProps =
+  | { kind: "path"; d: string }
+  | { kind: "polyline"; points: string };
+
+function RopeStrokeLayers(props: RopeStrokeLayersProps) {
+  switch (props.kind) {
+    case "path":
+      return (
+        <>
+          <path
+            d={props.d}
+            fill="none"
+            stroke="var(--color-twine-shadow)"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            transform="translate(0 0.6)"
+          />
+          <path
+            d={props.d}
+            fill="none"
+            stroke="var(--color-twine)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            filter="url(#rope-roughness)"
+          />
+          <path
+            d={props.d}
+            fill="none"
+            stroke="var(--color-twine-highlight)"
+            strokeWidth="0.85"
+            strokeLinecap="round"
+            strokeDasharray="1.8 2.6 0.9 3.1"
+            transform="translate(0 -0.25)"
+          />
+          <path
+            d={props.d}
+            fill="none"
+            stroke="var(--color-twine-fiber)"
+            strokeWidth="0.5"
+            strokeLinecap="round"
+            strokeDasharray="0.4 1.8"
+            transform="translate(0 0.35)"
+          />
+        </>
+      );
+    case "polyline":
+      return (
+        <>
+          <polyline
+            points={props.points}
+            fill="none"
+            stroke="var(--color-twine-shadow)"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            transform="translate(0 0.6)"
+          />
+          <polyline
+            points={props.points}
+            fill="none"
+            stroke="var(--color-twine)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            filter="url(#rope-roughness)"
+          />
+          <polyline
+            points={props.points}
+            fill="none"
+            stroke="var(--color-twine-highlight)"
+            strokeWidth="0.85"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray="1.8 2.6 0.9 3.1"
+            transform="translate(0 -0.25)"
+          />
+          <polyline
+            points={props.points}
+            fill="none"
+            stroke="var(--color-twine-fiber)"
+            strokeWidth="0.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeDasharray="0.4 1.8"
+            transform="translate(0 0.35)"
+          />
+        </>
+      );
+    default: {
+      const _exhaustive: never = props;
+      return _exhaustive;
+    }
+  }
+}
+
+type RopeWireProps = {
+  pathRef: RefObject<SVGPathElement | null>;
+  status: RopeStatus;
+};
+
+function RopeVisible({ status, cutClass }: { status: RopeStatus; cutClass?: string }) {
+  switch (status.kind) {
+    case "intact":
+      return <RopeStrokeLayers kind="path" d={ROPE_PATH} />;
+    case "cut":
+      return (
+        <>
+          <g className={cn("rope-cut-left", cutClass)}>
+            <RopeStrokeLayers kind="polyline" points={status.leftPoints} />
+          </g>
+          <g className={cn("rope-cut-right", cutClass)}>
+            <RopeStrokeLayers kind="polyline" points={status.rightPoints} />
+          </g>
+        </>
+      );
+    default: {
+      const _exhaustive: never = status;
+      return _exhaustive;
+    }
+  }
+}
+
+function RopeWire({ pathRef, status }: RopeWireProps) {
+  const cutClass = status.kind === "cut" && status.phase === "healing" ? "is-healing" : undefined;
+
   return (
     <svg
       className="absolute inset-0 h-full w-full"
@@ -162,39 +346,14 @@ function RopeWire() {
       </defs>
 
       <path
+        ref={pathRef}
         d={ROPE_PATH}
         fill="none"
-        stroke="var(--color-twine-shadow)"
-        strokeWidth="2.4"
-        strokeLinecap="round"
-        transform="translate(0 0.6)"
-      />
-      <path
-        d={ROPE_PATH}
-        fill="none"
-        stroke="var(--color-twine)"
+        stroke="transparent"
         strokeWidth="2"
-        strokeLinecap="round"
-        filter="url(#rope-roughness)"
       />
-      <path
-        d={ROPE_PATH}
-        fill="none"
-        stroke="var(--color-twine-highlight)"
-        strokeWidth="0.85"
-        strokeLinecap="round"
-        strokeDasharray="1.8 2.6 0.9 3.1"
-        transform="translate(0 -0.25)"
-      />
-      <path
-        d={ROPE_PATH}
-        fill="none"
-        stroke="var(--color-twine-fiber)"
-        strokeWidth="0.5"
-        strokeLinecap="round"
-        strokeDasharray="0.4 1.8"
-        transform="translate(0 0.35)"
-      />
+
+      <RopeVisible status={status} cutClass={cutClass} />
     </svg>
   );
 }
@@ -202,10 +361,22 @@ function RopeWire() {
 export function Clothesline({ children, className, swapKey = 0 }: ClotheslineProps) {
   const edgeWireY = wireYAtPercent(4, WIRE_CONTAINER_H_PX);
   const ropeRef = useRef<HTMLDivElement>(null);
+  const ropePathRef = useRef<SVGPathElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
   const slotRefs = useRef<Map<number, HTMLDivElement>>(new Map());
   const [layouts, setLayouts] = useState<SlotLayout[]>([]);
+  const [ropeStatus, setRopeStatus] = useState<RopeStatus>({ kind: "intact" });
+  const [statusSwapKey, setStatusSwapKey] = useState(swapKey);
+  const ropeStatusRef = useRef<RopeStatus>(ropeStatus);
   const slotCount = Array.isArray(children) ? children.length : children ? 1 : 0;
+  const { registerCutTarget } = useXacto();
+
+  if (statusSwapKey !== swapKey) {
+    setStatusSwapKey(swapKey);
+    setRopeStatus({ kind: "intact" });
+  }
+
+  const ropeCut = ropeStatus.kind === "cut" && ropeStatus.phase === "snapped";
 
   const measureLayouts = useCallback(() => {
     const rope = ropeRef.current;
@@ -252,8 +423,61 @@ export function Clothesline({ children, className, swapKey = 0 }: ClotheslinePro
     return () => observer.disconnect();
   }, [measureLayouts, swapKey, slotCount]);
 
+  useEffect(() => {
+    ropeStatusRef.current = ropeStatus;
+  }, [ropeStatus]);
+
+  useLayoutEffect(() => {
+    return registerCutTarget(HACKATHON_ROPE_TARGET, {
+      sampler: () => {
+        const path = ropePathRef.current;
+        if (!path) return [];
+        return samplePathInViewport(path);
+      },
+      onCut: (at) => {
+        if (ropeStatusRef.current.kind !== "intact") return;
+        const path = ropePathRef.current;
+        if (!path) return;
+        const split = splitPathAtPoint(path, at);
+        if (!split) return;
+        setRopeStatus({ kind: "cut", phase: "snapped", ...split });
+      },
+    });
+  }, [registerCutTarget]);
+
+  useEffect(() => {
+    switch (ropeStatus.kind) {
+      case "intact":
+        return;
+      case "cut": {
+        switch (ropeStatus.phase) {
+          case "snapped": {
+            const timer = window.setTimeout(() => {
+              setRopeStatus((prev) => (prev.kind === "cut" ? { ...prev, phase: "healing" } : prev));
+            }, ROPE_SNAP_HOLD_MS);
+            return () => window.clearTimeout(timer);
+          }
+          case "healing": {
+            const timer = window.setTimeout(() => {
+              setRopeStatus({ kind: "intact" });
+            }, ROPE_HEAL_MS);
+            return () => window.clearTimeout(timer);
+          }
+          default: {
+            const _exhaustive: never = ropeStatus.phase;
+            return _exhaustive;
+          }
+        }
+      }
+      default: {
+        const _exhaustive: never = ropeStatus;
+        return _exhaustive;
+      }
+    }
+  }, [ropeStatus]);
+
   return (
-    <ClotheslineLayoutContext.Provider value={{ layouts, registerSlot, slotCount }}>
+    <ClotheslineLayoutContext.Provider value={{ layouts, registerSlot, slotCount, ropeCut }}>
       <div
         className={cn(
           "relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2",
@@ -273,7 +497,7 @@ export function Clothesline({ children, className, swapKey = 0 }: ClotheslinePro
             className="pointer-events-none absolute inset-x-0 top-0 z-20 h-16"
             aria-hidden="true"
           >
-            <RopeWire />
+            <RopeWire pathRef={ropePathRef} status={ropeStatus} />
 
             <div
               className="absolute left-[3%] z-30"
@@ -309,11 +533,15 @@ type HangingSlotProps = {
 };
 
 export function HangingSlot({ children, index, total, className }: HangingSlotProps) {
-  const { layouts, registerSlot, slotCount } = useClotheslineLayout();
+  const { layouts, registerSlot, slotCount, ropeCut } = useClotheslineLayout();
   const slotRef = useRef<HTMLDivElement>(null);
   const resolvedTotal = total ?? slotCount;
   const measuredLayout = layouts[index];
   const layout = measuredLayout ?? getEstimatedHangingLayout(index, resolvedTotal);
+  const cutStyle: CSSProperties & { "--cut-delay": string; "--cut-tilt": string } = {
+    "--cut-delay": `${index * 45}ms`,
+    "--cut-tilt": `${index % 2 === 0 ? 7 : -9}deg`,
+  };
 
   useLayoutEffect(() => {
     registerSlot(index, slotRef.current);
@@ -330,7 +558,10 @@ export function HangingSlot({ children, index, total, className }: HangingSlotPr
       style={{ marginTop: layout.marginTop }}
       role="listitem"
     >
-      <div className="relative w-full">
+      <div
+        className={cn("hanging-slot-inner relative w-full", ropeCut && "is-cut")}
+        style={cutStyle}
+      >
         {/* Polaroid entirely below the rope */}
         <div className="relative z-10">{children}</div>
 
