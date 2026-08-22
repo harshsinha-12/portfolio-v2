@@ -1,6 +1,6 @@
 "use client";
 
-import { createElement, useEffect, useState } from "react";
+import { createElement } from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { AiFillGithub, AiFillYoutube } from "@/lib/icons";
@@ -9,36 +9,8 @@ import { getStackIcon } from "@/lib/icons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { PinnedCard } from "@/components/decor/Decor";
 import { LinkPreview } from "@/components/ui/LinkPreview";
+import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
 import { placeholderGradient } from "@/lib/utils";
-
-type OgPreview = {
-  image: string | null;
-  title: string | null;
-  description: string | null;
-};
-
-function useOpenGraphPreview(link?: string, enabled = true) {
-  const [preview, setPreview] = useState<OgPreview | null>(null);
-
-  useEffect(() => {
-    if (!enabled || !link) return;
-
-    let cancelled = false;
-
-    fetch(`/api/og?url=${encodeURIComponent(link)}`)
-      .then((response) => (response.ok ? response.json() : null))
-      .then((data: OgPreview | null) => {
-        if (!cancelled && data) setPreview(data);
-      })
-      .catch(() => {});
-
-    return () => {
-      cancelled = true;
-    };
-  }, [enabled, link]);
-
-  return preview;
-}
 
 function isLocalAsset(src: string) {
   return src.startsWith("/");
@@ -152,26 +124,22 @@ function ProjectLinks({
   return (
     <div className="mt-2 flex flex-wrap gap-1.5">
       {project.github && (
-        <a
+        <LinkPreview
           href={project.github}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`GitHub for ${project.title}`}
+          ariaLabel={`GitHub for ${project.title}`}
           className={projectLinkClassName}
         >
           <AiFillGithub size={projectLinkIconSize} aria-hidden="true" />
-        </a>
+        </LinkPreview>
       )}
       {project.youtube && (
-        <a
+        <LinkPreview
           href={project.youtube}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Video for ${project.title}`}
+          ariaLabel={`Video for ${project.title}`}
           className={projectLinkClassName}
         >
           <AiFillYoutube size={projectLinkIconSize} aria-hidden="true" />
-        </a>
+        </LinkPreview>
       )}
       {project.link && (
         <LinkPreview

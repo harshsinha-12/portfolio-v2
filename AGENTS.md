@@ -13,6 +13,8 @@ When adding or replacing a raster image (`.png`, `.jpg`, `.jpeg`) under `public/
 3. Update paths in `src/data/portfolio.ts` (`icon`, `photo`, `image`, `companyIcon`) to the `.webp` path printed by the script.
 4. Commit the optimized `.webp` file(s) and `portfolio.ts` together.
 
+Hover-preview stamps live in `public/assets/link-previews/`. Run `pnpm seed-link-previews` to fill missing files from each URL's Open Graph image. Existing files are never overwritten — drop a replacement at the same path to swap an OG default. Mapping: `src/data/link-preview-sources.json`.
+
 `pnpm optimize-images` scans `public/assets/` and converts files that are not already optimized. It:
 
 - Creates a `.webp` sibling and removes the original when smaller (e.g. `my-photo.jpg` → `my-photo.webp`)

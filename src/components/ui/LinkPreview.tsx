@@ -1,6 +1,8 @@
 "use client";
 
 import { createElement, useState } from "react";
+import Image from "next/image";
+import { Polaroid } from "@/components/decor/Decor";
 import {
   HoverCard,
   HoverCardContent,
@@ -12,6 +14,17 @@ import {
   getLinkIcon,
   getLocalFavicon,
 } from "@/lib/linkIcons";
+import {
+  getLinkPreviewCaption,
+  getLinkPreviewImage,
+  getLinkPreviewImageSources,
+} from "@/data/linkPreviews";
+import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
+import { cn } from "@/lib/utils";
+
+const PREVIEW_SIZES = "9rem";
+const PREVIEW_WIDTH = 480;
+const PREVIEW_HEIGHT = 360;
 
 type LinkPreviewProps = {
   href: string;
@@ -19,7 +32,16 @@ type LinkPreviewProps = {
   title?: string;
   description?: string;
   className?: string;
+  ariaLabel?: string;
 };
+
+type PreviewImage =
+  | { kind: "local"; src: string }
+  | { kind: "remote"; src: string };
+
+function isLocalAsset(src: string) {
+  return src.startsWith("/");
+}
 
 function LinkIcon({ href }: { href: string }) {
   const [faviconFailed, setFaviconFailed] = useState(false);
@@ -61,44 +83,165 @@ function LinkIcon({ href }: { href: string }) {
   );
 }
 
+function PreviewPhoto({
+  image,
+  onError,
+}: {
+  image: PreviewImage;
+  onError: () => void;
+}) {
+  switch (image.kind) {
+    case "local":
+      return (
+        <Image
+          src={image.src}
+          alt=""
+          width={PREVIEW_WIDTH}
+          height={PREVIEW_HEIGHT}
+          sizes={PREVIEW_SIZES}
+          className="h-full w-full object-cover"
+          onError={onError}
+        />
+      );
+    case "remote":
+      return (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={image.src}
+          alt=""
+          className="h-full w-full object-cover"
+          onError={onError}
+        />
+      );
+    default: {
+      const _exhaustive: never = image;
+      return _exhaustive;
+    }
+  }
+}
+
+function TextPreview({
+  href,
+  title,
+  description,
+  domain,
+}: {
+  href: string;
+  title?: string;
+  description?: string;
+  domain: string;
+}) {
+  return (
+    <div className="flex items-start gap-3 p-3">
+      <LinkIcon href={href} />
+      <div className="min-w-0">
+        {title && (
+          <p className="text-sm font-semibold leading-snug text-[var(--color-ink)]">
+            {title}
+          </p>
+        )}
+        {description && (
+          <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-muted)]">
+            {description}
+          </p>
+        )}
+        <p className="mt-1.5 truncate text-xs text-[var(--color-ink-subtle)]">{domain}</p>
+      </div>
+    </div>
+  );
+}
+
+function PolaroidPreview({
+  image,
+  caption,
+  onImageError,
+}: {
+  image: PreviewImage;
+  caption: string;
+  onImageError: () => void;
+}) {
+  return (
+    <div className="link-preview-pop">
+      <Polaroid
+        rotation={-2}
+        className="w-36 shrink-0 !p-1.5 !pb-0 sm:!p-1.5 sm:!pb-0"
+        imageClassName="aspect-[4/3]"
+        captionClassName="!mt-0 flex items-center justify-center pt-3 pb-1"
+        image={<PreviewPhoto image={image} onError={onImageError} />}
+        caption={
+          <p className="text-center font-hand text-[0.8125rem] leading-none text-[var(--color-accent)]">
+            {caption}
+          </p>
+        }
+      />
+    </div>
+  );
+}
+
 export function LinkPreview({
   href,
   children,
   title,
   description,
   className,
+  ariaLabel,
 }: LinkPreviewProps) {
   const domain = getDisplayDomain(href);
+  const caption = getLinkPreviewCaption(href);
+  const mappedImage = getLinkPreviewImage(href);
+  const [localFailed, setLocalFailed] = useState(false);
+  const [remoteFailed, setRemoteFailed] = useState(false);
+  const ogPreview = useOpenGraphPreview(href, !mappedImage || localFailed);
+
+  const localSrc = mappedImage && !localFailed ? mappedImage : null;
+  const remoteSrc = !remoteFailed ? ogPreview?.image : null;
+  const imageSrc = localSrc ?? remoteSrc;
+  const previewImage: PreviewImage | null = imageSrc
+    ? isLocalAsset(imageSrc)
+      ? { kind: "local", src: imageSrc }
+      : { kind: "remote", src: imageSrc }
+    : null;
 
   return (
-    <HoverCard openDelay={120} closeDelay={80}>
+    <HoverCard openDelay={140} closeDelay={120}>
       <HoverCardTrigger asChild>
         <a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          aria-label={ariaLabel}
           className={className ?? "marker-link"}
         >
           {children}
         </a>
       </HoverCardTrigger>
-      <HoverCardContent side="top" align="start" className="w-64">
-        <div className="flex items-start gap-3 p-3">
-          <LinkIcon href={href} />
-          <div className="min-w-0">
-            {title && (
-              <p className="text-sm font-semibold leading-snug text-[var(--color-ink)]">
-                {title}
-              </p>
-            )}
-            {description && (
-              <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-muted)]">
-                {description}
-              </p>
-            )}
-            <p className="mt-1.5 truncate text-xs text-[var(--color-ink-subtle)]">{domain}</p>
-          </div>
-        </div>
+      <HoverCardContent
+        side="top"
+        align="center"
+        sideOffset={10}
+        className={cn(
+          previewImage
+            ? "w-max overflow-visible border-0 bg-transparent p-0 shadow-none animate-none"
+            : "w-64",
+        )}
+      >
+        {previewImage ? (
+          <PolaroidPreview
+            image={previewImage}
+            caption={caption}
+            onImageError={() => {
+              if (localSrc) setLocalFailed(true);
+              else setRemoteFailed(true);
+            }}
+          />
+        ) : (
+          <TextPreview
+            href={href}
+            title={title}
+            description={description}
+            domain={domain}
+          />
+        )}
       </HoverCardContent>
     </HoverCard>
   );
@@ -106,4 +249,24 @@ export function LinkPreview({
 
 export function MarkerLink(props: LinkPreviewProps) {
   return <LinkPreview {...props} className="marker-link" />;
+}
+
+export function LinkPreviewImagePreloader() {
+  const sources = getLinkPreviewImageSources();
+
+  return (
+    <div className="pointer-events-none absolute h-0 w-0 overflow-hidden" aria-hidden="true">
+      {sources.map((src) => (
+        <Image
+          key={src}
+          src={src}
+          alt=""
+          width={PREVIEW_WIDTH}
+          height={PREVIEW_HEIGHT}
+          sizes={PREVIEW_SIZES}
+          loading="eager"
+        />
+      ))}
+    </div>
+  );
 }

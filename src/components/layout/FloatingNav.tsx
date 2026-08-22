@@ -1,7 +1,9 @@
 "use client";
 
 import { connectLink, navSections } from "@/data/portfolio";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
+import { LinkPreview } from "@/components/ui/LinkPreview";
+import { cn } from "@/lib/utils";
 
 export function FloatingNav() {
   return (
@@ -19,11 +21,15 @@ export function FloatingNav() {
             {section.label}
           </a>
         ))}
-        <Button asChild size="sm" className="ml-0.5 h-7 shrink-0 px-2.5 text-[11px] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs">
-          <a href={connectLink} target="_blank" rel="noopener noreferrer">
-            Connect
-          </a>
-        </Button>
+        <LinkPreview
+          href={connectLink}
+          className={cn(
+            buttonVariants({ size: "sm" }),
+            "ml-0.5 h-7 shrink-0 px-2.5 text-[11px] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs",
+          )}
+        >
+          Connect
+        </LinkPreview>
       </nav>
     </header>
   );

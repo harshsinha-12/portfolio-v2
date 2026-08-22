@@ -6,10 +6,11 @@ import {
   introBullets,
   siteConfig,
   socialMedia,
+  type IntroSegment,
 } from "@/data/portfolio";
+import { isHttpUrl } from "@/data/linkPreviews";
 import { socialIconMap } from "@/lib/icons";
-import { LinkPreview } from "@/components/ui/LinkPreview";
-import type { IntroSegment } from "@/data/portfolio";
+import { LinkPreview, LinkPreviewImagePreloader } from "@/components/ui/LinkPreview";
 import { GitHubGraph } from "@/components/sections/GitHubGraph";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import type { ContributionDay } from "@/lib/githubContributions";
@@ -35,8 +36,10 @@ function renderSegment(segment: IntroSegment, key: number) {
           {segment.label}
         </LinkPreview>
       );
-    default:
-      return null;
+    default: {
+      const _exhaustive: never = segment;
+      return _exhaustive;
+    }
   }
 }
 
@@ -51,15 +54,25 @@ function SocialStamps() {
             rotation={social.platform === "github" ? 3 : -3}
             className="!border !px-1 !py-0.5 sm:!border-2 sm:!px-1.5 sm:!py-1"
           >
-            <a
-              href={social.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={social.label}
-              className="flex h-4 w-4 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
-            >
-              <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
-            </a>
+            {isHttpUrl(social.link) ? (
+              <LinkPreview
+                href={social.link}
+                ariaLabel={social.label}
+                className="flex h-4 w-4 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
+              >
+                <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+              </LinkPreview>
+            ) : (
+              <a
+                href={social.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={social.label}
+                className="flex h-4 w-4 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
+              >
+                <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
+              </a>
+            )}
           </Stamp>
         );
       })}
@@ -123,6 +136,7 @@ type ProfileSectionProps = {
 export function ProfileSection({ initialContributions }: ProfileSectionProps) {
   return (
     <section id="profile" aria-labelledby="profile-heading" className="animate-fade-up">
+      <LinkPreviewImagePreloader />
       <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(0,11rem)_1fr] lg:items-start lg:gap-6">
         <div className="flex items-start gap-3 lg:contents">
           <Polaroid

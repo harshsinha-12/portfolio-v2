@@ -1,0 +1,200 @@
+[
+  {
+    "href": "https://averlon.ai/",
+    "image": "averlon.webp"
+  },
+  {
+    "href": "https://playclaude.vercel.app/",
+    "image": "claude-city.webp",
+    "fallback": "assets/claude-city.webp"
+  },
+  {
+    "href": "https://x.com/mittalparth_/status/2076292927882682602?s=20",
+    "image": "deepmind-x.webp"
+  },
+  {
+    "href": "https://x.com/mittalparth_/status/2076292927882682602?s=46",
+    "image": "deepmind-x.webp"
+  },
+  {
+    "href": "https://devfolio.co/projects/aeva-58d2",
+    "image": "devfolio-co-projects-aeva-58d2.webp"
+  },
+  {
+    "href": "https://devfolio.co/projects/chargeswap-3527",
+    "image": "devfolio-co-projects-chargeswap-3527.webp"
+  },
+  {
+    "href": "https://devfolio.co/projects/khoj-3336",
+    "image": "devfolio-co-projects-khoj-3336.webp"
+  },
+  {
+    "href": "https://testflight.apple.com/join/TpYrhKRy",
+    "image": "echo.webp"
+  },
+  {
+    "href": "https://github.com/harshagw/kahani",
+    "image": "github-com-harshagw-kahani.webp"
+  },
+  {
+    "href": "https://github.com/imApoorva36/Echo",
+    "image": "github-com-imapoorva36-echo.webp",
+    "fallback": "assets/link-previews/echo.webp"
+  },
+  {
+    "href": "https://github.com/mittal-parth/claude-clan",
+    "image": "github-com-mittal-parth-claude-clan.webp"
+  },
+  {
+    "href": "https://github.com/mittal-parth/hackathon-curation-agent",
+    "image": "github-com-mittal-parth-hackathon-curation-agent.webp"
+  },
+  {
+    "href": "https://github.com/mittal-parth/Khoj",
+    "image": "github-com-mittal-parth-khoj.webp"
+  },
+  {
+    "href": "https://github.com/mittal-parth/sadak",
+    "image": "github-com-mittal-parth-sadak.webp"
+  },
+  {
+    "href": "https://github.com/mittal-parth",
+    "image": "github-com-mittal-parth.webp"
+  },
+  {
+    "href": "https://www.github.com/mittal-parth",
+    "image": "github-com-mittal-parth.webp"
+  },
+  {
+    "href": "https://github.com/pranav2305/GreenTrust",
+    "image": "github-com-pranav2305-greentrust.webp"
+  },
+  {
+    "href": "https://x.com/HackClubNITK",
+    "image": "hackclub.webp"
+  },
+  {
+    "href": "https://about.iris.nitk.ac.in/",
+    "image": "iris.webp"
+  },
+  {
+    "href": "https://playkahani.vercel.app/",
+    "image": "kahani.webp",
+    "fallback": "assets/kahani.webp"
+  },
+  {
+    "href": "https://playkhoj.com/",
+    "image": "khoj.webp",
+    "fallback": "assets/khoj.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/in/mittal-parth",
+    "image": "linkedin-com-in-mittal-parth.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
+    "image": "linkedin-com-posts-mittal-parth-as-hackclub-under-web-enthusiasts-club-u.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/posts/mittal-parth_hackathon-winners-web3-activity-7048340759116214272-eJvo",
+    "image": "linkedin-com-posts-mittal-parth-hackathon-winners-web3-activity-70483407.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/posts/mittal-parth_super-stoked-to-announce-that-our-team-emerged-activity-7274735259621961729-tkq4",
+    "image": "linkedin-com-posts-mittal-parth-super-stoked-to-announce-that-our-team-e.webp"
+  },
+  {
+    "href": "https://www.nitk.ac.in/",
+    "image": "nitk.webp",
+    "fallback": "assets/nitk-logo.jpeg"
+  },
+  {
+    "href": "https://www.oracle.com",
+    "image": "oracle.webp",
+    "fallback": "assets/oracle.jpg"
+  },
+  {
+    "href": "https://www.oracle.com/in/",
+    "image": "oracle.webp",
+    "fallback": "assets/oracle.jpg"
+  },
+  {
+    "href": "https://parthmittal.netlify.app/",
+    "image": "parthmittal-netlify-app.webp",
+    "fallback": "assets/september-hack.webp"
+  },
+  {
+    "href": "https://polkadot.academy/",
+    "image": "pba.webp",
+    "fallback": "assets/pba_logo.jpeg"
+  },
+  {
+    "href": "https://playsadak.vercel.app/",
+    "image": "sadak.webp"
+  },
+  {
+    "href": "https://shorturl.at/fhjsT",
+    "image": "shorturl-at-fhjst.webp",
+    "fallback": "assets/warpspeed-24.webp"
+  },
+  {
+    "href": "https://taikai.network/OutofOrdinary/hackathons/web3mkthack/projects/cmi0skdbk0257vu09q3n8m44u/idea",
+    "image": "taikai-network-outofordinary-hackathons-web3mkthack-projects-cmi0skdbk02.webp"
+  },
+  {
+    "href": "https://www.thehindu.com/news/cities/Mangalore/nitk-iiit-delhi-team-makes-it-to-top-12-winners-in-ethindia-22/article66238923.ece",
+    "image": "thehindu-com-news-cities-mangalore-nitk-iiit-delhi-team-makes-it-to-top-.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/posts/mittal-parth_look-mom-i-am-on-the-times-square-ugcPost-7324078226178215936-tat9/",
+    "image": "times-square.webp"
+  },
+  {
+    "href": "https://x.com/mittalparth_/status/2082861864984437072?s=20",
+    "image": "x-com-mittalparth-status-2082861864984437072.webp"
+  },
+  {
+    "href": "https://x.com/mittalparth_/status/2086438075652067553?s=20/",
+    "image": "x-com-mittalparth-status-2086438075652067553.webp"
+  },
+  {
+    "href": "https://x.com/polkadotsub0/status/1998425721916551355",
+    "image": "x-com-polkadotsub0-status-1998425721916551355.webp"
+  },
+  {
+    "href": "https://x.com/mittalparth_",
+    "image": "x-profile.webp"
+  },
+  {
+    "href": "https://youtu.be/8R3QYKQR10M",
+    "image": "youtu-be-8r3qykqr10m.webp"
+  },
+  {
+    "href": "https://youtu.be/98OJuvBur6s",
+    "image": "youtu-be-98ojuvbur6s.webp"
+  },
+  {
+    "href": "https://youtu.be/9rieTya8Yds?t=3908",
+    "image": "youtu-be-9rietya8yds.webp"
+  },
+  {
+    "href": "https://youtu.be/gadi-osujrs",
+    "image": "youtu-be-gadi-osujrs.webp"
+  },
+  {
+    "href": "https://youtu.be/-WVMaU1-sHE",
+    "image": "youtu-be-wvmau1-she.webp"
+  },
+  {
+    "href": "https://www.youtube.com/live/qJ4OCtnvjUY?si=VkcnHEdwJTEEDlMg&t=4718",
+    "image": "youtube-com-live-qj4octnvjuy.webp"
+  },
+  {
+    "href": "https://www.youtube.com/watch?v=ncCJL2eEslc",
+    "image": "youtube-com-watch-nccjl2eeslc.webp"
+  },
+  {
+    "href": "https://www.youtube.com/watch?v=X2473En3h_o&t=5278s",
+    "image": "youtube-com-watch-x2473en3h-o.webp"
+  }
+]

@@ -9,6 +9,7 @@ type PolaroidProps = {
   footer?: React.ReactNode;
   className?: string;
   imageClassName?: string;
+  captionClassName?: string;
   rotation?: number;
   pinned?: boolean;
 };
@@ -20,6 +21,7 @@ export function Polaroid({
   footer,
   className,
   imageClassName,
+  captionClassName,
   rotation = -2,
   pinned = false,
 }: PolaroidProps) {
@@ -41,7 +43,7 @@ export function Polaroid({
         {image ?? children}
       </div>
       {(caption || footer) && (
-        <div className="mt-1.5 min-w-0 px-0.5 sm:mt-2">
+        <div className={cn("mt-1.5 min-w-0 px-0.5 sm:mt-2", captionClassName)}>
           {caption}
           {footer}
         </div>

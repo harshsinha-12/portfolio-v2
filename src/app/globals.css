@@ -94,6 +94,27 @@ body {
   text-decoration-color: var(--color-accent-on-mat);
 }
 
+@keyframes link-preview-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.link-preview-pop {
+  animation: link-preview-in 340ms var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-preview-pop {
+    animation: none;
+  }
+}
+
 .font-hand {
   font-family: var(--font-hand);
   font-weight: 400;

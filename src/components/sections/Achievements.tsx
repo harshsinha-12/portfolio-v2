@@ -8,6 +8,7 @@ import { achievements, type Achievement } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DraggableSticker } from "@/components/decor/DraggableSticker";
 import { Polaroid } from "@/components/decor/Decor";
+import { LinkPreview } from "@/components/ui/LinkPreview";
 import { XactoKnife } from "@/components/decor/XactoKnife";
 import { useDraggableEnabled } from "@/components/decor/useDraggable";
 import {
@@ -141,16 +142,14 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
             const href = item[key];
             if (!href) return null;
             return (
-              <a
+              <LinkPreview
                 key={key}
                 href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`${label} for ${item.event}`}
+                ariaLabel={`${label} for ${item.event}`}
                 className="flex h-5 w-5 items-center justify-center rounded border border-[var(--color-ink-subtle)]/25 text-[var(--color-ink-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
               >
                 <Icon size={10} aria-hidden="true" />
-              </a>
+              </LinkPreview>
             );
           })}
         </div>

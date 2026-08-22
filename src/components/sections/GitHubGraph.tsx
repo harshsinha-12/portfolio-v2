@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusEvent, type MouseEvent } from "react";
 import { levelFromCount, type ContributionDay } from "@/lib/githubContributions";
 import { cn } from "@/lib/utils";
+import { LinkPreview } from "@/components/ui/LinkPreview";
 
 type TooltipState = {
   text: string;
@@ -223,14 +224,12 @@ export function GitHubGraph({
     <div className={cn("w-full max-w-full lg:w-fit", className)} aria-label={`GitHub contributions for ${username}`}>
       <div className="mb-2 flex items-baseline justify-between gap-3">
         <p className="text-xs font-medium text-[var(--color-ink-muted)]">GitHub activity</p>
-        <a
+        <LinkPreview
           href={`https://github.com/${username}`}
-          target="_blank"
-          rel="noopener noreferrer"
           className="text-xs text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         >
           @{username}
-        </a>
+        </LinkPreview>
       </div>
 
       {loading && (
