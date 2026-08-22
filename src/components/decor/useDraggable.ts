@@ -1,6 +1,17 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
+
+const STORAGE_PREFIX = "drag-pos-v2-";
+const RESET_EVENT = "portfolio:reset-stickers";
 
 type DragOffset = { x: number; y: number };
 
@@ -11,6 +22,7 @@ type DraggableOptions = {
   disabled?: boolean;
   persist?: boolean;
   bounds?: DragBounds;
+  rotate?: number;
   onDrag?: (offset: DragOffset) => void;
   onDragEnd?: () => void;
 };
@@ -21,9 +33,13 @@ function isDragOffset(value: unknown): value is DragOffset {
   return typeof value.x === "number" && typeof value.y === "number";
 }
 
+function storageKey(id: string): string {
+  return `${STORAGE_PREFIX}${id}`;
+}
+
 function readOffset(id: string): DragOffset {
   try {
-    const stored = localStorage.getItem(`drag-pos-${id}`);
+    const stored = localStorage.getItem(storageKey(id));
     if (!stored) return { x: 0, y: 0 };
     const parsed: unknown = JSON.parse(stored);
     if (isDragOffset(parsed)) return parsed;
@@ -31,6 +47,37 @@ function readOffset(id: string): DragOffset {
     /* ignore */
   }
   return { x: 0, y: 0 };
+}
+
+function composeTransform(offset: DragOffset, rotate: number): string {
+  return `translate3d(${offset.x}px, ${offset.y}px, 0) rotate(${rotate}deg)`;
+}
+
+function applyVisual(
+  el: HTMLElement | null,
+  offset: DragOffset,
+  rotate: number,
+  dragging: boolean,
+): void {
+  if (!el) return;
+  el.style.transform = composeTransform(offset, rotate);
+  if (dragging) {
+    el.dataset.dragging = "true";
+    el.style.willChange = "transform";
+    return;
+  }
+  delete el.dataset.dragging;
+  el.style.willChange = "";
+}
+
+function suppressTooltipUntilLeave(el: HTMLElement | null): void {
+  if (!el) return;
+  el.dataset.justDropped = "true";
+  const clear = () => {
+    delete el.dataset.justDropped;
+    el.removeEventListener("pointerleave", clear);
+  };
+  el.addEventListener("pointerleave", clear);
 }
 
 function clampOffsetToViewport(el: HTMLElement, current: DragOffset, next: DragOffset): DragOffset {
@@ -50,11 +97,22 @@ function clampOffsetToViewport(el: HTMLElement, current: DragOffset, next: DragO
   return { x, y };
 }
 
+export function resetAllStickerPositions(): void {
+  if (typeof window === "undefined") return;
+  for (const key of Object.keys(localStorage)) {
+    if (key.startsWith(STORAGE_PREFIX)) {
+      localStorage.removeItem(key);
+    }
+  }
+  window.dispatchEvent(new Event(RESET_EVENT));
+}
+
 export function useDraggable({
   id,
   disabled = false,
   persist = true,
   bounds = "none",
+  rotate = 0,
   onDrag,
   onDragEnd,
 }: DraggableOptions) {
@@ -63,70 +121,120 @@ export function useDraggable({
   const dragging = useRef(false);
   const start = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
   const applied = useRef({ x: 0, y: 0 });
+  const pointerId = useRef<number | null>(null);
+  const stopWindowDrag = useRef<(() => void) | null>(null);
+  const rotateRef = useRef(rotate);
+  const boundsRef = useRef(bounds);
+  const persistRef = useRef(persist);
+  const onDragRef = useRef(onDrag);
+  const onDragEndRef = useRef(onDragEnd);
+
+  useEffect(() => {
+    rotateRef.current = rotate;
+    boundsRef.current = bounds;
+    persistRef.current = persist;
+    onDragRef.current = onDrag;
+    onDragEndRef.current = onDragEnd;
+  }, [bounds, onDrag, onDragEnd, persist, rotate]);
 
   useEffect(() => {
     if (!persist) {
-      localStorage.removeItem(`drag-pos-${id}`);
+      localStorage.removeItem(storageKey(id));
       return;
     }
     const stored = readOffset(id);
     applied.current = stored;
+    applyVisual(ref.current, stored, rotateRef.current, false);
     // Load persisted drag offset after mount (client-only).
     // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional hydration from localStorage
     setOffset(stored);
   }, [id, persist]);
 
+  useEffect(() => {
+    const onReset = () => {
+      applied.current = { x: 0, y: 0 };
+      applyVisual(ref.current, { x: 0, y: 0 }, rotateRef.current, false);
+      setOffset({ x: 0, y: 0 });
+    };
+    window.addEventListener(RESET_EVENT, onReset);
+    return () => window.removeEventListener(RESET_EVENT, onReset);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      stopWindowDrag.current?.();
+    };
+  }, []);
+
   const onPointerDown = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
+    (e: ReactPointerEvent<HTMLDivElement>) => {
       if (disabled) return;
       dragging.current = true;
-      start.current = { x: e.clientX, y: e.clientY, ox: offset.x, oy: offset.y };
-      e.currentTarget.setPointerCapture(e.pointerId);
-    },
-    [disabled, offset.x, offset.y],
-  );
-
-  const onPointerMove = useCallback(
-    (e: React.PointerEvent<HTMLDivElement>) => {
-      if (!dragging.current || disabled) return;
-      let next = {
-        x: start.current.ox + (e.clientX - start.current.x),
-        y: start.current.oy + (e.clientY - start.current.y),
+      pointerId.current = e.pointerId;
+      start.current = {
+        x: e.clientX,
+        y: e.clientY,
+        ox: applied.current.x,
+        oy: applied.current.y,
       };
-      switch (bounds) {
-        case "none":
-          break;
-        case "viewport":
-          if (ref.current) {
-            next = clampOffsetToViewport(ref.current, applied.current, next);
+      e.currentTarget.setPointerCapture(e.pointerId);
+      applyVisual(e.currentTarget, applied.current, rotateRef.current, true);
+
+      const move = (ev: PointerEvent) => {
+        if (!dragging.current || ev.pointerId !== pointerId.current) return;
+        let next = {
+          x: start.current.ox + (ev.clientX - start.current.x),
+          y: start.current.oy + (ev.clientY - start.current.y),
+        };
+        switch (boundsRef.current) {
+          case "none":
+            break;
+          case "viewport":
+            if (ref.current) {
+              next = clampOffsetToViewport(ref.current, applied.current, next);
+            }
+            break;
+          default: {
+            const _exhaustive: never = boundsRef.current;
+            void _exhaustive;
           }
-          break;
-        default: {
-          const _exhaustive: never = bounds;
-          void _exhaustive;
         }
-      }
-      applied.current = next;
-      setOffset(next);
-      onDrag?.(next);
+        applied.current = next;
+        applyVisual(ref.current, next, rotateRef.current, true);
+        onDragRef.current?.(next);
+      };
+
+      const end = (ev: PointerEvent) => {
+        if (ev.pointerId !== pointerId.current) return;
+        stopWindowDrag.current?.();
+        if (!dragging.current) return;
+        dragging.current = false;
+        pointerId.current = null;
+        const current = applied.current;
+        applyVisual(ref.current, current, rotateRef.current, false);
+        suppressTooltipUntilLeave(ref.current);
+        if (persistRef.current) {
+          localStorage.setItem(storageKey(id), JSON.stringify(current));
+        }
+        setOffset(current);
+        onDragEndRef.current?.();
+      };
+
+      window.addEventListener("pointermove", move, { passive: true });
+      window.addEventListener("pointerup", end);
+      window.addEventListener("pointercancel", end);
+      stopWindowDrag.current = () => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", end);
+        window.removeEventListener("pointercancel", end);
+        stopWindowDrag.current = null;
+      };
     },
-    [bounds, disabled, onDrag],
+    [disabled, id],
   );
 
-  const onPointerUp = useCallback(() => {
-    if (!dragging.current) return;
-    dragging.current = false;
-    setOffset((current) => {
-      if (persist) {
-        localStorage.setItem(`drag-pos-${id}`, JSON.stringify(current));
-      }
-      return current;
-    });
-    onDragEnd?.();
-  }, [id, onDragEnd, persist]);
-
-  const style: React.CSSProperties = {
-    transform: `translate(${offset.x}px, ${offset.y}px)`,
+  const style: CSSProperties = {
+    transform: composeTransform(offset, rotate),
     touchAction: disabled ? undefined : "none",
     cursor: disabled ? undefined : "grab",
   };
@@ -136,9 +244,6 @@ export function useDraggable({
     style,
     dragHandlers: {
       onPointerDown,
-      onPointerMove,
-      onPointerUp,
-      onPointerCancel: onPointerUp,
     },
   };
 }

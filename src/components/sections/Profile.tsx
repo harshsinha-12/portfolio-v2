@@ -139,21 +139,23 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
       <LinkPreviewImagePreloader />
       <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(0,11rem)_1fr] lg:items-start lg:gap-6">
         <div className="flex items-start gap-3 lg:contents">
-          <Polaroid
-            rotation={-4}
-            pinned
-            className="w-fit shrink-0 !rotate-[-2deg] !p-1.5 !pb-5 sm:!p-2 sm:!pb-6 lg:col-start-1 lg:row-start-1 lg:row-span-3 lg:!rotate-[-4deg] lg:!pb-8"
-          >
-            <Image
-              src="/assets/profile-pic.jpg"
-              alt="Parth Mittal"
-              width={140}
-              height={140}
-              sizes="(min-width: 1024px) 140px, (min-width: 640px) 80px, 64px"
-              className="h-16 w-16 object-cover sm:h-20 sm:w-20 lg:h-[8.75rem] lg:w-[8.75rem]"
-              preload
-            />
-          </Polaroid>
+          <div className="flex w-fit shrink-0 flex-col items-start lg:col-start-1 lg:row-start-1 lg:row-span-3 lg:z-[35]">
+            <Polaroid
+              rotation={-4}
+              pinned
+              className="w-fit shrink-0 !rotate-[-2deg] !p-1.5 !pb-5 sm:!p-2 sm:!pb-6 lg:!rotate-[-4deg] lg:!pb-8"
+            >
+              <Image
+                src="/assets/profile-pic.jpg"
+                alt="Parth Mittal"
+                width={140}
+                height={140}
+                sizes="(min-width: 1024px) 140px, (min-width: 640px) 80px, 64px"
+                className="h-16 w-16 object-cover sm:h-20 sm:w-20 lg:h-[8.75rem] lg:w-[8.75rem]"
+                preload
+              />
+            </Polaroid>
+          </div>
 
           <div className="min-w-0 flex-1 lg:col-start-2 lg:row-start-1">
             <ProfileHeader />

@@ -7,10 +7,10 @@ import { useXacto, type Point } from "@/components/decor/XactoProvider";
 import { cn } from "@/lib/utils";
 
 const KNIFE_SRC = "/assets/x-acto-knife.webp";
-const KNIFE_NATURAL_W = 480;
-const KNIFE_NATURAL_H = 318;
-const KNIFE_DISPLAY_W = "4.75rem";
-const KNIFE_SIZES = "76px";
+const KNIFE_NATURAL_W = 464;
+const KNIFE_NATURAL_H = 304;
+const KNIFE_DISPLAY_W = "5.15rem";
+const KNIFE_SIZES = "128px";
 
 // Cropped sprite: blade sits at the bottom-left corner of the alpha.
 const TIP_X = 0.03;
@@ -90,6 +90,7 @@ export function XactoKnife({
     disabled: !draggable,
     persist: false,
     bounds: "viewport",
+    rotate,
     onDrag: handleDrag,
     onDragEnd: handleDragEnd,
   });
@@ -101,27 +102,33 @@ export function XactoKnife({
         ref.current = node;
       }}
       {...(draggable ? dragHandlers : {})}
-      className={cn("absolute select-none", draggable && "pointer-events-auto z-[35] active:cursor-grabbing")}
+      className={cn(
+        "group/cutout absolute select-none",
+        draggable && "pointer-events-auto z-[35] active:cursor-grabbing",
+      )}
       style={{
         top,
         left,
         right,
         width: KNIFE_DISPLAY_W,
-        transform: draggable ? `${style.transform} rotate(${rotate}deg)` : `rotate(${rotate}deg)`,
+        transform: style.transform,
         touchAction: style.touchAction,
         cursor: draggable ? style.cursor : undefined,
       }}
       aria-hidden="true"
     >
-      <Image
-        src={KNIFE_SRC}
-        alt=""
-        width={KNIFE_NATURAL_W}
-        height={KNIFE_NATURAL_H}
-        sizes={KNIFE_SIZES}
-        draggable={false}
-        className="h-auto w-full"
-      />
+      <div className="cutout-pop">
+        <Image
+          src={KNIFE_SRC}
+          alt=""
+          width={KNIFE_NATURAL_W}
+          height={KNIFE_NATURAL_H}
+          sizes={KNIFE_SIZES}
+          unoptimized
+          draggable={false}
+          className="cutout-sticker-thin h-auto w-full bg-transparent"
+        />
+      </div>
     </div>
   );
 }

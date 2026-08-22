@@ -5,12 +5,14 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import {
   educationList,
+  experienceStickers,
   experiences,
   type Experience,
 } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { TapedCard } from "@/components/decor/Decor";
+import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import {
   formatDurationWithTenure,
   totalTenureFromDurations,
@@ -224,8 +226,9 @@ function EducationItem({ edu }: { edu: (typeof educationList)[number] }) {
 
 export function TimelineSection() {
   return (
-    <section id="experience" aria-labelledby="experience-heading" className="animate-fade-up">
-      <TapedCard rotation={0}>
+    <section id="experience" aria-labelledby="experience-heading" className="relative animate-fade-up">
+      <CutoutStickers stickers={experienceStickers} />
+      <TapedCard rotation={0} className="relative z-10">
         <SectionHeading id="experience-heading" title="Experience" accent="& education" />
         <div className="space-y-4">
           {experiences.map((exp) => (

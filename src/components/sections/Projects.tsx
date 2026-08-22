@@ -4,10 +4,13 @@ import { createElement } from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { AiFillGithub, AiFillYoutube } from "@/lib/icons";
-import { projects, type Project, type ProjectStackItem } from "@/data/portfolio";
+import { projects, projectStickers, type Project, type ProjectStackItem } from "@/data/portfolio";
 import { getStackIcon } from "@/lib/icons";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Button } from "@/components/ui/button";
 import { PinnedCard } from "@/components/decor/Decor";
+import { CutoutStickers } from "@/components/decor/CutoutStickers";
+import { resetAllStickerPositions } from "@/components/decor/useDraggable";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
 import { placeholderGradient } from "@/lib/utils";
@@ -200,15 +203,25 @@ export function ProjectsSection() {
   const rotations = [-1.5, 1.2, -0.8, 1.6, -1.1, 0.9];
 
   return (
-    <section id="projects" aria-labelledby="projects-heading" className="animate-fade-up">
+    <section id="projects" aria-labelledby="projects-heading" className="relative animate-fade-up">
+      <CutoutStickers stickers={projectStickers} />
       <SectionHeading id="projects-heading" title="Projects" accent="pinned up" onMat />
-      <div className="grid grid-cols-1 gap-8 min-[520px]:grid-cols-2 xl:grid-cols-3">
+      <div className="relative z-10 grid grid-cols-1 gap-8 min-[520px]:grid-cols-2 xl:grid-cols-3">
         {projects.map((project, i) => (
           <PinnedCard key={project.id} rotation={rotations[i] ?? 0}>
             <ProjectCardContent project={project} />
           </PinnedCard>
         ))}
       </div>
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        onClick={resetAllStickerPositions}
+        className="relative z-30 mt-4 hidden font-hand xl:inline-flex"
+      >
+        Reset stickers
+      </Button>
     </section>
   );
 }

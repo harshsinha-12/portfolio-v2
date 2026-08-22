@@ -28,7 +28,11 @@ export type DraggableStickerProps = AbsoluteDraggableStickerProps | InlineDragga
 
 export function DraggableSticker(props: DraggableStickerProps) {
   const { id, Icon, rotate = 0, draggable, className, iconSize = 20 } = props;
-  const { ref, style, dragHandlers } = useDraggable({ id, disabled: !draggable });
+  const { ref, style, dragHandlers } = useDraggable({
+    id,
+    disabled: !draggable,
+    rotate,
+  });
   const isAbsolute = props.layout !== "inline";
 
   return (
@@ -47,9 +51,7 @@ export function DraggableSticker(props: DraggableStickerProps) {
           left: props.left,
           right: props.right,
         }),
-        transform: draggable
-          ? `${style.transform} rotate(${rotate}deg)`
-          : `rotate(${rotate}deg)`,
+        transform: style.transform,
         touchAction: style.touchAction,
         cursor: draggable ? style.cursor : undefined,
       }}

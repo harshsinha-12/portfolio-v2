@@ -1,13 +1,12 @@
 "use client";
 
-import { Coffee, Ruler, Scissors, Star } from "lucide-react";
+import { Coffee, Scissors, Star } from "lucide-react";
 import { DraggableSticker } from "@/components/decor/DraggableSticker";
 import { useDraggableEnabled } from "@/components/decor/useDraggable";
 
 const items = [
   { id: "scissors", Icon: Scissors, top: "12%", left: "3%", rotate: -12 },
-  { id: "ruler", Icon: Ruler, top: "38%", left: "1%", rotate: 8 },
-  { id: "coffee", Icon: Coffee, top: "22%", right: "3%", rotate: 10 },
+  { id: "coffee", Icon: Coffee, top: "12.8%", left: "7.4%", rotate: 10 },
   { id: "star", Icon: Star, top: "52%", right: "2%", rotate: -14 },
 ];
 

@@ -395,8 +395,8 @@ export function AchievementsSection() {
       >
         <XactoKnife
           id="xacto"
-          top="9.25rem"
-          left="max(calc(-50vw + 50% + 0.5rem), calc(50% - 45rem))"
+          top="12.1rem"
+          right="max(-14.5rem, calc(-50vw + 50% + 0.1rem))"
           rotate={-26}
           draggable={draggable}
         />

@@ -168,6 +168,87 @@ export const introBullets: IntroBullet[] = [
   },
 ];
 
+export type CutoutSticker = {
+  id: string;
+  src: string;
+  width: number;
+  height: number;
+  tooltip: string;
+  rotate: number;
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  displayWidth: string;
+  zIndex: number;
+};
+
+export const experienceStickers: CutoutSticker[] = [
+  {
+    id: "sticker-headphones",
+    src: "/assets/sticker-headphones.webp",
+    width: 303,
+    height: 412,
+    tooltip: "I run on music",
+    rotate: 11,
+    top: "16.4rem",
+    left: "max(-11.9rem, calc(-50vw + 50% + 0.18rem))",
+    displayWidth: "4.8rem",
+    zIndex: 4,
+  },
+  {
+    id: "sticker-macbook",
+    src: "/assets/sticker-macbook.webp",
+    width: 404,
+    height: 285,
+    tooltip: "this is where the work happens",
+    rotate: 7,
+    top: "20.1rem",
+    left: "max(-10.1rem, calc(-50vw + 50% + 1.35rem))",
+    displayWidth: "5.8rem",
+    zIndex: 3,
+  },
+];
+
+export const projectStickers: CutoutSticker[] = [
+  {
+    id: "sticker-sushi",
+    src: "/assets/sticker-sushi.webp",
+    width: 500,
+    height: 247,
+    tooltip: "coffee is overrated, ask for sushi",
+    rotate: -9,
+    bottom: "8.6rem",
+    right: "max(-11.6rem, calc(-50vw + 50% + 0.22rem))",
+    displayWidth: "6.4rem",
+    zIndex: 2,
+  },
+  {
+    id: "sticker-shoes",
+    src: "/assets/sticker-shoes.webp",
+    width: 421,
+    height: 176,
+    tooltip: "oh, I also dance :)",
+    rotate: -8,
+    bottom: "4.4rem",
+    right: "max(-8.4rem, calc(-50vw + 50% + 1.85rem))",
+    displayWidth: "6.2rem",
+    zIndex: 5,
+  },
+  {
+    id: "sticker-buddha",
+    src: "/assets/sticker-buddha.webp",
+    width: 283,
+    height: 408,
+    tooltip: "meditation is the secret to my energy",
+    rotate: -12,
+    bottom: "0.8rem",
+    right: "max(-12.5rem, calc(-50vw + 50% + 0.1rem))",
+    displayWidth: "3.5rem",
+    zIndex: 1,
+  },
+];
+
 export type ContentBlock = { text: string; link?: string };
 
 export type Position = {
