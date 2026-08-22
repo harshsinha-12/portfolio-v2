@@ -102,6 +102,7 @@
   --dur-rope-recoil: 420ms;
   --dur-rope-heal: 700ms;
   --dur-polaroid-drop: 520ms;
+  --dur-sway: 4s;
 
   /* Layout */
   --content-max: 42rem;

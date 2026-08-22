@@ -316,12 +316,32 @@ body {
   transform: translateY(2.4rem) rotate(var(--cut-tilt, 8deg));
 }
 
+@keyframes polaroid-sway {
+  from {
+    transform: rotate(-2deg);
+  }
+  to {
+    transform: rotate(2deg);
+  }
+}
+
+.polaroid-sway {
+  transform-origin: top center;
+  animation: polaroid-sway var(--dur-sway) var(--ease-in-out) infinite alternate;
+  animation-delay: var(--sway-delay, 0s);
+}
+
+.polaroid-sway-paused {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mat-scratch-heal,
   .rope-cut-left,
   .rope-cut-right,
   .rope-cut-left.is-healing,
-  .rope-cut-right.is-healing {
+  .rope-cut-right.is-healing,
+  .polaroid-sway {
     animation: none;
   }
 

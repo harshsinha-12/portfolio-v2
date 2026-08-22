@@ -538,9 +538,14 @@ export function HangingSlot({ children, index, total, className }: HangingSlotPr
   const resolvedTotal = total ?? slotCount;
   const measuredLayout = layouts[index];
   const layout = measuredLayout ?? getEstimatedHangingLayout(index, resolvedTotal);
-  const cutStyle: CSSProperties & { "--cut-delay": string; "--cut-tilt": string } = {
+  const cutStyle: CSSProperties & {
+    "--cut-delay": string;
+    "--cut-tilt": string;
+    "--sway-delay": string;
+  } = {
     "--cut-delay": `${index * 45}ms`,
     "--cut-tilt": `${index % 2 === 0 ? 7 : -9}deg`,
+    "--sway-delay": `${(index * -0.9).toFixed(2)}s`,
   };
 
   useLayoutEffect(() => {
@@ -563,7 +568,7 @@ export function HangingSlot({ children, index, total, className }: HangingSlotPr
         style={cutStyle}
       >
         {/* Polaroid entirely below the rope */}
-        <div className="relative z-10">{children}</div>
+        <div className={cn("relative z-10 polaroid-sway", ropeCut && "polaroid-sway-paused")}>{children}</div>
 
         {/* Clip straddles rope: mostly above, jaw grips polaroid top (z-30 over rope) */}
         <div
