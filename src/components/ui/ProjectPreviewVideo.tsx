@@ -108,7 +108,7 @@ export function ProjectPreviewVideo({
   return (
     <div
       ref={containerRef}
-      className={`relative mb-3 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper-muted)]${
+      className={`relative mb-1.5 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper-muted)]${
         canHover ? "" : " cursor-pointer"
       }`}
       onMouseEnter={onMouseEnter}

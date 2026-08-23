@@ -32,6 +32,12 @@ export type SocialLink = {
 
 export const socialMedia: SocialLink[] = [
   {
+    id: "social-media-4",
+    platform: "twitter",
+    link: "https://x.com/mittalparth_",
+    label: "Twitter",
+  },
+  {
     id: "social-media-1",
     platform: "linkedin",
     link: "https://www.linkedin.com/in/mittal-parth",
@@ -48,12 +54,6 @@ export const socialMedia: SocialLink[] = [
     platform: "mail",
     link: "mailto:work.parthmittal@gmail.com",
     label: "Email",
-  },
-  {
-    id: "social-media-4",
-    platform: "twitter",
-    link: "https://x.com/mittalparth_",
-    label: "Twitter",
   },
 ];
 
@@ -181,6 +181,7 @@ export type CutoutSticker = {
   right?: string;
   displayWidth: string;
   zIndex: number;
+  outline?: "default" | "thin" | "plain";
 };
 
 export const experienceStickers: CutoutSticker[] = [
@@ -214,8 +215,8 @@ export const projectStickers: CutoutSticker[] = [
   {
     id: "sticker-sushi",
     src: "/assets/sticker-sushi.webp",
-    width: 500,
-    height: 247,
+    width: 1080,
+    height: 1080,
     tooltip: "coffee is overrated, ask for sushi",
     rotate: -9,
     bottom: "8.6rem",
@@ -241,11 +242,25 @@ export const projectStickers: CutoutSticker[] = [
     width: 283,
     height: 408,
     tooltip: "meditation is the secret to my energy",
+    outline: "plain",
     rotate: -12,
     bottom: "0.8rem",
     right: "max(-12.5rem, calc(-50vw + 50% + 0.1rem))",
     displayWidth: "3.5rem",
     zIndex: 1,
+  },
+  {
+    id: "sticker-dino",
+    src: "/assets/sticker-dino.webp",
+    width: 1080,
+    height: 1080,
+    tooltip: "nothing, i find this dino cool",
+    outline: "plain",
+    rotate: 10,
+    bottom: "0.2rem",
+    right: "max(-6.8rem, calc(-50vw + 50% + 4.1rem))",
+    displayWidth: "5.2rem",
+    zIndex: 6,
   },
 ];
 
@@ -733,7 +748,7 @@ export const projects: Project[] = [
       "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
     content:
       "Curates hackathons from email newsletters, evaluates them with AI, and posts the best ones to Twitter.",
-    highlight: "Curated 100+ hackathons",
+    highlight: "Curated 150+ hackathons",
     stack: [
       { name: "Python" },
       { name: "Gemini" },

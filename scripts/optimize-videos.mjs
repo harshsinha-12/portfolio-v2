@@ -20,6 +20,7 @@ const SLUG_OVERRIDES = new Map([
   ["Sadak for portfolio", "sadak"],
   ["Kahani for portfolio", "kahani"],
   ["Khoj Short", "khoj"],
+  ["Khoj Landing", "khoj"],
   ["Hackathon Curation Agent Demo Short", "hackathon-curation-agent"],
   ["Hackathon Curation Agent Short", "hackathon-curation-agent"],
   ["Echo Short", "echo"],

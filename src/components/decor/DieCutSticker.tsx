@@ -26,7 +26,14 @@ export type DieCutStickerProps = {
   displayWidth: string;
   zIndex: number;
   draggable: boolean;
+  outline?: "default" | "thin" | "plain";
 };
+
+const stickerOutlineClass = {
+  default: "cutout-sticker",
+  thin: "cutout-sticker-thin",
+  plain: "cutout-sticker-plain",
+} as const;
 
 export function DieCutSticker({
   id,
@@ -42,6 +49,7 @@ export function DieCutSticker({
   displayWidth,
   zIndex,
   draggable,
+  outline = "default",
 }: DieCutStickerProps) {
   const { ref, style, dragHandlers } = useDraggable({
     id,
@@ -85,7 +93,7 @@ export function DieCutSticker({
           sizes="128px"
           unoptimized
           draggable={false}
-          className="cutout-sticker h-auto w-full bg-transparent"
+          className={cn(stickerOutlineClass[outline], "h-auto w-full bg-transparent")}
         />
       </div>
       <span className="cutout-tooltip">{tooltip}</span>

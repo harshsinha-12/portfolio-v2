@@ -107,7 +107,7 @@ export function PinnedCard({ children, className, rotation = 1 }: PinnedCardProp
   return (
     <div className={cn("relative", className)} style={{ transform: `rotate(${rotation}deg)` }}>
       <PushPin />
-      <div className="rounded-[var(--radius-lg)] border-4 border-[var(--color-sticker-outline)] bg-[var(--color-paper)] p-[var(--space-lg)] shadow-[4px_6px_0_var(--color-shadow)]">
+      <div className="rounded-[var(--radius-lg)] border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper)] p-[var(--space-sm)] shadow-[4px_6px_0_var(--color-shadow)]">
         {children}
       </div>
     </div>

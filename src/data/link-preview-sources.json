@@ -59,11 +59,11 @@
   },
   {
     "href": "https://github.com/mittal-parth",
-    "image": "github-com-mittal-parth.webp"
+    "image": "github.webp"
   },
   {
     "href": "https://www.github.com/mittal-parth",
-    "image": "github-com-mittal-parth.webp"
+    "image": "github.webp"
   },
   {
     "href": "https://github.com/pranav2305/GreenTrust",
@@ -89,7 +89,7 @@
   },
   {
     "href": "https://www.linkedin.com/in/mittal-parth",
-    "image": "linkedin-com-in-mittal-parth.webp"
+    "image": "linkedin-profile.webp"
   },
   {
     "href": "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
@@ -105,17 +105,17 @@
   },
   {
     "href": "https://www.nitk.ac.in/",
-    "image": "nitk.webp",
+    "image": "nitk-shoreline.webp",
     "fallback": "assets/nitk-logo.jpeg"
   },
   {
     "href": "https://www.oracle.com",
-    "image": "oracle.webp",
+    "image": "oracle-office.webp",
     "fallback": "assets/oracle.jpg"
   },
   {
     "href": "https://www.oracle.com/in/",
-    "image": "oracle.webp",
+    "image": "oracle-office.webp",
     "fallback": "assets/oracle.jpg"
   },
   {
@@ -125,7 +125,7 @@
   },
   {
     "href": "https://polkadot.academy/",
-    "image": "pba.webp",
+    "image": "pba-gavin.webp",
     "fallback": "assets/pba_logo.jpeg"
   },
   {
@@ -147,7 +147,7 @@
   },
   {
     "href": "https://www.linkedin.com/posts/mittal-parth_look-mom-i-am-on-the-times-square-ugcPost-7324078226178215936-tat9/",
-    "image": "times-square.webp"
+    "image": "times-square-v2.webp"
   },
   {
     "href": "https://x.com/mittalparth_/status/2082861864984437072?s=20",
@@ -163,7 +163,7 @@
   },
   {
     "href": "https://x.com/mittalparth_",
-    "image": "x-profile.webp"
+    "image": "x-social.webp"
   },
   {
     "href": "https://youtu.be/8R3QYKQR10M",

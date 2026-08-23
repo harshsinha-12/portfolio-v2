@@ -39,7 +39,7 @@ function ProjectPreview({ project }: { project: Project }) {
 
   if (previewImage) {
     return (
-      <div className="relative mb-3 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper-muted)]">
+      <div className="relative mb-1.5 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper-muted)]">
         {isLocalAsset(previewImage) ? (
           <Image
             src={previewImage}
@@ -62,7 +62,7 @@ function ProjectPreview({ project }: { project: Project }) {
 
   return (
     <div
-      className="relative mb-3 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)]"
+      className="relative mb-1.5 aspect-[16/10] w-full overflow-hidden rounded-[var(--radius-md)] border-2 border-[var(--color-sticker-outline)]"
       style={{ background: placeholderGradient(project.title) }}
     >
       <div className="flex h-full items-center justify-center">
@@ -137,7 +137,7 @@ function ProjectLinks({
   if (!hasLinks) return null;
 
   return (
-    <div className="mt-2 flex flex-wrap gap-1.5">
+    <div className="mt-1.5 flex flex-wrap gap-1.5">
       {project.github && (
         <LinkPreview
           href={project.github}
@@ -198,7 +198,7 @@ function ProjectCardContent({ project }: { project: Project }) {
             {project.highlight}
           </p>
         )}
-        <p className="mt-1.5 text-xs leading-relaxed text-[var(--color-ink-muted)]">
+        <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-muted)]">
           {project.content}
         </p>
         <ProjectLinks

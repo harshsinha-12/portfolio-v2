@@ -166,10 +166,10 @@ function PolaroidPreview({
         rotation={-2}
         className="w-36 shrink-0 !p-1.5 !pb-0 sm:!p-1.5 sm:!pb-0"
         imageClassName="aspect-[4/3]"
-        captionClassName="!mt-0 flex items-center justify-center pt-3 pb-1"
+        captionClassName="!mt-0 flex h-6 items-center justify-center"
         image={<PreviewPhoto image={image} onError={onImageError} />}
         caption={
-          <p className="text-center font-hand text-[0.8125rem] leading-none text-[var(--color-accent)]">
+          <p className="text-center font-hand text-[0.8125rem] leading-none text-[var(--color-ink)]">
             {caption}
           </p>
         }
@@ -189,13 +189,17 @@ export function LinkPreview({
   const domain = getDisplayDomain(href);
   const caption = getLinkPreviewCaption(href);
   const mappedImage = getLinkPreviewImage(href);
-  const [localFailed, setLocalFailed] = useState(false);
-  const [remoteFailed, setRemoteFailed] = useState(false);
+  const localPreviewKey = mappedImage ? `${href}|${mappedImage}` : null;
+  const [failedLocalKey, setFailedLocalKey] = useState<string | null>(null);
+  const [failedRemoteSrc, setFailedRemoteSrc] = useState<string | null>(null);
+
+  const localFailed = localPreviewKey !== null && failedLocalKey === localPreviewKey;
   const ogPreview = useOpenGraphPreview(href, !mappedImage || localFailed);
 
   const localSrc = mappedImage && !localFailed ? mappedImage : null;
-  const remoteSrc = !remoteFailed ? ogPreview?.image : null;
-  const imageSrc = localSrc ?? remoteSrc;
+  const remoteSrc = ogPreview?.image;
+  const remoteFailed = remoteSrc !== null && remoteSrc !== undefined && failedRemoteSrc === remoteSrc;
+  const imageSrc = localSrc ?? (remoteSrc && !remoteFailed ? remoteSrc : null);
   const previewImage: PreviewImage | null = imageSrc
     ? isLocalAsset(imageSrc)
       ? { kind: "local", src: imageSrc }
@@ -230,8 +234,8 @@ export function LinkPreview({
             image={previewImage}
             caption={caption}
             onImageError={() => {
-              if (localSrc) setLocalFailed(true);
-              else setRemoteFailed(true);
+              if (localSrc && localPreviewKey) setFailedLocalKey(localPreviewKey);
+              else if (remoteSrc) setFailedRemoteSrc(remoteSrc);
             }}
           />
         ) : (

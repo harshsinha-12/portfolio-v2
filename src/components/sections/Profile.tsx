@@ -44,6 +44,9 @@ function renderSegment(segment: IntroSegment, key: number) {
 }
 
 function SocialStamps() {
+  const stampLinkClassName =
+    "flex h-4 w-4 items-center justify-center transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6";
+
   return (
     <div className="flex items-center gap-0.5 sm:gap-1">
       {socialMedia.map((social) => {
@@ -58,7 +61,7 @@ function SocialStamps() {
               <LinkPreview
                 href={social.link}
                 ariaLabel={social.label}
-                className="flex h-4 w-4 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
+                className={stampLinkClassName}
               >
                 <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
               </LinkPreview>
@@ -68,7 +71,7 @@ function SocialStamps() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={social.label}
-                className="flex h-4 w-4 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
+                className={stampLinkClassName}
               >
                 <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
               </a>
