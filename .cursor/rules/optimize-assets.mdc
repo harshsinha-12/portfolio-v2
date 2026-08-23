@@ -29,3 +29,14 @@ Display rules for UI images:
 - Remote images (OG previews, external favicons) are not handled by the script; keep those as plain `<img>` when the host is arbitrary.
 
 Do not commit large unoptimized raster files when a `.webp` version should exist instead.
+
+## Project demo videos
+
+When adding a hover/tap demo video for a project card:
+
+1. Drop the source `.mp4` in `media-src/videos/` (gitignored).
+2. Run `pnpm optimize-videos`.
+3. Add the `video` field (`.webm` path) to the project in `src/data/portfolio.ts`.
+4. Commit `public/assets/videos/*.webm` and `portfolio.ts` together. Deployed assets are WebM only — never commit `.mp4` under `public/assets/videos/`.
+
+Outputs land in `public/assets/videos/` as VP9 WebM (max width 960, no audio). Existing files are skipped. The static project `image` serves as the poster. Cards prefetch video when scrolled near; hover/tap to play.

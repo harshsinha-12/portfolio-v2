@@ -12,6 +12,7 @@ import { PinnedCard } from "@/components/decor/Decor";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { resetAllStickerPositions } from "@/components/decor/useDraggable";
 import { LinkPreview } from "@/components/ui/LinkPreview";
+import { ProjectPreviewVideo } from "@/components/ui/ProjectPreviewVideo";
 import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
 import { placeholderGradient } from "@/lib/utils";
 
@@ -24,6 +25,17 @@ const projectCoverSizes = "(min-width: 1280px) 30vw, (min-width: 520px) 45vw, 90
 function ProjectPreview({ project }: { project: Project }) {
   const ogPreview = useOpenGraphPreview(project.link, !project.image);
   const previewImage = project.image ?? ogPreview?.image ?? null;
+
+  if (previewImage && project.video && isLocalAsset(previewImage)) {
+    return (
+      <ProjectPreviewVideo
+        video={project.video}
+        poster={previewImage}
+        title={project.title}
+        sizes={projectCoverSizes}
+      />
+    );
+  }
 
   if (previewImage) {
     return (

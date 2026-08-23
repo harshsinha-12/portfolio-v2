@@ -30,3 +30,18 @@ Display rules:
 
 Do not commit large unoptimized raster files when a `.webp` version should exist instead.
 
+## Project demo videos
+
+When adding a hover/tap demo video for a project card:
+
+1. Drop the source `.mp4` in `media-src/videos/` (this folder is gitignored).
+2. Run `pnpm optimize-videos`.
+3. Add the printed `video` field to the matching project in `src/data/portfolio.ts` (`.webm` path under `/assets/videos/`).
+4. Commit the optimized `public/assets/videos/*.webm` files and `portfolio.ts` together. Deployed assets are WebM only — never commit `.mp4` under `public/assets/videos/`.
+
+`pnpm optimize-videos` converts each source `.mp4` into VP9 WebM:
+
+- `public/assets/videos/<slug>.webm` — VP9, max width 960, no audio
+
+Existing outputs are never overwritten — delete a file to re-encode. The project card reuses its static `image` as the video poster and no-JS fallback. Videos prefetch when their card scrolls near the viewport; playback is hover on desktop and tap on mobile.
+

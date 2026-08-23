@@ -618,6 +618,7 @@ export type Project = {
   link?: string;
   youtube?: string;
   image?: string;
+  video?: string;
   content: string;
   stack: ProjectStackItem[];
   highlight?: string;
@@ -631,6 +632,7 @@ export const projects: Project[] = [
     link: "https://playclaude.vercel.app/",
     youtube: "https://youtu.be/-WVMaU1-sHE",
     image: "/assets/claude-city.webp",
+    video: "/assets/videos/claude-city.webm",
     content:
       "Turns your codebase and GitHub PRs into a live isometric city where AI agents build and review in real time.",
     highlight: "1st Runner Up - Anthropic Push to Prod Hackathon",
@@ -648,6 +650,7 @@ export const projects: Project[] = [
     link: "https://playsadak.vercel.app/",
     youtube: "https://youtu.be/gadi-osujrs",
     image: "/assets/sadak.webp",
+    video: "/assets/videos/sadak.webm",
     content:
       "3D, voice-first, Indic language learning game.",
     highlight: "2nd Runner Up - Sarvam Epoch Buildathon",
@@ -667,6 +670,7 @@ export const projects: Project[] = [
     link: "https://playkahani.vercel.app/",
     youtube: "https://youtu.be/8R3QYKQR10M",
     image: "/assets/kahani.webp",
+    video: "/assets/videos/kahani.webm",
     content:
       "An RPG game generator that uses Nano Banana to create worlds and assets as you play and progress.",
     highlight: "Winner - Google DeepMind Bangalore Hackathon",
@@ -685,6 +689,7 @@ export const projects: Project[] = [
     github: "https://github.com/mittal-parth/Khoj",
     link: "https://playkhoj.com/",
     image: "/assets/khoj.webp",
+    video: "/assets/videos/khoj.webm",
     youtube: "https://youtu.be/98OJuvBur6s",
     content:
       "A geo-location based treasure hunt app where the answer to every clue is a physical location.",
@@ -706,6 +711,7 @@ export const projects: Project[] = [
     link: "https://testflight.apple.com/join/TpYrhKRy",
     youtube: "https://www.youtube.com/watch?v=ncCJL2eEslc",
     image: "/assets/echo-1.webp",
+    video: "/assets/videos/echo.webm",
     content:
       "A proactive AI assistant that's always listening and executes without you having to ask.",
     stack: [
@@ -722,6 +728,7 @@ export const projects: Project[] = [
     github: "https://github.com/mittal-parth/hackathon-curation-agent",
     link: "https://x.com/HackClubNITK",
     image: "/assets/hackclub.webp",
+    video: "/assets/videos/hackathon-curation-agent.webm",
     youtube:
       "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
     content:
