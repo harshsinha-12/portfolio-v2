@@ -4,6 +4,7 @@ import { useCallback, useRef } from "react";
 import Image from "next/image";
 import { useDraggable } from "@/components/decor/useDraggable";
 import { useXacto, type Point } from "@/components/decor/XactoProvider";
+import { playPortfolioSound } from "@/lib/portfolio-sounds";
 import { cn } from "@/lib/utils";
 
 const KNIFE_SRC = "/assets/x-acto-knife.webp";
@@ -70,9 +71,12 @@ export function XactoKnife({
       const last = lastRef.current;
       if (last) {
         const dt = now - last.time;
+        const distance = Math.hypot(tip.x - last.point.x, tip.y - last.point.y);
+        if (distance >= 2) {
+          playPortfolioSound("scratch");
+        }
         if (dt > 0) {
-          const speed = Math.hypot(tip.x - last.point.x, tip.y - last.point.y) / dt;
-          testCut(last.point, tip, speed);
+          testCut(last.point, tip, distance / dt);
         }
       }
       lastRef.current = { point: tip, time: now };

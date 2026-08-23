@@ -2,6 +2,7 @@
 
 import type { LucideIcon } from "lucide-react";
 import { useDraggable } from "@/components/decor/useDraggable";
+import { useStickerSounds } from "@/components/decor/useStickerSounds";
 import { cn } from "@/lib/utils";
 
 type BaseProps = {
@@ -28,10 +29,12 @@ export type DraggableStickerProps = AbsoluteDraggableStickerProps | InlineDragga
 
 export function DraggableSticker(props: DraggableStickerProps) {
   const { id, Icon, rotate = 0, draggable, className, iconSize = 20 } = props;
+  const stickerSounds = useStickerSounds();
   const { ref, style, dragHandlers } = useDraggable({
     id,
     disabled: !draggable,
     rotate,
+    ...stickerSounds,
   });
   const isAbsolute = props.layout !== "inline";
 

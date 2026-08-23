@@ -3,6 +3,7 @@
 import type { PointerEvent } from "react";
 import Image from "next/image";
 import { useDraggable } from "@/components/decor/useDraggable";
+import { useStickerSounds } from "@/components/decor/useStickerSounds";
 import { cn } from "@/lib/utils";
 
 let frontLayer = 40;
@@ -51,10 +52,12 @@ export function DieCutSticker({
   draggable,
   outline = "default",
 }: DieCutStickerProps) {
+  const stickerSounds = useStickerSounds();
   const { ref, style, dragHandlers } = useDraggable({
     id,
     disabled: !draggable,
     rotate,
+    ...stickerSounds,
   });
 
   return (

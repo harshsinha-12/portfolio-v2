@@ -5,6 +5,7 @@ import { FloatingNav } from "@/components/layout/FloatingNav";
 import { Footer } from "@/components/layout/Footer";
 import { ScatterDecor } from "@/components/decor/ScatterDecor";
 import { XactoProvider, XactoScratchLayer } from "@/components/decor/XactoProvider";
+import { SoundProvider } from "@/components/sound/SoundProvider";
 import { ProfileSection } from "@/components/sections/Profile";
 import { TimelineSection } from "@/components/sections/Timeline";
 import { AchievementsSection } from "@/components/sections/Achievements";
@@ -17,22 +18,24 @@ type SiteShellProps = {
 
 export function SiteShell({ initialContributions }: SiteShellProps) {
   return (
-    <XactoProvider>
-      <CanvasBackground />
-      <div className="relative overflow-x-clip">
-        <XactoScratchLayer />
-        <div className="relative z-10 mx-auto min-h-screen w-full max-w-[var(--content-max-canvas)] px-4 py-6 sm:px-6">
-          <ScatterDecor />
-          <FloatingNav />
-          <main className="space-y-[var(--space-2xl)] lg:space-y-[var(--space-3xl)]">
-            <ProfileSection initialContributions={initialContributions} />
-            <AchievementsSection />
-            <TimelineSection />
-            <ProjectsSection />
-          </main>
-          <Footer />
+    <SoundProvider>
+      <XactoProvider>
+        <CanvasBackground />
+        <div className="relative overflow-x-clip">
+          <XactoScratchLayer />
+          <div className="relative z-10 mx-auto min-h-screen w-full max-w-[var(--content-max-canvas)] px-4 py-6 sm:px-6">
+            <ScatterDecor />
+            <FloatingNav />
+            <main className="space-y-[var(--space-2xl)] lg:space-y-[var(--space-3xl)]">
+              <ProfileSection initialContributions={initialContributions} />
+              <AchievementsSection />
+              <TimelineSection />
+              <ProjectsSection />
+            </main>
+            <Footer />
+          </div>
         </div>
-      </div>
-    </XactoProvider>
+      </XactoProvider>
+    </SoundProvider>
   );
 }

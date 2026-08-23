@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { markPointerDragEnd } from "@/lib/portfolio-sounds";
 
 const STORAGE_PREFIX = "drag-pos-v2-";
 const RESET_EVENT = "portfolio:reset-stickers";
@@ -23,6 +24,7 @@ type DraggableOptions = {
   persist?: boolean;
   bounds?: DragBounds;
   rotate?: number;
+  onDragStart?: () => void;
   onDrag?: (offset: DragOffset) => void;
   onDragEnd?: () => void;
 };
@@ -113,6 +115,7 @@ export function useDraggable({
   persist = true,
   bounds = "none",
   rotate = 0,
+  onDragStart,
   onDrag,
   onDragEnd,
 }: DraggableOptions) {
@@ -126,6 +129,7 @@ export function useDraggable({
   const rotateRef = useRef(rotate);
   const boundsRef = useRef(bounds);
   const persistRef = useRef(persist);
+  const onDragStartRef = useRef(onDragStart);
   const onDragRef = useRef(onDrag);
   const onDragEndRef = useRef(onDragEnd);
 
@@ -133,9 +137,10 @@ export function useDraggable({
     rotateRef.current = rotate;
     boundsRef.current = bounds;
     persistRef.current = persist;
+    onDragStartRef.current = onDragStart;
     onDragRef.current = onDrag;
     onDragEndRef.current = onDragEnd;
-  }, [bounds, onDrag, onDragEnd, persist, rotate]);
+  }, [bounds, onDrag, onDragEnd, onDragStart, persist, rotate]);
 
   useEffect(() => {
     if (!persist) {
@@ -179,6 +184,7 @@ export function useDraggable({
       };
       e.currentTarget.setPointerCapture(e.pointerId);
       applyVisual(e.currentTarget, applied.current, rotateRef.current, true);
+      onDragStartRef.current?.();
 
       const move = (ev: PointerEvent) => {
         if (!dragging.current || ev.pointerId !== pointerId.current) return;
@@ -217,6 +223,7 @@ export function useDraggable({
           localStorage.setItem(storageKey(id), JSON.stringify(current));
         }
         setOffset(current);
+        markPointerDragEnd();
         onDragEndRef.current?.();
       };
 

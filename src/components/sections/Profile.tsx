@@ -13,6 +13,7 @@ import { socialIconMap } from "@/lib/icons";
 import { LinkPreview, LinkPreviewImagePreloader } from "@/components/ui/LinkPreview";
 import { GitHubGraph } from "@/components/sections/GitHubGraph";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
+import { SoundToggle } from "@/components/sound/SoundToggle";
 import type { ContributionDay } from "@/lib/githubContributions";
 
 function renderSegment(segment: IntroSegment, key: number) {
@@ -88,14 +89,22 @@ function MobileTagline() {
   const breakIndex = siteConfig.tagline.indexOf(breakToken);
 
   if (breakIndex === -1) {
-    return siteConfig.tagline;
+    return (
+      <span className="inline-flex flex-wrap items-center gap-x-1.5">
+        {siteConfig.tagline}
+        <SoundToggle />
+      </span>
+    );
   }
 
   return (
     <>
       {siteConfig.tagline.slice(0, breakIndex)}
       <br />
-      {siteConfig.tagline.slice(breakIndex + 3)}
+      <span className="inline-flex items-center gap-x-1.5">
+        {siteConfig.tagline.slice(breakIndex + 3)}
+        <SoundToggle />
+      </span>
     </>
   );
 }
@@ -112,8 +121,9 @@ function ProfileHeader() {
       <div className="col-start-2 row-start-1 self-center lg:self-start">
         <SocialStamps />
       </div>
-      <p className="col-start-1 row-start-2 mt-1.5 hidden font-hand leading-snug text-[var(--color-accent-on-mat)] lg:block lg:text-lg">
-        {siteConfig.tagline}
+      <p className="col-start-1 row-start-2 mt-1.5 hidden items-center gap-x-1.5 font-hand leading-snug text-[var(--color-accent-on-mat)] lg:flex lg:text-lg">
+        <span>{siteConfig.tagline}</span>
+        <SoundToggle />
       </p>
     </div>
   );
