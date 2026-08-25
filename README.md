@@ -60,7 +60,3 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 - `pnpm optimize-videos` — convert source MP4s to VP9 WebM for project cards
 - `pnpm seed-link-previews` — fetch Open Graph images for link hover previews
 - `pnpm generate-og` — generate the Open Graph social share image
-
-## License
-
-MIT
