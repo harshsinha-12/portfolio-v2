@@ -4,6 +4,7 @@ import { connectLink, navSections } from "@/data/portfolio";
 import { buttonVariants } from "@/components/ui/button";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 export function FloatingNav() {
   return (
@@ -16,6 +17,7 @@ export function FloatingNav() {
           <a
             key={section.id}
             href={`#${section.id}`}
+            onClick={() => track("nav_click", { section_id: section.id })}
             className="shrink-0 rounded-full px-2 py-1 text-xs font-medium text-[var(--color-on-mat)]/80 transition-colors hover:bg-[var(--color-mat-deep)]/50 hover:text-[var(--color-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:px-3 sm:py-1.5 sm:text-sm"
           >
             {section.label}
@@ -23,6 +25,7 @@ export function FloatingNav() {
         ))}
         <LinkPreview
           href={connectLink}
+          onClick={() => track("connect_link_clicked")}
           className={cn(
             buttonVariants({ size: "sm" }),
             "ml-0.5 h-7 shrink-0 px-2.5 text-[11px] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs",

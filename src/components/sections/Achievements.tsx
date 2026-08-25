@@ -17,6 +17,7 @@ import {
   HangingSlot,
 } from "@/components/decor/Clothesline";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 const MOBILE_BREAKPOINT = "(max-width: 1023px)";
 const MOBILE_PAGE_SIZE = 2;
@@ -146,6 +147,7 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
                 key={key}
                 href={href}
                 ariaLabel={`${label} for ${item.event}`}
+                onClick={() => track("achievement_link_clicked", { achievement_id: item.id, link_type: key })}
                 className="flex h-5 w-5 items-center justify-center rounded border border-[var(--color-ink-subtle)]/25 text-[var(--color-ink-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
               >
                 <Icon size={10} aria-hidden="true" />
@@ -295,14 +297,17 @@ export function AchievementsSection() {
 
   const navigateTo = useCallback(
     (nextPage: number) => {
-      if (nextPage === safePage || nextPage < 0 || nextPage >= pageCount) return;
+      if (nextPage === safePage || nextPage < 0 || nextPage >= pageCount || transitioning) return;
+
+      track("hackathons_page_navigated", {
+        navigation_method: isMobile ? "swipe_or_pagination" : "button",
+        page_number: nextPage + 1,
+      });
 
       if (!isMobile) {
         setPage(nextPage);
         return;
       }
-
-      if (transitioning) return;
 
       const slideDirection: SlideDirection = nextPage > safePage ? "next" : "prev";
       setOutgoing({ items: visible });

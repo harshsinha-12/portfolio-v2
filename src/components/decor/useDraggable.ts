@@ -9,6 +9,7 @@ import {
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
 } from "react";
+import { track } from "@/lib/analytics";
 import { markPointerDragEnd } from "@/lib/portfolio-sounds";
 
 const STORAGE_PREFIX = "drag-pos-v2-";
@@ -224,6 +225,7 @@ export function useDraggable({
         }
         setOffset(current);
         markPointerDragEnd();
+        track("sticker_moved", { sticker_id: id });
         onDragEndRef.current?.();
       };
 

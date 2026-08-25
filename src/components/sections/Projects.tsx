@@ -15,6 +15,7 @@ import { LinkPreview } from "@/components/ui/LinkPreview";
 import { ProjectPreviewVideo } from "@/components/ui/ProjectPreviewVideo";
 import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
 import { placeholderGradient } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 function isLocalAsset(src: string) {
   return src.startsWith("/");
@@ -32,6 +33,7 @@ function ProjectPreview({ project }: { project: Project }) {
         video={project.video}
         poster={previewImage}
         title={project.title}
+        projectId={project.id}
         sizes={projectCoverSizes}
       />
     );
@@ -142,6 +144,7 @@ function ProjectLinks({
         <LinkPreview
           href={project.github}
           ariaLabel={`GitHub for ${project.title}`}
+          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "github" })}
           className={projectLinkClassName}
         >
           <AiFillGithub size={projectLinkIconSize} aria-hidden="true" />
@@ -151,6 +154,7 @@ function ProjectLinks({
         <LinkPreview
           href={project.youtube}
           ariaLabel={`Video for ${project.title}`}
+          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "youtube" })}
           className={projectLinkClassName}
         >
           <AiFillYoutube size={projectLinkIconSize} aria-hidden="true" />
@@ -159,6 +163,7 @@ function ProjectLinks({
       {project.link && (
         <LinkPreview
           href={project.link}
+          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "live_site" })}
           title={liveLinkTitle}
           description={liveLinkDescription}
           className={projectLinkClassName}
@@ -229,7 +234,10 @@ export function ProjectsSection() {
         type="button"
         variant="outline"
         size="sm"
-        onClick={resetAllStickerPositions}
+        onClick={() => {
+          track("stickers_reset");
+          resetAllStickerPositions();
+        }}
         className="relative z-30 mt-4 hidden font-hand xl:inline-flex"
       >
         Reset stickers

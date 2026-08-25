@@ -2,15 +2,17 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { track } from "@/lib/analytics";
 
 type ProjectPreviewVideoProps = {
   video: string;
   poster: string;
   title: string;
+  projectId: string;
   sizes: string;
 };
 
-function useProjectPreviewVideo() {
+function useProjectPreviewVideo(projectId: string) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -51,16 +53,20 @@ function useProjectPreviewVideo() {
     setIsPlaying(false);
   }, []);
 
-  const playVideo = useCallback(async () => {
-    const video = videoRef.current;
-    if (!video) return;
-    try {
-      await video.play();
-      setIsPlaying(true);
-    } catch {
-      setIsPlaying(false);
-    }
-  }, []);
+  const playVideo = useCallback(
+    async (trigger: "hover" | "tap") => {
+      const video = videoRef.current;
+      if (!video) return;
+      try {
+        await video.play();
+        setIsPlaying(true);
+        track("project_video_play", { project_id: projectId, trigger });
+      } catch {
+        setIsPlaying(false);
+      }
+    },
+    [projectId],
+  );
 
   const toggleVideo = useCallback(() => {
     const video = videoRef.current;
@@ -69,10 +75,10 @@ function useProjectPreviewVideo() {
       stopVideo();
       return;
     }
-    void playVideo();
+    void playVideo("tap");
   }, [playVideo, stopVideo]);
 
-  const onMouseEnter = canHover ? () => void playVideo() : undefined;
+  const onMouseEnter = canHover ? () => void playVideo("hover") : undefined;
   const onMouseLeave = canHover ? stopVideo : undefined;
   const onClick = canHover ? undefined : toggleVideo;
 
@@ -92,6 +98,7 @@ export function ProjectPreviewVideo({
   video,
   poster,
   title,
+  projectId,
   sizes,
 }: ProjectPreviewVideoProps) {
   const {
@@ -103,7 +110,7 @@ export function ProjectPreviewVideo({
     onMouseLeave,
     onClick,
     toggleVideo,
-  } = useProjectPreviewVideo();
+  } = useProjectPreviewVideo(projectId);
 
   return (
     <div

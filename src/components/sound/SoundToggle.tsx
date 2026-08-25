@@ -11,6 +11,7 @@ import {
   unlockPortfolioSounds,
 } from "@/lib/portfolio-sounds";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 function subscribeMute(onStoreChange: () => void) {
   window.addEventListener(SOUND_MUTE_EVENT, onStoreChange);
@@ -33,6 +34,8 @@ export function SoundToggle({ className }: { className?: string }) {
   const muted = useSyncExternalStore(subscribeMute, getMuteSnapshot, getServerMuteSnapshot);
 
   const toggle = useCallback(() => {
+    const nextMuted = !muted;
+    track("sound_preference_changed", { sound_enabled: !nextMuted });
     unlockPortfolioSounds();
     if (muted) {
       setSoundMuted(false);

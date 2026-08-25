@@ -16,6 +16,7 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { WashiTape } from "@/components/decor/PushPin";
 import { useXacto, type Point } from "@/components/decor/XactoProvider";
+import { track } from "@/lib/analytics";
 import { playPortfolioSound } from "@/lib/portfolio-sounds";
 
 const ROPE_PATH = "M 0 5 Q 50 30 100 5";
@@ -443,6 +444,7 @@ export function Clothesline({ children, className, swapKey = 0 }: ClotheslinePro
         if (!split) return;
         playPortfolioSound("cut");
         playPortfolioSound("fall");
+        track("rope_cut", { section: "achievements" });
         setRopeStatus({ kind: "cut", phase: "snapped", ...split });
       },
     });

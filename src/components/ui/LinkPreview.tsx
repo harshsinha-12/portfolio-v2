@@ -33,6 +33,7 @@ type LinkPreviewProps = {
   description?: string;
   className?: string;
   ariaLabel?: string;
+  onClick?: () => void;
 };
 
 type PreviewImage =
@@ -185,6 +186,7 @@ export function LinkPreview({
   description,
   className,
   ariaLabel,
+  onClick,
 }: LinkPreviewProps) {
   const domain = getDisplayDomain(href);
   const caption = getLinkPreviewCaption(href);
@@ -214,6 +216,7 @@ export function LinkPreview({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={ariaLabel}
+          onClick={onClick}
           className={className ?? "marker-link"}
         >
           {children}
