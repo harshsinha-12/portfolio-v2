@@ -108,7 +108,7 @@ export function XactoKnife({
       {...(draggable ? dragHandlers : {})}
       className={cn(
         "group/cutout absolute select-none",
-        draggable && "pointer-events-auto z-[35] active:cursor-grabbing",
+        draggable && "pointer-events-auto z-[35]",
       )}
       style={{
         top,

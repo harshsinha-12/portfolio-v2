@@ -6,11 +6,13 @@ import {
   initSoundMuteFromStorage,
   isSoundMuted,
   preloadPortfolioSounds,
+  preloadStickerSounds,
 } from "@/lib/portfolio-sounds";
 
 export function SoundProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     initSoundMuteFromStorage();
+    preloadStickerSounds();
     if (!isSoundMuted()) {
       preloadPortfolioSounds();
     }

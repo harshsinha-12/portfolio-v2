@@ -72,7 +72,7 @@ export function DieCutSticker({
             },
           }
         : {})}
-      className={cn("group/cutout absolute select-none", draggable && "pointer-events-auto active:cursor-grabbing")}
+      className={cn("group/cutout absolute select-none", draggable && "pointer-events-auto")}
       style={{
         top,
         bottom,

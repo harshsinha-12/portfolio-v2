@@ -45,7 +45,7 @@ export function DraggableSticker(props: DraggableStickerProps) {
       className={cn(
         "flex shrink-0 select-none items-center justify-center rounded-xl border-4 border-[var(--color-sticker-outline)] bg-[var(--color-paper)] text-[var(--color-accent)] shadow-[3px_4px_0_var(--color-shadow)]",
         isAbsolute ? "absolute h-12 w-12" : "relative h-10 w-10 sm:h-11 sm:w-11",
-        draggable && "pointer-events-auto z-[35] active:cursor-grabbing",
+        draggable && "pointer-events-auto z-[35]",
         className,
       )}
       style={{

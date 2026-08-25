@@ -1,7 +1,6 @@
 import { playSound, playSoundNow, decodeAudioData, getAudioContext } from "@/lib/sound-engine";
 import type { SoundAsset } from "@/lib/sound-types";
 import { clickSoftSound } from "@/sounds/click-soft/click-soft";
-import { drop001Sound } from "@/sounds/drop-001/drop-001";
 import { knifeSliceSound } from "@/sounds/knife-slice/knife-slice";
 import { maximize004Sound } from "@/sounds/maximize-004/maximize-004";
 import { scratch001Sound } from "@/sounds/scratch-001/scratch-001";
@@ -24,8 +23,8 @@ const MUTE_ATTR = "data-sound";
 
 const VOLUMES: Record<PortfolioSoundId, number> = {
   click: 0.42,
-  stickerPick: 0.46,
-  stickerDrop: 0.46,
+  stickerPick: 0.42,
+  stickerDrop: 0.42,
   scratch: 0.3,
   cut: 0.5,
   fall: 0.4,
@@ -98,8 +97,18 @@ export function preloadPortfolioSounds(): void {
   }
 }
 
+const STICKER_SOUND_IDS: PortfolioSoundId[] = ["stickerPick", "stickerDrop"];
+
+export function preloadStickerSounds(): void {
+  for (const id of STICKER_SOUND_IDS) {
+    void decodeAudioData(assetFor(id).dataUri).catch(() => {
+      /* ignore decode failures */
+    });
+  }
+}
+
 function collectAssets(): SoundAsset[] {
-  return [clickSoftSound, drop001Sound, ...SCRATCHES, knifeSliceSound, maximize004Sound];
+  return [clickSoftSound, ...SCRATCHES, knifeSliceSound, maximize004Sound];
 }
 
 function assetFor(id: PortfolioSoundId): SoundAsset {
@@ -108,7 +117,7 @@ function assetFor(id: PortfolioSoundId): SoundAsset {
       return clickSoftSound;
     case "stickerPick":
     case "stickerDrop":
-      return drop001Sound;
+      return clickSoftSound;
     case "scratch": {
       const asset = SCRATCHES[scratchIndex % SCRATCHES.length];
       scratchIndex += 1;
@@ -148,6 +157,7 @@ function playbackRateFor(id: PortfolioSoundId): number {
 
 export function playPortfolioSound(id: PortfolioSoundId): void {
   if (muted) return;
+  unlockPortfolioSounds();
   const now = performance.now();
   const throttle = THROTTLE_MS[id];
   const last = lastPlayedAt[id];
@@ -177,8 +187,13 @@ function interactiveFromEvent(target: EventTarget | null): Element | null {
 }
 
 export function bindUiInteractionSounds(): () => void {
+  unlockPortfolioSounds();
+  preloadPortfolioSounds();
+  preloadStickerSounds();
+
   const onPointerDown = () => {
     unlockPortfolioSounds();
+    preloadStickerSounds();
     if (!muted) preloadPortfolioSounds();
   };
 
@@ -196,4 +211,11 @@ export function bindUiInteractionSounds(): () => void {
     document.removeEventListener("pointerdown", onPointerDown, { capture: true });
     document.removeEventListener("click", onClick);
   };
+}
+
+if (typeof window !== "undefined") {
+  queueMicrotask(() => {
+    unlockPortfolioSounds();
+    preloadStickerSounds();
+  });
 }

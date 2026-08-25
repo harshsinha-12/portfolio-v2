@@ -10,7 +10,7 @@ import {
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { track } from "@/lib/analytics";
-import { markPointerDragEnd } from "@/lib/portfolio-sounds";
+import { markPointerDragEnd, preloadStickerSounds, unlockPortfolioSounds } from "@/lib/portfolio-sounds";
 
 const STORAGE_PREFIX = "drag-pos-v2-";
 const RESET_EVENT = "portfolio:reset-stickers";
@@ -56,6 +56,11 @@ function composeTransform(offset: DragOffset, rotate: number): string {
   return `translate3d(${offset.x}px, ${offset.y}px, 0) rotate(${rotate}deg)`;
 }
 
+function setGlobalDragCursor(active: boolean): void {
+  if (typeof document === "undefined") return;
+  document.body.style.cursor = active ? "grabbing" : "";
+}
+
 function applyVisual(
   el: HTMLElement | null,
   offset: DragOffset,
@@ -67,10 +72,12 @@ function applyVisual(
   if (dragging) {
     el.dataset.dragging = "true";
     el.style.willChange = "transform";
+    el.style.cursor = "grabbing";
     return;
   }
   delete el.dataset.dragging;
   el.style.willChange = "";
+  el.style.cursor = "grab";
 }
 
 function suppressTooltipUntilLeave(el: HTMLElement | null): void {
@@ -122,6 +129,7 @@ export function useDraggable({
 }: DraggableOptions) {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
   const dragging = useRef(false);
   const start = useRef({ x: 0, y: 0, ox: 0, oy: 0 });
   const applied = useRef({ x: 0, y: 0 });
@@ -169,13 +177,26 @@ export function useDraggable({
   useEffect(() => {
     return () => {
       stopWindowDrag.current?.();
+      if (dragging.current) {
+        dragging.current = false;
+        setGlobalDragCursor(false);
+      }
     };
   }, []);
+
+  const onPointerEnter = useCallback(() => {
+    if (disabled) return;
+    unlockPortfolioSounds();
+    preloadStickerSounds();
+  }, [disabled]);
 
   const onPointerDown = useCallback(
     (e: ReactPointerEvent<HTMLDivElement>) => {
       if (disabled) return;
+      unlockPortfolioSounds();
+      onDragStartRef.current?.();
       dragging.current = true;
+      setIsDragging(true);
       pointerId.current = e.pointerId;
       start.current = {
         x: e.clientX,
@@ -184,8 +205,8 @@ export function useDraggable({
         oy: applied.current.y,
       };
       e.currentTarget.setPointerCapture(e.pointerId);
+      setGlobalDragCursor(true);
       applyVisual(e.currentTarget, applied.current, rotateRef.current, true);
-      onDragStartRef.current?.();
 
       const move = (ev: PointerEvent) => {
         if (!dragging.current || ev.pointerId !== pointerId.current) return;
@@ -216,7 +237,9 @@ export function useDraggable({
         stopWindowDrag.current?.();
         if (!dragging.current) return;
         dragging.current = false;
+        setIsDragging(false);
         pointerId.current = null;
+        setGlobalDragCursor(false);
         const current = applied.current;
         applyVisual(ref.current, current, rotateRef.current, false);
         suppressTooltipUntilLeave(ref.current);
@@ -245,13 +268,14 @@ export function useDraggable({
   const style: CSSProperties = {
     transform: composeTransform(offset, rotate),
     touchAction: disabled ? undefined : "none",
-    cursor: disabled ? undefined : "grab",
+    cursor: disabled ? undefined : isDragging ? "grabbing" : "grab",
   };
 
   return {
     ref,
     style,
     dragHandlers: {
+      onPointerEnter,
       onPointerDown,
     },
   };

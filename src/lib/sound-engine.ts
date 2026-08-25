@@ -13,14 +13,9 @@ export async function decodeAudioData(dataUri: string): Promise<AudioBuffer> {
   if (cached) return cached;
 
   const ctx = getAudioContext();
-  const base64 = dataUri.split(",")[1];
-  const binaryString = atob(base64);
-  const bytes = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-
-  const audioBuffer = await ctx.decodeAudioData(bytes.buffer.slice(0));
+  const response = await fetch(dataUri);
+  const arrayBuffer = await response.arrayBuffer();
+  const audioBuffer = await ctx.decodeAudioData(arrayBuffer);
   bufferCache.set(dataUri, audioBuffer);
   return audioBuffer;
 }
@@ -78,7 +73,10 @@ export function playSoundNow(
 
   const ctx = getAudioContext();
   if (ctx.state === "suspended") {
-    void ctx.resume();
+    void ctx.resume().then(() => {
+      startPlayback(ctx, buffer, options);
+    });
+    return { stop: () => {} };
   }
 
   return startPlayback(ctx, buffer, options);
