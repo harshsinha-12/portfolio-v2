@@ -26,7 +26,7 @@ export function SiteShell({ initialContributions }: SiteShellProps) {
           <div className="relative z-10 mx-auto min-h-screen w-full max-w-[var(--content-max-canvas)] px-4 py-6 sm:px-6">
             <ScatterDecor />
             <FloatingNav />
-            <main className="space-y-[var(--space-2xl)] lg:space-y-[var(--space-3xl)]">
+            <main className="flex flex-col gap-[var(--space-2xl)] lg:gap-[var(--space-3xl)] [&>#hackathons]:-mt-2 lg:[&>#hackathons]:-mt-6">
               <ProfileSection initialContributions={initialContributions} />
               <AchievementsSection />
               <TimelineSection />
