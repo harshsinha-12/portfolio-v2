@@ -182,6 +182,7 @@ export type CutoutSticker = {
   displayWidth: string;
   zIndex: number;
   outline?: "default" | "thin" | "plain";
+  emit?: "notes";
 };
 
 export const experienceStickers: CutoutSticker[] = [
@@ -193,9 +194,10 @@ export const experienceStickers: CutoutSticker[] = [
     tooltip: "I run on music",
     rotate: 11,
     top: "16.4rem",
-    left: "max(-11.9rem, calc(-50vw + 50% + 0.18rem))",
+    left: "max(-10.4rem, calc(-50vw + 50% + 1.68rem))",
     displayWidth: "4.8rem",
     zIndex: 4,
+    emit: "notes",
   },
   {
     id: "sticker-macbook",
@@ -205,7 +207,7 @@ export const experienceStickers: CutoutSticker[] = [
     tooltip: "this is where the work happens",
     rotate: 7,
     top: "20.1rem",
-    left: "max(-10.1rem, calc(-50vw + 50% + 1.35rem))",
+    left: "max(-8.6rem, calc(-50vw + 50% + 2.85rem))",
     displayWidth: "5.8rem",
     zIndex: 3,
   },

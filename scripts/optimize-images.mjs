@@ -42,6 +42,10 @@ function getOptimizationPlan(relativePath) {
     return { kind: "webp", maxWidth: 128, quality: 85, minSourceBytes: HACKATHON_ICON_MIN_BYTES };
   }
 
+  if (normalized.includes("notes/")) {
+    return { kind: "webp", maxWidth: 96, quality: 80, trim: true };
+  }
+
   if (/assets\/(sadak|kahani|khoj|echo-1|hackclub|claude-city)\./i.test(normalized)) {
     return { kind: "webp", maxWidth: 960, quality: 82 };
   }
@@ -93,8 +97,9 @@ async function optimizeRaster(filePath, plan) {
     return null;
   }
 
-  await sharp(filePath)
-    .rotate()
+  let pipeline = sharp(filePath).rotate();
+  if (plan.trim) pipeline = pipeline.trim();
+  await pipeline
     .resize({ width: plan.maxWidth, withoutEnlargement: true })
     .webp({ quality: plan.quality })
     .toFile(outputPath);

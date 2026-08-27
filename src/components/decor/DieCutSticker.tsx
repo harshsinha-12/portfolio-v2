@@ -2,6 +2,7 @@
 
 import type { PointerEvent } from "react";
 import Image from "next/image";
+import { NoteBurst } from "@/components/decor/NoteBurst";
 import { useDraggable } from "@/components/decor/useDraggable";
 import { useStickerSounds } from "@/components/decor/useStickerSounds";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ export type DieCutStickerProps = {
   zIndex: number;
   draggable: boolean;
   outline?: "default" | "thin" | "plain";
+  emit?: "notes";
 };
 
 const stickerOutlineClass = {
@@ -51,6 +53,7 @@ export function DieCutSticker({
   zIndex,
   draggable,
   outline = "default",
+  emit,
 }: DieCutStickerProps) {
   const stickerSounds = useStickerSounds();
   const { ref, style, dragHandlers } = useDraggable({
@@ -87,6 +90,7 @@ export function DieCutSticker({
       role="img"
       aria-label={tooltip}
     >
+      {emit === "notes" && <NoteBurst />}
       <div className="cutout-pop">
         <Image
           src={src}

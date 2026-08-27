@@ -201,6 +201,56 @@ body {
   opacity: 0;
 }
 
+.note-burst {
+  position: absolute;
+  inset: 0;
+  /* Negative z paints before the in-flow .cutout-pop (step 2 vs step 3 of the
+     stacking order), so notes read as emerging from under the sticker. A
+     z-index of 0 here would paint ABOVE it despite coming first in the DOM. */
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+
+.group\/cutout:hover .note-burst,
+.group\/cutout:focus-visible .note-burst,
+.group\/cutout:active .note-burst,
+.group\/cutout[data-dragging="true"] .note-burst {
+  opacity: 1;
+}
+
+.note-burst-item {
+  position: absolute;
+  left: 2%;
+  top: 38%;
+  width: 1.15rem;
+  animation: note-drift var(--note-dur, 3.2s) var(--ease-out) infinite;
+  animation-delay: var(--note-delay, 0s);
+}
+
+@keyframes note-drift {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(0.45);
+  }
+  14% {
+    opacity: 0.85;
+  }
+  40% {
+    opacity: 0.4;
+  }
+  /* Fully faded and at rest by 68% of the cycle -- the remaining 32% is a
+     brief gap where this note is invisible, so the pool doesn't read as a
+     constant swarm without going quiet for too long between appearances. */
+  68%,
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--note-dx), var(--note-dy), 0) rotate(var(--note-rot))
+      scale(var(--note-scale, 1));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .group\/cutout:hover .cutout-pop,
   .group\/cutout:focus-visible .cutout-pop,
@@ -211,6 +261,10 @@ body {
 
   .cutout-tooltip {
     transition: none;
+  }
+
+  .note-burst {
+    display: none;
   }
 }
 
