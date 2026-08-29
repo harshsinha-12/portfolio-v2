@@ -4,6 +4,7 @@ import type { PointerEvent } from "react";
 import Image from "next/image";
 import { NoteBurst } from "@/components/decor/NoteBurst";
 import { useDraggable } from "@/components/decor/useDraggable";
+import { useMusicPlayer } from "@/components/decor/useMusicPlayer";
 import { useStickerSounds } from "@/components/decor/useStickerSounds";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ export type DieCutStickerProps = {
   draggable: boolean;
   outline?: "default" | "thin" | "plain";
   emit?: "notes";
+  musicVideoId?: string;
 };
 
 const stickerOutlineClass = {
@@ -54,6 +56,7 @@ export function DieCutSticker({
   draggable,
   outline = "default",
   emit,
+  musicVideoId,
 }: DieCutStickerProps) {
   const stickerSounds = useStickerSounds();
   const { ref, style, dragHandlers } = useDraggable({
@@ -62,6 +65,7 @@ export function DieCutSticker({
     rotate,
     ...stickerSounds,
   });
+  const { playerTargetRef, handlers: musicHandlers } = useMusicPlayer(musicVideoId, ref);
 
   return (
     <div
@@ -89,6 +93,8 @@ export function DieCutSticker({
       }}
       role="img"
       aria-label={tooltip}
+      onMouseEnter={musicHandlers.onMouseEnter}
+      onMouseLeave={musicHandlers.onMouseLeave}
     >
       {emit === "notes" && <NoteBurst />}
       <div className="cutout-pop">
@@ -104,6 +110,22 @@ export function DieCutSticker({
         />
       </div>
       <span className="cutout-tooltip">{tooltip}</span>
+      {musicVideoId && (
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: "-9999px",
+            top: "-9999px",
+            width: "1px",
+            height: "1px",
+            overflow: "hidden",
+            pointerEvents: "none",
+          }}
+        >
+          <div ref={playerTargetRef} />
+        </div>
+      )}
     </div>
   );
 }

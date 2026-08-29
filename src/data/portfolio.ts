@@ -183,6 +183,7 @@ export type CutoutSticker = {
   zIndex: number;
   outline?: "default" | "thin" | "plain";
   emit?: "notes";
+  musicVideoId?: string;
 };
 
 export const experienceStickers: CutoutSticker[] = [
@@ -198,6 +199,7 @@ export const experienceStickers: CutoutSticker[] = [
     displayWidth: "4.8rem",
     zIndex: 4,
     emit: "notes",
+    musicVideoId: "wtJWkeE-nRE",
   },
   {
     id: "sticker-macbook",
