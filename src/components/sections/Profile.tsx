@@ -6,43 +6,15 @@ import {
   introBullets,
   siteConfig,
   socialMedia,
-  type IntroSegment,
 } from "@/data/portfolio";
 import { isHttpUrl } from "@/data/linkPreviews";
 import { socialIconMap } from "@/lib/icons";
 import { LinkPreview, LinkPreviewImagePreloader } from "@/components/ui/LinkPreview";
+import { IntroSegments } from "@/components/ui/IntroSegments";
 import { GitHubGraph } from "@/components/sections/GitHubGraph";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import { SoundToggle } from "@/components/sound/SoundToggle";
 import type { ContributionDay } from "@/lib/githubContributions";
-
-function renderSegment(segment: IntroSegment, key: number) {
-  switch (segment.type) {
-    case "text":
-      return <span key={key}>{segment.value}</span>;
-    case "hand":
-      return (
-        <span key={key} className="font-hand text-sm text-[var(--color-accent)] sm:text-base">
-          {segment.value}
-        </span>
-      );
-    case "link":
-      return (
-        <LinkPreview
-          key={key}
-          href={segment.href}
-          title={segment.previewTitle ?? segment.label}
-          description={segment.previewDescription}
-        >
-          {segment.label}
-        </LinkPreview>
-      );
-    default: {
-      const _exhaustive: never = segment;
-      return _exhaustive;
-    }
-  }
-}
 
 function SocialStamps() {
   const stampLinkClassName =
@@ -135,7 +107,9 @@ function IntroList() {
       {introBullets.map((bullet) => (
         <li key={bullet.id} className="flex gap-2">
           <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-[var(--color-accent)]" aria-hidden="true" />
-          <span>{bullet.segments.map((segment, i) => renderSegment(segment, i))}</span>
+          <span>
+            <IntroSegments segments={bullet.segments} />
+          </span>
         </li>
       ))}
     </ul>
@@ -160,7 +134,7 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
             >
               <Image
                 src="/assets/profile-pic.jpg"
-                alt="Parth Mittal"
+                alt="Harsh Sinha"
                 width={140}
                 height={140}
                 sizes="(min-width: 1024px) 140px, (min-width: 640px) 80px, 64px"

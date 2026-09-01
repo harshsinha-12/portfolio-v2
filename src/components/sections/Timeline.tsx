@@ -11,8 +11,10 @@ import {
 } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { LinkPreview } from "@/components/ui/LinkPreview";
+import { IntroSegments, segmentsToPlainText } from "@/components/ui/IntroSegments";
 import { TapedCard } from "@/components/decor/Decor";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
+import { TimelineTrainDecal } from "@/components/decor/TimelineTrainDecal";
 import {
   formatDurationWithTenure,
   totalTenureFromDurations,
@@ -32,13 +34,21 @@ function TimelineDot() {
   );
 }
 
-function TimelineLine() {
+function TimelineTrackProgress() {
   return (
     <div
-      className="pointer-events-none absolute bottom-0 w-px -translate-x-1/2 border-l border-dashed border-[var(--color-ink-subtle)]/50"
-      style={{ left: "calc(var(--logo-w) / 2)", top: "calc(var(--logo-w) + var(--logo-gap))" }}
+      className="timeline-rail-track pointer-events-none absolute -top-2 bottom-0 z-0 w-6 -translate-x-1/2"
+      style={{ left: "calc(var(--logo-w) / 2)" }}
       aria-hidden="true"
     />
+  );
+}
+
+function TimelineRailColumn({ icon }: { icon: string }) {
+  return (
+    <div className="relative w-[var(--logo-w)] shrink-0 self-stretch">
+      <OrgLogo icon={icon} />
+    </div>
   );
 }
 
@@ -112,7 +122,10 @@ function TimelineEntry({ children }: { children: React.ReactNode }) {
 function ExperienceCompany({ exp }: { exp: Experience }) {
   const [expanded, setExpanded] = useState(false);
   const latest = exp.positions[0];
-  const summary = latest?.content[0]?.text ?? "";
+  const summary =
+    latest?.content[0]?.segments != null
+      ? segmentsToPlainText(latest.content[0].segments)
+      : "";
   const hasMore =
     exp.positions.length > 1 || (latest?.content.length ?? 0) > 1;
   const visiblePositions = expanded
@@ -126,8 +139,7 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
 
   return (
     <article className={timelineArticleClass}>
-      <TimelineLine />
-      <OrgLogo icon={exp.logo} />
+      <TimelineRailColumn icon={exp.logo} />
 
       <div className="min-w-0 flex-1">
         <OrgHeader
@@ -152,13 +164,10 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
                       key={`${position.title}-${bi}`}
                       className="text-xs leading-relaxed text-[var(--color-ink-muted)]"
                     >
-                      {block.link ? (
-                        <LinkPreview href={block.link} title={block.text}>
-                          {block.text}
-                        </LinkPreview>
-                      ) : (
-                        block.text
-                      )}
+                      <IntroSegments
+                        segments={block.segments}
+                        handClassName="font-hand text-xs text-[var(--color-accent)] sm:text-sm"
+                      />
                     </li>
                   ))}
                 </ul>
@@ -195,8 +204,7 @@ function EducationItem({ edu }: { edu: (typeof educationList)[number] }) {
 
   return (
     <article className={timelineArticleClass}>
-      <TimelineLine />
-      <OrgLogo icon={edu.icon} />
+      <TimelineRailColumn icon={edu.icon} />
 
       <div className="min-w-0 flex-1">
         <OrgHeader title={edu.title} link={edu.link} tenure={tenure} />
@@ -230,17 +238,23 @@ export function TimelineSection() {
       <CutoutStickers stickers={experienceStickers} />
       <TapedCard rotation={0} className="relative z-10">
         <SectionHeading id="experience-heading" title="Experience" accent="& education" />
-        <div className="space-y-4">
-          {experiences.map((exp) => (
-            <ExperienceCompany key={exp.id} exp={exp} />
-          ))}
-        </div>
-        <div className="my-5 h-px bg-[var(--color-ink-subtle)]/15" />
-        <h3 className="mb-4 text-sm font-semibold text-[var(--color-ink)]">Education</h3>
-        <div className="space-y-4">
-          {educationList.map((edu) => (
-            <EducationItem key={edu.id} edu={edu} />
-          ))}
+        <div className="relative [--logo-w:2.25rem] sm:[--logo-w:2.5rem]">
+          <TimelineTrackProgress />
+          <TimelineTrainDecal />
+          <div className="relative z-10 space-y-4">
+            {experiences.map((exp) => (
+              <ExperienceCompany key={exp.id} exp={exp} />
+            ))}
+          </div>
+          <div className="relative z-10 my-5 ml-[calc(var(--logo-w)+0.75rem)] h-px bg-[var(--color-ink-subtle)]/15 sm:ml-[calc(var(--logo-w)+0.875rem)]" />
+          <h3 className="relative z-10 mb-4 ml-[calc(var(--logo-w)+0.75rem)] text-sm font-semibold text-[var(--color-ink)] sm:ml-[calc(var(--logo-w)+0.875rem)]">
+            Education
+          </h3>
+          <div className="relative z-10 space-y-4">
+            {educationList.map((edu) => (
+              <EducationItem key={edu.id} edu={edu} />
+            ))}
+          </div>
         </div>
       </TapedCard>
     </section>

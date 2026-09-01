@@ -92,6 +92,11 @@
     "image": "linkedin-profile.webp"
   },
   {
+    "href": "https://www.linkedin.com/in/harshsinha12/",
+    "image": "linkedin-harshsinha12.webp",
+    "fallback": "assets/profile-pic.jpg"
+  },
+  {
     "href": "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
     "image": "linkedin-com-posts-mittal-parth-as-hackclub-under-web-enthusiasts-club-u.webp"
   },
@@ -164,6 +169,22 @@
   {
     "href": "https://x.com/mittalparth_",
     "image": "x-social.webp"
+  },
+  {
+    "href": "https://x.com/sinhaharsh12/status/1975865353705320477",
+    "image": "x-com-sinhaharsh12-status-1975865353705320477.webp"
+  },
+  {
+    "href": "https://x.com/sinhaharsh12/status/1975865353705320477?s=20",
+    "image": "x-com-sinhaharsh12-status-1975865353705320477.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/posts/shark-tank-india_namitathapar-sharktankindia-sharktankindiaseason5-ugcPost-7418286077645312000-fXBB",
+    "image": "linkedin-com-posts-shark-tank-india-namitathapar-sharktankindia-season5.webp"
+  },
+  {
+    "href": "https://www.linkedin.com/posts/biased-human_today-we-are-launching-the-most-powerful-ugcPost-7398653952919101440-vvJ_",
+    "image": "linkedin-com-posts-biased-human-today-we-are-launching-the-most-powerful.webp"
   },
   {
     "href": "https://youtu.be/8R3QYKQR10M",

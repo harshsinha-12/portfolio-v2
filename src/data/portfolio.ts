@@ -2,14 +2,14 @@ export const resumeLink =
   "https://drive.google.com/file/d/1vkxyMDB5_KpMwt4QXFgT2aqdRizr8Czh/view?usp=sharing";
 
 export const siteConfig = {
-  name: "Parth Mittal",
-  title: "Parth Mittal | Software Developer",
+  name: "Harsh Sinha",
+  title: "Harsh Sinha | AI Engineer",
   description:
     "Member of Technical Staff at Oracle. 13x hackathon winner. Builder of Khoj, Echo, and open-source tools.",
     url: "https://mittalparth.dev",
-  githubUsername: "mittal-parth",
-  role: "Member of Technical Staff",
-  tagline: "MTS @ Oracle · 15x Hackathon Winner · NITK'24 · PBA-5",
+  githubUsername: "harshsinha-12",
+  role: "Prev Founder's Office and AI Engineer",
+  tagline: "Prev  @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend",
 };
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
@@ -34,31 +34,31 @@ export const socialMedia: SocialLink[] = [
   {
     id: "social-media-4",
     platform: "twitter",
-    link: "https://x.com/mittalparth_",
+    link: "https://x.com/sinhaharsh12",
     label: "Twitter",
   },
   {
     id: "social-media-1",
     platform: "linkedin",
-    link: "https://www.linkedin.com/in/mittal-parth",
+    link: "https://www.linkedin.com/in/harshsinha12/",
     label: "LinkedIn",
   },
   {
     id: "social-media-2",
     platform: "github",
-    link: "https://www.github.com/mittal-parth",
+    link: "https://www.github.com/harshsinha-12",
     label: "GitHub",
   },
   {
     id: "social-media-3",
     platform: "mail",
-    link: "mailto:work.parthmittal@gmail.com",
+    link: "mailto:sinha.harshsep@gmail.com",
     label: "Email",
   },
 ];
 
 export const connectLink =
-  socialMedia.find((s) => s.platform === "twitter")?.link ?? "https://x.com/mittalparth_";
+  socialMedia.find((s) => s.platform === "twitter")?.link ?? "https://x.com/sinhaharsh12";
 
 export type IntroSegment =
   | { type: "text"; value: string }
@@ -80,90 +80,121 @@ export const introBullets: IntroBullet[] = [
   {
     id: "intro-1",
     segments: [
-      { type: "text", value: "I am currently a " },
-      { type: "hand", value: "Member of Technical Staff" },
+      { type: "text", value: "I am currently " },
+      { type: "hand", value: "looking for AI Engineering roles" },
+      {
+        type: "text",
+        value: " around AI agents, quant, and backend. Previously, I was ",
+      },
+      { type: "hand", value: "Founder's Office & AI Engineer" },
       { type: "text", value: " at " },
       {
         type: "link",
-        label: "Oracle",
-        href: "https://www.oracle.com",
-        previewTitle: "Oracle",
-        previewDescription: "Cloud infrastructure and enterprise software.",
+        label: "Multibagg AI",
+        href: "https://www.multibagg.ai",
+        previewTitle: "Multibagg AI",
+        previewDescription:
+          "AI-powered stock research and market intelligence platform.",
       },
-      {
-        type: "text",
-        value:
-          ", working in the Exadata Database as a Service, Control Plane team.",
-      },
+      { type: "text", value: "." },
     ],
   },
   {
     id: "intro-2",
     segments: [
-      { type: "text", value: "I like doing " },
-      { type: "hand", value: "hackathons" },
+      { type: "text", value: "I love building " },
+      { type: "hand", value: "AI agents" },
       {
         type: "text",
-        value: ". Participated in 35+, won 15 (recently the Google DeepMind ",
+        value:
+          " — for finance, payments, data pipelines, news, Instagram analysis, and most workflows I can automate.",
       },
-      {
-        type: "link",
-        label: "hackathon",
-        href: "https://x.com/mittalparth_/status/2076292927882682602?s=46",
-        previewTitle: "Google DeepMind Hackathon",
-        previewDescription: "Winner announcement on X.",
-      },
-      { type: "text", value: "), and judged 3." },
     ],
   },
   {
     id: "intro-3",
     segments: [
-      { type: "text", value: "I used to lead a team of 40+ student developers, building " },
+      { type: "text", value: "I've mainly worked on " },
       {
         type: "link",
-        label: "IRIS",
-        href: "https://about.iris.nitk.ac.in/",
-        previewTitle: "IRIS, NITK",
-        previewDescription: "Institute MIS with 10K+ active users.",
+        label: "Ask Iris",
+        href: "https://www.multibagg.ai/ask-iris",
+        previewTitle: "Ask Iris",
+        previewDescription:
+          "Multibagg AI's AI flagship Multi Agent Chatbot for Indian stock market research.",
       },
-      { type: "text", value: " - an MIS with 10K+ active users." },
+      { type: "text", value: " and " },
+      {
+        type: "link",
+        label: "Multibagg AI",
+        href: "https://www.multibagg.ai",
+        previewTitle: "Multibagg AI",
+        previewDescription:
+          "AI-powered stock research and market intelligence platform.",
+      },
+      { type: "text", value: ", which has answered over " },
+      { type: "hand", value: "500K+ user queries" },
+      {
+        type: "text",
+        value: " and helps investors daily. It's loved by users and the sharks on ",
+      },
+      {
+        type: "link",
+        label: "Shark Tank India Season 5",
+        href: "https://www.linkedin.com/posts/shark-tank-india_namitathapar-sharktankindia-sharktankindiaseason5-ugcPost-7418286077645312000-fXBB",
+        previewTitle: "Shark Tank India Season 5 — Multibagg AI",
+        previewDescription:
+          "Shark Tank India's Match-Off featuring Multibagg AI on Sony LIV.",
+      },
+      { type: "text", value: "." },
     ],
   },
   {
     id: "intro-4",
     segments: [
-      { type: "text", value: "Graduated from " },
+      { type: "text", value: "I'm in my " },
+      { type: "hand", value: "final year of undergrad" },
+      { type: "text", value: " at " },
       {
         type: "link",
-        label: "NITK",
-        href: "https://www.nitk.ac.in/",
-        previewTitle: "NITK Surathkal",
-        previewDescription: "National Institute of Technology Karnataka.",
+        label: "IIT Patna",
+        href: "https://www.iitp.ac.in/",
+        previewTitle: "Indian Institute of Technology Patna",
+        previewDescription: "IIT Patna — undergraduate program.",
       },
-      { type: "text", value: " in 2024. Also an alumnus of the " },
-      {
-        type: "link",
-        label: "Polkadot Blockchain Academy",
-        href: "https://polkadot.academy/",
-        previewTitle: "Polkadot Blockchain Academy",
-        previewDescription: "Intensive blockchain developer program.",
-      },
-      { type: "text", value: " @ National University of Singapore." },
+      { type: "text", value: "." },
     ],
   },
   {
     id: "intro-5",
     segments: [
-      { type: "text", value: "Fun fact: I was " },
+      { type: "text", value: "Fun fact: got into " },
+      { type: "hand", value: "finance" },
+      {
+        type: "text",
+        value:
+          " pre-COVID, watching Dad invest in the stock market. Investing since 2019 — ",
+      },
+      { type: "hand", value: "was not 18 yet, lol 😅" },
+      {
+        type: "text",
+        value:
+          " — generally profitable, with a few ",
+      },
+      { type: "hand", value: "F&O losses" },
+      { type: "text", value: " too. " },
       {
         type: "link",
-        label: "featured",
-        href: "https://www.linkedin.com/posts/mittal-parth_look-mom-i-am-on-the-times-square-ugcPost-7324078226178215936-tat9/",
-        previewTitle: "Times Square feature",
-        previewDescription: "Featured on Times Square by Talent Protocol.",
+        label: "Nine out of ten people lose in F&O",
+        href: "https://www.sebi.gov.in/reports-and-statistics/research/jan-2023/study-analysis-of-profit-and-loss-of-individual-traders-dealing-in-equity-fando-segment_67525.html",
+        previewTitle: "SEBI — F&O trader P&L study",
+        previewDescription:
+          "SEBI research on profit and loss of individual traders in the equity F&O segment.",
       },
-      { type: "text", value: " on the Times Square by Talent Protocol!" },
+      {
+        type: "text",
+        value: " — stay away unless you actually know what you're doing.",
+      },
     ],
   },
 ];
@@ -268,7 +299,9 @@ export const projectStickers: CutoutSticker[] = [
   },
 ];
 
-export type ContentBlock = { text: string; link?: string };
+export type ContentBlock = {
+  segments: IntroSegment[];
+};
 
 export type Position = {
   title: string;
@@ -286,144 +319,151 @@ export type Experience = {
 
 export const experiences: Experience[] = [
   {
-    id: "exp-oracle",
-    organisation: "Oracle, India",
-    logo: "/assets/oracle.jpg",
-    link: "https://www.oracle.com/in/",
+    id: "exp-multibagg",
+    organisation: "Multibagg AI",
+    logo: "/assets/multibagg-ai.webp",
+    link: "https://www.multibagg.ai",
     positions: [
       {
-        title: "Member of Technical Staff",
-        duration: "Oct 2025 - Present",
+        title: "Founder's Office & AI Engineer",
+        duration: "Jan 2025 - Jun 2026",
         content: [
           {
-            text: "Working on various projects in the Database as a Service, Control Plane team of Oracle Cloud Infrastructure.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Worked across the full lifecycle of production AI systems — document ingestion, structured extraction, embeddings, retrieval, agent orchestration, tool execution, evaluation, observability and user-facing product integration — while working directly with the founder.",
+              },
+            ],
           },
           {
-            text: "Developed a new workflow to safely delete orphaned OCI Object Storage Service backup storage, saving ~$45M / year.",
+            segments: [
+              {
+                type: "text",
+                value: "Engineered core workflows for ",
+              },
+              {
+                type: "link",
+                label: "Ask Iris",
+                href: "https://www.multibagg.ai/ask-iris",
+                previewTitle: "Ask Iris",
+                previewDescription:
+                  "Multibagg AI's multi-agent investment research assistant.",
+              },
+              {
+                type: "text",
+                value:
+                  ", a multi-agent investment research assistant that answered 500K+ user queries (",
+              },
+              {
+                type: "link",
+                label: "Iris launch",
+                href: "https://www.linkedin.com/posts/biased-human_today-we-are-launching-the-most-powerful-ugcPost-7398653952919101440-vvJ_",
+                previewTitle: "Ask Iris launch — Multibagg AI",
+                previewDescription:
+                  "Launch announcement for Iris, Multibagg AI's AI analyst for Indian markets.",
+              },
+              {
+                type: "text",
+                value:
+                  "), building sub-agents, tool-calling flows, financial data fetchers, SQL and RAG tools, web search, citations, streaming and retrieval over 100K+ documents and 20M+ records.",
+              },
+            ],
           },
           {
-            text: "Reduced the average ExaCS Object Storage based backup deletion time by ~70% over the past 1 year.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Built evaluation and agent-harness infrastructure across stock, portfolio, screener, ETF, index and industry agents using custom test sets, LLM-as-a-judge, tool-call validation, citation checks, latency tracking, response-quality scoring and failure analysis.",
+              },
+            ],
           },
           {
-            text: "Worked on adding support for cross-region replicated backups on ExaCS",
-          },
-        ],
-      },
-      {
-        title: "Member of Technical Staff - 1",
-        duration: "Jul 2024 - Sep 2025",
-        content: [
-          {
-            text: "Pending US patent application for building an AI On-Call Agent using an internal agentic framework.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Built production document-intelligence pipelines for IPO RHPs, ETF factsheets, annual reports, investor presentations and earnings-call transcripts using Docling/OCR, Pydantic and Zod schemas, embeddings, queue workers and LLM-based structured extraction.",
+              },
+            ],
           },
           {
-            text: "Developed a common integration test framework for ExaCS, ExaDB-XS and ExaC@C, reducing code maintenance by ~67% and increased coverage by ~50%",
-          },
-        ],
-      },
-      {
-        title: "Member of Technical Staff Intern",
-        duration: "May 2023 - Jul 2023",
-        content: [
-          {
-            text: "Worked with the Exadata Cloud@Customer team in the Database Unit.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Developed and maintained financial-intelligence pipelines for 300+ ratios and technical indicators, including valuation metrics, beta, volatility, FII/DII flows, sector rotation, market breadth, portfolio benchmarks, shareholding patterns, bulk/block deals and earnings data.",
+              },
+            ],
           },
           {
-            text: "Wrote APIs in Java to help gracefully migrate a running ExaC@C infrastructure to a new region in the case of a region failure.",
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: "exp-averlon",
-    organisation: "Averlon",
-    logo: "/assets/averlon.jpg",
-    link: "https://averlon.ai/",
-    positions: [
-      {
-        title: "Software Developer Intern",
-        duration: "Sept 2023 - Feb 2024",
-        content: [
-          {
-            text: "Averlon is an AI-powered platform that identifies exploitable security vulnerabilities and helps teams fix them automatically.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Created an AI Screener Agent that translates natural-language investing queries into SQL and filter operations; benchmarked multiple retrieval strategies and improved reliability through schema mapping, evaluations, logging, guardrails and prompt optimization.",
+              },
+            ],
           },
           {
-            text: "I added support for the discoverability of Microsoft Azure assets utilising Go and Gremlin..",
+            segments: [
+              {
+                type: "text",
+                value: "Optimized RAG infrastructure across ",
+              },
+              {
+                type: "link",
+                label: "Pinecone",
+                href: "https://www.pinecone.io",
+                previewTitle: "Pinecone",
+                previewDescription: "Vector database for AI applications.",
+              },
+              { type: "text", value: " and " },
+              {
+                type: "link",
+                label: "Qdrant",
+                href: "https://qdrant.tech",
+                previewTitle: "Qdrant",
+                previewDescription: "Vector similarity search engine.",
+              },
+              {
+                type: "text",
+                value:
+                  " using sparse-dense hybrid search, metadata filters, Cohere re-ranking, document chunking and page-level citations, reducing vector-related infrastructure costs by up to 80%.",
+              },
+            ],
           },
           {
-            text: "Worked on extending support for Azure for reachability analysis of assets for cloud security posture management.",
-          }
-        ],
-      },
-    ],
-  },
-  {
-    id: "exp-iris",
-    organisation: "IRIS, NITK",
-    logo: "/assets/iris-logo.png",
-    link: "https://about.iris.nitk.ac.in/",
-    positions: [
-      {
-        title: "Tech Lead",
-        duration: "Apr 2023 - Apr 2024",
-        content: [
-          {
-            text: "IRIS is the official MIS software of NITK, one of India's premier STEM universities. With 24K+ users, 10K+ app downloads and 55+ process digitised, it is completely developed and maintained by students.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Built real-time AI automation for news, exchange announcements and Union Budget coverage across 6K+ companies, generating live transcripts, sentiment and importance scores, company/topic summaries and ",
+              },
+              {
+                type: "link",
+                label: "automated X posts",
+                href: "https://x.com/sinhaharsh12/status/1975865353705320477",
+                previewTitle: "Twitter market-news automation",
+                previewDescription:
+                  "Architecture thread on Multibagg AI's AI-native, high-frequency market updates on X.",
+              },
+              {
+                type: "text",
+                value: " that reached 3.2M+ impressions in 6 months.",
+              },
+            ],
           },
           {
-            text: "Led a team of 40+ students across 5 teams as the Tech Lead in the year 2023-24.",
-          },
-          {
-            text: "Supported high-impact digitization projects such as the Testing & Consultancy module, which handled 1000+ projects from 650+ companies, and the Non-Teaching Staff Recruitment portal, which managed 2000+ applications.",
-          },
-          {
-            text: "Contributed to workflows serving large student groups, including the National Education Policy based course allocation for 2000+ students, Hostel Elections with 6.5k votes, and Hostel Complaints 2.0 with 500+ complaints filed and 350+ resolved in four months.",
-          },
-          {
-            text: "Helped scale IRIS Forms, our in-house alternative to Google Forms, which grew to 150,000+ hits during the year.",
-          },
-          {
-            text: "Collaborated closely with product managers, developers, faculty, MIS office, and institute stakeholders to continue the digital transformation at NITK.",
-          },
-        ],
-      },
-      {
-        title: "Web Lead",
-        duration: "Apr 2022 - Apr 2024",
-        content: [
-          {
-            text: "Managed a team of 6 student developers while also overlooking multiple modules.",
-          },
-          {
-            text: "Designed and developed the official recruitment portal for non-teaching staff with an admin panel, RBAC, email notifications and payment integration. Managed 2K+ applications in its first month.",
-          },
-          {
-            text: "Added product enhancements to the Placement Cell module used 1K+ users every year for managing all placement and internship related activities at NITK digitially.",
-          },
-          {
-            text: "Built the public facing website for the Career Development Centre of NITK.",
-          },
-        ],
-      },
-      {
-        title: "Web Developer",
-        duration: "Nov 2021 - Apr 2022",
-        content: [
-          {
-            text: "Worked on adding Conditional Fields support to the Forms Module.",
-          },
-          {
-            text: "Revamped the Faculty Appraisal Module used annually by all teaching staff at NITK.",
-          },
-        ],
-      },
-      {
-        title: "Web Developer Intern",
-        duration: "Jun 2021 - Oct 2021",
-        content: [
-          {
-            text: "Developed a multi-role approval flow system to facilitate data collection and display on the Institute's Department Websites.",
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Designed and tested Redis Cluster infrastructure for scalable caching and fault tolerance across Docker and Azure VMs, validating primary-replica failover, key access patterns, deployment behaviour and migration strategy.",
+              },
+            ],
           },
         ],
       },

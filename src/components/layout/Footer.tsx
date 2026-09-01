@@ -47,7 +47,7 @@ export function Footer() {
         <LinkPreview href={connectLink} title="Connect" description="Say hi on X">
           <span className="marker-link marker-link--on-mat !text-[var(--color-on-mat)]">Connect</span>
         </LinkPreview>
-        {" · "}© {year} Parth Mittal
+        {" · "}© {year} Harsh Sinha
       </p>
     </footer>
   );
