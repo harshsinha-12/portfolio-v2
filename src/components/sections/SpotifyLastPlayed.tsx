@@ -56,11 +56,9 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
     }
 
     void loadTrack();
-    const refreshTimer = window.setInterval(loadTrack, 60_000);
 
     return () => {
       controller.abort();
-      window.clearInterval(refreshTimer);
     };
   }, []);
 
