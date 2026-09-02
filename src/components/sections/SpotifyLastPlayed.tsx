@@ -14,6 +14,8 @@ type LastPlayedTrack = {
 
 type SpotifyResponse = {
   track: LastPlayedTrack | null;
+  cacheStatus?: "hit" | "refreshed" | "stale" | "cooldown";
+  retryAt?: string | null;
 };
 
 function getSpotifyEmbedUrl(trackUrl: string) {
@@ -33,6 +35,7 @@ function getSpotifyEmbedUrl(trackUrl: string) {
 
 export function SpotifyLastPlayed({ className }: { className?: string }) {
   const [track, setTrack] = useState<LastPlayedTrack | null>(null);
+  const [retryAt, setRetryAt] = useState<string | null>(null);
   const [playerOpen, setPlayerOpen] = useState(true);
 
   useEffect(() => {
@@ -50,6 +53,7 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
 
         const body = (await response.json()) as SpotifyResponse;
         setTrack(body.track);
+        setRetryAt(body.cacheStatus === "cooldown" ? body.retryAt ?? null : null);
       } catch {
         // Keep the hero uncluttered when Spotify is unavailable.
       }
@@ -62,8 +66,35 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
     };
   }, []);
 
-  if (!track) {
+  if (!track && !retryAt) {
     return null;
+  }
+
+  if (!track) {
+    const retryTime = new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(new Date(retryAt!));
+
+    return (
+      <div
+        className={cn(
+          "flex min-w-0 items-center gap-1.5 text-[11px] leading-snug text-[var(--color-on-mat)]/75 sm:text-xs",
+          className,
+        )}
+        aria-live="polite"
+      >
+        <FaSpotify
+          className="h-3 w-3 shrink-0 text-[#1ed760]/75 sm:h-3.5 sm:w-3.5"
+          aria-hidden="true"
+        />
+        <span>Spotify sync paused</span>
+        <span aria-hidden="true">—</span>
+        <span className="font-medium text-[var(--color-heading-on-mat)]/80">
+          retrying after {retryTime}
+        </span>
+      </div>
+    );
   }
 
   const embedUrl = getSpotifyEmbedUrl(track.url);

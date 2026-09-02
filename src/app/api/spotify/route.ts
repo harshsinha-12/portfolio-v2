@@ -218,9 +218,18 @@ async function refreshTrack(): Promise<RefreshResult> {
 function spotifyResponse(
   track: PublicTrack | null,
   cacheStatus: "hit" | "refreshed" | "stale" | "cooldown",
+  blockedUntil = 0,
 ) {
   return NextResponse.json(
-    { track, configured: true },
+    {
+      track,
+      configured: true,
+      cacheStatus,
+      retryAt:
+        cacheStatus === "cooldown" && blockedUntil > Date.now()
+          ? new Date(blockedUntil).toISOString()
+          : null,
+    },
     {
       headers: {
         "Cache-Control":
@@ -252,7 +261,7 @@ export async function GET() {
     return spotifyResponse(cached.track, "hit");
   }
   if (cached && cached.blockedUntil > now) {
-    return spotifyResponse(cached.track, "cooldown");
+    return spotifyResponse(cached.track, "cooldown", cached.blockedUntil);
   }
 
   const hasRefreshLock = await acquireRefreshLock();
@@ -280,7 +289,11 @@ export async function GET() {
         blockedUntil: now + result.retryAfterSeconds * 1000,
       };
       await writeCache(nextCache);
-      return spotifyResponse(nextCache.track, "cooldown");
+      return spotifyResponse(
+        nextCache.track,
+        "cooldown",
+        nextCache.blockedUntil,
+      );
     }
 
     return spotifyResponse(cached?.track ?? null, "stale");
