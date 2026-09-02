@@ -45,6 +45,11 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 SPOTIFY_CLIENT_ID=...
 SPOTIFY_CLIENT_SECRET=...
 SPOTIFY_REFRESH_TOKEN=...
+REDIS_USERNAME=default
+REDIS_PASSWORD=...
+REDIS_HOST=...
+REDIS_PORT=...
+REDIS_TLS=false
 ```
 
 The Spotify variables are server-only and power the live last-played line in
@@ -53,6 +58,11 @@ the profile header. Authorize the app once with the
 returned refresh token with the Client ID and Client Secret in your local and
 deployment environment settings. Never prefix these variables with
 `NEXT_PUBLIC_`.
+
+The Redis variables power the footer visitor counter. Set `REDIS_TLS=true`
+when the Redis Cloud database requires TLS. A one-year, HTTP-only cookie keeps
+ordinary page refreshes from incrementing the counter repeatedly in the same
+browser.
 
 ## Content
 
