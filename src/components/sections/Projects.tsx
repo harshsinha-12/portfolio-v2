@@ -2,7 +2,7 @@
 
 import { createElement } from "react";
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { BookOpenText, ExternalLink } from "lucide-react";
 import { AiFillGithub, AiFillYoutube } from "@/lib/icons";
 import { projects, projectStickers, type Project, type ProjectStackItem } from "@/data/portfolio";
 import { getStackIcon } from "@/lib/icons";
@@ -135,7 +135,7 @@ function ProjectLinks({
   liveLinkTitle: string;
   liveLinkDescription: string;
 }) {
-  const hasLinks = project.github || project.youtube || project.link;
+  const hasLinks = project.github || project.readme || project.youtube || project.link;
   if (!hasLinks) return null;
 
   return (
@@ -148,6 +148,18 @@ function ProjectLinks({
           className={projectLinkClassName}
         >
           <AiFillGithub size={projectLinkIconSize} aria-hidden="true" />
+        </LinkPreview>
+      )}
+      {project.readme && (
+        <LinkPreview
+          href={project.readme}
+          ariaLabel={`README for ${project.title}`}
+          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "readme" })}
+          title={`${project.title} README`}
+          description="Architecture, setup, implementation details, and current limitations."
+          className={projectLinkClassName}
+        >
+          <BookOpenText size={projectLinkIconSize} strokeWidth={2.1} aria-hidden="true" />
         </LinkPreview>
       )}
       {project.youtube && (
