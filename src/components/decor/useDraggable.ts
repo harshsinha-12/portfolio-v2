@@ -12,7 +12,7 @@ import {
 import { track } from "@/lib/analytics";
 import { markPointerDragEnd, preloadStickerSounds, unlockPortfolioSounds } from "@/lib/portfolio-sounds";
 
-const STORAGE_PREFIX = "drag-pos-v2-";
+const STORAGE_PREFIX = "drag-pos-v3-";
 const RESET_EVENT = "portfolio:reset-stickers";
 
 type DragOffset = { x: number; y: number };
@@ -38,6 +38,17 @@ function isDragOffset(value: unknown): value is DragOffset {
 
 function storageKey(id: string): string {
   return `${STORAGE_PREFIX}${id}`;
+}
+
+function isStickerVisible(el: HTMLElement): boolean {
+  const rect = el.getBoundingClientRect();
+  const margin = 48;
+  return (
+    rect.right > margin &&
+    rect.left < window.innerWidth - margin &&
+    rect.bottom > margin &&
+    rect.top < window.innerHeight - margin
+  );
 }
 
 function readOffset(id: string): DragOffset {
@@ -162,6 +173,20 @@ export function useDraggable({
     // Load persisted drag offset after mount (client-only).
     // eslint-disable-next-line react-hooks/set-state-in-effect -- intentional hydration from localStorage
     setOffset(stored);
+
+    // Layout changes can leave old drag offsets off-screen — drop stale positions.
+    const frame = requestAnimationFrame(() => {
+      const el = ref.current;
+      if (!el) return;
+      if (stored.x === 0 && stored.y === 0) return;
+      if (isStickerVisible(el)) return;
+      applied.current = { x: 0, y: 0 };
+      localStorage.removeItem(storageKey(id));
+      applyVisual(el, { x: 0, y: 0 }, rotateRef.current, false);
+      setOffset({ x: 0, y: 0 });
+    });
+
+    return () => cancelAnimationFrame(frame);
   }, [id, persist]);
 
   useEffect(() => {

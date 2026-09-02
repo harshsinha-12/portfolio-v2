@@ -4,6 +4,7 @@ import Image from "next/image";
 import {
   githubGraphConfig,
   introBullets,
+  profileStickers,
   siteConfig,
   socialMedia,
 } from "@/data/portfolio";
@@ -13,6 +14,7 @@ import { LinkPreview, LinkPreviewImagePreloader } from "@/components/ui/LinkPrev
 import { IntroSegments } from "@/components/ui/IntroSegments";
 import { GitHubGraph } from "@/components/sections/GitHubGraph";
 import { SpotifyLastPlayed } from "@/components/sections/SpotifyLastPlayed";
+import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import { SoundToggle } from "@/components/sound/SoundToggle";
 import type { ContributionDay } from "@/lib/githubContributions";
@@ -123,7 +125,7 @@ type ProfileSectionProps = {
 
 export function ProfileSection({ initialContributions }: ProfileSectionProps) {
   return (
-    <section id="profile" aria-labelledby="profile-heading" className="animate-fade-up">
+    <section id="profile" aria-labelledby="profile-heading" className="relative animate-fade-up">
       <LinkPreviewImagePreloader />
       <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(0,11rem)_1fr] lg:items-start lg:gap-6">
         <div className="flex items-start gap-3 lg:contents">
@@ -162,17 +164,20 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
           <IntroList />
         </StickyNote>
 
-        <TapedCard
-          rotation={-0.4}
-          className="w-full max-lg:!rotate-0 lg:col-start-2 lg:row-start-3 lg:w-fit lg:max-w-full [&>div]:p-3"
-        >
-          <GitHubGraph
-            username={siteConfig.githubUsername}
-            {...githubGraphConfig}
-            initialDays={initialContributions}
-            className="w-full min-w-0"
-          />
-        </TapedCard>
+        <div className="relative w-full lg:col-start-2 lg:row-start-3">
+          <CutoutStickers stickers={profileStickers} />
+          <TapedCard
+            rotation={-0.4}
+            className="w-full max-lg:!rotate-0 lg:w-fit lg:max-w-full [&>div]:p-3"
+          >
+            <GitHubGraph
+              username={siteConfig.githubUsername}
+              {...githubGraphConfig}
+              initialDays={initialContributions}
+              className="w-full min-w-0"
+            />
+          </TapedCard>
+        </div>
       </div>
     </section>
   );
