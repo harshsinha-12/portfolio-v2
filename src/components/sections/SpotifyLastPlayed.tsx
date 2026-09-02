@@ -33,7 +33,7 @@ function getSpotifyEmbedUrl(trackUrl: string) {
 
 export function SpotifyLastPlayed({ className }: { className?: string }) {
   const [track, setTrack] = useState<LastPlayedTrack | null>(null);
-  const [playerOpen, setPlayerOpen] = useState(false);
+  const [playerOpen, setPlayerOpen] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
