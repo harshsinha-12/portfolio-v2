@@ -5,8 +5,8 @@ export const siteConfig = {
   name: "Harsh Sinha",
   title: "Harsh Sinha | AI Engineer",
   description:
-    "Member of Technical Staff at Oracle. 13x hackathon winner. Builder of Khoj, Echo, and open-source tools.",
-    url: "https://mittalparth.dev",
+    "AI Engineer · Prev Founder's Office @ Multibagg AI · National Finalist IFF-FinTech Olympiad '24 · IIT Patna '27.",
+  url: "https://harsh-portfolio-two-sigma.vercel.app/",
   githubUsername: "harshsinha-12",
   role: "Prev Founder's Office and AI Engineer",
   tagline: "Prev  @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend",

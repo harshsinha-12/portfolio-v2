@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.title,
     description: siteConfig.description,
-    creator: "@mittalparth_",
+    creator: "@sinhaharsh12",
     images: ["/og.jpg"],
   },
   robots: {
@@ -78,20 +78,20 @@ const personJsonLd = {
   worksFor: {
     "@type": "Organization",
     name: "Multibagg AI",
-    url: "https://www.oracle.com",
+    url: "https://www.multibagg.ai",
   },
   alumniOf: [
     {
       "@type": "CollegeOrUniversity",
-      name: "National Institute of Technology Karnataka",
-      url: "https://www.nitk.ac.in/",
+      name: "Indian Institute of Technology Patna",
+      url: "https://www.iitp.ac.in/",
     },
   ],
   url: siteUrl,
   sameAs: [
-    "https://www.linkedin.com/in/mittal-parth",
-    "https://github.com/mittal-parth",
-    "https://www.twitter.com/mittalparth_",
+    "https://www.linkedin.com/in/harshsinha12",
+    "https://github.com/harshsinha-12",
+    "https://x.com/sinhaharsh12",
   ],
   image: `${siteUrl}/assets/profile-pic.jpg`,
 };
