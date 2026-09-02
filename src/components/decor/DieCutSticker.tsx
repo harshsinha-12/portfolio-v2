@@ -1,11 +1,17 @@
 "use client";
 
-import type { PointerEvent } from "react";
+import { useEffect, useRef, type PointerEvent } from "react";
 import Image from "next/image";
 import { NoteBurst } from "@/components/decor/NoteBurst";
 import { useDraggable } from "@/components/decor/useDraggable";
 import { useMusicPlayer } from "@/components/decor/useMusicPlayer";
+import {
+  resolveStickerPlacement,
+  useCanHover,
+  useIsMobileStickerLayout,
+} from "@/components/decor/useStickerLayout";
 import { useStickerSounds } from "@/components/decor/useStickerSounds";
+import type { CutoutSticker } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
 let frontLayer = 40;
@@ -15,83 +21,85 @@ function nextFrontLayer(): number {
   return frontLayer;
 }
 
-export type DieCutStickerProps = {
-  id: string;
-  src: string;
-  width: number;
-  height: number;
-  tooltip: string;
-  rotate?: number;
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
-  displayWidth: string;
-  zIndex: number;
-  draggable: boolean;
-  outline?: "default" | "thin" | "plain";
-  emit?: "notes";
-  musicVideoId?: string;
-};
-
 const stickerOutlineClass = {
   default: "cutout-sticker",
   thin: "cutout-sticker-thin",
   plain: "cutout-sticker-plain",
 } as const;
 
-export function DieCutSticker({
-  id,
-  src,
-  width,
-  height,
-  tooltip,
-  rotate = 0,
-  top,
-  bottom,
-  left,
-  right,
-  displayWidth,
-  zIndex,
-  draggable,
-  outline = "default",
-  emit,
-  musicVideoId,
-}: DieCutStickerProps) {
+export type DieCutStickerProps = CutoutSticker & {
+  draggable: boolean;
+};
+
+export function DieCutSticker(sticker: DieCutStickerProps) {
+  const {
+    id,
+    src,
+    width,
+    height,
+    tooltip,
+    draggable,
+    outline = "default",
+    emit,
+    musicVideoId,
+    zIndex,
+  } = sticker;
+
+  const isMobile = useIsMobileStickerLayout();
+  const canHover = useCanHover();
+  const layout = resolveStickerPlacement(sticker, isMobile);
+  const dragId = isMobile ? `${id}-mobile` : id;
+  const tapHandlerRef = useRef<(() => void) | undefined>(undefined);
+
   const stickerSounds = useStickerSounds();
   const { ref, style, dragHandlers } = useDraggable({
-    id,
+    id: dragId,
     disabled: !draggable,
-    rotate,
+    bounds: isMobile ? "viewport" : "none",
+    rotate: layout.rotate,
+    onTap: () => tapHandlerRef.current?.(),
     ...stickerSounds,
   });
+
   const { playerTargetRef, handlers: musicHandlers } = useMusicPlayer(musicVideoId, ref);
+
+  useEffect(() => {
+    tapHandlerRef.current =
+      musicVideoId && !canHover ? musicHandlers.onTap : undefined;
+  }, [canHover, musicHandlers.onTap, musicVideoId]);
+
+  const { onPointerDown: onDragPointerDown, onPointerEnter } = dragHandlers;
+  const isMusicTapTarget = Boolean(musicVideoId && !canHover);
 
   return (
     <div
       ref={ref}
       {...(draggable
         ? {
-            ...dragHandlers,
+            onPointerEnter,
             onPointerDown: (event: PointerEvent<HTMLDivElement>) => {
               event.currentTarget.style.zIndex = String(nextFrontLayer());
-              dragHandlers.onPointerDown(event);
+              onDragPointerDown(event);
             },
           }
         : {})}
-      className={cn("group/cutout absolute select-none", draggable && "pointer-events-auto")}
+      className={cn(
+        "group/cutout absolute touch-manipulation select-none",
+        draggable && "pointer-events-auto",
+        isMusicTapTarget && "cursor-pointer",
+      )}
       style={{
-        top,
-        bottom,
-        left,
-        right,
-        width: displayWidth,
+        top: layout.top,
+        bottom: layout.bottom,
+        left: layout.left,
+        right: layout.right,
+        width: layout.displayWidth,
         zIndex,
         transform: style.transform,
         touchAction: style.touchAction,
         cursor: draggable ? style.cursor : undefined,
       }}
-      role="img"
+      role={isMusicTapTarget ? "button" : "img"}
       aria-label={tooltip}
       onMouseEnter={musicHandlers.onMouseEnter}
       onMouseLeave={musicHandlers.onMouseLeave}

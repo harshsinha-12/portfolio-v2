@@ -5,24 +5,26 @@ import { isSoundMuted, SOUND_MUTE_EVENT, unlockPortfolioSounds } from "@/lib/por
 
 const TRAIN_VOLUME = 0.38;
 
-type HoverLoopSoundHandlers = {
+type LoopSoundHandlers = {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onTap: () => void;
 };
 
-type HoverLoopSoundResult = {
-  handlers: HoverLoopSoundHandlers;
+type LoopSoundResult = {
+  handlers: LoopSoundHandlers;
 };
 
 /**
- * Loops a short ambient clip on hover — same mute gate and hover-only rules as
- * useMusicPlayer (headphones sticker).
+ * Loops a short clip on hover (desktop) or tap-to-toggle (touch).
+ * Same mute gate as useMusicPlayer.
  */
 export function useHoverLoopSound(
   src: string | undefined,
   targetRef: React.RefObject<HTMLElement | null>,
-): HoverLoopSoundResult {
+): LoopSoundResult {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const playingRef = useRef(false);
   const srcRef = useRef(src);
   const [canHover, setCanHover] = useState(true);
 
@@ -76,6 +78,7 @@ export function useHoverLoopSound(
         audio.pause();
         audio.src = "";
         audioRef.current = null;
+        playingRef.current = false;
       }
     };
   }, [src, targetRef]);
@@ -86,6 +89,7 @@ export function useHoverLoopSound(
     const pauseIfMuted = () => {
       if (isSoundMuted() && audioRef.current) {
         audioRef.current.pause();
+        playingRef.current = false;
       }
     };
 
@@ -98,9 +102,8 @@ export function useHoverLoopSound(
     };
   }, [src]);
 
-  const onMouseEnter = useCallback(() => {
-    if (!canHover || !srcRef.current) return;
-    if (isSoundMuted()) return;
+  const start = useCallback(() => {
+    if (!srcRef.current || isSoundMuted()) return;
 
     unlockPortfolioSounds();
     const audio = audioRef.current;
@@ -109,17 +112,36 @@ export function useHoverLoopSound(
     void audio.play().catch(() => {
       /* autoplay blocked */
     });
-  }, [canHover]);
+    playingRef.current = true;
+  }, []);
 
-  const onMouseLeave = useCallback(() => {
-    if (!canHover || !srcRef.current) return;
-
+  const stop = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     audio.pause();
     audio.currentTime = 0;
-  }, [canHover]);
+    playingRef.current = false;
+  }, []);
 
-  return { handlers: { onMouseEnter, onMouseLeave } };
+  const onMouseEnter = useCallback(() => {
+    if (!canHover) return;
+    start();
+  }, [canHover, start]);
+
+  const onMouseLeave = useCallback(() => {
+    if (!canHover) return;
+    stop();
+  }, [canHover, stop]);
+
+  const onTap = useCallback(() => {
+    if (canHover) return;
+    if (playingRef.current) {
+      stop();
+      return;
+    }
+    start();
+  }, [canHover, start, stop]);
+
+  return { handlers: { onMouseEnter, onMouseLeave, onTap } };
 }

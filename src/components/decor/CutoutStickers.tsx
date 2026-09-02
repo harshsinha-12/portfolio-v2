@@ -12,7 +12,7 @@ export function CutoutStickers({ stickers }: CutoutStickersProps) {
   const draggable = useDraggableEnabled();
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
+    <div className="pointer-events-none absolute inset-0 z-20">
       {stickers.map((sticker) => (
         <DieCutSticker key={sticker.id} {...sticker} draggable={draggable} />
       ))}

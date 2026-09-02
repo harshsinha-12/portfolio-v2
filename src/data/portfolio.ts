@@ -212,6 +212,15 @@ export const introBullets: IntroBullet[] = [
   },
 ];
 
+export type StickerPlacement = {
+  top?: string;
+  bottom?: string;
+  left?: string;
+  right?: string;
+  displayWidth?: string;
+  rotate?: number;
+};
+
 export type CutoutSticker = {
   id: string;
   src: string;
@@ -228,6 +237,7 @@ export type CutoutSticker = {
   outline?: "default" | "thin" | "plain";
   emit?: "notes";
   musicVideoId?: string;
+  mobile?: StickerPlacement;
 };
 
 export const experienceStickers: CutoutSticker[] = [
@@ -244,6 +254,11 @@ export const experienceStickers: CutoutSticker[] = [
     zIndex: 4,
     emit: "notes",
     musicVideoId: "wtJWkeE-nRE",
+    mobile: {
+      top: "-0.25rem",
+      right: "0.25rem",
+      displayWidth: "3rem",
+    },
   },
 ];
 
@@ -261,6 +276,11 @@ export const profileStickers: CutoutSticker[] = [
     left: "-7.5rem",
     displayWidth: "5.4rem",
     zIndex: 6,
+    mobile: {
+      top: "-1.25rem",
+      left: "3.75rem",
+      displayWidth: "2.75rem",
+    },
   },
   {
     id: "sticker-macbook",
@@ -273,6 +293,11 @@ export const profileStickers: CutoutSticker[] = [
     right: "-3rem",
     displayWidth: "5.8rem",
     zIndex: 5,
+    mobile: {
+      top: "4rem",
+      right: "-0.5rem",
+      displayWidth: "3rem",
+    },
   },
 ];
 
@@ -288,6 +313,11 @@ export const projectStickers: CutoutSticker[] = [
     right: "max(-11.2rem, calc(-50vw + 50% + 58rem))",
     displayWidth: "6rem",
     zIndex: 2,
+    mobile: {
+      top: "-0.5rem",
+      right: "10rem",
+      displayWidth: "3rem",
+    },
   },
 ];
 

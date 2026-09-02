@@ -48,6 +48,7 @@ export interface YTPlayer {
   seekTo(seconds: number, allowSeekAhead: boolean): void;
   setVolume(volume: number): void;
   getVolume(): number;
+  getPlayerState(): YTPlayerState;
   destroy(): void;
 }
 

@@ -14,6 +14,7 @@ const MUSIC_VOLUME = 55;
 type MusicPlayerHandlers = {
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onTap: () => void;
 };
 
 type MusicPlayerResult = {
@@ -186,8 +187,25 @@ export function useMusicPlayer(
     track("music_pause", { video_id: videoIdRef.current, trigger: "leave" });
   }, [canHover]);
 
+  const onTap = useCallback(() => {
+    if (!videoIdRef.current || isSoundMuted()) return;
+
+    const player = playerRef.current;
+    if (!player) return;
+
+    const state = player.getPlayerState();
+    if (state === YTPlayerState.PLAYING) {
+      player.pauseVideo();
+      track("music_pause", { video_id: videoIdRef.current, trigger: "tap" });
+      return;
+    }
+
+    player.playVideo();
+    track("music_play", { video_id: videoIdRef.current, trigger: "tap" });
+  }, []);
+
   return {
     playerTargetRef,
-    handlers: { onMouseEnter, onMouseLeave },
+    handlers: { onMouseEnter, onMouseLeave, onTap },
   };
 }

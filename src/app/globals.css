@@ -385,6 +385,12 @@ body {
   }
 }
 
+@media (max-width: 1023px) {
+  .group\/cutout:active:not([data-dragging="true"]) .cutout-tooltip {
+    opacity: 1;
+  }
+}
+
 .sticker-card {
   background: var(--color-paper);
   border: var(--sticker-outline) solid var(--color-sticker-outline);

@@ -28,6 +28,8 @@ type DraggableOptions = {
   onDragStart?: () => void;
   onDrag?: (offset: DragOffset) => void;
   onDragEnd?: () => void;
+  /** Fires on pointer up when movement stayed below tap threshold (mobile play/toggle). */
+  onTap?: () => void;
 };
 
 function isDragOffset(value: unknown): value is DragOffset {
@@ -128,6 +130,8 @@ export function resetAllStickerPositions(): void {
   window.dispatchEvent(new Event(RESET_EVENT));
 }
 
+const TAP_MOVE_THRESHOLD_PX = 10;
+
 export function useDraggable({
   id,
   disabled = false,
@@ -137,6 +141,7 @@ export function useDraggable({
   onDragStart,
   onDrag,
   onDragEnd,
+  onTap,
 }: DraggableOptions) {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -152,6 +157,8 @@ export function useDraggable({
   const onDragStartRef = useRef(onDragStart);
   const onDragRef = useRef(onDrag);
   const onDragEndRef = useRef(onDragEnd);
+  const onTapRef = useRef(onTap);
+  const movedRef = useRef(false);
 
   useEffect(() => {
     rotateRef.current = rotate;
@@ -160,7 +167,8 @@ export function useDraggable({
     onDragStartRef.current = onDragStart;
     onDragRef.current = onDrag;
     onDragEndRef.current = onDragEnd;
-  }, [bounds, onDrag, onDragEnd, onDragStart, persist, rotate]);
+    onTapRef.current = onTap;
+  }, [bounds, onDrag, onDragEnd, onDragStart, onTap, persist, rotate]);
 
   useEffect(() => {
     if (!persist) {
@@ -221,6 +229,7 @@ export function useDraggable({
       unlockPortfolioSounds();
       onDragStartRef.current?.();
       dragging.current = true;
+      movedRef.current = false;
       setIsDragging(true);
       pointerId.current = e.pointerId;
       start.current = {
@@ -235,6 +244,12 @@ export function useDraggable({
 
       const move = (ev: PointerEvent) => {
         if (!dragging.current || ev.pointerId !== pointerId.current) return;
+        if (
+          Math.hypot(ev.clientX - start.current.x, ev.clientY - start.current.y) >
+          TAP_MOVE_THRESHOLD_PX
+        ) {
+          movedRef.current = true;
+        }
         let next = {
           x: start.current.ox + (ev.clientX - start.current.x),
           y: start.current.oy + (ev.clientY - start.current.y),
@@ -268,12 +283,17 @@ export function useDraggable({
         const current = applied.current;
         applyVisual(ref.current, current, rotateRef.current, false);
         suppressTooltipUntilLeave(ref.current);
+        if (!movedRef.current) {
+          onTapRef.current?.();
+        }
         if (persistRef.current) {
           localStorage.setItem(storageKey(id), JSON.stringify(current));
         }
         setOffset(current);
         markPointerDragEnd();
-        track("sticker_moved", { sticker_id: id });
+        if (movedRef.current) {
+          track("sticker_moved", { sticker_id: id });
+        }
         onDragEndRef.current?.();
       };
 
@@ -313,15 +333,10 @@ function subscribeMediaQuery(query: string, cb: () => void) {
 }
 
 export function useDraggableEnabled() {
-  const coarse = useSyncExternalStore(
-    (cb) => subscribeMediaQuery("(pointer: coarse)", cb),
-    () => window.matchMedia("(pointer: coarse)").matches,
-    () => true,
-  );
   const reduced = useSyncExternalStore(
     (cb) => subscribeMediaQuery("(prefers-reduced-motion: reduce)", cb),
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     () => false,
   );
-  return !coarse && !reduced;
+  return !reduced;
 }
