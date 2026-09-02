@@ -109,9 +109,40 @@ body {
   animation: link-preview-in 340ms var(--ease-out) both;
 }
 
+@keyframes spotify-waveform-beat {
+  0%,
+  100% {
+    transform: scaleY(0.72);
+    filter: brightness(0.88);
+  }
+  24% {
+    transform: scaleY(1.08);
+    filter: brightness(1.18);
+  }
+  46% {
+    transform: scaleY(0.82);
+  }
+  72% {
+    transform: scaleY(1);
+    filter: brightness(1);
+  }
+}
+
+.spotify-waveform-beat {
+  transform-origin: center;
+  animation: spotify-waveform-beat 1.15s cubic-bezier(0.45, 0, 0.55, 1)
+    infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .link-preview-pop {
     animation: none;
+  }
+
+  .spotify-waveform-beat {
+    animation: none;
+    filter: none;
+    transform: none;
   }
 }
 

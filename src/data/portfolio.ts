@@ -162,7 +162,20 @@ export const introBullets: IntroBullet[] = [
         previewTitle: "Indian Institute of Technology Patna",
         previewDescription: "IIT Patna — undergraduate program.",
       },
-      { type: "text", value: "." },
+      { type: "text", value: ". Was also the " },
+      { type: "hand", value: "national finalist" },
+      { type: "text", value: " at " },
+      {
+        type: "link",
+        label: "IFF–FinTech Olympiad '24",
+        href: "https://www.linkedin.com/posts/harshsinha12_fintecholympiad2024-fintech-nationalfinalist-activity-7259242419387314176-kO12",
+        previewTitle: "National Finalist — Fintech Olympiad 2024",
+        previewDescription:
+          "Top 30 among 1 lakh+ applicants; national finals at IFTA 2024, Mumbai — India FinTech Forum.",
+      },
+      { type: "text", value: ", among the top 30 out of " },
+      { type: "hand", value: ">1 lakh" },
+      { type: "text", value: " candidates." },
     ],
   },
   {
