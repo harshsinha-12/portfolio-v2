@@ -58,7 +58,8 @@ export const socialMedia: SocialLink[] = [
 ];
 
 export const connectLink =
-  socialMedia.find((s) => s.platform === "twitter")?.link ?? "https://x.com/sinhaharsh12";
+  socialMedia.find((s) => s.platform === "linkedin")?.link ??
+  "https://www.linkedin.com/in/harshsinha12/";
 
 export type IntroSegment =
   | { type: "text"; value: string }
