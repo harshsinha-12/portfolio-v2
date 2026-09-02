@@ -493,7 +493,7 @@ export type Education = {
 export const educationList: Education[] = [
   {
     id: "education-1",
-    icon: "/assets/nitk-logo.png",
+    icon: "/assets/iitp-logo.png",
     title: "Indian Institute of Technology, Patna",
     degree: "Bachelor of Technology",
     duration: "Aug 2023 - May 2027",
