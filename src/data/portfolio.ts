@@ -315,7 +315,7 @@ export const projectStickers: CutoutSticker[] = [
     zIndex: 2,
     mobile: {
       top: "-0.5rem",
-      right: "10rem",
+      right: "9rem",
       displayWidth: "3rem",
     },
   },
