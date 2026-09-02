@@ -56,8 +56,9 @@ type MedalTier = "gold" | "silver" | "bronze" | "neutral";
 function getMedalTier(position: string): MedalTier {
   const p = position.toLowerCase();
   if (/\bwinner\b/.test(p) && !/runner/.test(p)) return "gold";
-  if (/1st runner|runners up/.test(p)) return "silver";
-  if (/2nd runner|\brunner up\b/.test(p)) return "bronze";
+  if (/national finalist|finalist/.test(p)) return "gold";
+  if (/1st runner|runners up|certificate of merit/.test(p)) return "silver";
+  if (/2nd runner|\brunner up\b|\d+(st|nd|rd|th) place/.test(p)) return "bronze";
   return "neutral";
 }
 
@@ -83,12 +84,14 @@ function PositionBadge({ position }: { position: string }) {
 function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: number }) {
   const imageSrc = item.photo ?? item.icon;
   const hasPhoto = Boolean(item.photo);
+  const hasLinks = linkIcons.some(({ key }) => Boolean(item[key]));
 
   return (
     <Polaroid
       rotation={rotation}
-      imageClassName="aspect-[5/4]"
-      className="!pb-4 sm:!pb-5"
+      imageClassName="aspect-[5/4] shrink-0"
+      className="!flex h-full flex-col !pb-3 sm:!pb-4"
+      captionClassName="flex min-h-[6.5rem] flex-1 flex-col sm:min-h-[6.75rem]"
       image={
         hasPhoto ? (
           <Image
@@ -117,9 +120,9 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
       caption={
         <>
           <PositionBadge position={item.position} />
-          <h3 className="mt-1 flex items-center gap-1.5 text-xs font-semibold leading-snug text-[var(--color-ink)]">
+          <h3 className="mt-1 flex min-h-[2rem] items-start gap-1.5 text-xs font-semibold leading-snug text-[var(--color-ink)]">
             {item.companyIcon && (
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
+              <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white">
                 <Image
                   src={item.companyIcon}
                   alt=""
@@ -130,15 +133,20 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
                 />
               </span>
             )}
-            <span className="min-w-0">{item.event}</span>
+            <span className="min-w-0 line-clamp-2">{item.event}</span>
           </h3>
-          <p className="mt-0.5 text-[10px] leading-relaxed text-[var(--color-ink-muted)]">
+          <p className="mt-0.5 line-clamp-3 text-[10px] leading-snug text-[var(--color-ink-muted)]">
             {item.highlight}
           </p>
         </>
       }
       footer={
-        <div className="mt-1.5 flex flex-wrap gap-1">
+        <div
+          className={cn(
+            "mt-auto flex min-h-6 flex-wrap gap-1 pt-1.5 sm:min-h-7",
+            !hasLinks && "invisible",
+          )}
+        >
           {linkIcons.map(({ key, Icon, label }) => {
             const href = item[key];
             if (!href) return null;
@@ -380,6 +388,7 @@ export function AchievementsSection() {
       <SectionHeading
         id="hackathons-heading"
         title="Hackathons"
+        accent="& certifications"
         onMat
         className="px-1"
         trailing={
@@ -423,7 +432,7 @@ export function AchievementsSection() {
             <div
               className="absolute inset-x-0 top-[25rem] z-10 flex justify-center"
               role="tablist"
-              aria-label="Hackathon pages"
+              aria-label="Hackathon & certification pages"
             >
               {Array.from({ length: pageCount }, (_, index) => (
                 <button
@@ -431,7 +440,7 @@ export function AchievementsSection() {
                   type="button"
                   role="tab"
                   aria-selected={index === safePage}
-                  aria-label={`Hackathons ${index * pageSize + 1}–${Math.min((index + 1) * pageSize, achievements.length)} of ${achievements.length}`}
+                  aria-label={`Items ${index * pageSize + 1}–${Math.min((index + 1) * pageSize, achievements.length)} of ${achievements.length}`}
                   disabled={transitioning}
                   onClick={() => navigateTo(index)}
                   className={cn(
@@ -454,13 +463,13 @@ export function AchievementsSection() {
         <div
           className="absolute bottom-0 right-0 flex items-center gap-1.5"
           role="group"
-          aria-label="Browse hackathons"
+          aria-label="Browse hackathons and certifications"
         >
           <button
             type="button"
             onClick={() => navigateTo(safePage - 1)}
             disabled={safePage === 0}
-            aria-label="Show earlier hackathons"
+            aria-label="Show earlier items"
             className={cn(
               "clothesline-swap-btn flex h-9 w-9 items-center justify-center rounded-full",
               "border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper)] text-[var(--color-accent)] shadow-[2px_3px_0_var(--color-shadow)]",
@@ -476,7 +485,7 @@ export function AchievementsSection() {
             type="button"
             onClick={() => navigateTo(safePage + 1)}
             disabled={safePage === pageCount - 1}
-            aria-label="Show more hackathons"
+            aria-label="Show more items"
             className={cn(
               "clothesline-swap-btn flex h-9 w-9 items-center justify-center rounded-full",
               "border-2 border-[var(--color-sticker-outline)] bg-[var(--color-paper)] text-[var(--color-accent)] shadow-[2px_3px_0_var(--color-shadow)]",

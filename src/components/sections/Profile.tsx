@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { FileText } from "lucide-react";
 import {
   githubGraphConfig,
   introBullets,
   profileStickers,
+  resumeLink,
   siteConfig,
   socialMedia,
 } from "@/data/portfolio";
@@ -60,10 +62,9 @@ function SocialStamps() {
 }
 
 function MobileTagline() {
-  const breakToken = " · NITK'24";
-  const breakIndex = siteConfig.tagline.indexOf(breakToken);
+  const lastBreak = siteConfig.tagline.lastIndexOf(" · ");
 
-  if (breakIndex === -1) {
+  if (lastBreak === -1) {
     return (
       <span className="inline-flex flex-wrap items-center gap-x-1.5">
         {siteConfig.tagline}
@@ -74,10 +75,10 @@ function MobileTagline() {
 
   return (
     <>
-      {siteConfig.tagline.slice(0, breakIndex)}
+      {siteConfig.tagline.slice(0, lastBreak)}
       <br />
       <span className="inline-flex items-center gap-x-1.5">
-        {siteConfig.tagline.slice(breakIndex + 3)}
+        {siteConfig.tagline.slice(lastBreak + 3)}
         <SoundToggle />
       </span>
     </>
@@ -153,6 +154,16 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
               <MobileTagline />
             </p>
             <SpotifyLastPlayed className="mt-2.5" />
+            <a
+              href={resumeLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 inline-flex h-7 items-center gap-1.5 rounded-full border border-[var(--color-on-mat)]/35 bg-[var(--color-mat-deep)]/45 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)] shadow-[1px_2px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:text-xs"
+            >
+              <FileText className="h-3.5 w-3.5 text-[var(--color-accent-on-mat)]" aria-hidden="true" />
+              Résumé
+              <span aria-hidden="true">↗</span>
+            </a>
           </div>
         </div>
 

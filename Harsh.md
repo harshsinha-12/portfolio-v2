@@ -1,8 +1,8 @@
 # Harsh Sinha — Portfolio Content
 
-Fill in every section below. Another agent can map this file directly to `src/data/portfolio.ts` and related assets.
+Canonical content lives in `src/data/portfolio.ts`. This file is a readable snapshot of that data — not a fill-in draft.
 
-**Status:** Draft — replace all `TODO` placeholders with your real information.
+**Status:** Synced with the live site (Vercel). Add new copy in `portfolio.ts` first, then refresh this file if you want a markdown backup.
 
 ---
 
@@ -12,6 +12,7 @@ Fill in every section below. Another agent can map this file directly to `src/da
 |------|----------------|
 | All main text & links | `src/data/portfolio.ts` |
 | SEO, Open Graph, JSON-LD | `src/app/layout.tsx` |
+| Agent-readable profile | `/llms.txt`, `/llms-full.txt`, `/api/about` — generated from `portfolio.ts` via `src/lib/agentProfile.ts` |
 | Profile photo path & alt text | `src/components/sections/Profile.tsx` |
 | Footer copyright name | `src/components/layout/Footer.tsx` |
 | Social share image generator | `scripts/generate-og.mjs` → outputs `public/og.jpg` |
@@ -32,28 +33,28 @@ Fill in every section below. Another agent can map this file directly to `src/da
 ## 1. Site identity
 
 ```yaml
-name: "Harsh Sinha"                    # Display name in header
-title: "Harsh Sinha | Software Developer" # Browser tab & SEO title
-description: "TODO — 1–2 sentence bio for Google/social previews"
-url: "https://TODO-your-domain.com"    # Production site URL
-githubUsername: "TODO-github-username" # Used for live contribution graph
-role: "TODO — e.g. Software Engineer"
-tagline: "TODO — e.g. SWE @ Company · Hackathon winner · College'25"
+name: "Harsh Sinha"
+title: "Harsh Sinha | AI Engineer"
+description: "AI Engineer · Prev Founder's Office @ Multibagg AI · National Finalist IFF-FinTech Olympiad '24 · IIT Patna '27."
+url: "https://harsh-portfolio-two-sigma.vercel.app/"
+githubUsername: "harshsinha-12"
+role: "Prev Founder's Office and AI Engineer"
+tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend"
 ```
 
 **Notes:**
-- `tagline` appears under your name on desktop and on mobile (with a line break before the last segment if it contains ` · `).
-- `description` should mention your role, standout projects, and 1–2 keywords.
+- `tagline` appears under your name on desktop. On mobile, `MobileTagline` inserts a line break before the last ` · ` segment.
+- `description` is used for Google/social previews.
 
 ---
 
 ## 2. Resume
 
 ```yaml
-resumeLink: "TODO — Google Drive / personal site PDF link"
+resumeLink: "https://drive.google.com/file/d/1vkxyMDB5_KpMwt4QXFgT2aqdRizr8Czh/view?usp=sharing"
 ```
 
-Currently exported in `portfolio.ts` but not wired to the UI. Keep it here if you add a resume button later.
+Shown as a Résumé chip in About and as a row in the contact section.
 
 ---
 
@@ -64,19 +65,19 @@ Add or remove entries as needed. Supported platforms: `linkedin`, `github`, `mai
 ```yaml
 socialMedia:
   - platform: twitter
-    link: "https://x.com/TODO"
+    link: "https://x.com/sinhaharsh12"
     label: "Twitter"
 
   - platform: linkedin
-    link: "https://www.linkedin.com/in/TODO"
+    link: "https://www.linkedin.com/in/harshsinha12/"
     label: "LinkedIn"
 
   - platform: github
-    link: "https://github.com/TODO"
+    link: "https://www.github.com/harshsinha-12"
     label: "GitHub"
 
   - platform: mail
-    link: "mailto:TODO@email.com"
+    link: "mailto:sinha.harshsep@gmail.com"
     label: "Email"
 ```
 
@@ -86,79 +87,17 @@ socialMedia:
 
 ## 4. About — intro bullets
 
-Each bullet is a list of segments. Use these segment types:
+Live in `introBullets` in `portfolio.ts`:
 
-| Type | Purpose | Example |
-|------|---------|---------|
-| `text` | Plain sentence fragment | `"I am currently a "` |
-| `hand` | Handwritten-style emphasis | `"Software Engineer"` |
-| `link` | Clickable link with hover preview | label, href, optional previewTitle & previewDescription |
-
-### Bullet 1 — Current role
-```yaml
-segments:
-  - type: text
-    value: "I am currently a "
-  - type: hand
-    value: "TODO job title"
-  - type: text
-    value: " at "
-  - type: link
-    label: "TODO Company"
-    href: "https://TODO"
-    previewTitle: "TODO Company"
-    previewDescription: "TODO one-line description"
-  - type: text
-    value: "TODO — what you work on."
-```
-
-### Bullet 2 — Hackathons / competitions (optional)
-```yaml
-segments:
-  - type: text
-    value: "I like doing "
-  - type: hand
-    value: "hackathons"
-  - type: text
-    value: ". TODO — your hackathon stats and a recent win."
-  # Add a link segment if you want to link a specific win announcement
-```
-
-### Bullet 3 — Leadership / notable work (optional)
-```yaml
-segments:
-  - type: text
-    value: "TODO — e.g. led a team, built a product, open source, etc."
-```
-
-### Bullet 4 — Education (optional)
-```yaml
-segments:
-  - type: text
-    value: "Graduated from "
-  - type: link
-    label: "TODO University"
-    href: "https://TODO"
-    previewTitle: "TODO University"
-    previewDescription: "TODO"
-  - type: text
-    value: " in TODO year."
-```
-
-### Bullet 5 — Fun fact (optional)
-```yaml
-segments:
-  - type: text
-    value: "Fun fact: TODO"
-```
-
-_Add or remove bullets. Each needs a unique `id` like `intro-1`, `intro-2`, …_
+1. Looking for AI Engineering roles; previously Founder's Office & AI Engineer at Multibagg AI.
+2. Builds AI agents for finance, payments, data pipelines, news, Instagram analysis.
+3. Ask Iris + Multibagg AI — 500K+ queries; Shark Tank India S5.
+4. Final year at IIT Patna; national finalist IFF–FinTech Olympiad '24 (top 30 of >1 lakh).
+5. Fun fact: investing since 2019; F&O warning with SEBI study link.
 
 ---
 
-## 5. GitHub contribution graph (optional tweaks)
-
-Defaults are usually fine.
+## 5. GitHub contribution graph
 
 ```yaml
 githubGraphConfig:
@@ -174,221 +113,108 @@ githubGraphConfig:
 
 ## 6. Work experience
 
-Repeat this block for each company / organization.
-
-### Experience 1
-```yaml
-id: "exp-TODO-slug"
-organisation: "TODO Company Name"
-logo: "/assets/TODO-logo.jpg"          # Add image to public/assets/, run pnpm optimize-images
-link: "https://TODO-company-url"
-positions:
-  - title: "TODO Role"
-    duration: "MMM YYYY - Present"     # or "MMM YYYY - MMM YYYY"
-    content:
-      - text: "TODO accomplishment or responsibility."
-      - text: "TODO — metrics help (e.g. reduced latency by 40%)."
-      # Optional: link a word in a bullet
-      # - text: "Built "
-      #   link: "https://project-url"   # Not in current schema — use plain text + link in intro instead
-```
-
-### Experience 2
-```yaml
-id: "exp-TODO-slug-2"
-organisation: "TODO"
-logo: "/assets/TODO-logo.jpg"
-link: "https://TODO"
-positions:
-  - title: "TODO"
-    duration: "TODO"
-    content:
-      - text: "TODO"
-```
-
-_Add more experiences as needed. Most recent first._
+One role in `experiences`: **Founder's Office & AI Engineer** at Multibagg AI (Jan 2025 – Jun 2026). Logo `/assets/multibagg-ai.webp`. Full bullets (Ask Iris, evals, retrieval, Pinecone/Qdrant, X automation, Redis) live in `portfolio.ts`.
 
 ---
 
 ## 7. Education
 
-**About intro (sticky note):** One line only — e.g. final year undergrad @ IIT Patna. No clubs or course lists here.
-
-**Experience timeline (`educationList`):** Degree entry for IIT Patna when you fill §6 experience section.
-
 ```yaml
 educationList:
   - id: "education-1"
-    icon: "/assets/TODO-iitp-logo.png"
-    title: "Indian Institute of Technology Patna"
-    degree: "B.Tech — TODO branch"          # e.g. Computer Science and Engineering
-    duration: "TODO start - Present"        # e.g. 2023 - Present (final year)
+    icon: "/assets/iitp-logo.webp"
+    title: "Indian Institute of Technology, Patna"
+    degree: "Bachelor of Technology"
+    duration: "Aug 2023 - May 2027"
     content:
-      - "Final year undergraduate"
+      - "Major: Computer Science and Engineering"
+      - "Minor: Data Science and Artificial Intelligence"
     link: "https://www.iitp.ac.in/"
-
-  # Certifications / courses → use §7b when you add section M.8 in plan.md
 ```
 
 ---
 
-## 7b. Certifications & courses (optional — add section later)
+## 8. Hackathons & certifications
 
-_Not in the About intro bullets. Planned as portfolio section **M.8** in `plan.md`._
-
-```yaml
-# certifications:   # wire up when you build the UI section
-#   - id: "cert-1"
-#     title: "TODO — e.g. AWS Certified Machine Learning"
-#     issuer: "Amazon Web Services"
-#     date: "MMM YYYY"
-#     link: "https://TODO"
-#     icon: "/assets/TODO.png"   # optional
-```
-
----
-
-## 8. Hackathons & achievements
-
-Polaroid cards on the clothesline. Each entry needs a photo (`icon` / `photo`) and optionally a small sponsor logo (`companyIcon`).
-
-```yaml
-achievements:
-  - id: "a-TODO-slug"
-    icon: "/assets/TODO-hackathon.webp"       # Polaroid image
-    companyIcon: "/assets/hackathon-icons/TODO.png"  # Small logo overlay (optional)
-    photo: "/assets/TODO-hackathon.webp"      # Usually same as icon
-    event: "TODO Hackathon Name"
-    position: "TODO — Winner / Runner Up / Top 10"
-    highlight: "TODO — one compelling line with numbers if possible"
-    article: "https://TODO"                   # X / LinkedIn / news post (optional)
-    project: "https://TODO"                   # Devfolio / live demo (optional)
-    youtube: "https://youtu.be/TODO"          # optional
-    github: "https://github.com/TODO/repo"    # optional
-    rotation: -2.0                            # Slight tilt on clothesline; -3 to 3 is fine
-```
-
-### My hackathons (fill in)
-
-| # | Event | Position | Highlight | Links |
-|---|-------|----------|-----------|-------|
-| 1 | TODO | TODO | TODO | article: TODO, project: TODO, youtube: TODO, github: TODO |
-| 2 | TODO | TODO | TODO | |
-| 3 | TODO | TODO | TODO | |
-
-_Remove rows you don't need. Order = display order (most impressive first recommended)._
+Clothesline in `achievements` (most impressive first): IFF–FinTech Olympiad '24 (National Finalist), Mine The Model (2nd), Summer of Quant, then course certificates (100xdevs, Udemy, Coursera, Forage). Photos live under `public/assets/`.
 
 ---
 
 ## 9. Projects
 
-```yaml
-projects:
-  - id: "project-1"
-    title: "TODO Project Name"
-    github: "https://github.com/TODO/repo"    # optional
-    link: "https://TODO-live-demo.com"        # optional
-    youtube: "https://youtu.be/TODO"          # optional
-    image: "/assets/TODO-project.webp"        # Cover / poster image
-    video: "/assets/videos/TODO-project.webm" # optional — after running optimize-videos
-    content: "TODO — 1–2 sentence description of what it does."
-    highlight: "TODO — e.g. Winner - Some Hackathon"  # optional badge text
-    stack:
-      - name: "TypeScript"
-      - name: "Next.js"
-      - name: "TODO"
-      # Custom icon for a stack item:
-      # - name: "Sarvam"
-      #   icon: "/assets/sarvam-logo.svg"
-```
+| # | Title | Live | GitHub |
+|---|-------|------|--------|
+| 1 | RecoveryOS | rzpy-agent-web.vercel.app | harshsinha-12/rzpy-agent |
+| 2 | LLM Trading Arena | the-llm-trading-arena-frontend.vercel.app | -the-llm-trading-arena-frontend |
+| 3 | Vritta AI | vritta-one.vercel.app | Vritta |
+| 4 | Instagram Creative Intelligence | instagram-analysis-red.vercel.app | instagram-analysis |
+| 5 | LLM Trading Arena Engine | — | the-llm-trading-arena-backend |
+| 6 | Go Rabbit | go-rabbit-sable.vercel.app | go-rabbit |
 
-### My projects (fill in)
-
-| # | Title | Description | Live | GitHub | Video | Highlight |
-|---|-------|-------------|------|--------|-------|-----------|
-| 1 | TODO | TODO | TODO | TODO | yes/no | TODO |
-| 2 | TODO | TODO | TODO | TODO | yes/no | TODO |
-| 3 | TODO | TODO | TODO | TODO | yes/no | TODO |
-
-**Video workflow:** Drop `media-src/videos/<slug>.mp4` → `pnpm optimize-videos` → use printed `.webm` path in `video` field.
+Cover images under `public/assets/`. Optional demo videos: `media-src/videos/` → `pnpm optimize-videos`.
 
 ---
 
-## 10. Decorative stickers (personality / easter eggs)
+## 10. Decorative stickers
 
-Optional fun cutouts around the page. You can reuse existing sticker images or add your own to `public/assets/`.
+| Section | Stickers |
+|---------|----------|
+| About (`profileStickers`) | Marvel, MacBook |
+| Experience (`experienceStickers`) | Headphones (YouTube on hover) |
+| Projects (`projectStickers`) | Coffee, RCB, Kohli, gym, food placeholder |
 
-### Experience section stickers (`experienceStickers`)
-```yaml
-- id: "sticker-headphones"
-  src: "/assets/sticker-headphones.webp"
-  tooltip: "TODO — e.g. I run on music"
-  musicVideoId: "TODO-youtube-video-id"   # optional — plays on hover
-  # Position/rotation usually fine as-is; customize tooltips only
-
-- id: "sticker-macbook"
-  src: "/assets/sticker-macbook.webp"
-  tooltip: "TODO — e.g. this is where the work happens"
-```
-
-### Projects section stickers (`projectStickers`)
-```yaml
-# Update tooltips to match your personality, or swap images:
-- tooltip: "TODO"
-- tooltip: "TODO"
-- tooltip: "TODO"
-- tooltip: "TODO"
-```
+Drop replacements as `public/assets/sticker-*.webp` and point `src` in `portfolio.ts`.
 
 ---
 
-## 11. Navigation sections (optional)
-
-Default labels — change only if you rename sections.
+## 11. Navigation sections
 
 ```yaml
 navSections:
   - id: profile
     label: "About"
-  - id: hackathons
-    label: "Hackathons"
   - id: experience
     label: "Experience"
   - id: projects
     label: "Projects"
+  - id: hackathons
+    label: "Hackathons & Certs"
+  - id: contact
+    label: "Connect"
 ```
 
 ---
 
 ## 12. SEO & metadata (`src/app/layout.tsx`)
 
-Update these after filling `portfolio.ts`:
-
 ```yaml
 keywords:
   - "Harsh Sinha"
-  - "Software Developer"
-  - "TODO company or school"
-  - "TODO specialty"
+  - "AI Engineer"
+  - "Multibagg AI"
+  - "IFF-FinTech Olympiad’24"
+  - "IITP'27"
+  - "Quant"
+  - "Backend"
+  - "AI Agents"
   - "Portfolio"
 
 twitter:
-  creator: "@TODO-your-x-handle"
+  creator: "@sinhaharsh12"
 
 personJsonLd:
   name: "Harsh Sinha"
-  jobTitle: "TODO current role"
+  jobTitle: "Looking for AI Engineering roles"
   worksFor:
-    name: "TODO Company"
-    url: "https://TODO"
+    name: "Multibagg AI"          # still listed as current in JSON-LD — should become former
+    url: "https://www.multibagg.ai"
   alumniOf:
-    - name: "TODO University"
-      url: "https://TODO"
+    - name: "Indian Institute of Technology Patna"
+      url: "https://www.iitp.ac.in/"
   sameAs:
-    - "https://www.linkedin.com/in/TODO"
-    - "https://github.com/TODO"
-    - "https://x.com/TODO"
-  image: "{siteUrl}/assets/profile-pic.jpg"
+    - "https://www.linkedin.com/in/harshsinha12"
+    - "https://github.com/harshsinha-12"
+    - "https://x.com/sinhaharsh12"
 ```
 
 ---
@@ -397,149 +223,94 @@ personJsonLd:
 
 ```yaml
 NAME: "Harsh Sinha"
-TAGLINE: "TODO — same as siteConfig.tagline"
+TAGLINE: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend"
 socials:
-  - handle: "TODO-linkedin-slug"
-  - handle: "TODO-github-username"
-  - handle: "@TODO-x-handle"
+  - handle: "harshsinha12"
+  - handle: "harshsinha-12"
+  - handle: "@sinhaharsh12"
 ```
 
-After updating, run:
-```bash
-pnpm generate-og
-```
-This writes `public/og.jpg` used when your site is shared on Twitter/LinkedIn/iMessage.
+Regenerate with `pnpm generate-og` after changing name/tagline.
 
 ---
 
 ## 14. Hardcoded strings outside `portfolio.ts`
 
-| Location | What to change |
-|----------|----------------|
-| `src/components/sections/Profile.tsx` | `alt="Parth Mittal"` → your name; `src="/assets/profile-pic.jpg"` if you use a different filename |
-| `src/components/layout/Footer.tsx` | `© {year} Parth Mittal` → your name |
-| `src/components/sections/Profile.tsx` → `MobileTagline` | Break token ` · NITK'24` is hardcoded for line wrapping — adjust to a natural break in *your* tagline |
+| Location | Status |
+|----------|--------|
+| `Profile.tsx` alt text | Harsh Sinha |
+| `Footer.tsx` copyright | Harsh Sinha |
+| `MobileTagline` | Splits on the last ` · ` in `siteConfig.tagline` (no NITK token) |
 
 ---
 
 ## 15. Images & assets checklist
 
-### Must replace
-- [ ] `public/assets/profile-pic.jpg` — your headshot
-- [ ] `src/app/favicon.ico`
-- [ ] `src/app/apple-icon.jpg`
-- [ ] `public/og.jpg` — regenerate with `pnpm generate-og`
-
-### Per experience entry
-- [ ] Company logo → `public/assets/<company>.jpg` (or `.png`)
-
-### Per education entry
-- [ ] School / program logo
-
-### Per hackathon entry
-- [ ] Polaroid photo (`icon` / `photo`)
-- [ ] Sponsor icon in `public/assets/hackathon-icons/` (optional)
-
-### Per project entry
-- [ ] Cover image (`image`)
-- [ ] Demo video (optional): source in `media-src/videos/`, output in `public/assets/videos/`
-
-### Optional personality
-- [ ] Decorative stickers (`sticker-*.webp`) — keep or replace
-- [ ] `public/assets/portfolio-screenshot.png` — for README only
-
-### After adding images
-```bash
-pnpm optimize-images      # Converts large JPG/PNG → WebP where beneficial
-pnpm seed-link-previews   # Fetches OG images for URLs in your content
-pnpm generate-og          # Regenerates social share card
-```
+- [x] `public/assets/profile-pic.jpg`
+- [x] `src/app/favicon.ico` / `apple-icon.jpg`
+- [x] `public/og.jpg`
+- [x] Multibagg + IIT Patna logos
+- [x] Cert / olympiad polaroids
+- [x] Project cover images
+- [ ] Project demo videos (optional)
+- [x] `public/assets/portfolio-screenshot.webp` for README
+- [x] Link preview stamps — `pnpm seed-link-previews` (sources pruned to current URLs)
 
 ---
 
 ## 16. Environment variables
 
-Create `.env.local` in the project root:
-
 ```bash
-NEXT_PUBLIC_SITE_URL=https://TODO-your-domain.com
-
-# Optional analytics (PostHog)
-NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_TODO
+NEXT_PUBLIC_SITE_URL=https://harsh-portfolio-two-sigma.vercel.app
+NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+SPOTIFY_CLIENT_ID=...
+SPOTIFY_CLIENT_SECRET=...
+SPOTIFY_REFRESH_TOKEN=...
+REDIS_USERNAME=default
+REDIS_PASSWORD=...
+REDIS_HOST=...
+REDIS_PORT=...
+REDIS_TLS=false
+RESEND_API_KEY=re_...
+CONTACT_TO_EMAIL=...
+CONTACT_FROM_EMAIL=...
 ```
+
+Custom domain: swap `NEXT_PUBLIC_SITE_URL` when you attach one.
 
 ---
 
 ## 17. Optional / nice-to-have
 
-- [ ] **README.md** — update live URL and screenshot
-- [ ] **package.json** — `"name"` can stay `portfolio-v2` or become your project name
-- [ ] **src/lib/linkIcons.ts** — add favicon overrides for domains you link often
-- [ ] **src/data/link-preview-sources.json** — usually auto-managed by `pnpm seed-link-previews`
-- [ ] **Colors / theme** — `src/app/globals.css` if you want a different mat color palette
+- [x] **README.md** — live URL and screenshot
+- [x] **src/data/link-preview-sources.json** — current URLs only
+- [ ] **Colors / theme** — only if you want a different mat palette
+- [ ] **Custom domain**
 
 ---
 
-## 18. Integration order (for the next agent)
+## 18. After content changes
 
-1. Fill this file completely.
-2. Update `src/data/portfolio.ts` from sections 1–11.
-3. Replace images per section 15.
-4. Update `layout.tsx`, `Profile.tsx`, `Footer.tsx`, `generate-og.mjs`.
-5. Run `pnpm optimize-images`, `pnpm optimize-videos` (if any), `pnpm seed-link-previews`, `pnpm generate-og`.
-6. Set `.env.local` with your domain.
-7. `pnpm dev` → verify all sections, links, and images.
-8. `pnpm build` → fix any broken image paths or TypeScript errors.
+1. Edit `src/data/portfolio.ts`.
+2. `pnpm seed-link-previews` for new HTTP links.
+3. `pnpm optimize-images` / `pnpm optimize-videos` for new assets.
+4. `pnpm generate-og` if name or tagline changed.
+5. `pnpm dev` then `pnpm build`.
 
 ---
 
-## 19. Tech stack (for icons below GitHub graph + experience/project cards)
+## 19. Tech stack
 
-### Site-wide stack (icon strip below contribution graph)
-```yaml
-techStack:
-  - name: "TypeScript"
-  - name: "Next.js"
-  - name: "React"
-  - name: "Python"
-  # Add all technologies you want shown — must match keys in src/lib/icons.tsx stackIconMap
-  # or provide custom icon: "/assets/icons/figma.svg"
-```
+Site-wide strip: `techStack` in `portfolio.ts` → `TechStack.tsx` under the GitHub graph.
 
-### Per-experience stack (optional — add to each role in §6)
-```yaml
-# Under each position in experiences:
-stack:
-  - name: "TypeScript"
-  - name: "Node.js"
-```
-
-### Per-project stack
-Already in §9 (`projects[].stack`). Fill every project; icons show on project cards.
+Per-role and per-project `stack` arrays already render on Timeline and project cards. Names must match `stackIconMap` in `src/lib/icons.tsx` (or pass a custom `icon` path).
 
 ---
 
-## 20. Footer / contact section
+## 20. Footer / contact
 
-```yaml
-footerConfig:
-  openTo: "Open to any remote AI opportunities"   # availability line
-  replyTime: "Replies within 24 hours"            # optional
-  quote:
-    text: "TODO — your favorite quote"
-    author: "TODO — attribution"
-  calendarLink: "TODO — Cal.com or Calendly URL (optional)"
-  contactForm:
-    enabled: true
-    # Backend TBD: Formspree ID, Resend, etc.
-```
-
-**Spotify (for last-played row):**
-```yaml
-spotifyProfileUrl: "https://open.spotify.com/user/TODO"
-# API credentials go in .env.local — not in this file
-```
+`ContactSection.tsx` is live: email, LinkedIn, X, résumé, 24–48h reply note, open-to-remote line, and a message form (`/api/contact`). Visitor quote card stays below. Spotify last-played is in the About header (credentials in `.env.local`).
 
 ---
 
@@ -579,8 +350,4 @@ After adding URLs: `pnpm seed-link-previews`
 
 ## Notes & ideas (freeform)
 
-_Use this space for anything that doesn't fit above: speaking engagements, publications, skills you want highlighted, design preferences, etc._
-
-```
-TODO
-```
+Stickers still to swap: food (chicken leg) when you have a cutout. JSON-LD `worksFor` should be marked former. Custom domain when ready.

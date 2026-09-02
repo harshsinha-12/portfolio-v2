@@ -570,11 +570,14 @@ export function HangingSlot({ children, index, total, className }: HangingSlotPr
       role="listitem"
     >
       <div
-        className={cn("hanging-slot-inner relative w-full", ropeCut && "is-cut")}
+        className={cn(
+        "hanging-slot-inner relative w-full [&>.polaroid-sway]:h-full",
+        ropeCut && "is-cut",
+      )}
         style={cutStyle}
       >
         {/* Polaroid entirely below the rope */}
-        <div className={cn("relative z-10 polaroid-sway", ropeCut && "polaroid-sway-paused")}>{children}</div>
+        <div className={cn("relative z-10 h-full w-full polaroid-sway", ropeCut && "polaroid-sway-paused")}>{children}</div>
 
         {/* Clip straddles rope: mostly above, jaw grips polaroid top (z-30 over rope) */}
         <div

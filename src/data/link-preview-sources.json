@@ -1,95 +1,8 @@
 [
   {
-    "href": "https://averlon.ai/",
-    "image": "averlon.webp"
-  },
-  {
-    "href": "https://playclaude.vercel.app/",
-    "image": "claude-city.webp",
-    "fallback": "assets/claude-city.webp"
-  },
-  {
-    "href": "https://x.com/mittalparth_/status/2076292927882682602?s=20",
-    "image": "deepmind-x.webp"
-  },
-  {
-    "href": "https://x.com/mittalparth_/status/2076292927882682602?s=46",
-    "image": "deepmind-x.webp"
-  },
-  {
-    "href": "https://devfolio.co/projects/aeva-58d2",
-    "image": "devfolio-co-projects-aeva-58d2.webp"
-  },
-  {
-    "href": "https://devfolio.co/projects/chargeswap-3527",
-    "image": "devfolio-co-projects-chargeswap-3527.webp"
-  },
-  {
-    "href": "https://devfolio.co/projects/khoj-3336",
-    "image": "devfolio-co-projects-khoj-3336.webp"
-  },
-  {
-    "href": "https://testflight.apple.com/join/TpYrhKRy",
-    "image": "echo.webp"
-  },
-  {
-    "href": "https://github.com/harshagw/kahani",
-    "image": "github-com-harshagw-kahani.webp"
-  },
-  {
-    "href": "https://github.com/imApoorva36/Echo",
-    "image": "github-com-imapoorva36-echo.webp",
-    "fallback": "assets/link-previews/echo.webp"
-  },
-  {
-    "href": "https://github.com/mittal-parth/claude-clan",
-    "image": "github-com-mittal-parth-claude-clan.webp"
-  },
-  {
-    "href": "https://github.com/mittal-parth/hackathon-curation-agent",
-    "image": "github-com-mittal-parth-hackathon-curation-agent.webp"
-  },
-  {
-    "href": "https://github.com/mittal-parth/Khoj",
-    "image": "github-com-mittal-parth-khoj.webp"
-  },
-  {
-    "href": "https://github.com/mittal-parth/sadak",
-    "image": "github-com-mittal-parth-sadak.webp"
-  },
-  {
-    "href": "https://github.com/mittal-parth",
-    "image": "github.webp"
-  },
-  {
-    "href": "https://www.github.com/mittal-parth",
-    "image": "github.webp"
-  },
-  {
-    "href": "https://github.com/pranav2305/GreenTrust",
-    "image": "github-com-pranav2305-greentrust.webp"
-  },
-  {
-    "href": "https://x.com/HackClubNITK",
-    "image": "hackclub.webp"
-  },
-  {
-    "href": "https://about.iris.nitk.ac.in/",
-    "image": "iris.webp"
-  },
-  {
-    "href": "https://playkahani.vercel.app/",
-    "image": "kahani.webp",
-    "fallback": "assets/kahani.webp"
-  },
-  {
-    "href": "https://playkhoj.com/",
-    "image": "khoj.webp",
-    "fallback": "assets/khoj.webp"
-  },
-  {
-    "href": "https://www.linkedin.com/in/mittal-parth",
-    "image": "linkedin-profile.webp"
+    "href": "https://x.com/sinhaharsh12",
+    "image": "x-social-sinhaharsh12.webp",
+    "fallback": "assets/profile-pic.jpg"
   },
   {
     "href": "https://www.linkedin.com/in/harshsinha12/",
@@ -97,78 +10,55 @@
     "fallback": "assets/profile-pic.jpg"
   },
   {
-    "href": "https://www.linkedin.com/posts/mittal-parth_as-hackclub-under-web-enthusiasts-club-ugcPost-7379181094195113985-diSJ/",
-    "image": "linkedin-com-posts-mittal-parth-as-hackclub-under-web-enthusiasts-club-u.webp"
+    "href": "https://github.com/harshsinha-12",
+    "image": "github-harshsinha-12.webp",
+    "fallback": "assets/profile-pic.jpg"
   },
   {
-    "href": "https://www.linkedin.com/posts/mittal-parth_hackathon-winners-web3-activity-7048340759116214272-eJvo",
-    "image": "linkedin-com-posts-mittal-parth-hackathon-winners-web3-activity-70483407.webp"
+    "href": "https://www.github.com/harshsinha-12",
+    "image": "github-harshsinha-12.webp",
+    "fallback": "assets/profile-pic.jpg"
   },
   {
-    "href": "https://www.linkedin.com/posts/mittal-parth_super-stoked-to-announce-that-our-team-emerged-activity-7274735259621961729-tkq4",
-    "image": "linkedin-com-posts-mittal-parth-super-stoked-to-announce-that-our-team-e.webp"
+    "href": "https://www.multibagg.ai",
+    "image": "multibagg-ai.webp",
+    "fallback": "assets/multibagg-ai.webp"
   },
   {
-    "href": "https://www.nitk.ac.in/",
-    "image": "nitk-shoreline.webp",
-    "fallback": "assets/nitk-logo.jpeg"
+    "href": "https://www.multibagg.ai/ask-iris",
+    "image": "multibagg-ask-iris.webp",
+    "fallback": "assets/multibagg-ai.webp"
   },
   {
-    "href": "https://www.oracle.com",
-    "image": "oracle-office.webp",
-    "fallback": "assets/oracle.jpg"
+    "href": "https://www.linkedin.com/posts/shark-tank-india_namitathapar-sharktankindia-sharktankindiaseason5-ugcPost-7418286077645312000-fXBB",
+    "image": "linkedin-com-posts-shark-tank-india-namitathapar-sharktankindia-season5.webp"
   },
   {
-    "href": "https://www.oracle.com/in/",
-    "image": "oracle-office.webp",
-    "fallback": "assets/oracle.jpg"
+    "href": "https://www.iitp.ac.in/",
+    "image": "iitp-campus.webp",
+    "fallback": "assets/iitp-campus.webp"
   },
   {
-    "href": "https://parthmittal.netlify.app/",
-    "image": "parthmittal-netlify-app.webp",
-    "fallback": "assets/september-hack.webp"
+    "href": "https://www.linkedin.com/posts/harshsinha12_fintecholympiad2024-fintech-nationalfinalist-activity-7259242419387314176-kO12",
+    "image": "fintech-olympiad-finale.webp",
+    "fallback": "assets/fintech-olympiad-finale.webp"
   },
   {
-    "href": "https://polkadot.academy/",
-    "image": "pba-gavin.webp",
-    "fallback": "assets/pba_logo.jpeg"
+    "href": "https://www.sebi.gov.in/reports-and-statistics/research/jan-2023/study-analysis-of-profit-and-loss-of-individual-traders-dealing-in-equity-fando-segment_67525.html",
+    "image": "sebi-fando-cover.webp",
+    "fallback": "assets/sebi-fando-study.webp"
   },
   {
-    "href": "https://playsadak.vercel.app/",
-    "image": "sadak.webp"
+    "href": "https://www.linkedin.com/posts/biased-human_today-we-are-launching-the-most-powerful-ugcPost-7398653952919101440-vvJ_",
+    "image": "linkedin-com-posts-biased-human-today-we-are-launching-the-most-powerful.webp"
   },
   {
-    "href": "https://shorturl.at/fhjsT",
-    "image": "shorturl-at-fhjst.webp",
-    "fallback": "assets/warpspeed-24.webp"
+    "href": "https://www.pinecone.io",
+    "image": "pinecone-io.webp"
   },
   {
-    "href": "https://taikai.network/OutofOrdinary/hackathons/web3mkthack/projects/cmi0skdbk0257vu09q3n8m44u/idea",
-    "image": "taikai-network-outofordinary-hackathons-web3mkthack-projects-cmi0skdbk02.webp"
-  },
-  {
-    "href": "https://www.thehindu.com/news/cities/Mangalore/nitk-iiit-delhi-team-makes-it-to-top-12-winners-in-ethindia-22/article66238923.ece",
-    "image": "thehindu-com-news-cities-mangalore-nitk-iiit-delhi-team-makes-it-to-top-.webp"
-  },
-  {
-    "href": "https://www.linkedin.com/posts/mittal-parth_look-mom-i-am-on-the-times-square-ugcPost-7324078226178215936-tat9/",
-    "image": "times-square-v2.webp"
-  },
-  {
-    "href": "https://x.com/mittalparth_/status/2082861864984437072?s=20",
-    "image": "x-com-mittalparth-status-2082861864984437072.webp"
-  },
-  {
-    "href": "https://x.com/mittalparth_/status/2086438075652067553?s=20/",
-    "image": "x-com-mittalparth-status-2086438075652067553.webp"
-  },
-  {
-    "href": "https://x.com/polkadotsub0/status/1998425721916551355",
-    "image": "x-com-polkadotsub0-status-1998425721916551355.webp"
-  },
-  {
-    "href": "https://x.com/mittalparth_",
-    "image": "x-social.webp"
+    "href": "https://qdrant.tech",
+    "image": "qdrant-tech.webp"
   },
   {
     "href": "https://x.com/sinhaharsh12/status/1975865353705320477",
@@ -179,51 +69,123 @@
     "image": "x-com-sinhaharsh12-status-1975865353705320477.webp"
   },
   {
-    "href": "https://www.linkedin.com/posts/shark-tank-india_namitathapar-sharktankindia-sharktankindiaseason5-ugcPost-7418286077645312000-fXBB",
-    "image": "linkedin-com-posts-shark-tank-india-namitathapar-sharktankindia-season5.webp"
+    "href": "https://ude.my/UC-e70c868b-2859-46b3-92ab-a73e1aa25ade",
+    "image": "ude-my-uc-e70c868b.webp",
+    "fallback": "assets/cert-udemy-ds-bootcamp.webp"
   },
   {
-    "href": "https://www.linkedin.com/posts/biased-human_today-we-are-launching-the-most-powerful-ugcPost-7398653952919101440-vvJ_",
-    "image": "linkedin-com-posts-biased-human-today-we-are-launching-the-most-powerful.webp"
+    "href": "https://ude.my/UC-72be0351-7746-4035-a500-aa11a65fb1f6",
+    "image": "ude-my-uc-72be0351.webp",
+    "fallback": "assets/cert-udemy-math-genai.webp"
   },
   {
-    "href": "https://www.linkedin.com/posts/harshsinha12_fintecholympiad2024-fintech-nationalfinalist-activity-7259242419387314176-kO12",
-    "fallback": "assets/profile-pic.jpg"
+    "href": "https://coursera.org/verify/ZLMC62M7TF3D",
+    "image": "coursera-org-verify-zlmc62m7tf3d.webp",
+    "fallback": "assets/cert-coursera-python.webp"
   },
   {
-    "href": "https://fintecholympiad.org/",
-    "fallback": "assets/profile-pic.jpg"
+    "href": "https://coursera.org/verify/SS5PZXYVJJWM",
+    "image": "coursera-org-verify-ss5pzxyvjjwm.webp",
+    "fallback": "assets/cert-coursera-python-intro.webp"
   },
   {
-    "href": "https://youtu.be/8R3QYKQR10M",
-    "image": "youtu-be-8r3qykqr10m.webp"
+    "href": "https://coursera.org/verify/DP73QZUJ39Z9",
+    "image": "coursera-org-verify-dp73qzuj39z9.webp",
+    "fallback": "assets/cert-coursera-dataviz.webp"
   },
   {
-    "href": "https://youtu.be/98OJuvBur6s",
-    "image": "youtu-be-98ojuvbur6s.webp"
+    "href": "https://100xdevs.com",
+    "image": "100xdevs-com.webp",
+    "fallback": "assets/cert-100xdevs.webp"
   },
   {
-    "href": "https://youtu.be/9rieTya8Yds?t=3908",
-    "image": "youtu-be-9rietya8yds.webp"
+    "href": "https://www.theforage.com",
+    "image": "theforage-com.webp",
+    "fallback": "assets/cert-jpmorgan-forage.webp"
   },
   {
-    "href": "https://youtu.be/gadi-osujrs",
-    "image": "youtu-be-gadi-osujrs.webp"
+    "href": "https://github.com/harshsinha-12/rzpy-agent",
+    "image": "github-rzpy-agent.webp",
+    "fallback": "assets/recoveryos.webp"
   },
   {
-    "href": "https://youtu.be/-WVMaU1-sHE",
-    "image": "youtu-be-wvmau1-she.webp"
+    "href": "https://github.com/harshsinha-12/rzpy-agent#readme",
+    "image": "github-rzpy-agent.webp",
+    "fallback": "assets/recoveryos.webp"
   },
   {
-    "href": "https://www.youtube.com/live/qJ4OCtnvjUY?si=VkcnHEdwJTEEDlMg&t=4718",
-    "image": "youtube-com-live-qj4octnvjuy.webp"
+    "href": "https://rzpy-agent-web.vercel.app",
+    "image": "rzpy-agent-web.webp",
+    "fallback": "assets/recoveryos.webp"
   },
   {
-    "href": "https://www.youtube.com/watch?v=ncCJL2eEslc",
-    "image": "youtube-com-watch-nccjl2eeslc.webp"
+    "href": "https://github.com/harshsinha-12/-the-llm-trading-arena-frontend",
+    "image": "github-llm-trading-arena-frontend.webp",
+    "fallback": "assets/llm-trading-arena.webp"
   },
   {
-    "href": "https://www.youtube.com/watch?v=X2473En3h_o&t=5278s",
-    "image": "youtube-com-watch-x2473en3h-o.webp"
+    "href": "https://github.com/harshsinha-12/-the-llm-trading-arena-frontend#readme",
+    "image": "github-llm-trading-arena-frontend.webp",
+    "fallback": "assets/llm-trading-arena.webp"
+  },
+  {
+    "href": "https://the-llm-trading-arena-frontend.vercel.app",
+    "image": "llm-trading-arena-frontend.webp",
+    "fallback": "assets/llm-trading-arena.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/Vritta",
+    "image": "github-vritta.webp",
+    "fallback": "assets/vritta.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/Vritta#readme",
+    "image": "github-vritta.webp",
+    "fallback": "assets/vritta.webp"
+  },
+  {
+    "href": "https://vritta-one.vercel.app/",
+    "image": "vritta-one.webp",
+    "fallback": "assets/vritta.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/instagram-analysis",
+    "image": "github-instagram-analysis.webp",
+    "fallback": "assets/instagram-analysis.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/instagram-analysis#readme",
+    "image": "github-instagram-analysis.webp",
+    "fallback": "assets/instagram-analysis.webp"
+  },
+  {
+    "href": "https://instagram-analysis-red.vercel.app",
+    "image": "instagram-analysis-live.webp",
+    "fallback": "assets/instagram-analysis.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/the-llm-trading-arena-backend",
+    "image": "github-llm-trading-arena-backend.webp",
+    "fallback": "assets/llm-trading-arena-engine.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/the-llm-trading-arena-backend#readme",
+    "image": "github-llm-trading-arena-backend.webp",
+    "fallback": "assets/llm-trading-arena-engine.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/go-rabbit",
+    "image": "github-go-rabbit.webp",
+    "fallback": "assets/go-rabbit.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/go-rabbit#readme",
+    "image": "github-go-rabbit.webp",
+    "fallback": "assets/go-rabbit.webp"
+  },
+  {
+    "href": "https://go-rabbit-sable.vercel.app",
+    "image": "go-rabbit-live.webp",
+    "fallback": "assets/go-rabbit.webp"
   }
 ]

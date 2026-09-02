@@ -68,6 +68,16 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: "/",
+    types: {
+      "text/markdown": [
+        { url: "/llms.txt", title: "llms.txt" },
+        { url: "/llms-full.txt", title: "Full markdown CV" },
+      ],
+      "application/json": "/api/about",
+    },
+  },
 };
 
 const personJsonLd = {
@@ -107,6 +117,19 @@ export default function RootLayout({
       className={`${inter.variable} ${indieFlower.variable} h-full scroll-smooth antialiased`}
     >
       <head>
+        <link rel="describedby" href="/llms.txt" type="text/markdown" />
+        <link
+          rel="alternate"
+          type="text/markdown"
+          href="/llms-full.txt"
+          title="Full markdown CV"
+        />
+        <link
+          rel="alternate"
+          type="application/json"
+          href="/api/about"
+          title="JSON profile"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

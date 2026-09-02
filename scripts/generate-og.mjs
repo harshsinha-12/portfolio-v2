@@ -31,7 +31,7 @@ const GRID_MAJOR = "rgba(210, 213, 116, 0.16)";
 const GUIDE = "#D2D574";
 
 const NAME = "Harsh Sinha";
-const TAGLINE = "Prev  @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend";
+const TAGLINE = "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend";
 
 const socials = [
   {

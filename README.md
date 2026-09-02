@@ -1,10 +1,10 @@
 # Developer Portfolio
 
-A fun yet function portfolio that captures important aspects of my life in a not so boring way :)
+A fun yet functional portfolio that captures important aspects of my life in a not so boring way :)
 
-![Portfolio screenshot](public/assets/portfolio-screenshot.png)
+![Portfolio screenshot](public/assets/portfolio-screenshot.webp)
 
-**Live:** [mittalparth.dev](https://mittalparth.dev)
+**Live:** [harsh-portfolio-two-sigma.vercel.app](https://harsh-portfolio-two-sigma.vercel.app/)
 
 ## Features
 
@@ -17,6 +17,7 @@ A fun yet function portfolio that captures important aspects of my life in a not
 - Floating nav with smooth scroll between sections
 - Sound effects for UI interactions (toggleable, off by default on mobile)
 - SEO-ready — Open Graph image, sitemap, robots, and JSON-LD person schema
+- Agent-readable profile — `/llms.txt` index, `/llms-full.txt` markdown CV, `/api/about` JSON
 - Fully responsive and accessible
 
 ## Tech Stack
@@ -39,7 +40,7 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Environment
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://mittalparth.dev
+NEXT_PUBLIC_SITE_URL=https://harsh-portfolio-two-sigma.vercel.app
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 SPOTIFY_CLIENT_ID=...
@@ -67,6 +68,7 @@ browser.
 ## Content
 
 - Live data: `src/data/portfolio.ts`
+- Agent-readable copies: `/llms.txt`, `/llms-full.txt`, `/api/about` (generated from `portfolio.ts`)
 - Images: `public/assets/`
 - Videos: `media-src/videos/` (source) → `public/assets/videos/` (optimized WebM)
 

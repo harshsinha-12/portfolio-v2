@@ -1,5 +1,7 @@
 # Upcoming Tasks
 
+Prefer **`plan.md`** for current status. This file is an older copy of the same roadmap.
+
 Track work for **Harsh's portfolio** fork. Upstream repo: [mittal-parth/portfolio-v2](https://github.com/mittal-parth/portfolio-v2).
 
 **Your fork:** [harshsinha-12/portfolio-v2](https://github.com/harshsinha-12/portfolio-v2)  
@@ -59,7 +61,6 @@ pnpm build
 |-------|---------|
 | [#8](https://github.com/mittal-parth/portfolio-v2/issues/8) | Inline links with previews in experience bullets |
 | [#2](https://github.com/mittal-parth/portfolio-v2/issues/2) | Realistic sticky note + corner peel hover |
-| [#44](https://github.com/mittal-parth/portfolio-v2/issues/44) | Agent-readable endpoint (`/llms.txt`, etc.) |
 
 ### Branch map — merged into `main` (already in your clone)
 
@@ -140,7 +141,7 @@ These are **not yet merged** into upstream `main`. See **Upstream branches → a
 | U.1 | [PR #14](https://github.com/mittal-parth/portfolio-v2/pull/14) · closes [#9](https://github.com/mittal-parth/portfolio-v2/issues/9) | Draggable postcard stamps on experience/education timeline | [ ] | High | Desktop-only decorative stamps with perforated edges; uses hackathon photos. Branch: `cursor/timeline-stamp-images-aeeb` |
 | U.2 | [#8](https://github.com/mittal-parth/portfolio-v2/issues/8) | Add more links in the experience section | [ ] | Medium | Experience bullets are text-only today; add `LinkPreview` links like the About section. No PR yet — build or wait. |
 | U.3 | [#2](https://github.com/mittal-parth/portfolio-v2/issues/2) | Realistic sticky note + corner peel on hover | [ ] | Medium | About-section yellow note looks flat; issue has design refs. No PR yet. |
-| U.4 | [#44](https://github.com/mittal-parth/portfolio-v2/issues/44) | Agents-only endpoint / machine-readable bio | [ ] | Low–Med | e.g. `/llms.txt`, `/api/about`, or markdown route for AI crawlers. No PR yet. |
+| U.4 | [#44](https://github.com/mittal-parth/portfolio-v2/issues/44) | Agents-only endpoint / machine-readable bio | [x] | Low–Med | `/llms.txt`, `/llms-full.txt`, `/api/about` generated from `portfolio.ts`. |
 
 ### PR #14 — files to expect
 

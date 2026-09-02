@@ -1,5 +1,5 @@
 export const resumeLink =
-  "https://drive.google.com/file/d/1vkxyMDB5_KpMwt4QXFgT2aqdRizr8Czh/view?usp=sharing";
+  "https://drive.google.com/file/d/1Iq1ZV_sMimkoGrNui8gR6_VP04-el2TD/view?usp=sharing";
 
 export const siteConfig = {
   name: "Harsh Sinha",
@@ -9,7 +9,7 @@ export const siteConfig = {
   url: "https://harsh-portfolio-two-sigma.vercel.app/",
   githubUsername: "harshsinha-12",
   role: "Prev Founder's Office and AI Engineer",
-  tagline: "Prev  @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend",
+  tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend",
 };
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
@@ -319,6 +319,78 @@ export const projectStickers: CutoutSticker[] = [
       displayWidth: "3rem",
     },
   },
+  {
+    id: "sticker-rcb",
+    src: "/assets/sticker-rcb.webp",
+    width: 500,
+    height: 265,
+    tooltip: "loyal to RCB since 2010",
+    outline: "plain",
+    rotate: -8,
+    bottom: "70.5rem",
+    right: "70.25rem",
+    displayWidth: "5.6rem",
+    zIndex: 5,
+    mobile: {
+      bottom: "-45.5rem",
+      right: "1.15rem",
+      displayWidth: "2.9rem",
+    },
+  },
+  {
+    id: "sticker-kohli",
+    src: "/assets/sticker-kohli.webp",
+    width: 398,
+    height: 564,
+    tooltip: "For 60 overs, they should feel hell out there.",
+    outline: "plain",
+    rotate: 10,
+    bottom: "-11.25rem",
+    right: "-7.75rem",
+    displayWidth: "4.4rem",
+    zIndex: 6,
+    mobile: {
+      bottom: "-5.35rem",
+      right: "8.4rem",
+      displayWidth: "2.4rem",
+    },
+  },
+  {
+    id: "sticker-gym",
+    src: "/assets/sticker-gym.webp",
+    width: 500,
+    height: 665,
+    tooltip: "viking rows?",
+    outline: "plain",
+    rotate: -12,
+    bottom: "-0.35rem",
+    right: "72.5rem",
+    displayWidth: "4.2rem",
+    zIndex: 1,
+    mobile: {
+      bottom: "-95.75rem",
+      left: "0.2rem",
+      displayWidth: "2.4rem",
+    },
+  },
+  {
+    id: "sticker-food",
+    src: "/assets/sticker-food.webp",
+    width: 500,
+    height: 625,
+    tooltip: "I'm a big foodie — butter chicken & butter naan 😋",
+    outline: "plain",
+    rotate: 8,
+    top: "85.5rem",
+    left: "25.5rem",
+    displayWidth: "4.2rem",
+    zIndex: 3,
+    mobile: {
+      top: "3.25rem",
+      left: "0.15rem",
+      displayWidth: "2.4rem",
+    },
+  },
 ];
 
 export type ContentBlock = {
@@ -326,6 +398,34 @@ export type ContentBlock = {
 };
 
 export type ProjectStackItem = { name: string; icon?: string };
+
+/** A concise, evidence-backed overview drawn from the work and projects below. */
+export const techStack: ProjectStackItem[] = [
+  { name: "TypeScript" },
+  { name: "JavaScript" },
+  { name: "Python" },
+  { name: "React" },
+  { name: "Next.js" },
+  { name: "Node.js" },
+  { name: "Fastify" },
+  { name: "Tailwind CSS" },
+  { name: "OpenAI" },
+  { name: "PostgreSQL" },
+  { name: "Prisma" },
+  { name: "Redis" },
+  { name: "BullMQ" },
+  { name: "Pinecone" },
+  { name: "Qdrant" },
+  { name: "Docker" },
+  { name: "Azure" },
+  { name: "Grafana" },
+  { name: "Git" },
+  { name: "GitHub" },
+  { name: "Razorpay" },
+  { name: "FFmpeg" },
+  { name: "Vitest" },
+  { name: "Zod" },
+];
 
 export type Position = {
   title: string;
@@ -534,149 +634,117 @@ export type Achievement = {
   rotation?: number;
 };
 
-// Hackathon list:
-
-// 1. Anthropic Push to Prod Hackathon
-// 2. Google DeepMind Hackathon
-// 3. Sarvam
-// 4. Warpspeed'23
-// 5. Warpspeed: Agentic AI Hackathon
-// 6. ETHIndia'24
-// 7. ETHIndia'22
-// 8. Polkadot Hackathon: Europe Edition
-// 9. Web3 Marketing Hackathon
-// 10. September Hackathon by Dennis Ivy
-
-
+// Competitions, awards & certifications — ordered by portfolio weight.
 export const achievements: Achievement[] = [
   {
-    id: "a-anthropic",
-    icon: "/assets/anthropic-26.webp",
-    companyIcon: "/assets/hackathon-icons/anthropic.png",
-    photo: "/assets/anthropic-26.webp",
-    event: "Anthropic Push to Prod Hackathon",
-    position: "1st Runner Up",
+    id: "a-fintech-olympiad-24",
+    icon: "/assets/fintech-olympiad-finale.webp",
+    photo: "/assets/fintech-olympiad-finale.webp",
+    event: "IFF–FinTech Olympiad '24",
+    position: "National Finalist",
     highlight:
-      "2nd among 5K+ applications for building Claude Code as a game.",
-    article: "https://x.com/mittalparth_/status/2086438075652067553?s=20/",
-    youtube: "https://youtu.be/-WVMaU1-sHE",
+      "Top 30 of >1 lakh candidates at the India FinTech Forum olympiad (with IFTA).",
+    article:
+      "https://www.linkedin.com/posts/harshsinha12_fintecholympiad2024-fintech-nationalfinalist-activity-7259242419387314176-kO12",
     rotation: -2.2,
   },
   {
-    id: "a-1",
-    icon: "/assets/google-deepmind-26.webp",
-    companyIcon: "/assets/hackathon-icons/google-deepmind.webp",
-    photo: "/assets/google-deepmind-26.webp",
-    event: "Google DeepMind Hackathon",
-    position: "Winner",
+    id: "a-mine-the-model",
+    icon: "/assets/mine-the-model-cert.webp",
+    companyIcon: "/assets/iitp-logo.webp",
+    photo: "/assets/mine-the-model-cert.webp",
+    event: "Mine The Model · Celesta IIT Patna",
+    position: "2nd Place",
     highlight:
-      "1st place among 4K applications. Built an infinite RPG game generator using Nano Banana.",
-    article: "https://x.com/mittalparth_/status/2076292927882682602?s=20",
-    youtube: "https://youtu.be/8R3QYKQR10M",
-    rotation: -2.5,
-  },
-  {
-    id: "a-2",
-    icon: "/assets/sarvam-26.webp",
-    companyIcon: "/assets/hackathon-icons/sarvam.svg",
-    photo: "/assets/sarvam-26.webp",
-    event: "Sarvam Epoch Buildathon",
-    position: "2nd Runner Up",
-    highlight:
-      "2nd runner up among 3K applications. Built a voice-first, interactive language learning game.",
-    article: "https://x.com/mittalparth_/status/2082861864984437072?s=20",
-    youtube: "https://youtu.be/gadi-osujrs",
+      "Stock-price ML contest by NJack ML IIT Patna & Cynaptics IIT Indore — beat the benchmark.",
     rotation: 1.8,
   },
   {
-    id: "a-3",
-    icon: "/assets/ethindia_24.webp",
-    companyIcon: "/assets/hackathon-icons/ethindia.png",
-    photo: "/assets/ethindia_24.webp",
-    event: "ETHIndia'24",
-    position: "Winner",
-    highlight: "Top 10 Winners at India's largest Ethereum hackathon",
-    article:
-      "https://www.linkedin.com/posts/mittal-parth_super-stoked-to-announce-that-our-team-emerged-activity-7274735259621961729-tkq4",
-    project: "https://devfolio.co/projects/khoj-3336",
-    youtube: "https://www.youtube.com/live/qJ4OCtnvjUY?si=VkcnHEdwJTEEDlMg&t=4718",
-    rotation: -1.2,
-  },
-  {
-    id: "a-4",
-    icon: "/assets/warpspeed-24.webp",
-    companyIcon: "/assets/hackathon-icons/lightspeed.png",
-    photo: "/assets/warpspeed-24.webp",
-    event: "Warpspeed'23",
-    position: "1st Runner Up",
-    highlight: "1st runner up at Lightspeed's flagship AI hackathon, among 107 hackers.",
-    article: "https://shorturl.at/fhjsT",
-    rotation: 2.2,
-  },
-  {
-    id: "a-5",
-    icon: "/assets/ethindia-22.webp",
-    companyIcon: "/assets/hackathon-icons/ethglobal.png",
-    photo: "/assets/ethindia-22.webp",
-    event: "ETHIndia'22",
-    position: "Winner",
+    id: "a-summer-of-quant",
+    icon: "/assets/cert-summer-of-quant.webp",
+    photo: "/assets/cert-summer-of-quant.webp",
+    event: "Summer of Quant 2024",
+    position: "Certificate of Merit",
     highlight:
-      "Top 12 Winners at the world's largest Ethereum hackathon, among 20K+ registrations.",
-    article:
-      "https://www.thehindu.com/news/cities/Mangalore/nitk-iiit-delhi-team-makes-it-to-top-12-winners-in-ethindia-22/article66238923.ece",
-    project: "https://devfolio.co/projects/chargeswap-3527",
-    youtube: "https://youtu.be/9rieTya8Yds?t=3908",
+      "6-week Elementary & Advanced quant finance programme by Quant Club, IIT Kharagpur.",
+    rotation: -1.5,
+  },
+  {
+    id: "a-udemy-ds-bootcamp",
+    icon: "/assets/cert-udemy-ds-bootcamp.webp",
+    photo: "/assets/cert-udemy-ds-bootcamp.webp",
+    event: "Complete DS, ML, DL & NLP Bootcamp",
+    position: "Certificate of Completion",
+    highlight:
+      "101.5-hour Krish Naik bootcamp covering data science, ML, deep learning and NLP.",
+    article: "https://ude.my/UC-e70c868b-2859-46b3-92ab-a73e1aa25ade",
+    rotation: -1.8,
+  },
+  {
+    id: "a-100xdevs",
+    icon: "/assets/cert-100xdevs.webp",
+    photo: "/assets/cert-100xdevs.webp",
+    event: "100xdevs · 0-100 Full Stack",
+    position: "Certificate of Achievement",
+    highlight:
+      "Completed Harkirat Singh's 0-100 Full Stack Web Development course (Jul 2024).",
+    project: "https://100xdevs.com",
+    rotation: 2.1,
+  },
+  {
+    id: "a-udemy-math-genai",
+    icon: "/assets/cert-udemy-math-genai.webp",
+    photo: "/assets/cert-udemy-math-genai.webp",
+    event: "Mathematics for Data Science & GenAI",
+    position: "Certificate of Completion",
+    highlight:
+      "23-hour Krish Naik course — maths from basics to advanced for data science and GenAI.",
+    article: "https://ude.my/UC-72be0351-7746-4035-a500-aa11a65fb1f6",
     rotation: 1.4,
   },
   {
-    id: "a-6",
-    icon: "/assets/warpspeed-25.webp",
-    companyIcon: "/assets/hackathon-icons/lightspeed.png",
-    photo: "/assets/warpspeed-25.webp",
-    event: "Warpspeed: Agentic AI Hackathon",
-    position: "Runners Up, Base Track",
-    highlight: "Built an ambient virtual assistant before ChatGPT Pulse.",
-    project: "https://devfolio.co/projects/aeva-58d2",
-    rotation: -1.8,
+    id: "a-jpmorgan-forage",
+    icon: "/assets/cert-jpmorgan-forage.webp",
+    photo: "/assets/cert-jpmorgan-forage.webp",
+    event: "JPMorgan Chase · Software Engineering",
+    position: "Job Simulation",
+    highlight:
+      "Forage sim: stock data feed, JPMorgan tools, trader visuals, and an open-source bonus.",
+    project: "https://www.theforage.com",
+    rotation: 2.4,
   },
-
   {
-    id: "a-7",
-    icon: "/assets/polkadot-hack.webp",
-    companyIcon: "/assets/hackathon-icons/polkadot.jpeg",
-    photo: "/assets/polkadot-hack.webp",
-    event: "Polkadot Hackathon: Europe Edition",
-    position: "2nd Runner Up, ink! Smart Contracts",
-    highlight: "Built GreenTrust for organic farming certification via decentralized PGSs.",
-    article:
-      "https://www.linkedin.com/posts/mittal-parth_hackathon-winners-web3-activity-7048340759116214272-eJvo",
-    github: "https://github.com/pranav2305/GreenTrust",
+    id: "a-coursera-python",
+    icon: "/assets/cert-coursera-python.webp",
+    photo: "/assets/cert-coursera-python.webp",
+    event: "Python Data Structures · UMich",
+    position: "Course Certificate",
+    highlight:
+      "University of Michigan on Coursera — Python data structures (Feb 2024).",
+    article: "https://coursera.org/verify/ZLMC62M7TF3D",
     rotation: -2,
   },
   {
-    id: "a-8",
-    icon: "/assets/web3-marketing-hack.webp",
-    companyIcon: "/assets/hackathon-icons/web3-marketing.jpg",
-    photo: "/assets/web3-marketing-hack.webp",
-    event: "Web3 Marketing Hackathon",
-    position: "Runner Up",
-    highlight: "2nd in Polkadot Challenge I. Creative marketing strategies.",
-    article: "https://x.com/polkadotsub0/status/1998425721916551355",
-    project:
-      "https://taikai.network/OutofOrdinary/hackathons/web3mkthack/projects/cmi0skdbk0257vu09q3n8m44u/idea",
-    rotation: 2.5,
+    id: "a-coursera-python-intro",
+    icon: "/assets/cert-coursera-python-intro.webp",
+    photo: "/assets/cert-coursera-python-intro.webp",
+    event: "Programming for Everybody · UMich",
+    position: "Course Certificate",
+    highlight:
+      "University of Michigan intro to Python on Coursera (Aug 2023).",
+    article: "https://www.coursera.org/account/accomplishments/verify/S55PZXYVJJWM",
+    rotation: 1.6,
   },
   {
-    id: "a-9",
-    icon: "/assets/september-hack.webp",
-    companyIcon: "/assets/hackathon-icons/dennisivy.png",
-    photo: "/assets/september-hack.webp",
-    event: "September Hackathon by Dennis Ivy",
-    position: "Winner",
-    highlight: "Best portfolio website among 450+ participants globally.",
-    youtube: "https://www.youtube.com/watch?v=X2473En3h_o&t=5278s",
-    project: "https://parthmittal.netlify.app/",
-    rotation: -1.5,
+    id: "a-coursera-dataviz",
+    icon: "/assets/cert-coursera-dataviz.webp",
+    photo: "/assets/cert-coursera-dataviz.webp",
+    event: "Overview of Data Visualization",
+    position: "Project Certificate",
+    highlight:
+      "Coursera guided project on data visualization fundamentals (Aug 2023).",
+    article: "https://coursera.org/verify/DP73QZUJ39Z9",
+    rotation: -1.2,
   },
 ];
 
@@ -812,7 +880,8 @@ export const projects: Project[] = [
 
 export const navSections = [
   { id: "profile", label: "About" },
-  { id: "hackathons", label: "Hackathons" },
   { id: "experience", label: "Experience" },
   { id: "projects", label: "Projects" },
+  { id: "tech-stack", label: "Tech" },
+  { id: "hackathons", label: "Hackathons & Certs" },
 ];

@@ -30,61 +30,62 @@ Related docs: `Harsh.md` (content), `Upcoming tasks.md` (older copy of some of t
 
 | # | Task | Status | Notes |
 |---|------|--------|-------|
-| 0A.1 | Site identity (name, title, description, URL, GitHub username, role, tagline) | [ ] | §1 in `Harsh.md` |
-| 0A.2 | Resume link | [ ] | §2 |
-| 0A.3 | Social links (X, LinkedIn, GitHub, email) | [ ] | §3 |
-| 0A.4 | About intro bullets | [ ] | §4 |
-| 0A.5 | Work experience | [ ] | §6 |
-| 0A.6 | Education | [ ] | §7 |
-| 0A.7 | Hackathons & achievements | [ ] | §8 |
-| 0A.8 | Projects | [ ] | §9 |
-| 0A.9 | Sticker tooltips / music video ID (optional) | [ ] | §10 |
-| 0A.10 | Freeform notes (skills, speaking, prefs) | [ ] | §18 |
+| 0A.1 | Site identity (name, title, description, URL, GitHub username, role, tagline) | [x] | Live in `src/data/portfolio.ts` |
+| 0A.2 | Resume link | [x] | Wired in About + contact section |
+| 0A.3 | Social links (X, LinkedIn, GitHub, email) | [x] | §3 |
+| 0A.4 | About intro bullets | [x] | §4 |
+| 0A.5 | Work experience | [x] | Multibagg AI in timeline |
+| 0A.6 | Education | [x] | IIT Patna |
+| 0A.7 | Hackathons & achievements | [x] | Clothesline: olympiad + certs |
+| 0A.8 | Projects | [x] | Six GitHub projects |
+| 0A.9 | Sticker tooltips / music video ID (optional) | [x] | Headphones + personality stickers |
+| 0A.10 | Freeform notes (skills, speaking, prefs) | [x] | Folded into intro / experience |
 
 ---
 
 ### 0B. Name & identity changes (Parth → Harsh)
 
-These files still reference **Parth Mittal** / **mittal-parth** today. Update after `Harsh.md` is ready.
+Identity, data, and docs now live under Harsh. Remaining polish is custom domain + JSON-LD employment wording.
 
 #### Data & config
 
 | File | What to change | Status |
 |------|----------------|--------|
-| `src/data/portfolio.ts` | `siteConfig` (name, title, description, url, githubUsername, role, tagline), `socialMedia`, `introBullets`, experience, education, hackathons, projects, sticker tooltips | [ ] |
-| `src/data/link-preview-sources.json` | Auto-regenerated when you run `pnpm seed-link-previews` after updating URLs in `portfolio.ts` | [ ] |
+| `src/data/portfolio.ts` | `siteConfig` (name, title, description, url, githubUsername, role, tagline), `socialMedia`, `introBullets`, experience, education, hackathons, projects, sticker tooltips | [x] |
+| `src/data/link-preview-sources.json` | Pruned to current URLs; re-seed with `pnpm seed-link-previews` after adding new links | [x] |
 
 #### SEO & metadata
 
 | File | What to change | Status |
 |------|----------------|--------|
-| `src/app/layout.tsx` | `keywords`, `twitter.creator`, JSON-LD `personJsonLd` (name, jobTitle, worksFor, alumniOf, sameAs) | [ ] |
-| `scripts/generate-og.mjs` | `NAME`, `TAGLINE`, `socials` handles → then `pnpm generate-og` | [ ] |
+| `src/app/layout.tsx` | `keywords`, `twitter.creator`, JSON-LD `personJsonLd` (name, jobTitle, alumniOf, sameAs) | [x] |
+| `src/app/layout.tsx` | JSON-LD `worksFor` still implies current Multibagg employment — drop or mark as former | [ ] |
+| `scripts/generate-og.mjs` | `NAME`, `TAGLINE`, `socials` handles → then `pnpm generate-og` | [x] |
 
 #### UI strings
 
 | File | What to change | Status |
 |------|----------------|--------|
-| `src/components/sections/Profile.tsx` | `alt="Parth Mittal"` → your name; adjust `MobileTagline` break token (currently ` · NITK'24`) to a natural break in **your** tagline | [ ] |
-| `src/components/layout/Footer.tsx` | `© {year} Parth Mittal` → your name | [ ] |
+| `src/components/sections/Profile.tsx` | Name alt text; `MobileTagline` splits on the last ` · ` in `siteConfig.tagline` | [x] |
+| `src/components/layout/Footer.tsx` | Copyright uses `siteConfig.name` | [x] |
 
 #### Assets & branding
 
 | Asset | Action | Status |
 |-------|--------|--------|
 | `public/assets/profile-pic.jpg` | Replace with your photo → `pnpm optimize-images` → hard refresh (clear `.next/dev/cache/images` if stale) | [x] |
-| `src/app/favicon.ico` | Replace | [ ] |
-| `src/app/apple-icon.jpg` | Replace | [ ] |
-| `public/og.jpg` | Regenerate via `pnpm generate-og` | [ ] |
-| Company / school / hackathon / project images | Add to `public/assets/` per `Harsh.md` §15 | [ ] |
-| `public/assets/portfolio-screenshot.png` | Replace for README (optional) | [ ] |
+| `src/app/favicon.ico` | Replace | [x] |
+| `src/app/apple-icon.jpg` | Replace | [x] |
+| `public/og.jpg` | Regenerated via `pnpm generate-og` | [x] |
+| Company / school / hackathon / project images | Add to `public/assets/` per `Harsh.md` §15 | [x] |
+| `public/assets/portfolio-screenshot.webp` | README screenshot | [x] |
 
 #### Env & docs
 
 | File | What to change | Status |
 |------|----------------|--------|
-| `.env.local` | `NEXT_PUBLIC_SITE_URL=https://your-domain.com` | [ ] |
-| `README.md` | Live URL, screenshot, example env URL | [ ] |
+| `.env.local` | `NEXT_PUBLIC_SITE_URL` for a custom domain when you have one | [ ] |
+| `README.md` | Live URL, screenshot, example env URL | [x] |
 | PostHog (optional) | Keep upstream token or swap/remove in `.env.local` | [ ] |
 
 ---
@@ -95,15 +96,15 @@ Run in roughly this order:
 
 | # | Task | Status | Command / notes |
 |---|------|--------|-----------------|
-| 0C.1 | Map `Harsh.md` → `portfolio.ts` | [ ] | All sections 1–11 |
-| 0C.2 | Update hardcoded strings (Profile, Footer, layout, generate-og) | [ ] | See 0B |
-| 0C.3 | Replace images | [ ] | `pnpm optimize-images` |
-| 0C.4 | Project demo videos (if any) | [ ] | Drop `.mp4` in `media-src/videos/` → `pnpm optimize-videos` |
-| 0C.5 | Link preview stamps | [ ] | `pnpm seed-link-previews` |
-| 0C.6 | Social share image | [ ] | `pnpm generate-og` |
+| 0C.1 | Map `Harsh.md` → `portfolio.ts` | [x] | Canonical source is `portfolio.ts` |
+| 0C.2 | Update hardcoded strings (Profile, Footer, layout, generate-og) | [x] | See 0B |
+| 0C.3 | Replace images | [x] | `pnpm optimize-images` |
+| 0C.4 | Project demo videos (if any) | [ ] | Optional — drop `.mp4` in `media-src/videos/` → `pnpm optimize-videos` |
+| 0C.5 | Link preview stamps | [x] | `pnpm seed-link-previews` — sources pruned to current URLs |
+| 0C.6 | Social share image | [x] | `pnpm generate-og` |
 | 0C.7 | Local QA | [ ] | `pnpm dev` — desktop + mobile, all sections & links |
 | 0C.8 | Production build | [ ] | `pnpm build` |
-| 0C.9 | Deploy | [ ] | Vercel / Cloudflare — set env vars on host |
+| 0C.9 | Deploy | [x] | Live on Vercel; custom domain still open (M.7) |
 
 ---
 
@@ -140,9 +141,9 @@ pnpm build
 |----|--------|------------|--------|----------|--------------|------------|
 | U.1 | `cursor/timeline-stamp-images-aeeb` | [PR #14](https://github.com/mittal-parth/portfolio-v2/pull/14) · [#9](https://github.com/mittal-parth/portfolio-v2/issues/9) | Open | **High** | Draggable postcard stamps on experience/education timeline (desktop, perforated edges) | [ ] |
 | U.2 | `cursor/timeline-stamp-zigzag-57f6` | same as U.1 | Open | — | Duplicate of U.1 — pick one | [-] |
-| U.3 | — | [#8](https://github.com/mittal-parth/portfolio-v2/issues/8) | No PR | Medium | Inline `LinkPreview` links in experience bullets | [ ] |
+| U.3 | — | [#8](https://github.com/mittal-parth/portfolio-v2/issues/8) | Done here | Medium | Inline `LinkPreview` links in experience bullets | [x] |
 | U.4 | — | [#2](https://github.com/mittal-parth/portfolio-v2/issues/2) | No PR | Medium | Realistic sticky note + corner peel on hover | [ ] |
-| U.5 | — | [#44](https://github.com/mittal-parth/portfolio-v2/issues/44) | No PR | Low–Med | Agent-readable endpoint (`/llms.txt`, `/api/about`, etc.) | [ ] |
+| U.5 | — | [#44](https://github.com/mittal-parth/portfolio-v2/issues/44) | Done here | Low–Med | Agent-readable endpoint (`/llms.txt`, `/llms-full.txt`, `/api/about`) | [x] |
 
 **PR #14 files to expect:** `PostcardStamp.tsx`, `timelineStamps.ts`, `Timeline.tsx`, `globals.css` (`.stamp-perforated`).
 
@@ -213,15 +214,15 @@ Features that may **not** exist upstream. Reference screenshots saved in chat (S
 
 | ID | Idea | Status | Priority | Notes |
 |----|------|--------|----------|-------|
-| M.1 | **Spotify “Last played”** | [ ] | High | See [Feature spec: Spotify](#feature-spec-spotify-last-played) |
-| M.2 | **Tech stack row below GitHub graph** | [ ] | High | See [Feature spec: Tech stack](#feature-spec-tech-stack) |
-| M.3 | **Footer / contact section** | [ ] | High | Visitor counter, quote, get in touch, contact form, availability — see [Feature spec: Contact footer](#feature-spec-contact-footer) |
-| M.4 | **Tech stack icons on project cards** | [ ] | Med | Stack data exists in `portfolio.ts`; icons render beside title today — may move to link row or enlarge; see spec |
-| M.5 | **Tech stack icons on experience entries** | [ ] | Med | New `stack` field per role/org in `portfolio.ts` + render in `Timeline.tsx` |
-| M.6 | Resume button in nav / About | [ ] | Med | `resumeLink` exists in `portfolio.ts` but not wired to UI |
-| M.7 | Custom domain + deploy polish | [ ] | High | Part of Phase 0C.9 |
-| M.8 | **Certifications & courses section** | [ ] | Low–Med | Separate section later — not in About intro bullets; see [Feature spec: Certifications](#feature-spec-certifications--courses) |
-| M.9 | **Articles & write-ups** | [ ] | Med | X threads, LinkedIn posts, SEBI/regulatory reads, architecture posts — see [Feature spec: Articles](#feature-spec-articles--write-ups) |
+| M.1 | **Spotify “Last played”** | [x] | High | Profile header row + `/api/spotify` |
+| M.2 | **Tech stack row below GitHub graph** | [x] | High | `TechStack.tsx` + `techStack` in `portfolio.ts` |
+| M.3 | **Footer / contact section** | [x] | High | `ContactSection.tsx` — form, availability, résumé, socials |
+| M.4 | **Tech stack icons on project cards** | [x] | Med | `project.stack` + `stackIconMap` |
+| M.5 | **Tech stack icons on experience entries** | [x] | Med | `experiences[].positions[].stack` in Timeline |
+| M.6 | Resume button in nav / About | [x] | Med | About header + contact row |
+| M.7 | Custom domain + deploy polish | [ ] | High | Site is on Vercel; custom domain still open |
+| M.8 | **Certifications & courses section** | [x] | Low–Med | Combined clothesline with hackathons |
+| M.9 | **Articles & write-ups** | [ ] | Med | Inline links today; dedicated section still optional |
 
 ### Idea backlog (unscheduled)
 
@@ -232,7 +233,7 @@ Features that may **not** exist upstream. Reference screenshots saved in chat (S
 - Custom sticker set (`experienceStickers` / `projectStickers`)
 - Testimonials as sticky notes
 
-**Education note:** About intro keeps education to one line (IIT Patna, final year). Clubs, course lists, and certs belong in the timeline `educationList` or a future **M.8** section — not the yellow sticky note.
+**Education note:** About intro keeps education to one line (IIT Patna, final year). Certs live on the Hackathons & certifications clothesline (M.8).
 
 ---
 
@@ -436,26 +437,26 @@ Optional nav item: **Writing** / **Articles** — cards or stamp row for longer-
 ## Suggested roadmap
 
 ### Sprint 1 — Make it yours
-- [ ] Phase 0A — complete `Harsh.md`
-- [ ] Phase 0B — name/identity sweep (Parth → Harsh)
-- [ ] Phase 0C — integrate, optimize assets, build, deploy
-- [ ] Update README live URL + screenshot
+- [x] Phase 0A — content in `portfolio.ts`
+- [x] Phase 0B — name/identity sweep (Parth → Harsh)
+- [x] Phase 0C — integrate, optimize assets, deploy (QA/build still listed in 0C)
+- [x] Update README live URL + screenshot
 
 ### Sprint 2 — Polish from upstream
 - [ ] Preview `upstream/cursor/timeline-stamp-images-aeeb` (U.1)
 - [ ] Test mobile hackathon swipe → port PR #22 fix if needed (U.6)
-- [ ] [#8](https://github.com/mittal-parth/portfolio-v2/issues/8) experience inline links (U.3)
+- [x] Experience inline links (U.3)
 
 ### Sprint 3 — Differentiation (your features)
-- [ ] Tech stack on projects + experience (M.4, M.5) — extend `stackIconMap` as needed
-- [ ] Tech stack row below GitHub graph (M.2)
-- [ ] Spotify last played (M.1) — API route + UI row
-- [ ] Contact footer: get in touch, form, quote, visitor counter, “open to remote AI opportunities” (M.3)
+- [x] Tech stack on projects + experience (M.4, M.5)
+- [x] Tech stack row below GitHub graph (M.2)
+- [x] Spotify last played (M.1)
+- [x] Contact footer: get in touch, form, quote, visitor counter (M.3)
 - [ ] Optional: Spotify in-page play (C.1)
 
 ### Sprint 4 — Upstream polish + writing
 - [ ] [#2](https://github.com/mittal-parth/portfolio-v2/issues/2) sticky note redesign (U.4)
-- [ ] Resume button (M.6)
+- [x] Resume button (M.6)
 - [ ] Articles & write-ups section (M.9) — when you have enough posts to curate
 
 ---

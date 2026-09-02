@@ -10,6 +10,7 @@ import { ProfileSection } from "@/components/sections/Profile";
 import { TimelineSection } from "@/components/sections/Timeline";
 import { AchievementsSection } from "@/components/sections/Achievements";
 import { ProjectsSection } from "@/components/sections/Projects";
+import { TechStackSection } from "@/components/sections/TechStack";
 import type { ContributionDay } from "@/lib/githubContributions";
 
 type SiteShellProps = {
@@ -28,9 +29,10 @@ export function SiteShell({ initialContributions }: SiteShellProps) {
             <FloatingNav />
             <main className="flex flex-col gap-[var(--space-2xl)] lg:gap-[var(--space-3xl)] [&>#hackathons]:-mt-2 lg:[&>#hackathons]:-mt-6">
               <ProfileSection initialContributions={initialContributions} />
-              <AchievementsSection />
               <TimelineSection />
               <ProjectsSection />
+              <TechStackSection />
+              <AchievementsSection />
             </main>
             <Footer />
           </div>

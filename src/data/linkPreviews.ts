@@ -29,6 +29,7 @@ export function canonicalizePreviewHref(href: string): string {
 const linkPreviewImages: Record<string, string> = {};
 
 for (const source of linkPreviewSources) {
+  if (!source.image) continue;
   const src = `${PREVIEW_DIR}/${source.image}`;
   linkPreviewImages[canonicalizePreviewHref(source.href)] = src;
 }

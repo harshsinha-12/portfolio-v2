@@ -9,6 +9,16 @@ const nextConfig: NextConfig = {
           { key: "Cache-Control", value: "public, max-age=86400" },
         ],
       },
+      {
+        source: "/",
+        headers: [
+          {
+            key: "Link",
+            value:
+              '</llms.txt>; rel="describedby"; type="text/markdown", </llms-full.txt>; rel="alternate"; type="text/markdown", </api/about>; rel="alternate"; type="application/json"',
+          },
+        ],
+      },
     ];
   },
   images: {
