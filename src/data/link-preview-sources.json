@@ -6,8 +6,8 @@
   },
   {
     "href": "https://www.linkedin.com/in/harshsinha12/",
-    "image": "linkedin-harshsinha12.webp",
-    "fallback": "assets/profile-pic.jpg"
+    "image": "linkedin-portrait.webp",
+    "fallback": "assets/linkedin-portrait.webp"
   },
   {
     "href": "https://github.com/harshsinha-12",
