@@ -12,6 +12,7 @@ import { socialIconMap } from "@/lib/icons";
 import { LinkPreview, LinkPreviewImagePreloader } from "@/components/ui/LinkPreview";
 import { IntroSegments } from "@/components/ui/IntroSegments";
 import { GitHubGraph } from "@/components/sections/GitHubGraph";
+import { SpotifyLastPlayed } from "@/components/sections/SpotifyLastPlayed";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import { SoundToggle } from "@/components/sound/SoundToggle";
 import type { ContributionDay } from "@/lib/githubContributions";
@@ -149,6 +150,7 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
             <p className="mt-3 block w-full font-hand text-base leading-snug text-[var(--color-accent-on-mat)] lg:hidden">
               <MobileTagline />
             </p>
+            <SpotifyLastPlayed className="mt-2.5" />
           </div>
         </div>
 

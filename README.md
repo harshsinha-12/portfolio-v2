@@ -42,7 +42,17 @@ Open [http://localhost:3000](http://localhost:3000).
 NEXT_PUBLIC_SITE_URL=https://mittalparth.dev
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+SPOTIFY_CLIENT_ID=...
+SPOTIFY_CLIENT_SECRET=...
+SPOTIFY_REFRESH_TOKEN=...
 ```
+
+The Spotify variables are server-only and power the live last-played line in
+the profile header. Authorize the app once with the
+`user-read-currently-playing user-read-recently-played` scopes, then store the
+returned refresh token with the Client ID and Client Secret in your local and
+deployment environment settings. Never prefix these variables with
+`NEXT_PUBLIC_`.
 
 ## Content
 

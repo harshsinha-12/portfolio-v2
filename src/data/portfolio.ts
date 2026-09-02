@@ -470,7 +470,7 @@ export const educationList: Education[] = [
     icon: "/assets/nitk-logo.png",
     title: "Indian Institute of Technology, Patna",
     degree: "Bachelor of Technology",
-    duration: "December 2023 - May 2027",
+    duration: "Aug 2023 - May 2027",
     content: [
       "Major: Computer Science and Engineering",
       "Minor: Data Science and Artificial Intelligence",
