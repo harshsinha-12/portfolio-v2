@@ -16,6 +16,7 @@ import { IntroSegments, segmentsToPlainText } from "@/components/ui/IntroSegment
 import { TapedCard } from "@/components/decor/Decor";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { TimelineTrainDecal } from "@/components/decor/TimelineTrainDecal";
+import { StackIconRow } from "@/components/ui/StackIcons";
 import {
   formatDurationWithTenure,
   totalTenureFromDurations,
@@ -184,9 +185,14 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
         <div className="mt-3.5 space-y-3.5">
           {visiblePositions.map((position) => (
             <TimelineEntry key={`${exp.id}-${position.title}`}>
-              <p className="text-xs font-semibold text-[var(--color-ink)]">
-                {position.title}
-              </p>
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <p className="text-xs font-semibold text-[var(--color-ink)]">
+                  {position.title}
+                </p>
+                {position.stack && position.stack.length > 0 && (
+                  <StackIconRow stack={position.stack} size={12} />
+                )}
+              </div>
               <p className="text-[11px] text-[var(--color-ink-subtle)]">
                 {formatDurationWithTenure(position.duration)}
               </p>

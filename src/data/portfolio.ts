@@ -325,10 +325,13 @@ export type ContentBlock = {
   segments: IntroSegment[];
 };
 
+export type ProjectStackItem = { name: string; icon?: string };
+
 export type Position = {
   title: string;
   duration: string;
   content: ContentBlock[];
+  stack?: ProjectStackItem[];
 };
 
 export type Experience = {
@@ -349,6 +352,21 @@ export const experiences: Experience[] = [
       {
         title: "Founder's Office & AI Engineer",
         duration: "Jan 2025 - Jun 2026",
+        stack: [
+          { name: "Next.js" },
+          { name: "Node.js" },
+          { name: "Python" },
+          { name: "OpenAI" },
+          { name: "Prisma" },
+          { name: "PostgreSQL" },
+          { name: "Pinecone" },
+          { name: "Qdrant" },
+          { name: "Redis" },
+          { name: "BullMQ" },
+          { name: "Grafana" },
+          { name: "Azure" },
+          { name: "Docker" },
+        ],
         content: [
           {
             segments: [
@@ -489,7 +507,7 @@ export type Education = {
 export const educationList: Education[] = [
   {
     id: "education-1",
-    icon: "/assets/iitp-logo.png",
+    icon: "/assets/iitp-logo.webp",
     title: "Indian Institute of Technology, Patna",
     degree: "Bachelor of Technology",
     duration: "Aug 2023 - May 2027",
@@ -662,8 +680,6 @@ export const achievements: Achievement[] = [
   },
 ];
 
-export type ProjectStackItem = { name: string; icon?: string };
-
 export type Project = {
   id: string;
   title: string;
@@ -723,6 +739,7 @@ export const projects: Project[] = [
     github: "https://github.com/harshsinha-12/Vritta",
     readme: "https://github.com/harshsinha-12/Vritta#readme",
     image: "/assets/vritta.webp",
+    link: "https://vritta-one.vercel.app/",
     content:
       "A financial event-intelligence platform that organizes filings, disclosures and news into structured, traceable events with materiality and source context for Indian-equity research.",
     highlight: "Structured event intelligence for Indian equities",
@@ -731,6 +748,10 @@ export const projects: Project[] = [
       { name: "TypeScript" },
       { name: "Redis" },
       { name: "Vitest" },
+      { name: "BullMQ" },
+      { name: "Pinecone" },
+      { name: "Azure" },
+      { name: "PostgreSQL" },
     ],
   },
   {
@@ -765,6 +786,8 @@ export const projects: Project[] = [
       { name: "TypeScript" },
       { name: "Node.js" },
       { name: "Redis" },
+      { name: "BullMQ" },
+      { name: "Quant Finance" },
     ],
   },
   {

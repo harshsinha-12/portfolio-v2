@@ -1,12 +1,11 @@
 "use client";
 
-import { createElement } from "react";
 import Image from "next/image";
 import { BookOpenText, ExternalLink } from "lucide-react";
 import { AiFillGithub, AiFillYoutube } from "@/lib/icons";
-import { projects, projectStickers, type Project, type ProjectStackItem } from "@/data/portfolio";
-import { getStackIcon } from "@/lib/icons";
+import { projects, projectStickers, type Project } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { StackIconRow } from "@/components/ui/StackIcons";
 import { Button } from "@/components/ui/button";
 import { PinnedCard } from "@/components/decor/Decor";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
@@ -71,53 +70,6 @@ function ProjectPreview({ project }: { project: Project }) {
         <span className="font-hand text-lg text-white/90">{project.title}</span>
       </div>
     </div>
-  );
-}
-
-const stackIconColorClass = "text-[var(--color-ink)]/60";
-
-function StackIcon({ tech }: { tech: ProjectStackItem }) {
-  const Icon = getStackIcon(tech.name);
-
-  if (tech.icon) {
-    return (
-      <span
-        title={tech.name}
-        className="inline-flex shrink-0 items-center justify-center"
-      >
-        <Image
-          src={tech.icon}
-          alt=""
-          width={14}
-          height={14}
-          sizes="14px"
-          className="h-3.5 w-3.5 object-contain opacity-90"
-        />
-        <span className="sr-only">{tech.name}</span>
-      </span>
-    );
-  }
-
-  if (!Icon) {
-    return (
-      <span
-        title={tech.name}
-        className={`inline-flex shrink-0 items-center justify-center text-[9px] font-semibold ${stackIconColorClass}`}
-      >
-        {tech.name.slice(0, 1)}
-        <span className="sr-only">{tech.name}</span>
-      </span>
-    );
-  }
-
-  return (
-    <span
-      title={tech.name}
-      className={`inline-flex shrink-0 items-center justify-center ${stackIconColorClass}`}
-    >
-      {createElement(Icon, { size: 11, "aria-hidden": true })}
-      <span className="sr-only">{tech.name}</span>
-    </span>
   );
 }
 
@@ -204,11 +156,10 @@ function ProjectCardContent({ project }: { project: Project }) {
           >
             {project.title}
           </h3>
-          <div className="flex shrink-0 items-center gap-1 pt-0.5">
-            {project.stack.map((tech) => (
-              <StackIcon key={tech.name} tech={tech} />
-            ))}
-          </div>
+          <StackIconRow
+            stack={project.stack}
+            className="shrink-0 gap-1 pt-0.5"
+          />
         </div>
         {project.highlight && (
           <p className="mt-0.5 text-[11px] font-medium text-[var(--color-accent)]">
