@@ -1,6 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore, type TouchEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type AnimationEvent,
+  type TouchEvent,
+} from "react";
 import Image from "next/image";
 import { Award, ChevronLeft, ChevronRight, ExternalLink, Medal, Newspaper, Trophy } from "lucide-react";
 import { AiFillGithub, AiFillYoutube } from "@/lib/icons";
@@ -193,7 +201,7 @@ type MobileClotheslineProps = {
   visible: Achievement[];
   outgoing: OutgoingPage | null;
   direction: SlideDirection | null;
-  onExitAnimationEnd: () => void;
+  onExitAnimationEnd: (event: AnimationEvent<HTMLDivElement>) => void;
   onTouchStart: (event: TouchEvent<HTMLDivElement>) => void;
   onTouchEnd: (event: TouchEvent<HTMLDivElement>) => void;
   onTouchCancel: () => void;
@@ -217,7 +225,7 @@ function MobileHackathonClothesline({
 
   return (
     <div
-      className="relative touch-pan-y"
+      className="relative touch-pan-y overflow-x-clip"
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchCancel}
@@ -233,18 +241,27 @@ function MobileHackathonClothesline({
           return (
             <HangingSlot key={slotIndex} index={slotIndex} total={displaySlotCount}>
               <div className="relative w-full">
-                {outgoingItem && arcExitClass && (
-                  <div
-                    className={cn("absolute inset-0 z-10", arcExitClass)}
-                    onAnimationEnd={onExitAnimationEnd}
-                  >
-                    <AchievementPolaroid item={outgoingItem} rotation={rotation} />
-                  </div>
-                )}
-                {item && (
-                  <div className={cn(outgoing && arcEnterClass)}>
-                    <AchievementPolaroid item={item} rotation={rotation} />
-                  </div>
+                {outgoing ? (
+                  <>
+                    {outgoingItem && arcExitClass && (
+                      <div className={arcExitClass} onAnimationEnd={onExitAnimationEnd}>
+                        <AchievementPolaroid item={outgoingItem} rotation={rotation} />
+                      </div>
+                    )}
+                    {item && arcEnterClass && (
+                      <div
+                        className={cn(
+                          arcEnterClass,
+                          outgoingItem && "pointer-events-none absolute inset-0 z-10",
+                        )}
+                        aria-hidden={outgoingItem ? true : undefined}
+                      >
+                        <AchievementPolaroid item={item} rotation={rotation} />
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  item && <AchievementPolaroid item={item} rotation={rotation} />
                 )}
               </div>
             </HangingSlot>
@@ -369,13 +386,18 @@ export function AchievementsSection() {
     setDirection(null);
   }, []);
 
-  const handleExitAnimationEnd = useCallback(() => {
-    exitEndedRef.current += 1;
-    const exitingCount = outgoing?.items.length ?? 0;
-    if (exitEndedRef.current >= exitingCount) {
-      handleTransitionEnd();
-    }
-  }, [outgoing, handleTransitionEnd]);
+  const handleExitAnimationEnd = useCallback(
+    (event: AnimationEvent<HTMLDivElement>) => {
+      if (!event.animationName.startsWith("arc-exit-")) return;
+
+      exitEndedRef.current += 1;
+      const exitingCount = outgoing?.items.length ?? 0;
+      if (exitEndedRef.current >= exitingCount) {
+        handleTransitionEnd();
+      }
+    },
+    [outgoing, handleTransitionEnd],
+  );
 
   return (
     <section
@@ -417,7 +439,7 @@ export function AchievementsSection() {
       </div>
 
       {isMobile ? (
-        <div className="relative min-h-[25.5rem]">
+        <div className="relative min-h-[25.5rem] overflow-x-clip">
           <MobileHackathonClothesline
             visible={visible}
             outgoing={outgoing}

@@ -11,6 +11,7 @@ import { TimelineSection } from "@/components/sections/Timeline";
 import { AchievementsSection } from "@/components/sections/Achievements";
 import { ProjectsSection } from "@/components/sections/Projects";
 import { TechStackSection } from "@/components/sections/TechStack";
+import { ArticlesSection } from "@/components/sections/Articles";
 import type { ContributionDay } from "@/lib/githubContributions";
 
 type SiteShellProps = {
@@ -33,6 +34,7 @@ export function SiteShell({ initialContributions }: SiteShellProps) {
               <ProjectsSection />
               <TechStackSection />
               <AchievementsSection />
+              <ArticlesSection />
             </main>
             <Footer />
           </div>
