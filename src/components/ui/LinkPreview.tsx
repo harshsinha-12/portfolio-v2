@@ -20,6 +20,7 @@ import {
   getLinkPreviewImageSources,
 } from "@/data/linkPreviews";
 import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
+import { trackOutboundClick } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const PREVIEW_SIZES = "9rem";
@@ -216,7 +217,12 @@ export function LinkPreview({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={ariaLabel}
-          onClick={onClick}
+          onClick={() => {
+            trackOutboundClick(href, {
+              label: ariaLabel ?? title ?? null,
+            });
+            onClick?.();
+          }}
           className={className ?? "marker-link"}
         >
           {children}

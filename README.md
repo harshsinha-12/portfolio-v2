@@ -53,6 +53,14 @@ REDIS_PORT=...
 REDIS_TLS=false
 ```
 
+PostHog is initialized from `instrumentation-client.ts` when
+`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is set. `NEXT_PUBLIC_POSTHOG_HOST` defaults
+to `https://us.i.posthog.com`. The client enables autocapture (clicks),
+pageviews/pageleaves, exception capture, web vitals, and session recordings.
+In your PostHog project, turn on **Record user sessions** (and optionally
+console logs) under Project settings → Session replay. The SDK stays inert
+until the token is present, so you can ship the code first and add keys later.
+
 The Spotify variables are server-only and power the live last-played line in
 the profile header. Authorize the app once with the
 `user-read-currently-playing user-read-recently-played` scopes, then store the

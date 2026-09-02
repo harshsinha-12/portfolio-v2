@@ -142,7 +142,7 @@ export function FloatingNav() {
         ))}
         <LinkPreview
           href={connectLink}
-          onClick={() => track("connect_link_clicked")}
+          onClick={() => track("connect_link_clicked", { placement: "nav" })}
           className="relative z-10 ml-0.5 inline-flex h-7 shrink-0 items-center justify-center rounded-full border border-[var(--color-on-mat)]/30 bg-[var(--color-on-mat)]/8 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)]/85 transition-[color,background-color,transform] hover:-translate-y-px hover:bg-[var(--color-on-mat)]/14 hover:text-[var(--color-heading-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs"
         >
           Connect
