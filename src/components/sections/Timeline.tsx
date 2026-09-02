@@ -7,6 +7,7 @@ import {
   educationList,
   experienceStickers,
   experiences,
+  type ContentBlock,
   type Experience,
 } from "@/data/portfolio";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -119,6 +120,38 @@ function TimelineEntry({ children }: { children: React.ReactNode }) {
   );
 }
 
+function ExpandedPositionContent({ content }: { content: ContentBlock[] }) {
+  const [lead, ...details] = content;
+
+  return (
+    <div className="max-w-[96ch]">
+      {lead && (
+        <p className="mt-2 text-xs leading-[1.65] text-[var(--color-ink-muted)]">
+          <IntroSegments
+            segments={lead.segments}
+            handClassName="font-hand text-xs text-[var(--color-accent)] sm:text-sm"
+          />
+        </p>
+      )}
+      {details.length > 0 && (
+        <ul className="mt-2.5 list-disc space-y-2 pl-4 marker:text-[var(--color-accent)]">
+          {details.map((block, index) => (
+            <li
+              key={index}
+              className="pl-0.5 text-xs leading-[1.65] text-[var(--color-ink-muted)]"
+            >
+              <IntroSegments
+                segments={block.segments}
+                handClassName="font-hand text-xs text-[var(--color-accent)] sm:text-sm"
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function ExperienceCompany({ exp }: { exp: Experience }) {
   const [expanded, setExpanded] = useState(false);
   const latest = exp.positions[0];
@@ -158,21 +191,9 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
                 {formatDurationWithTenure(position.duration)}
               </p>
               {expanded ? (
-                <ul className="mt-1 space-y-1">
-                  {position.content.map((block, bi) => (
-                    <li
-                      key={`${position.title}-${bi}`}
-                      className="text-xs leading-relaxed text-[var(--color-ink-muted)]"
-                    >
-                      <IntroSegments
-                        segments={block.segments}
-                        handClassName="font-hand text-xs text-[var(--color-accent)] sm:text-sm"
-                      />
-                    </li>
-                  ))}
-                </ul>
+                <ExpandedPositionContent content={position.content} />
               ) : (
-                <p className="mt-1 text-xs leading-relaxed text-[var(--color-ink-muted)]">
+                <p className="mt-1 max-w-[96ch] text-xs leading-[1.65] text-[var(--color-ink-muted)]">
                   {summary}
                 </p>
               )}

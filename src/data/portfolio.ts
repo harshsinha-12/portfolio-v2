@@ -333,7 +333,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Worked across the full lifecycle of production AI systems — document ingestion, structured extraction, embeddings, retrieval, agent orchestration, tool execution, evaluation, observability and user-facing product integration — while working directly with the founder.",
+                  "Worked directly with the founder to build and scale production AI systems across agent orchestration, retrieval, evaluation, financial data and user-facing product workflows.",
               },
             ],
           },
@@ -341,7 +341,7 @@ export const experiences: Experience[] = [
             segments: [
               {
                 type: "text",
-                value: "Engineered core workflows for ",
+                value: "Built core workflows for ",
               },
               {
                 type: "link",
@@ -367,7 +367,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "), building sub-agents, tool-calling flows, financial data fetchers, SQL and RAG tools, web search, citations, streaming and retrieval over 100K+ documents and 20M+ records.",
+                  "). Orchestrated specialized agents and tools for SQL, RAG, web search, citations and streaming across 100K+ documents and 20M+ records.",
               },
             ],
           },
@@ -376,7 +376,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Built evaluation and agent-harness infrastructure across stock, portfolio, screener, ETF, index and industry agents using custom test sets, LLM-as-a-judge, tool-call validation, citation checks, latency tracking, response-quality scoring and failure analysis.",
+                  "Created evaluation harnesses across stock, portfolio, screener, ETF, index and industry agents using custom test sets, LLM-as-a-judge scoring, tool-call and citation validation, latency tracking and failure analysis.",
               },
             ],
           },
@@ -385,33 +385,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Built production document-intelligence pipelines for IPO RHPs, ETF factsheets, annual reports, investor presentations and earnings-call transcripts using Docling/OCR, Pydantic and Zod schemas, embeddings, queue workers and LLM-based structured extraction.",
-              },
-            ],
-          },
-          {
-            segments: [
-              {
-                type: "text",
-                value:
-                  "Developed and maintained financial-intelligence pipelines for 300+ ratios and technical indicators, including valuation metrics, beta, volatility, FII/DII flows, sector rotation, market breadth, portfolio benchmarks, shareholding patterns, bulk/block deals and earnings data.",
-              },
-            ],
-          },
-          {
-            segments: [
-              {
-                type: "text",
-                value:
-                  "Created an AI Screener Agent that translates natural-language investing queries into SQL and filter operations; benchmarked multiple retrieval strategies and improved reliability through schema mapping, evaluations, logging, guardrails and prompt optimization.",
-              },
-            ],
-          },
-          {
-            segments: [
-              {
-                type: "text",
-                value: "Optimized RAG infrastructure across ",
+                  "Built production document-intelligence pipelines for IPO RHPs, ETF factsheets, annual reports, investor presentations and earnings-call transcripts using Docling/OCR, typed schemas, queue workers and structured extraction. Optimized retrieval across ",
               },
               {
                 type: "link",
@@ -431,7 +405,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  " using sparse-dense hybrid search, metadata filters, Cohere re-ranking, document chunking and page-level citations, reducing vector-related infrastructure costs by up to 80%.",
+                  " with hybrid search, re-ranking, metadata filters and page-level citations, reducing vector infrastructure costs by up to 80%.",
               },
             ],
           },
@@ -440,7 +414,16 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Built real-time AI automation for news, exchange announcements and Union Budget coverage across 6K+ companies, generating live transcripts, sentiment and importance scores, company/topic summaries and ",
+                  "Developed an AI Screener Agent that translates natural-language investing queries into SQL and filter operations, improving reliability through schema mapping, evaluations, logging, guardrails and prompt optimization.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Built financial and real-time market automation across 300+ ratios and indicators and 6K+ companies, covering news, exchange announcements, transcripts, sentiment, market breadth and sector rotation. The resulting ",
               },
               {
                 type: "link",
@@ -452,7 +435,7 @@ export const experiences: Experience[] = [
               },
               {
                 type: "text",
-                value: " that reached 3.2M+ impressions in 6 months.",
+                value: " reached 3.2M+ impressions in six months.",
               },
             ],
           },
@@ -461,7 +444,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Designed and tested Redis Cluster infrastructure for scalable caching and fault tolerance across Docker and Azure VMs, validating primary-replica failover, key access patterns, deployment behaviour and migration strategy.",
+                  "Designed and tested Redis Cluster deployments across Docker and Azure VMs, validating primary-replica failover, key-access patterns, deployment behaviour and migration strategy.",
               },
             ],
           },
@@ -485,25 +468,14 @@ export const educationList: Education[] = [
   {
     id: "education-1",
     icon: "/assets/nitk-logo.png",
-    title: "National Institute of Technology Karnataka, Surathkal",
+    title: "Indian Institute of Technology, Patna",
     degree: "Bachelor of Technology",
-    duration: "December 2020 - May 2024",
+    duration: "December 2023 - May 2027",
     content: [
-      "Major: Electronics and Communication Engineering",
-      "Minor: Information Technology",
+      "Major: Computer Science and Engineering",
+      "Minor: Data Science and Artificial Intelligence",
     ],
-    link: "https://www.nitk.ac.in/",
-  },
-  {
-    id: "education-2",
-    icon: "/assets/pba_logo.jpeg",
-    title: "Polkadot Blockchain Academy",
-    degree: "Distinction",
-    duration: "May 2024 - June 2024",
-    content: [
-      "Graduated with a distinction in the fifth cohort at the National University of Singapore.",
-    ],
-    link: "https://polkadot.academy/",
+    link: "https://www.iitp.ac.in/",
   },
 ];
 
