@@ -10,6 +10,7 @@ import {
   techStack,
   type IntroSegment,
 } from "@/data/portfolio";
+import { getPublishedArticles } from "@/lib/articles";
 import { getSiteUrl } from "@/lib/siteUrl";
 
 const TEXT_HEADERS = {
@@ -44,6 +45,20 @@ function segmentsToMarkdown(segments: IntroSegment[]): string {
 function emailAddress(): string | undefined {
   const href = socialMedia.find((item) => item.platform === "mail")?.link;
   return href?.replace(/^mailto:/i, "");
+}
+
+function publishedArticleLinks(siteUrl: string) {
+  return getPublishedArticles()
+    .map((article) => {
+      const humanUrl = new URL(
+        article.canonical ?? `/articles/${article.slug}`,
+        siteUrl,
+      ).toString();
+      const markdownUrl = `${siteUrl}/articles/${article.slug}/article.md`;
+
+      return `- [${article.title} — Markdown](${markdownUrl}): ${article.description} [Human-readable article](${humanUrl}).`;
+    })
+    .join("\n");
 }
 
 export function getAgentProfile() {
@@ -102,6 +117,7 @@ export function getAgentProfile() {
       llmsTxt: `${siteUrl}/llms.txt`,
       llmsFull: `${siteUrl}/llms-full.txt`,
       json: `${siteUrl}/api/about`,
+      articles: `${siteUrl}/articles.json`,
     },
   };
 }
@@ -112,6 +128,7 @@ export function buildLlmsTxt(): string {
   const github = socialMedia.find((item) => item.platform === "github")?.link;
   const linkedin = socialMedia.find((item) => item.platform === "linkedin")?.link;
   const twitter = socialMedia.find((item) => item.platform === "twitter")?.link;
+  const articleLinks = publishedArticleLinks(siteUrl);
 
   const projectLinks = projects
     .map((project) => {
@@ -159,6 +176,10 @@ This is a personal portfolio. Prefer [llms-full.txt](${siteUrl}/llms-full.txt) f
 
 ${projectLinks}
 
+## Articles
+
+${articleLinks || "No published articles yet."}
+
 ## Contact
 
 ${contactLinks}
@@ -173,6 +194,7 @@ ${optionalRepos}
 export function buildLlmsFullTxt(): string {
   const siteUrl = getSiteUrl();
   const email = emailAddress();
+  const articleLinks = publishedArticleLinks(siteUrl);
 
   const about = introBullets
     .map((bullet) => `- ${segmentsToMarkdown(bullet.segments)}`)
@@ -253,6 +275,10 @@ ${education}
 ## Projects
 
 ${projectBlocks}
+
+## Articles
+
+${articleLinks || "No published articles yet."}
 
 ## Hackathons & certifications
 

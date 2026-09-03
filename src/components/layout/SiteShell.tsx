@@ -13,12 +13,19 @@ import { ProjectsSection } from "@/components/sections/Projects";
 import { TechStackSection } from "@/components/sections/TechStack";
 import { ArticlesSection } from "@/components/sections/Articles";
 import type { ContributionDay } from "@/lib/githubContributions";
+import type { ArticleSummary } from "@/types/articles";
 
 type SiteShellProps = {
   initialContributions?: ContributionDay[];
+  articles?: ArticleSummary[];
+  hasMoreArticles?: boolean;
 };
 
-export function SiteShell({ initialContributions }: SiteShellProps) {
+export function SiteShell({
+  initialContributions,
+  articles = [],
+  hasMoreArticles = false,
+}: SiteShellProps) {
   return (
     <SoundProvider>
       <XactoProvider>
@@ -34,7 +41,10 @@ export function SiteShell({ initialContributions }: SiteShellProps) {
               <ProjectsSection />
               <TechStackSection />
               <AchievementsSection />
-              <ArticlesSection />
+              <ArticlesSection
+                articles={articles}
+                hasMoreArticles={hasMoreArticles}
+              />
             </main>
             <Footer />
           </div>

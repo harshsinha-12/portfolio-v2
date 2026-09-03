@@ -1,0 +1,154 @@
+import type { ComponentProps, ReactNode } from "react";
+import Image from "next/image";
+import type { MDXComponents } from "mdx/types";
+import { MermaidDiagram } from "@/components/articles/MermaidDiagram";
+
+type ArticleImageProps = {
+  src: string;
+  alt: string;
+  caption?: string;
+  width?: number;
+  height?: number;
+};
+
+export function ArticleImage({
+  src,
+  alt,
+  caption,
+  width = 1200,
+  height = 675,
+}: ArticleImageProps) {
+  return (
+    <figure className="article-figure">
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        sizes="(max-width: 768px) 100vw, 680px"
+      />
+      {caption ? <figcaption>{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+type CalloutProps = {
+  title?: string;
+  children: ReactNode;
+};
+
+export function Callout({ title = "Field note", children }: CalloutProps) {
+  return (
+    <aside className="article-callout">
+      <strong>{title}</strong>
+      <div>{children}</div>
+    </aside>
+  );
+}
+
+export function MarginNote({ children }: { children: ReactNode }) {
+  return <aside className="article-margin-note">{children}</aside>;
+}
+
+type VideoEmbedProps = {
+  src: string;
+  title: string;
+  caption?: string;
+  poster?: string;
+};
+
+export function VideoEmbed({ src, title, caption, poster }: VideoEmbedProps) {
+  const isRemoteEmbed = /^https:\/\//.test(src);
+
+  return (
+    <figure className="article-video">
+      {isRemoteEmbed ? (
+        <iframe
+          src={src}
+          title={title}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      ) : (
+        <video controls preload="metadata" poster={poster} aria-label={title}>
+          <source src={src} type="video/webm" />
+        </video>
+      )}
+      {caption ? <figcaption>{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+type DatasetTableProps = {
+  dataset: string;
+  data: Record<string, unknown>;
+  caption?: string;
+};
+
+export function DatasetTable({ dataset, data, caption }: DatasetTableProps) {
+  const value = data[dataset];
+  if (!Array.isArray(value) || value.length === 0) return null;
+
+  const rows = value.filter(
+    (row): row is Record<string, unknown> =>
+      Boolean(row) && typeof row === "object" && !Array.isArray(row),
+  );
+  if (rows.length === 0) return null;
+
+  const columns = Object.keys(rows[0]);
+
+  return (
+    <figure className="article-table-wrap">
+      <div className="article-table-scroll">
+        <table>
+          <thead>
+            <tr>
+              {columns.map((column) => (
+                <th key={column}>{column}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, rowIndex) => (
+              <tr key={rowIndex}>
+                {columns.map((column) => (
+                  <td key={column}>{String(row[column] ?? "")}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {caption ? <figcaption>{caption}</figcaption> : null}
+    </figure>
+  );
+}
+
+function MarkdownImage(props: ComponentProps<"img">) {
+  const src = typeof props.src === "string" ? props.src : "";
+  const alt = props.alt ?? "";
+
+  if (!src) return null;
+  if (/^https?:\/\//.test(src)) {
+    // Remote article hosts are intentionally arbitrary, so these stay native.
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img {...props} src={src} alt={alt} loading="lazy" />;
+  }
+
+  return <ArticleImage src={src} alt={alt} />;
+}
+
+export function createArticleComponents(data: Record<string, unknown>): MDXComponents {
+  return {
+    img: MarkdownImage,
+    ArticleImage,
+    Callout,
+    MarginNote,
+    Mermaid: MermaidDiagram,
+    Video: VideoEmbed,
+    DataTable: (props: Omit<DatasetTableProps, "data">) => (
+      <DatasetTable {...props} data={data} />
+    ),
+  };
+}

@@ -79,6 +79,7 @@ export const metadata: Metadata = {
         { url: "/llms-full.txt", title: "Full markdown CV" },
       ],
       "application/json": "/api/about",
+      "application/rss+xml": [{ url: "/rss.xml", title: "Harsh Sinha — Field Notes" }],
     },
   },
 };
