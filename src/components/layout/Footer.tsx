@@ -5,6 +5,7 @@ import { socialIconMap } from "@/lib/icons";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { isHttpUrl } from "@/data/linkPreviews";
 import { VisitorQuoteCard } from "@/components/layout/VisitorQuoteCard";
+import { CreditsLink } from "@/components/layout/CreditsNote";
 import { track, trackOutboundClick } from "@/lib/analytics";
 
 const socialButtonClassName =
@@ -60,7 +61,7 @@ export function Footer() {
           );
         })}
       </div>
-      <p className="mt-2 text-sm text-[var(--color-on-mat)]/85">
+      <div className="mt-2 text-sm text-[var(--color-on-mat)]/85">
         <LinkPreview
           href={connectLink}
           title="Connect"
@@ -70,7 +71,9 @@ export function Footer() {
           <span className="marker-link marker-link--on-mat !text-[var(--color-on-mat)]">Connect</span>
         </LinkPreview>
         {" · "}© {year} Harsh Sinha
-      </p>
+        {" · "}
+        <CreditsLink />
+      </div>
     </footer>
   );
 }

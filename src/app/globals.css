@@ -246,6 +246,48 @@ body {
   image-rendering: pixelated;
 }
 
+.projects-horizontal-rail {
+  --projects-rail-gutter: clamp(0.75rem, 1.5vw, 1.5rem);
+  gap: clamp(5rem, 8vw, 8rem);
+  scroll-padding-inline: var(--projects-rail-gutter);
+  overscroll-behavior-inline: contain;
+  padding-inline: var(--projects-rail-gutter);
+  scrollbar-width: none;
+}
+
+.projects-scroll-stage {
+  min-height: 180svh;
+}
+
+.projects-scroll-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.projects-horizontal-rail::-webkit-scrollbar {
+  display: none;
+}
+
+.projects-horizontal-item {
+  --project-arc-y: 0px;
+  --project-swivel: 0deg;
+  --project-scale: 1;
+  flex: 0 0 min(82vw, clamp(18rem, 22vw, 22rem));
+  transform: translate3d(0, var(--project-arc-y), 0)
+    rotate(var(--project-swivel)) scale(var(--project-scale));
+  transform-origin: 50% 110%;
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+
+@media (max-width: 519px) {
+  .projects-horizontal-item {
+    --project-arc-y: 1.5rem !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .timeline-steam-puff {
     animation: none;
@@ -740,13 +782,96 @@ body {
   animation-play-state: paused;
 }
 
+.credits-dialog {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 1.25rem;
+  border: none;
+  background: transparent;
+  overflow: visible;
+}
+
+.credits-dialog[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.credits-dialog::backdrop {
+  background: oklch(22% 0.04 158 / 0.55);
+  animation: credits-backdrop-in var(--dur-base) var(--ease-out) both;
+}
+
+.credits-dialog.is-closing::backdrop {
+  animation: credits-backdrop-out 220ms var(--ease-in-out) both;
+}
+
+.credits-card {
+  animation: credits-drop var(--dur-polaroid-drop) var(--ease-out) forwards;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+.credits-dialog.is-closing .credits-card {
+  animation: credits-lift 220ms var(--ease-in-out) forwards;
+}
+
+@keyframes credits-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes credits-backdrop-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes credits-drop {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -3.25rem, 0) rotate(-12deg);
+  }
+  62% {
+    opacity: 1;
+    transform: translate3d(0, 0.28rem, 0) rotate(1.5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes credits-lift {
+  to {
+    opacity: 0;
+    transform: translateY(-1.4rem) rotate(-8deg) scale(0.92);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mat-scratch-heal,
   .rope-cut-left,
   .rope-cut-right,
   .rope-cut-left.is-healing,
   .rope-cut-right.is-healing,
-  .polaroid-sway {
+  .polaroid-sway,
+  .credits-card,
+  .credits-dialog::backdrop,
+  .credits-dialog.is-closing .credits-card,
+  .credits-dialog.is-closing::backdrop {
     animation: none;
   }
 
