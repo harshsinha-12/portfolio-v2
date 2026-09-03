@@ -70,7 +70,7 @@ export function Footer() {
         >
           <span className="marker-link marker-link--on-mat !text-[var(--color-on-mat)]">Connect</span>
         </LinkPreview>
-        {" · "}© {year} Harsh Sinha
+        {" · "}© <span suppressHydrationWarning>{year}</span> Harsh Sinha
         {" · "}
         <CreditsLink />
       </div>

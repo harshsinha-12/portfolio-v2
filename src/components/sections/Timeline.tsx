@@ -102,7 +102,10 @@ function OrgHeader({
             <span className="text-[var(--color-ink-subtle)]" aria-hidden="true">
               ·
             </span>
-            <span className="text-[11px] text-[var(--color-ink-subtle)]">
+            <span
+              className="text-[11px] text-[var(--color-ink-subtle)]"
+              suppressHydrationWarning
+            >
               {tenure}
             </span>
           </>
@@ -192,7 +195,10 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
                   <StackIconRow stack={position.stack} size={12} />
                 )}
               </div>
-              <p className="text-[11px] text-[var(--color-ink-subtle)]">
+              <p
+                className="text-[11px] text-[var(--color-ink-subtle)]"
+                suppressHydrationWarning
+              >
                 {formatDurationWithTenure(position.duration)}
               </p>
               {expanded ? (
@@ -240,7 +246,10 @@ function EducationItem({ edu }: { edu: (typeof educationList)[number] }) {
             <p className="text-xs font-semibold text-[var(--color-ink)]">
               {edu.degree}
             </p>
-            <p className="text-[11px] text-[var(--color-ink-subtle)]">
+            <p
+              className="text-[11px] text-[var(--color-ink-subtle)]"
+              suppressHydrationWarning
+            >
               {formatDurationWithTenure(edu.duration)}
             </p>
             {edu.content.map((line) => (
