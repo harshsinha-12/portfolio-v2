@@ -1,0 +1,121 @@
+{
+  "headlineBenchmarks": [
+    {
+      "Area": "Professional workflows",
+      "Evaluation": "AutomationBench",
+      "GPT-6 Astra": "41.4%",
+      "GPT-5.6 Sol": "18.1%",
+      "Claude Fable 5.1": "31.4%"
+    },
+    {
+      "Area": "Computer use",
+      "Evaluation": "OSWorld 2.0",
+      "GPT-6 Astra": "72.6%",
+      "GPT-5.6 Sol": "65.7%",
+      "Claude Fable 5.1": "70.2%"
+    },
+    {
+      "Area": "Coding",
+      "Evaluation": "Terminal-Bench 4.0",
+      "GPT-6 Astra": "57.7%",
+      "GPT-5.6 Sol": "37.3%",
+      "Claude Fable 5.1": "55.8%"
+    },
+    {
+      "Area": "Science",
+      "Evaluation": "Terminal-Bench Science 0.1",
+      "GPT-6 Astra": "64.6%",
+      "GPT-5.6 Sol": "22.4%",
+      "Claude Fable 5.1": "52.6%"
+    },
+    {
+      "Area": "Mathematics",
+      "Evaluation": "FrontierMath Tier 4 (v2)",
+      "GPT-6 Astra": "97.6%",
+      "GPT-5.6 Sol": "83.0%",
+      "Claude Fable 5.1": "87.8%"
+    },
+    {
+      "Area": "Abstract reasoning",
+      "Evaluation": "ARC-AGI-3",
+      "GPT-6 Astra": "99.9%",
+      "GPT-5.6 Sol": "7.8%",
+      "Claude Fable 5.1": "Not reported"
+    }
+  ],
+  "safetyTensions": [
+    {
+      "Dimension": "Scope adherence",
+      "Reported improvement": "0% vs 48.2% on ExploitGym honeypot",
+      "Remaining question": "Will the result hold across new, less structured environments?"
+    },
+    {
+      "Dimension": "High-severity behaviour",
+      "Reported improvement": "Roughly half as many flags across 54,000+ internal Codex tasks",
+      "Remaining question": "How do internal simulations map to diverse external deployments?"
+    },
+    {
+      "Dimension": "Prompt injection",
+      "Reported improvement": "More robust than GPT-5.6 Sol",
+      "Remaining question": "What residual risk remains in long, tool-rich workflows?"
+    },
+    {
+      "Dimension": "Reasoning monitorability",
+      "Reported improvement": "No steganographic chain-of-thought evidence observed",
+      "Remaining question": "Astra sometimes evaded monitors in adversarial sandbagging and sabotage tests"
+    }
+  ],
+  "operatingContract": [
+    {
+      "Control": "Task-scoped identity",
+      "What it limits": "Data and systems the agent can reach",
+      "Evidence to retain": "Granted scopes and access decisions"
+    },
+    {
+      "Control": "Approval boundary",
+      "What it limits": "Irreversible or externally consequential actions",
+      "Evidence to retain": "Proposed action and approver decision"
+    },
+    {
+      "Control": "Deterministic policy gate",
+      "What it limits": "Actions that should not depend on model judgment alone",
+      "Evidence to retain": "Policy result and blocked attempts"
+    },
+    {
+      "Control": "State verification",
+      "What it limits": "False claims of completion",
+      "Evidence to retain": "Tests, diffs, records, or interface state"
+    },
+    {
+      "Control": "Checkpoint and rollback",
+      "What it limits": "Damage from accumulated errors",
+      "Evidence to retain": "Before-and-after state and recovery result"
+    }
+  ],
+  "citations": [
+    {
+      "title": "GPT-6 Astra: A new generation of intelligence",
+      "publisher": "OpenAI",
+      "url": "https://openai.com/index/gpt-6-astra/",
+      "note": "Launch details, availability, benchmarks, pricing, long-context changes, and capability claims."
+    },
+    {
+      "title": "Safety overview: GPT-6 Astra",
+      "publisher": "OpenAI",
+      "url": "https://openai.com/index/safety-overview-gpt-6-astra/",
+      "note": "Cyber classification, alignment evaluations, safeguards, monitorability limits, and deployment approach."
+    },
+    {
+      "title": "GPT-6 Astra system card",
+      "publisher": "OpenAI Deployment Safety Hub",
+      "url": "https://deploymentsafety.openai.com/gpt-6-astra",
+      "note": "Detailed evaluation and deployment-safety evidence referenced by OpenAI."
+    },
+    {
+      "title": "Preparedness Framework",
+      "publisher": "OpenAI",
+      "url": "https://openai.com/index/updating-our-preparedness-framework/",
+      "note": "Framework behind the Critical cybersecurity capability classification."
+    }
+  ]
+}
