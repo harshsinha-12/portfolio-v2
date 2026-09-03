@@ -60,19 +60,37 @@ type StickyNoteProps = {
 };
 
 const noteColors = {
-  yellow: "oklch(94% 0.08 95)",
-  pink: "oklch(92% 0.06 15)",
-  blue: "oklch(93% 0.04 240)",
+  yellow: {
+    bg: "oklch(94% 0.08 95)",
+    fold: "oklch(78% 0.08 85)",
+    crease: "oklch(98% 0.02 95)",
+  },
+  pink: {
+    bg: "oklch(92% 0.06 15)",
+    fold: "oklch(76% 0.07 20)",
+    crease: "oklch(98% 0.02 15)",
+  },
+  blue: {
+    bg: "oklch(93% 0.04 240)",
+    fold: "oklch(76% 0.05 240)",
+    crease: "oklch(98% 0.015 240)",
+  },
 };
 
 export function StickyNote({ children, className, rotation = 1.5, color = "yellow" }: StickyNoteProps) {
+  const palette = noteColors[color];
+
   return (
     <div
-      className={cn("relative p-4 shadow-[3px_4px_0_var(--color-shadow)]", className)}
-      style={{
-        transform: `rotate(${rotation}deg)`,
-        background: noteColors[color],
-      }}
+      className={cn("sticky-note p-3 sm:p-4", className)}
+      style={
+        {
+          "--note-rotation": `${rotation}deg`,
+          "--note-bg": palette.bg,
+          "--note-fold": palette.fold,
+          "--note-crease": palette.crease,
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>

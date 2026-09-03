@@ -754,3 +754,69 @@ body {
     transition: none;
   }
 }
+
+/* Postage-stamp perforated edge — small zig-zag notches on all sides */
+.stamp-perforated {
+  --stamp-notch-r: 2px;
+  --stamp-notch-g: 5px;
+  position: relative;
+  padding: 3px;
+  background: white;
+  filter: drop-shadow(2px 3px 0 var(--color-shadow));
+  -webkit-mask:
+    radial-gradient(
+        circle at 50% 0,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      50% 0 / var(--stamp-notch-g) calc(var(--stamp-notch-g) / 2) repeat-x,
+    radial-gradient(
+        circle at 50% 100%,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      50% 100% / var(--stamp-notch-g) calc(var(--stamp-notch-g) / 2) repeat-x,
+    radial-gradient(
+        circle at 0 50%,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      0 50% / calc(var(--stamp-notch-g) / 2) var(--stamp-notch-g) repeat-y,
+    radial-gradient(
+        circle at 100% 50%,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      100% 50% / calc(var(--stamp-notch-g) / 2) var(--stamp-notch-g) repeat-y,
+    linear-gradient(#000 0 0) center / calc(100% - var(--stamp-notch-g))
+      calc(100% - var(--stamp-notch-g)) no-repeat;
+  mask:
+    radial-gradient(
+        circle at 50% 0,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      50% 0 / var(--stamp-notch-g) calc(var(--stamp-notch-g) / 2) repeat-x,
+    radial-gradient(
+        circle at 50% 100%,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      50% 100% / var(--stamp-notch-g) calc(var(--stamp-notch-g) / 2) repeat-x,
+    radial-gradient(
+        circle at 0 50%,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      0 50% / calc(var(--stamp-notch-g) / 2) var(--stamp-notch-g) repeat-y,
+    radial-gradient(
+        circle at 100% 50%,
+        transparent var(--stamp-notch-r),
+        #000 calc(var(--stamp-notch-r) + 0.5px)
+      )
+      100% 50% / calc(var(--stamp-notch-g) / 2) var(--stamp-notch-g) repeat-y,
+    linear-gradient(#000 0 0) center / calc(100% - var(--stamp-notch-g))
+      calc(100% - var(--stamp-notch-g)) no-repeat;
+  -webkit-mask-composite: source-over, source-over, source-over, source-over, destination-over;
+  mask-composite: add;
+}

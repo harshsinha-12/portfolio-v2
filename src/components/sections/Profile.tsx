@@ -189,7 +189,7 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
         <StickyNote
           rotation={1.2}
           color="yellow"
-          className="mt-[2pt] w-full max-lg:!rotate-0 p-3 sm:p-4 lg:col-start-2 lg:row-start-2 lg:mt-0 lg:p-4"
+          className="mt-[2pt] w-full lg:col-start-2 lg:row-start-2 lg:mt-0"
         >
           <IntroList />
         </StickyNote>

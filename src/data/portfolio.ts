@@ -885,4 +885,5 @@ export const navSections = [
   { id: "projects", label: "Projects" },
   { id: "tech-stack", label: "Tech" },
   { id: "hackathons", label: "Hackathons & Certs" },
+  { id: "articles", label: "Writing" },
 ];
