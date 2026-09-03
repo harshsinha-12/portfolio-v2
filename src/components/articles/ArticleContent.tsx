@@ -86,6 +86,12 @@ type DatasetTableProps = {
   caption?: string;
 };
 
+type ReferenceListProps = {
+  dataset?: string;
+  data: Record<string, unknown>;
+  title?: string;
+};
+
 export function DatasetTable({ dataset, data, caption }: DatasetTableProps) {
   const value = data[dataset];
   if (!Array.isArray(value) || value.length === 0) return null;
@@ -125,6 +131,56 @@ export function DatasetTable({ dataset, data, caption }: DatasetTableProps) {
   );
 }
 
+export function ReferenceList({
+  dataset = "citations",
+  data,
+  title = "Sources and further reading",
+}: ReferenceListProps) {
+  const value = data[dataset];
+  if (!Array.isArray(value) || value.length === 0) return null;
+
+  const references = value.filter(
+    (entry): entry is Record<string, unknown> =>
+      Boolean(entry) && typeof entry === "object" && !Array.isArray(entry),
+  );
+  if (references.length === 0) return null;
+
+  return (
+    <details className="article-references">
+      <summary>
+        <span>{title}</span>
+        <small>{references.length} references</small>
+      </summary>
+      <ol>
+        {references.map((reference, index) => {
+          const url = typeof reference.url === "string" ? reference.url : "";
+          const referenceTitle =
+            typeof reference.title === "string"
+              ? reference.title
+              : `Reference ${index + 1}`;
+          const publisher =
+            typeof reference.publisher === "string" ? reference.publisher : "";
+          const note = typeof reference.note === "string" ? reference.note : "";
+
+          return (
+            <li key={`${referenceTitle}-${index}`}>
+              {url ? (
+                <a href={url} target="_blank" rel="noopener noreferrer">
+                  {referenceTitle}
+                </a>
+              ) : (
+                <strong>{referenceTitle}</strong>
+              )}
+              {publisher ? <span>{publisher}</span> : null}
+              {note ? <p>{note}</p> : null}
+            </li>
+          );
+        })}
+      </ol>
+    </details>
+  );
+}
+
 function MarkdownImage(props: ComponentProps<"img">) {
   const src = typeof props.src === "string" ? props.src : "";
   const alt = props.alt ?? "";
@@ -149,6 +205,9 @@ export function createArticleComponents(data: Record<string, unknown>): MDXCompo
     Video: VideoEmbed,
     DataTable: (props: Omit<DatasetTableProps, "data">) => (
       <DatasetTable {...props} data={data} />
+    ),
+    References: (props: Omit<ReferenceListProps, "data">) => (
+      <ReferenceList {...props} data={data} />
     ),
   };
 }

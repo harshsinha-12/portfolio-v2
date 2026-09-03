@@ -1522,6 +1522,73 @@ button.article-share__action {
   border-bottom: 0;
 }
 
+.article-references {
+  margin: 1.75rem 0;
+  border: 1px solid color-mix(in oklch, var(--color-ink) 18%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in oklch, var(--color-paper) 88%, var(--color-paper-muted) 12%);
+}
+
+.article-references summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  color: var(--color-ink);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.article-references summary::-webkit-details-marker {
+  display: none;
+}
+
+.article-references summary::after {
+  content: "+";
+  color: var(--color-accent);
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.article-references[open] summary::after {
+  content: "−";
+}
+
+.article-references summary small {
+  margin-left: auto;
+  color: var(--color-ink-subtle);
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.article-references ol {
+  margin: 0;
+  border-top: 1px solid color-mix(in oklch, var(--color-ink) 12%, transparent);
+  padding: 0.3rem 1rem 0.9rem 2.4rem;
+}
+
+.article-references li {
+  padding: 0.55rem 0 0.35rem 0.2rem;
+}
+
+.article-references li > span {
+  display: block;
+  margin-top: 0.1rem;
+  color: var(--color-ink-subtle);
+  font-size: 0.7rem;
+}
+
+.article-references li p {
+  margin: 0.2rem 0 0;
+  color: var(--color-ink-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
 .article-author-footer {
   margin-top: 3.5rem;
   padding-top: 1.5rem;

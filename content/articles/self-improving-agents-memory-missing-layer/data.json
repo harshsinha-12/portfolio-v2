@@ -1,0 +1,218 @@
+{
+  "memoryLayers": [
+    {
+      "Memory": "Working",
+      "Question answered": "What matters for the current step?",
+      "Typical contents": "Goal, active plan, recent observations",
+      "Retention": "One run or until compaction"
+    },
+    {
+      "Memory": "Episodic",
+      "Question answered": "What happened in a specific past run?",
+      "Typical contents": "Trajectory, outcome, feedback, timestamps",
+      "Retention": "Time-bound and replayable"
+    },
+    {
+      "Memory": "Semantic",
+      "Question answered": "What facts or constraints are durable?",
+      "Typical contents": "Confirmed preferences, project facts, definitions",
+      "Retention": "Versioned with provenance"
+    },
+    {
+      "Memory": "Procedural",
+      "Question answered": "What method tends to work?",
+      "Typical contents": "Validated workflow, tool sequence, guardrail",
+      "Retention": "Until superseded or regressed"
+    }
+  ],
+  "learningGates": [
+    {
+      "Gate": "Evidence",
+      "Required question": "Is the outcome independently observable?",
+      "Failure action": "Keep the trace; do not extract a lesson"
+    },
+    {
+      "Gate": "Scope",
+      "Required question": "Where and for whom is the lesson valid?",
+      "Failure action": "Narrow the candidate"
+    },
+    {
+      "Gate": "Conflict",
+      "Required question": "Does newer or stronger evidence disagree?",
+      "Failure action": "Resolve or preserve both with conditions"
+    },
+    {
+      "Gate": "Replay",
+      "Required question": "Does it beat the baseline on relevant tasks?",
+      "Failure action": "Reject or revise"
+    },
+    {
+      "Gate": "Safety",
+      "Required question": "Could promotion expand risk or authority?",
+      "Failure action": "Require review"
+    }
+  ],
+  "promotionScorecard": [
+    {
+      "Dimension": "Task success",
+      "Example requirement": "Material improvement over baseline",
+      "Why it matters": "Prevents cosmetic optimization"
+    },
+    {
+      "Dimension": "Critical regressions",
+      "Example requirement": "Zero on protected task slices",
+      "Why it matters": "Averages can hide serious failures"
+    },
+    {
+      "Dimension": "Cost and latency",
+      "Example requirement": "Inside product budgets",
+      "Why it matters": "Quality must remain deployable"
+    },
+    {
+      "Dimension": "Privacy and authority",
+      "Example requirement": "No scope or permission expansion",
+      "Why it matters": "Learning must not bypass governance"
+    },
+    {
+      "Dimension": "Reversibility",
+      "Example requirement": "Versioned with immediate rollback",
+      "Why it matters": "Production evidence may overturn replay"
+    }
+  ],
+  "systemResponsibilities": [
+    {
+      "Layer": "Model",
+      "Owns": "Planning, candidate extraction, qualitative critique",
+      "Must not own alone": "Permissions, promotion, deletion policy"
+    },
+    {
+      "Layer": "Controller",
+      "Owns": "Budgets, tool access, workflow state, terminal decisions",
+      "Must not own alone": "Semantic judgment"
+    },
+    {
+      "Layer": "Memory service",
+      "Owns": "Storage, provenance, scope, retrieval, versioning",
+      "Must not own alone": "Truth or quality"
+    },
+    {
+      "Layer": "Evaluation",
+      "Owns": "Baselines, graders, replay suites, regression slices",
+      "Must not own alone": "Production rollout"
+    },
+    {
+      "Layer": "Governance",
+      "Owns": "Consent, review, promotion policy, rollback",
+      "Must not own alone": "Task execution"
+    }
+  ],
+  "failureModes": [
+    {
+      "Failure": "Memory poisoning",
+      "Symptom": "Untrusted content becomes durable policy",
+      "Primary control": "Provenance, trust tiers, promotion review"
+    },
+    {
+      "Failure": "Over-generalization",
+      "Symptom": "A one-off tactic is applied everywhere",
+      "Primary control": "Applicability conditions and task slices"
+    },
+    {
+      "Failure": "Staleness",
+      "Symptom": "A once-correct lesson survives an environment change",
+      "Primary control": "Versioning, expiry, revalidation"
+    },
+    {
+      "Failure": "Retrieval overload",
+      "Symptom": "Memories crowd out the current task",
+      "Primary control": "Context budget and minimum-sufficient retrieval"
+    },
+    {
+      "Failure": "Self-confirming evaluation",
+      "Symptom": "The agent validates its own unsupported outputs",
+      "Primary control": "External checks and human calibration"
+    }
+  ],
+  "observability": [
+    {
+      "Metric": "Success uplift",
+      "Comparison": "Memory policy vs. no-memory baseline",
+      "Decision enabled": "Whether memory improves outcomes"
+    },
+    {
+      "Metric": "Correction recurrence",
+      "Comparison": "Repeated user corrections over time",
+      "Decision enabled": "Whether lessons are retained and retrieved"
+    },
+    {
+      "Metric": "Retrieval precision",
+      "Comparison": "Useful retrieved memories vs. all retrieved memories",
+      "Decision enabled": "Whether context is being polluted"
+    },
+    {
+      "Metric": "Regression rate",
+      "Comparison": "Protected slices before and after promotion",
+      "Decision enabled": "Whether to promote or roll back"
+    },
+    {
+      "Metric": "Cost per successful task",
+      "Comparison": "Tokens, latency, and tool spend per success",
+      "Decision enabled": "Whether improvement is economically useful"
+    },
+    {
+      "Metric": "Memory intervention rate",
+      "Comparison": "Runs where a memory changed the selected action",
+      "Decision enabled": "Whether memory is causally relevant"
+    }
+  ],
+  "citations": [
+    {
+      "title": "Inside OpenAI's in-house data agent",
+      "publisher": "OpenAI, 2026",
+      "url": "https://openai.com/index/inside-our-in-house-data-agent/",
+      "note": "A production example using personal and global memory, retrieval, user controls, and continuous evaluation."
+    },
+    {
+      "title": "MemGPT: Towards LLMs as Operating Systems",
+      "publisher": "Packer et al., 2023",
+      "url": "https://arxiv.org/abs/2310.08560",
+      "note": "Introduces virtual context management and tiered memory for work beyond a model's active context window."
+    },
+    {
+      "title": "Reflexion: Language Agents with Verbal Reinforcement Learning",
+      "publisher": "Shinn et al., 2023",
+      "url": "https://arxiv.org/abs/2303.11366",
+      "note": "Studies linguistic feedback stored in episodic memory and reused in later trials."
+    },
+    {
+      "title": "Voyager: An Open-Ended Embodied Agent with Large Language Models",
+      "publisher": "Wang et al., 2023",
+      "url": "https://arxiv.org/abs/2305.16291",
+      "note": "Combines environment feedback, iterative improvement, and a reusable library of executable skills."
+    },
+    {
+      "title": "Generative Agents: Interactive Simulacra of Human Behavior",
+      "publisher": "Park et al., 2023",
+      "url": "https://arxiv.org/abs/2304.03442",
+      "note": "Uses stored observations, reflection, and relevance-based retrieval to inform later plans."
+    },
+    {
+      "title": "A Survey on the Memory Mechanism of Large Language Model Based Agents",
+      "publisher": "Zhang et al., 2024",
+      "url": "https://arxiv.org/abs/2404.13501",
+      "note": "Reviews memory design and evaluation patterns across language-agent research."
+    },
+    {
+      "title": "Demystifying evals for AI agents",
+      "publisher": "Anthropic, 2026",
+      "url": "https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents",
+      "note": "Practical guidance on task-specific graders, regression suites, and human calibration."
+    },
+    {
+      "title": "Evals API reference",
+      "publisher": "OpenAI",
+      "url": "https://platform.openai.com/docs/api-reference/evals",
+      "note": "Reference for defining evaluation data sources, testing criteria, graders, and runs."
+    }
+  ]
+}

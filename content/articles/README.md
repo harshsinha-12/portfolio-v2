@@ -65,6 +65,11 @@ The article renderer provides these components without imports:
   caption="Rows are loaded from the results array in data.json."
 />
 
+<References
+  dataset="citations"
+  title="Sources and further reading"
+/>
+
 <ArticleImage
   src="/assets/articles/<slug>/diagram.webp"
   alt="Describe the information shown in the image."
@@ -82,6 +87,8 @@ The article renderer provides these components without imports:
 ```
 
 Standard Markdown, GitHub-flavoured tables, fenced code blocks, and Markdown images also work. Prefer the explicit `ArticleImage` component when dimensions or a caption matter.
+
+`References` renders an expandable source list from `data.json`. Each entry can include `title`, `publisher`, `url`, and `note`. Keep factual citations linked inline where the claim appears; use the references block as a scannable bibliography rather than a replacement for claim-level sourcing.
 
 Keep Mermaid `chart` values as quoted, one-line strings separated with semicolons. This keeps the value serializable across the React Server Component boundary.
 
