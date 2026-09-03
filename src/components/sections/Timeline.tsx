@@ -13,17 +13,14 @@ import {
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { IntroSegments, segmentsToPlainText } from "@/components/ui/IntroSegments";
-import { PostcardStamp } from "@/components/decor/PostcardStamp";
 import { TapedCard } from "@/components/decor/Decor";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { TimelineTrainDecal } from "@/components/decor/TimelineTrainDecal";
-import { useDraggableEnabled } from "@/components/decor/useDraggable";
 import { StackIconRow } from "@/components/ui/StackIcons";
 import {
   formatDurationWithTenure,
   totalTenureFromDurations,
 } from "@/lib/tenure";
-import { getTimelineStamps } from "@/lib/timelineStamps";
 import { cn } from "@/lib/utils";
 
 const timelineArticleClass =
@@ -124,37 +121,6 @@ function TimelineEntry({ children }: { children: React.ReactNode }) {
   );
 }
 
-function TimelineStampsDesktop({
-  entryId,
-  stampCount,
-  draggable,
-}: {
-  entryId: string;
-  stampCount: number;
-  draggable: boolean;
-}) {
-  const stamps = getTimelineStamps(entryId, stampCount);
-
-  return (
-    <div
-      className="pointer-events-none absolute inset-y-0 right-0 z-20 hidden w-[4.5rem] sm:block"
-      aria-hidden="true"
-    >
-      {stamps.map((stamp, index) => (
-        <PostcardStamp
-          key={`${entryId}-desktop-${index}`}
-          id={`timeline-stamp-${entryId}-${index}`}
-          src={stamp.src}
-          top={stamp.top}
-          right={stamp.right}
-          rotate={stamp.rotate}
-          draggable={draggable}
-        />
-      ))}
-    </div>
-  );
-}
-
 function ExpandedPositionContent({ content }: { content: ContentBlock[] }) {
   const [lead, ...details] = content;
 
@@ -187,13 +153,7 @@ function ExpandedPositionContent({ content }: { content: ContentBlock[] }) {
   );
 }
 
-function ExperienceCompany({
-  exp,
-  draggable,
-}: {
-  exp: Experience;
-  draggable: boolean;
-}) {
+function ExperienceCompany({ exp }: { exp: Experience }) {
   const [expanded, setExpanded] = useState(false);
   const latest = exp.positions[0];
   const summary =
@@ -210,16 +170,9 @@ function ExperienceCompany({
   const tenure = totalTenureFromDurations(
     exp.positions.map((position) => position.duration),
   );
-  const stampCount = hasMore ? 3 : 2;
-
   return (
-    <article className={cn(timelineArticleClass, "sm:pr-[4.5rem]")}>
+    <article className={timelineArticleClass}>
       <TimelineRailColumn icon={exp.logo} />
-      <TimelineStampsDesktop
-        entryId={exp.id}
-        stampCount={stampCount}
-        draggable={draggable}
-      />
 
       <div className="min-w-0 flex-1">
         <OrgHeader
@@ -272,19 +225,12 @@ function ExperienceCompany({
   );
 }
 
-function EducationItem({
-  edu,
-  draggable,
-}: {
-  edu: (typeof educationList)[number];
-  draggable: boolean;
-}) {
+function EducationItem({ edu }: { edu: (typeof educationList)[number] }) {
   const tenure = totalTenureFromDurations([edu.duration]);
 
   return (
-    <article className={cn(timelineArticleClass, "sm:pr-[4.5rem]")}>
+    <article className={timelineArticleClass}>
       <TimelineRailColumn icon={edu.icon} />
-      <TimelineStampsDesktop entryId={edu.id} stampCount={2} draggable={draggable} />
 
       <div className="min-w-0 flex-1">
         <OrgHeader title={edu.title} link={edu.link} tenure={tenure} />
@@ -313,8 +259,6 @@ function EducationItem({
 }
 
 export function TimelineSection() {
-  const draggable = useDraggableEnabled();
-
   return (
     <section id="experience" aria-labelledby="experience-heading" className="relative animate-fade-up">
       <CutoutStickers stickers={experienceStickers} />
@@ -325,7 +269,7 @@ export function TimelineSection() {
           <TimelineTrainDecal />
           <div className="relative z-10 space-y-4">
             {experiences.map((exp) => (
-              <ExperienceCompany key={exp.id} exp={exp} draggable={draggable} />
+              <ExperienceCompany key={exp.id} exp={exp} />
             ))}
           </div>
           <div className="relative z-10 my-5 ml-[calc(var(--logo-w)+0.75rem)] h-px bg-[var(--color-ink-subtle)]/15 sm:ml-[calc(var(--logo-w)+0.875rem)]" />
@@ -334,7 +278,7 @@ export function TimelineSection() {
           </h3>
           <div className="relative z-10 space-y-4">
             {educationList.map((edu) => (
-              <EducationItem key={edu.id} edu={edu} draggable={draggable} />
+              <EducationItem key={edu.id} edu={edu} />
             ))}
           </div>
         </div>
