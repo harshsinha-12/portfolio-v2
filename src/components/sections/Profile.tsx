@@ -19,6 +19,7 @@ import { SpotifyLastPlayed } from "@/components/sections/SpotifyLastPlayed";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import { SoundToggle } from "@/components/sound/SoundToggle";
+import { track, trackOutboundClick } from "@/lib/analytics";
 import type { ContributionDay } from "@/lib/githubContributions";
 
 function SocialStamps() {
@@ -29,6 +30,12 @@ function SocialStamps() {
     <div className="flex items-center gap-0.5 sm:gap-1">
       {socialMedia.map((social) => {
         const Icon = socialIconMap[social.platform];
+        const onSocialClick = () =>
+          track("social_link_clicked", {
+            platform: social.platform,
+            placement: "profile",
+          });
+
         return (
           <Stamp
             key={social.id}
@@ -40,6 +47,7 @@ function SocialStamps() {
                 href={social.link}
                 ariaLabel={social.label}
                 className={stampLinkClassName}
+                onClick={onSocialClick}
               >
                 <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
               </LinkPreview>
@@ -50,6 +58,13 @@ function SocialStamps() {
                 rel="noopener noreferrer"
                 aria-label={social.label}
                 className={stampLinkClassName}
+                onClick={() => {
+                  trackOutboundClick(social.link, {
+                    label: social.label,
+                    platform: social.platform,
+                  });
+                  onSocialClick();
+                }}
               >
                 <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
               </a>
@@ -158,6 +173,10 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
               href={resumeLink}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                track("resume_clicked");
+                trackOutboundClick(resumeLink, { label: "resume" });
+              }}
               className="mt-2 inline-flex h-7 items-center gap-1.5 rounded-full border border-[var(--color-on-mat)]/35 bg-[var(--color-mat-deep)]/45 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)] shadow-[1px_2px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:text-xs"
             >
               <FileText className="h-3.5 w-3.5 text-[var(--color-accent-on-mat)]" aria-hidden="true" />
