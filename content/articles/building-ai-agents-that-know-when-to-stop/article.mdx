@@ -1,14 +1,14 @@
 ---
 title: "Building AI Agents That Know When to Stop"
-description: "A draft Field Notes preview for designing stop conditions, guardrails, and evaluation loops into reliable AI agents."
+description: "A practical design for bounded agent loops: finish when the work is good enough, compact before context degrades, and stop safely when progress stalls."
 date: "2026-09-03"
 updatedAt: "2026-09-03"
 tags:
   - AI Agents
   - LLM
   - Systems Design
-  - Prompting
-draft: true
+  - Context Engineering
+draft: false
 featured: true
 canonical: "/articles/building-ai-agents-that-know-when-to-stop"
 social:
@@ -16,81 +16,202 @@ social:
   linkedin: ""
 ---
 
-## Why “stop” matters
+Most agent demos celebrate motion: another tool call, another plan, another attempt. In production, motion is not the same as progress.
 
-LLMs are brilliant at generating the next step. Agents built on them are brilliant at generating *more* next steps. Without a deliberate stopping strategy, they loop, overthink, spend tokens, and gradually lose the reader’s trust.
+An agent that cannot stop will eventually spend too much, repeat itself, run out of useful context, or take an action it should have escalated. The reliable agent is not the one that works forever. It is the one that can tell the difference between **unfinished**, **good enough**, and **unlikely to improve**.
 
-Great agents are decisive. They gather enough evidence, act, and stop.
+That makes stopping a product behavior—not an exception at the bottom of an orchestration file.
 
-<MarginNote>
-  Goal: a correct answer, delivered at the right time.
-</MarginNote>
-
-<Mermaid
-  caption="The agent loop needs an explicit stop decision."
-  chart={`flowchart LR
-    A[User goal] --> B[Plan]
-    B --> C[Act]
-    C --> D[Observe]
-    D --> E{Should we stop?}
-    E -- Yes --> F[Deliver answer]
-    E -- No --> B`}
-/>
-
-## What we mean by stop
-
-Stopping is not a single event; it is a judgement. Continue only while the expected value of another step is greater than its cost in latency, tokens, money, or risk.
-
-<Callout title="Key idea">
-  An agent’s job is not to keep working. Its job is to recognize when the requested outcome is complete—or when continuing is unsafe.
+<Callout title="The core idea">
+  Every agent loop needs three boundaries: a success gate, a context gate, and a loop gate. A safety or human-approval gate can override all three.
 </Callout>
 
-```python
-def should_stop(state):
-    confidence = estimate_confidence(state)
-    progress = state.progress_score
-    budget_used = state.tokens_used / state.token_budget
+<Mermaid
+  caption="A reliable run earns the right to continue at every iteration."
+  chart="flowchart LR; A[Observe] --> B[Act]; B --> C[Evaluate result]; C --> D{Outcome?}; D -- Good enough --> E[Deliver]; D -- Useful progress --> F[Continue]; D -- Context pressure --> G[Compact or hand off]; D -- Unsafe or blocked --> H[Escalate]; F --> A; G --> A"
+/>
 
-    return confidence >= 0.95 or progress >= 0.95 or budget_used >= 0.90
-```
+## “Stop” is more than one condition
 
-## Designing the stop criterion
+There are at least four legitimate endings to an agent run:
 
-A useful stop decision combines multiple signals rather than betting everything on one hard-coded rule:
+1. **Success:** the acceptance criteria are satisfied.
+2. **Budget stop:** the run has exhausted its time, token, cost, or iteration allowance.
+3. **No-progress stop:** repeated attempts are not materially improving the result.
+4. **Safety or authority stop:** the next action needs permission, carries too much risk, or belongs with a person.
 
-- confidence in the answer
-- measurable progress toward the goal
-- time, token, and tool-call budgets
-- repeated attempts or stable outputs
-- an external validator when correctness can be checked
+These endings should not look identical to the user. Success should produce a finished answer. A budget stop should preserve partial work and explain what remains. A safety stop should request the exact approval or missing input. A stalled run should report the attempts made and avoid pretending that repetition is progress.
+
+The [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/running_agents/) follows the same broad shape: a runner continues through model calls, tools, and handoffs until it receives a final output, while a maximum-turn limit acts as a separate safety bound. [LangGraph’s recursion limit](https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT) provides an equivalent guard against graphs that never reach a stop condition.
 
 <DataTable
   dataset="stopSignals"
-  caption="Example signals stored beside this article in data.json."
+  caption="The evaluator should rely on observable evidence, not the model merely saying it feels confident."
 />
+
+## Context can stop an agent before the task does
+
+Yes—agents can stop or fail because of context.
+
+The obvious failure is the hard one: the prompt, conversation, retrieved documents, and tool outputs grow beyond the model’s context window. But there is a softer failure before that. A long context may still fit while becoming harder to use well. The *Lost in the Middle* research found that model performance can depend on where relevant information appears in a long input; a larger window does not guarantee that every included fact will be used reliably ([Liu et al., 2024](https://aclanthology.org/2024.tacl-1.9/)).
+
+This is why I treat context as a managed resource rather than a transcript that only grows.
 
 <MarginNote>
-  Prefer observable signals over invisible confidence.
+  The goal is not maximum context. It is minimum sufficient context.
 </MarginNote>
 
-## A practical pattern
+A context gate can choose among four actions:
 
-Put an evaluator after every meaningful action. The evaluator should describe what changed, score progress, and select one of three outcomes: continue, deliver, or escalate.
+- continue with the current working set;
+- discard bulky or obsolete tool output;
+- compact completed work into a durable summary;
+- hand off or restart from a clean state with the summary and required artifacts.
+
+OpenAI describes [compaction](https://openai.com/index/equip-responses-api-computer-environment/) as a way to preserve key details while removing material that no longer needs to occupy the active window. Its description of the [Codex agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/) likewise treats compaction as part of context management when a run approaches its token threshold. Anthropic’s guidance on [context engineering](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents) makes the broader point: an agent loop continuously creates more data, so the active context must be selected and refined.
 
 <Mermaid
-  caption="A production loop separates execution from evaluation."
-  chart={`flowchart LR
-    A[Plan] --> B[Act with tool or LLM]
-    B --> C[Observe result]
-    C --> D[Evaluator]
-    D --> E{Decision}
-    E -- Continue --> A
-    E -- Deliver --> F[Respond]
-    E -- Escalate --> G[Ask for help]`}
+  caption="Context pressure is a routing decision, not automatically a failed run."
+  chart="flowchart TD; A[New observation] --> B[Update durable state]; B --> C{Context still useful?}; C -- Yes --> D[Continue with working set]; C -- No but recoverable --> E[Summarize completed work]; E --> F[Drop stale and bulky details]; F --> G[Retrieve only what is needed next]; G --> D; C -- Cannot preserve state --> H[Stop and hand off]"
 />
 
-## Implementation walkthrough
+The practical mistake is a “context grab”: loading the entire content set because some of it might help. Retrieval should be just in time. Large tool results should be summarized or stored outside the prompt. Decisions, constraints, and artifact paths should survive compaction; raw exploratory chatter usually should not.
 
-The eventual article can include a local WebM demo or a privacy-friendly video embed using the `<Video />` MDX component. The media stays optional, responsive, captioned, and outside the critical reading path.
+## Loop engineering: a hard ceiling with an early exit
 
-This preview article is intentionally marked as a draft. It is visible while developing locally, but it will not appear in production listings, RSS, sitemap entries, or the JSON article feed until its frontmatter changes to `draft: false`.
+This is the pattern I used while working on MultiBagg AI: make learning iterative, but bounded.
+
+Set a hard ceiling—say seven loops for a focused task or ten for a wider search. Inside that boundary, let the agent finish early as soon as the result is good enough. The ceiling is not the target number of loops. It is the most the system is allowed to spend before it must stop, return partial work, or escalate.
+
+That distinction matters:
+
+- `max_iterations = 7` prevents an unbounded run;
+- `quality_score >= threshold` permits an early successful finish;
+- `no_progress_rounds >= 2` stops repetitive refinement;
+- a guardrail veto can force escalation at any point;
+- a context threshold can trigger compaction without consuming the entire reserve needed for the final answer.
+
+<Callout title="Good enough must be testable">
+  Do not ask the same model to vaguely decide whether its own answer is good. Give the evaluator a rubric: required checks, evidence coverage, known defects, and a score threshold. For verifiable work, use tests or external validation.
+</Callout>
+
+Evaluator–optimizer loops work best when the evaluation criteria are clear and repeated refinement can demonstrably improve the output, according to Anthropic’s guide to [building effective agents](https://www.anthropic.com/engineering/building-effective-agents). Without those conditions, another loop may only rephrase the same answer.
+
+<Mermaid
+  caption="The hard cap controls cost; the success gate controls when the work is complete."
+  chart="flowchart TD; A[Start with iteration 1] --> B[Produce or revise]; B --> C[Run checks and evaluator]; C --> D{All required checks pass?}; D -- Yes --> E[Finish early]; D -- No --> F{Meaningful progress?}; F -- No twice --> G[Stop and explain blocker]; F -- Yes --> H{At hard loop cap?}; H -- No --> I[Increment iteration]; I --> B; H -- Yes --> J[Return best result or escalate]"
+/>
+
+<DataTable
+  dataset="loopPolicy"
+  caption="An illustrative bounded-loop policy. Thresholds should be calibrated for the task, not copied blindly."
+/>
+
+## A control loop you can implement
+
+The controller—not the prose prompt—should own the hard limits. The evaluator returns evidence and a decision proposal; deterministic code enforces budgets and guardrails.
+
+```python
+MAX_ITERATIONS = 7
+MAX_NO_PROGRESS = 2
+QUALITY_THRESHOLD = 0.85
+
+def run_agent(goal, initial_context):
+    state = create_state(goal, initial_context)
+
+    for iteration in range(1, MAX_ITERATIONS + 1):
+        state.iteration = iteration
+        observation = agent_step(state.working_context)
+        state.record(observation)
+
+        evaluation = evaluate(
+            goal=goal,
+            result=state.current_result,
+            acceptance_checks=state.acceptance_checks,
+            previous_result=state.previous_result,
+        )
+
+        if evaluation.guardrail_violation:
+            return escalate(state, reason="safety_or_authority")
+
+        if evaluation.requirements_pass and evaluation.quality >= QUALITY_THRESHOLD:
+            return deliver(state, status="complete")
+
+        state.no_progress_rounds = (
+            state.no_progress_rounds + 1
+            if not evaluation.material_progress
+            else 0
+        )
+
+        if state.no_progress_rounds >= MAX_NO_PROGRESS:
+            return handoff(state, reason="no_material_progress")
+
+        if state.context_pressure_high:
+            state.working_context = compact_and_retrieve(state)
+
+    return handoff(state, reason="iteration_budget_exhausted")
+```
+
+The order is deliberate. A safety violation cannot be overruled by a high quality score. Success is checked before the iteration ceiling turns the best available answer into a partial handoff. Context maintenance happens while there is still enough room to summarize accurately. The final iteration never silently becomes an eighth.
+
+## What belongs in the evaluator
+
+The evaluator should answer narrow questions that map to the product’s promise:
+
+- Did every required deliverable get produced?
+- Which claims or changes were independently verified?
+- Did the latest loop materially improve the result?
+- What known defects remain?
+- Is the next action reversible and authorized?
+- Can the active context support another reliable step?
+
+For code, “good enough” might mean tests pass, lint passes, the requested behavior exists, and no critical review findings remain. For research, it might mean every important claim has an authoritative source and contradictory evidence is represented. For a writing agent, it might mean the brief is satisfied, factual claims are sourced, and a final editing pass finds no blocking issue.
+
+<DataTable
+  dataset="telemetry"
+  caption="If these fields are logged per run, loop behavior can be tuned from evidence rather than intuition."
+/>
+
+Do not collapse all of this into one opaque confidence number. A result can read confidently while failing a required check. Keep the score, checklist, progress delta, budget state, and guardrail decision visible as separate signals.
+
+## Common failure modes
+
+### The loop always uses its full budget
+
+If most successful runs take exactly seven iterations, the success gate is probably vague or unreachable. Inspect the evaluator and the acceptance criteria before increasing the cap.
+
+### Compaction happens only after an error
+
+By then, the model may not have enough clean context left to produce a faithful summary. Reserve room for context maintenance and the final response.
+
+### The evaluator rewards activity
+
+“Called another tool” is not progress. Measure a changed artifact, a newly satisfied requirement, reduced uncertainty, or a passed check.
+
+### The final answer hides the stop reason
+
+A user should be able to tell whether the agent completed the goal, hit a budget, stalled, or needs authority. Operationally, these are different states and should be logged separately.
+
+## A practical stopping contract
+
+Before shipping an agent, define this contract:
+
+1. Write the acceptance checks that make a run complete.
+2. Choose the hard loop, token, cost, and time ceilings.
+3. Define “material progress” and how many stagnant rounds are tolerated.
+4. Decide what must survive compaction: constraints, decisions, open work, and artifact references.
+5. Reserve context for the final synthesis or handoff.
+6. Specify actions that always require human approval.
+7. Return an explicit terminal status: `complete`, `partial`, `blocked`, `budget_exhausted`, or `needs_approval`.
+
+The best stopping system is not the one that ends runs as quickly as possible. It is the one that spends another iteration only when that iteration has a reasonable chance of improving the outcome.
+
+That is the heart of loop engineering: **finish early when the evidence says the work is good enough, preserve state before context becomes unreliable, and never let persistence turn into an infinite loop.**
+
+## Further reading
+
+- [Running agents — OpenAI Agents SDK](https://openai.github.io/openai-agents-python/running_agents/)
+- [Building effective agents — Anthropic](https://www.anthropic.com/engineering/building-effective-agents)
+- [Effective context engineering for AI agents — Anthropic](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents)
+- [Lost in the Middle — Transactions of the ACL](https://aclanthology.org/2024.tacl-1.9/)
+- [Graph recursion limit — LangGraph](https://docs.langchain.com/oss/python/langgraph/errors/GRAPH_RECURSION_LIMIT)

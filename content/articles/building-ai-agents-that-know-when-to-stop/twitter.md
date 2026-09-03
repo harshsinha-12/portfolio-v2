@@ -1,12 +1,16 @@
-# X/Twitter launch draft
+# X/Twitter launch copy
 
-Draft only. Replace this once the final article is ready.
+AI agents are built to take the next step.
 
-AI agents are good at taking the next step.
+Reliable agents know when the next step is no longer worth taking.
 
-Reliable agents also know when *not* to take one.
+I wrote about a practical stopping design:
 
-I wrote about practical stop conditions, budgets, evaluators, and escalation paths:
+— finish early when explicit checks say “good enough”
+— compact before context quality degrades
+— stop after 7–10 bounded loops
+— detect repeated effort without progress
+— escalate when safety or authority requires it
 
 {{ARTICLE_URL}}
 

@@ -1,25 +1,90 @@
 {
   "stopSignals": [
     {
-      "Signal": "Goal progress",
-      "Question": "Did the last step materially move the task forward?",
-      "Example threshold": ">= 95%"
+      "Gate": "Success",
+      "Observable question": "Do the required checks pass?",
+      "Terminal outcome": "Complete"
     },
     {
-      "Signal": "Confidence",
-      "Question": "Is the answer supported strongly enough to deliver?",
-      "Example threshold": ">= 0.95"
+      "Gate": "Progress",
+      "Observable question": "Did the latest loop materially improve the result?",
+      "Terminal outcome": "Continue or stop stalled"
     },
     {
-      "Signal": "Budget",
-      "Question": "Has the run reached its time, token, or tool-call limit?",
-      "Example threshold": ">= 90% used"
+      "Gate": "Context",
+      "Observable question": "Can the active working set support another reliable step?",
+      "Terminal outcome": "Continue, compact, or hand off"
     },
     {
-      "Signal": "Stability",
-      "Question": "Are repeated attempts producing the same result?",
-      "Example threshold": "2 stable passes"
+      "Gate": "Budget",
+      "Observable question": "Is time, cost, token, or iteration capacity left?",
+      "Terminal outcome": "Continue or return partial"
+    },
+    {
+      "Gate": "Safety",
+      "Observable question": "Is the next action safe and authorized?",
+      "Terminal outcome": "Continue or escalate"
     }
   ],
-  "citations": []
+  "loopPolicy": [
+    {
+      "Control": "Hard iteration cap",
+      "Example": "7 focused / 10 exploratory",
+      "Purpose": "Prevents an unbounded run"
+    },
+    {
+      "Control": "Early success gate",
+      "Example": "Checks pass and quality >= 0.85",
+      "Purpose": "Finishes before the cap"
+    },
+    {
+      "Control": "Stagnation gate",
+      "Example": "2 no-progress rounds",
+      "Purpose": "Stops repetitive refinement"
+    },
+    {
+      "Control": "Context gate",
+      "Example": "Compact before reserve is consumed",
+      "Purpose": "Protects working quality and final synthesis"
+    }
+  ],
+  "telemetry": [
+    {
+      "Field": "terminal_status",
+      "Why keep it": "Separates success, budget, safety, and stalled endings"
+    },
+    {
+      "Field": "iterations_used",
+      "Why keep it": "Shows whether early exit actually works"
+    },
+    {
+      "Field": "quality_by_iteration",
+      "Why keep it": "Reveals diminishing returns"
+    },
+    {
+      "Field": "context_compactions",
+      "Why keep it": "Measures context pressure and recovery"
+    },
+    {
+      "Field": "no_progress_rounds",
+      "Why keep it": "Exposes loops that are active but not improving"
+    }
+  ],
+  "citations": [
+    {
+      "title": "Running agents",
+      "publisher": "OpenAI Agents SDK",
+      "url": "https://openai.github.io/openai-agents-python/running_agents/"
+    },
+    {
+      "title": "Building effective agents",
+      "publisher": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/building-effective-agents"
+    },
+    {
+      "title": "Lost in the Middle",
+      "publisher": "Transactions of the ACL",
+      "url": "https://aclanthology.org/2024.tacl-1.9/"
+    }
+  ]
 }

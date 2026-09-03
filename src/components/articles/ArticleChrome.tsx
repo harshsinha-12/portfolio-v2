@@ -5,6 +5,7 @@ import { FaXTwitter } from "react-icons/fa6";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { CanvasBackground } from "@/components/canvas/CanvasBackground";
 import { ShareButtons } from "@/components/articles/ShareButtons";
+import { ArticleTableOfContents } from "@/components/articles/ArticleTableOfContents";
 import { siteConfig, socialMedia } from "@/data/portfolio";
 import type { ArticleHeading, ArticleSocialLinks, ArticleSummary } from "@/types/articles";
 
@@ -61,16 +62,7 @@ export function ArticlePageChrome({
         <aside className="article-rail" aria-label="Article tools">
           <p className="article-rail__eyebrow">Field Notes</p>
           {headings.length > 0 ? (
-            <nav className="article-toc" aria-label="On this page">
-              <p>On this page</p>
-              <ol>
-                {headings.map((heading) => (
-                  <li key={heading.id} data-depth={heading.depth}>
-                    <a href={`#${heading.id}`}>{heading.text}</a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
+            <ArticleTableOfContents headings={headings} />
           ) : null}
           <div className="article-rail__share-label">Share this article</div>
           <ShareButtons title={title} url={url} social={social} />
@@ -114,14 +106,29 @@ export function ArticleAuthorFooter({ nextArticle }: ArticleAuthorFooterProps) {
           <h2>{siteConfig.name}</h2>
           <p>{siteConfig.tagline}</p>
           <div className="article-author-footer__socials">
-            <a href={socialUrl("linkedin")} target="_blank" rel="noopener noreferrer">
-              <AiFillLinkedin aria-hidden="true" /> LinkedIn
+            <a
+              href={socialUrl("linkedin")}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+            >
+              <AiFillLinkedin aria-hidden="true" />
             </a>
-            <a href={socialUrl("github")} target="_blank" rel="noopener noreferrer">
-              <AiFillGithub aria-hidden="true" /> GitHub
+            <a
+              href={socialUrl("github")}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+            >
+              <AiFillGithub aria-hidden="true" />
             </a>
-            <a href={socialUrl("twitter")} target="_blank" rel="noopener noreferrer">
-              <FaXTwitter aria-hidden="true" /> X
+            <a
+              href={socialUrl("twitter")}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="X"
+            >
+              <FaXTwitter aria-hidden="true" />
             </a>
           </div>
         </div>
