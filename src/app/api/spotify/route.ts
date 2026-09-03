@@ -5,9 +5,9 @@ import { getRedisClient } from "@/lib/redis";
 export const runtime = "nodejs";
 
 const CACHE_KEY = "portfolio:spotify:last-track";
+const COOLDOWN_KEY = "portfolio:spotify:cooldown";
 const REFRESH_LOCK_KEY = "portfolio:spotify:refresh-lock";
-const FRESH_FOR_MS = 10 * 60 * 1000;
-const STALE_FOR_SECONDS = 7 * 24 * 60 * 60;
+const CACHE_TTL_SECONDS = 10 * 60;
 const REFRESH_LOCK_SECONDS = 20;
 const DEFAULT_BACKOFF_SECONDS = 5 * 60;
 
@@ -28,9 +28,8 @@ type PublicTrack = {
 };
 
 type SpotifyCache = {
+  version: 2;
   track: PublicTrack | null;
-  freshUntil: number;
-  blockedUntil: number;
 };
 
 type CurrentlyPlayingResponse = {
@@ -47,7 +46,6 @@ type RefreshResult =
   | { kind: "rate-limited"; retryAfterSeconds: number }
   | { kind: "failed" };
 
-let memoryCache: SpotifyCache | null = null;
 let localRefreshInFlight = false;
 
 function publicTrack(
@@ -71,8 +69,7 @@ function parseCache(value: string | null): SpotifyCache | null {
   try {
     const parsed = JSON.parse(value) as Partial<SpotifyCache>;
     if (
-      typeof parsed.freshUntil !== "number" ||
-      typeof parsed.blockedUntil !== "number" ||
+      parsed.version !== 2 ||
       !(parsed.track === null || typeof parsed.track === "object")
     ) {
       return null;
@@ -86,23 +83,57 @@ function parseCache(value: string | null): SpotifyCache | null {
 async function readCache() {
   try {
     const redis = await getRedisClient();
-    const cached = parseCache(await redis.get(CACHE_KEY));
-    if (cached) memoryCache = cached;
+    const value = await redis.get(CACHE_KEY);
+    const cached = parseCache(value);
+
+    if (value && !cached) {
+      await redis.del(CACHE_KEY);
+    }
+
+    return cached;
   } catch {
-    // The in-process cache still prevents a request storm if Redis is unavailable.
+    return null;
   }
-  return memoryCache;
 }
 
 async function writeCache(cache: SpotifyCache) {
-  memoryCache = cache;
   try {
     const redis = await getRedisClient();
     await redis.set(CACHE_KEY, JSON.stringify(cache), {
-      EX: STALE_FOR_SECONDS,
+      EX: CACHE_TTL_SECONDS,
     });
   } catch {
-    // Serving from memory is preferable to failing the portfolio route.
+    // A later request can retry when Redis is available again.
+  }
+}
+
+async function readCooldown() {
+  try {
+    const redis = await getRedisClient();
+    const blockedUntil = Number(await redis.get(COOLDOWN_KEY));
+    return Number.isFinite(blockedUntil) ? blockedUntil : 0;
+  } catch {
+    return 0;
+  }
+}
+
+async function writeCooldown(blockedUntil: number, ttlSeconds: number) {
+  try {
+    const redis = await getRedisClient();
+    await redis.set(COOLDOWN_KEY, String(blockedUntil), {
+      EX: Math.max(1, Math.ceil(ttlSeconds)),
+    });
+  } catch {
+    // The Spotify response still carries the cooldown for this request.
+  }
+}
+
+async function clearCooldown() {
+  try {
+    const redis = await getRedisClient();
+    await redis.del(COOLDOWN_KEY);
+  } catch {
+    // An expired cooldown never prevents serving a fresh track.
   }
 }
 
@@ -258,16 +289,18 @@ export async function GET() {
   const now = Date.now();
   const cached = await readCache();
 
-  if (cached && cached.freshUntil > now) {
+  if (cached) {
     return spotifyResponse(cached.track, "hit");
   }
-  if (cached && cached.blockedUntil > now) {
-    return spotifyResponse(cached.track, "cooldown", cached.blockedUntil);
+
+  const blockedUntil = await readCooldown();
+  if (blockedUntil > now) {
+    return spotifyResponse(null, "cooldown", blockedUntil);
   }
 
   const hasRefreshLock = await acquireRefreshLock();
   if (!hasRefreshLock) {
-    return spotifyResponse(cached?.track ?? null, "stale");
+    return spotifyResponse(null, "stale");
   }
 
   try {
@@ -275,29 +308,21 @@ export async function GET() {
 
     if (result.kind === "success") {
       const nextCache: SpotifyCache = {
+        version: 2,
         track: result.track,
-        freshUntil: now + FRESH_FOR_MS,
-        blockedUntil: 0,
       };
       await writeCache(nextCache);
+      await clearCooldown();
       return spotifyResponse(nextCache.track, "refreshed");
     }
 
     if (result.kind === "rate-limited") {
-      const nextCache: SpotifyCache = {
-        track: cached?.track ?? null,
-        freshUntil: cached?.freshUntil ?? 0,
-        blockedUntil: now + result.retryAfterSeconds * 1000,
-      };
-      await writeCache(nextCache);
-      return spotifyResponse(
-        nextCache.track,
-        "cooldown",
-        nextCache.blockedUntil,
-      );
+      const nextBlockedUntil = now + result.retryAfterSeconds * 1000;
+      await writeCooldown(nextBlockedUntil, result.retryAfterSeconds);
+      return spotifyResponse(null, "cooldown", nextBlockedUntil);
     }
 
-    return spotifyResponse(cached?.track ?? null, "stale");
+    return spotifyResponse(null, "stale");
   } finally {
     localRefreshInFlight = false;
   }
