@@ -232,8 +232,9 @@ function spotifyResponse(
     },
     {
       headers: {
-        "Cache-Control":
-          "public, s-maxage=300, stale-while-revalidate=86400",
+        "Cache-Control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "CDN-Cache-Control": "no-store",
+        "Vercel-CDN-Cache-Control": "no-store",
         "X-Spotify-Cache": cacheStatus,
       },
     },
