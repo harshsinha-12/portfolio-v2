@@ -386,6 +386,8 @@ Run `pnpm seed-link-previews` after adding new URLs to `link-preview-sources.jso
 - `/articles` — article index and discovery page
 - `/articles/[slug]` — statically generated long-form article page
 - `/articles/[slug]/article.md` — AI-readable Markdown source with section links and companion structured data
+- `/articles/sitemap.xml` — article-specific discovery for HTML articles, Markdown resources, JSON, and RSS
+- `/sitemap.xml` — portfolio/profile URLs, the main `/articles` listing, and an explicit `/articles/sitemap.xml` entry; `robots.txt` also advertises the separate article sitemap
 
 **One-folder publishing bundle:** every article keeps its long-form source, structured data, and social launch drafts together.
 
@@ -417,7 +419,7 @@ content/articles/<slug>/
 - Show a `View all articles` link to `/articles` once more than the homepage preview limit is available.
 - External social links must open safely in a new tab and use the existing outbound-link analytics and link-preview conventions.
 
-**SEO and discovery:** per-article metadata and canonical URLs, Open Graph images, `Article` JSON-LD, sitemap entries, RSS, and article/social destinations surfaced from the current homepage Writing section. Each HTML article declares its Markdown alternate, while `/llms.txt` and `/llms-full.txt` enumerate published AI-readable article URLs.
+**SEO and discovery:** per-article metadata and canonical URLs, Open Graph images, `Article` JSON-LD, a root site sitemap plus a separate article sitemap, RSS, and article/social destinations surfaced from the current homepage Writing section. Each HTML article declares its Markdown alternate, while `/llms.txt` and `/llms-full.txt` enumerate published AI-readable article URLs. Each Markdown export includes Harsh's website and social profile URLs.
 
 **Branch:** `feature/harsh/articles`
 

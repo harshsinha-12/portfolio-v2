@@ -16,6 +16,14 @@ export const metadata: Metadata = {
     description:
       "Field notes on AI agents, backend systems, quant, and building products.",
     url: "/articles",
+    images: [
+      {
+        url: "/articles/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Articles and write-ups by Harsh Sinha",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -23,6 +31,7 @@ export const metadata: Metadata = {
     description:
       "Field notes on AI agents, backend systems, quant, and building products.",
     creator: "@sinhaharsh12",
+    images: ["/articles/opengraph-image"],
   },
 };
 

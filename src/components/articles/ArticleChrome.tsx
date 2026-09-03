@@ -1,17 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
-import { FaXTwitter } from "react-icons/fa6";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { CanvasBackground } from "@/components/canvas/CanvasBackground";
+import { ArticleSocialIcons } from "@/components/articles/ArticleSocialIcons";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { ArticleTableOfContents } from "@/components/articles/ArticleTableOfContents";
-import { siteConfig, socialMedia } from "@/data/portfolio";
+import { siteConfig } from "@/data/portfolio";
 import type { ArticleHeading, ArticleSocialLinks, ArticleSummary } from "@/types/articles";
-
-function socialUrl(platform: "twitter" | "linkedin" | "github") {
-  return socialMedia.find((item) => item.platform === platform)?.link ?? "#";
-}
 
 export function ArticleTopNav() {
   return (
@@ -25,15 +20,7 @@ export function ArticleTopNav() {
           Articles
         </Link>
         <Link href="/">Portfolio</Link>
-        <a href={socialUrl("linkedin")} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <AiFillLinkedin aria-hidden="true" />
-        </a>
-        <a href={socialUrl("github")} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <AiFillGithub aria-hidden="true" />
-        </a>
-        <a href={socialUrl("twitter")} target="_blank" rel="noopener noreferrer" aria-label="X">
-          <FaXTwitter aria-hidden="true" />
-        </a>
+        <ArticleSocialIcons variant="topbar" />
       </nav>
     </header>
   );
@@ -113,30 +100,7 @@ export function ArticleAuthorFooter({ nextArticle }: ArticleAuthorFooterProps) {
           <h2>{siteConfig.name}</h2>
           <p>{siteConfig.tagline}</p>
           <div className="article-author-footer__socials">
-            <a
-              href={socialUrl("linkedin")}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            >
-              <AiFillLinkedin aria-hidden="true" />
-            </a>
-            <a
-              href={socialUrl("github")}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-            >
-              <AiFillGithub aria-hidden="true" />
-            </a>
-            <a
-              href={socialUrl("twitter")}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X"
-            >
-              <FaXTwitter aria-hidden="true" />
-            </a>
+            <ArticleSocialIcons variant="footer" />
           </div>
         </div>
       </div>

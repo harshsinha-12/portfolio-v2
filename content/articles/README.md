@@ -89,7 +89,9 @@ Keep Mermaid `chart` values as quoted, one-line strings separated with semicolon
 
 Every published article automatically has an AI-readable endpoint at `/articles/<slug>/article.md`. The HTML article advertises it as a `text/markdown` alternate, the article tools include a **View Markdown** action, and `/llms.txt` lists all published Markdown articles.
 
-The Markdown response includes frontmatter, canonical and Markdown URLs, direct links to every article section, the MDX source, and the companion `data.json` content. Draft endpoints return 404 in production.
+The Markdown response includes frontmatter, canonical and Markdown URLs, direct links to every article section, author profile URLs, the MDX source, and the companion `data.json` content. Draft endpoints return 404 in production.
+
+The root `/sitemap.xml` contains portfolio/profile resources, the main `/articles` listing, and an explicit `/articles/sitemap.xml` URL. The article sitemap contains published HTML articles, their Markdown resources, `/articles.json`, and `/rss.xml`. `robots.txt` also advertises both sitemap files.
 
 ## Media
 

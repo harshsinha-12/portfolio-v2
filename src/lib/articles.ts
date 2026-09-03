@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 import readingTime from "reading-time";
+import { siteConfig, socialMedia } from "@/data/portfolio";
 import type {
   Article,
   ArticleFrontmatter,
@@ -179,6 +180,16 @@ export function buildArticleMarkdown(article: Article, siteUrl: string) {
   const sectionLinks = article.headings
     .map((heading) => `- [${heading.text}](${articleUrl}#${heading.id})`)
     .join("\n");
+  const profileLinks = [
+    { label: "Website", url: siteUrl },
+    ...socialMedia
+      .filter((profile) => profile.platform !== "mail")
+      .map((profile) => ({ label: profile.label, url: profile.link })),
+  ];
+  const profileMarkdown = profileLinks
+    .map((profile) => `- [${profile.label}](${profile.url})`)
+    .join("\n");
+  const sameAs = profileLinks.slice(1).map((profile) => profile.url);
   const structuredData =
     Object.keys(article.data).length > 0
       ? `\n\n## Companion structured data\n\n\`\`\`json\n${JSON.stringify(article.data, null, 2)}\n\`\`\``
@@ -189,7 +200,10 @@ title: ${JSON.stringify(article.title)}
 description: ${JSON.stringify(article.description)}
 date: ${JSON.stringify(article.date)}
 updatedAt: ${JSON.stringify(article.updatedAt ?? article.date)}
-author: "Harsh Sinha"
+author:
+  name: ${JSON.stringify(siteConfig.name)}
+  url: ${JSON.stringify(siteUrl)}
+  sameAs: ${JSON.stringify(sameAs)}
 canonical: ${JSON.stringify(articleUrl)}
 markdown: ${JSON.stringify(markdownUrl)}
 tags: ${JSON.stringify(article.tags)}
@@ -200,6 +214,10 @@ tags: ${JSON.stringify(article.tags)}
 ## Section links
 
 ${sectionLinks}
+
+## Author profiles
+
+${profileMarkdown}
 
 ${article.body.trim()}${structuredData}
 `;

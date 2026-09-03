@@ -35,6 +35,7 @@ type LinkPreviewProps = {
   className?: string;
   ariaLabel?: string;
   onClick?: () => void;
+  side?: "top" | "right" | "bottom" | "left";
 };
 
 type PreviewImage =
@@ -188,6 +189,7 @@ export function LinkPreview({
   className,
   ariaLabel,
   onClick,
+  side = "top",
 }: LinkPreviewProps) {
   const domain = getDisplayDomain(href);
   const caption = getLinkPreviewCaption(href);
@@ -229,7 +231,7 @@ export function LinkPreview({
         </a>
       </HoverCardTrigger>
       <HoverCardContent
-        side="top"
+        side={side}
         align="center"
         sideOffset={10}
         className={cn(
