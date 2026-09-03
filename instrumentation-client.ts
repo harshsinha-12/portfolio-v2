@@ -1,8 +1,9 @@
 import posthog from "posthog-js";
 import { ANALYTICS_APP } from "@/lib/analytics";
 
-const projectToken = process.env.POSTHOG_PROJECT_TOKEN;
-const host = process.env.POSTHOG_HOST ?? "https://us.i.posthog.com";
+const projectToken = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
+const host =
+  process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
 
 // Session recordings require cookies / local storage, so cookieless mode is off.
 // Enable "Record user sessions" in the PostHog project settings after adding the token.

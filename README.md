@@ -41,8 +41,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://harsh-portfolio-two-sigma.vercel.app
-POSTHOG_PROJECT_TOKEN=phc_...
-POSTHOG_HOST=https://us.i.posthog.com
+NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 SPOTIFY_CLIENT_ID=...
 SPOTIFY_CLIENT_SECRET=...
 SPOTIFY_REFRESH_TOKEN=...
@@ -54,7 +54,7 @@ REDIS_TLS=false
 ```
 
 PostHog is initialized from `instrumentation-client.ts` when
-POSTHOG_PROJECT_TOKEN` is set. `POSTHOG_HOST` defaults
+`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is set. `NEXT_PUBLIC_POSTHOG_HOST` defaults
 to `https://us.i.posthog.com`. The client enables autocapture (clicks),
 pageviews/pageleaves, exception capture, web vitals, and session recordings.
 In your PostHog project, turn on **Record user sessions** (and optionally

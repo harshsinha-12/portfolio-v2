@@ -9,7 +9,9 @@ function isBrowser(): boolean {
 }
 
 function canCapture(): boolean {
-  return isBrowser() && Boolean(process.env.POSTHOG_PROJECT_TOKEN);
+  return (
+    isBrowser() && Boolean(process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN)
+  );
 }
 
 /** Fire a custom PostHog event. No-ops when the SDK token is unset. */
