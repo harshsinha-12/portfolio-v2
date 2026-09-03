@@ -8,6 +8,7 @@ import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import {
   ArticleAuthorFooter,
+  ArticleBreadcrumbs,
   ArticlePageChrome,
 } from "@/components/articles/ArticleChrome";
 import { createArticleComponents } from "@/components/articles/ArticleContent";
@@ -122,6 +123,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       social={article.social}
     >
       <SiteVisitorTracker />
+      <ArticleBreadcrumbs
+        items={[
+          { label: "Home", href: "/" },
+          { label: "Articles", href: "/articles" },
+          { label: article.title, href: articlePath },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

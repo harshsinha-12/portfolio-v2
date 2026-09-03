@@ -6,7 +6,55 @@ import { ArticleSocialIcons } from "@/components/articles/ArticleSocialIcons";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { ArticleTableOfContents } from "@/components/articles/ArticleTableOfContents";
 import { siteConfig } from "@/data/portfolio";
+import { getSiteUrl } from "@/lib/siteUrl";
 import type { ArticleHeading, ArticleSocialLinks, ArticleSummary } from "@/types/articles";
+
+type ArticleBreadcrumbItem = {
+  label: string;
+  href: string;
+};
+
+export function ArticleBreadcrumbs({ items }: { items: ArticleBreadcrumbItem[] }) {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: new URL(item.href, getSiteUrl()).toString(),
+    })),
+  };
+
+  return (
+    <>
+      <nav className="article-breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          {items.map((item, index) => {
+            const isCurrent = index === items.length - 1;
+
+            return (
+              <li key={item.href}>
+                {index > 0 ? <span aria-hidden="true">/</span> : null}
+                {isCurrent ? (
+                  <span aria-current="page">{item.label}</span>
+                ) : (
+                  <Link href={item.href}>{item.label}</Link>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </nav>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(breadcrumbJsonLd).replaceAll("<", "\\u003c"),
+        }}
+      />
+    </>
+  );
+}
 
 export function ArticleTopNav() {
   return (
