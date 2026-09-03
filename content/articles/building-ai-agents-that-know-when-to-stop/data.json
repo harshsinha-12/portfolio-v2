@@ -1,0 +1,25 @@
+{
+  "stopSignals": [
+    {
+      "Signal": "Goal progress",
+      "Question": "Did the last step materially move the task forward?",
+      "Example threshold": ">= 95%"
+    },
+    {
+      "Signal": "Confidence",
+      "Question": "Is the answer supported strongly enough to deliver?",
+      "Example threshold": ">= 0.95"
+    },
+    {
+      "Signal": "Budget",
+      "Question": "Has the run reached its time, token, or tool-call limit?",
+      "Example threshold": ">= 90% used"
+    },
+    {
+      "Signal": "Stability",
+      "Question": "Are repeated attempts producing the same result?",
+      "Example threshold": "2 stable passes"
+    }
+  ],
+  "citations": []
+}

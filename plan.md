@@ -222,12 +222,12 @@ Features that may **not** exist upstream. Reference screenshots saved in chat (S
 | M.6 | Resume button in nav / About | [x] | Med | About header + contact row |
 | M.7 | Custom domain + deploy polish | [ ] | High | Site is on Vercel; custom domain still open |
 | M.8 | **Certifications & courses section** | [x] | Low–Med | Combined clothesline with hackathons |
-| M.9 | **Articles & write-ups** | [ ] | Med | Inline links today; dedicated section still optional |
+| M.9 | **Articles & write-ups** | [~] | High | Field Notes UI and MDX/JSON article system implemented; browser visual QA still required |
 
 ### Idea backlog (unscheduled)
 
 - Spotify **play button** — in-app playback via Spotify Web Playback SDK (needs Premium + OAuth); fallback: link opens track in Spotify
-- ~~Blog / writing section~~ → see **M.9** (inline links today; optional dedicated section later)
+- ~~Blog / writing section~~ → see **M.9** (dedicated Field Notes article system now in progress)
 - Dark mode / alternate mat palette (`globals.css`)
 - Replace or remove PostHog analytics
 - Custom sticker set (`experienceStickers` / `projectStickers`)
@@ -378,27 +378,47 @@ Squiggly `marker-link` + hover preview inside About intro and experience bullets
 
 Run `pnpm seed-link-previews` after adding new URLs to `link-preview-sources.json`.
 
-#### B. Dedicated section (M.9 — build later)
-Optional nav item: **Writing** / **Articles** — cards or stamp row for longer-form or standout posts you want discoverable without reading every bullet.
+#### B. Dedicated article system (M.9 — in progress)
 
-| Field | Example |
-|-------|---------|
-| `title` | Twitter market-news automation — architecture |
-| `url` | X / LinkedIn / SEBI / personal blog |
-| `date` | Oct 2025 |
-| `tag` | `thread` · `launch` · `research` · `architecture` |
-| `blurb` | One-line why it matters |
+**Selected visual direction:** Field Notes (visual option 3) — a minimal Notion/Medium-style reading surface on the existing forest cutting mat, with cream paper, a sticky table of contents/share rail, restrained coral handwritten annotations, rich technical content, and a personal author footer.
 
-**Placement options:** below Projects, above Footer, or a subsection in About.
+**Routes:**
+- `/articles` — article index and discovery page
+- `/articles/[slug]` — statically generated long-form article page
 
-**Implementation sketch:**
-- `articles: Article[]` in `portfolio.ts`
-- `ArticlesSection.tsx` — `TapedCard` + polaroid/stamp cards, reuse `LinkPreview`
-- Content draft in `Harsh.md` §21
+**One-folder publishing bundle:** every article keeps its long-form source, structured data, and social launch drafts together.
 
-**When to build:** When you have 4+ links worth surfacing together; until then inline links are enough.
+```text
+content/articles/<slug>/
+├── article.mdx
+├── data.json
+├── twitter.md
+└── linkedin.md
+```
 
-**Branch:** `feat/articles-section`
+- `article.mdx` is the human-authored source of truth for frontmatter and long-form prose.
+- `data.json` is optional supporting data for charts, comparisons, timelines, interactive examples, citations, or other structured blocks.
+- `twitter.md` contains the short X/Twitter post or thread that links readers to the full article.
+- `linkedin.md` contains the LinkedIn launch post that links readers to the full article.
+- Do not manually duplicate metadata in Markdown and JSON. Generate article indexes, sitemap records, RSS, metadata, and JSON-LD from MDX frontmatter.
+- Start new articles by copying `content/articles/_template/`; see `content/articles/README.md` for the authoring and publishing checklist.
+
+**Rich content:** responsive local images and captions, highlighted code, callouts, tables, video embeds, Mermaid flowcharts, table of contents, reading time, and previous/next navigation.
+
+**Sharing and author identity:** X, LinkedIn, and copy-link controls; footer with profile photo, short bio, and existing social links. The social draft files are authoring sources, while the rendered share buttons always share the canonical article URL.
+
+**Homepage Writing section (`ArticlesSection.tsx`):**
+- Replace the current `Coming soon` note with article previews as soon as the first non-draft article bundle is available.
+- Each preview shows the article title, summary, date, tags, and an internal `Read article` link to `/articles/[slug]`.
+- When `social.twitter` or `social.linkedin` is present in the article frontmatter, show a clearly labelled X/Twitter or LinkedIn action on that preview. Those actions open the original social posts rather than the website article.
+- Social actions are optional and independent: show only the destinations that have published URLs, without empty or disabled buttons.
+- Keep `Coming soon` as the automatic empty state when there are no published articles.
+- Show a `View all articles` link to `/articles` once more than the homepage preview limit is available.
+- External social links must open safely in a new tab and use the existing outbound-link analytics and link-preview conventions.
+
+**SEO and discovery:** per-article metadata and canonical URLs, Open Graph images, `Article` JSON-LD, sitemap entries, RSS, and article/social destinations surfaced from the current homepage Writing section.
+
+**Branch:** `feature/harsh/articles`
 
 ---
 
@@ -409,7 +429,7 @@ Optional nav item: **Writing** / **Articles** — cards or stamp row for longer-
 3. **M.1** — Spotify last played (needs Spotify Developer setup)
 4. **M.3** — contact footer + visitor counter (needs form backend + counter store)
 5. **M.8** — certifications & courses (when you have 3+ to show)
-6. **M.9** — articles & write-ups section (when you have 4+ posts to curate; inline links already done)
+6. **M.9** — article system and Field Notes UI (implemented; real article content and browser visual QA remain)
 
 ---
 
@@ -430,7 +450,7 @@ Optional nav item: **Writing** / **Articles** — cards or stamp row for longer-
 | C.2 | Text tag below GitHub graph | [ ] | Covered by M.2 — could be tech stack strip or a short handwritten tagline |
 | C.3 | Timeline steam train at top of experience rail | [x] | First entry — train on dual dashed “elevated tracks” |
 | C.4 | Inline article/write-up links in intro + experience | [x] | Ask Iris, Shark Tank, SEBI F&O study, X automation thread, etc. — full list in M.9 |
-| C.5 | Dedicated articles / write-ups section | [ ] | M.9 — optional nav section when you have 4+ posts |
+| C.5 | Dedicated articles / write-ups section | [~] | M.9 — implementation complete; real article content and browser visual QA remain |
 
 ---
 
@@ -457,7 +477,7 @@ Optional nav item: **Writing** / **Articles** — cards or stamp row for longer-
 ### Sprint 4 — Upstream polish + writing
 - [ ] [#2](https://github.com/mittal-parth/portfolio-v2/issues/2) sticky note redesign (U.4)
 - [x] Resume button (M.6)
-- [ ] Articles & write-ups section (M.9) — when you have enough posts to curate
+- [~] Articles & write-ups system (M.9) — Field Notes UI and content pipeline implemented; awaiting real article + browser visual QA
 
 ---
 
@@ -490,4 +510,6 @@ After merge: if `portfolio.ts` conflicts, keep **your** content from `Harsh.md`.
 | Images | `public/assets/` |
 | Demo videos | `media-src/videos/` → `pnpm optimize-videos` |
 | Link previews | `pnpm seed-link-previews` |
+| Article authoring guide | `content/articles/README.md` |
+| New article bundle | Copy `content/articles/_template/` to `content/articles/<slug>/` |
 | Site URL | `.env.local` → `NEXT_PUBLIC_SITE_URL` |

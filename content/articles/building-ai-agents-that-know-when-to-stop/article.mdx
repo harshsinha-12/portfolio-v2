@@ -1,0 +1,96 @@
+---
+title: "Building AI Agents That Know When to Stop"
+description: "A draft Field Notes preview for designing stop conditions, guardrails, and evaluation loops into reliable AI agents."
+date: "2026-09-03"
+updatedAt: "2026-09-03"
+tags:
+  - AI Agents
+  - LLM
+  - Systems Design
+  - Prompting
+draft: true
+featured: true
+canonical: "/articles/building-ai-agents-that-know-when-to-stop"
+social:
+  twitter: ""
+  linkedin: ""
+---
+
+## Why “stop” matters
+
+LLMs are brilliant at generating the next step. Agents built on them are brilliant at generating *more* next steps. Without a deliberate stopping strategy, they loop, overthink, spend tokens, and gradually lose the reader’s trust.
+
+Great agents are decisive. They gather enough evidence, act, and stop.
+
+<MarginNote>
+  Goal: a correct answer, delivered at the right time.
+</MarginNote>
+
+<Mermaid
+  caption="The agent loop needs an explicit stop decision."
+  chart={`flowchart LR
+    A[User goal] --> B[Plan]
+    B --> C[Act]
+    C --> D[Observe]
+    D --> E{Should we stop?}
+    E -- Yes --> F[Deliver answer]
+    E -- No --> B`}
+/>
+
+## What we mean by stop
+
+Stopping is not a single event; it is a judgement. Continue only while the expected value of another step is greater than its cost in latency, tokens, money, or risk.
+
+<Callout title="Key idea">
+  An agent’s job is not to keep working. Its job is to recognize when the requested outcome is complete—or when continuing is unsafe.
+</Callout>
+
+```python
+def should_stop(state):
+    confidence = estimate_confidence(state)
+    progress = state.progress_score
+    budget_used = state.tokens_used / state.token_budget
+
+    return confidence >= 0.95 or progress >= 0.95 or budget_used >= 0.90
+```
+
+## Designing the stop criterion
+
+A useful stop decision combines multiple signals rather than betting everything on one hard-coded rule:
+
+- confidence in the answer
+- measurable progress toward the goal
+- time, token, and tool-call budgets
+- repeated attempts or stable outputs
+- an external validator when correctness can be checked
+
+<DataTable
+  dataset="stopSignals"
+  caption="Example signals stored beside this article in data.json."
+/>
+
+<MarginNote>
+  Prefer observable signals over invisible confidence.
+</MarginNote>
+
+## A practical pattern
+
+Put an evaluator after every meaningful action. The evaluator should describe what changed, score progress, and select one of three outcomes: continue, deliver, or escalate.
+
+<Mermaid
+  caption="A production loop separates execution from evaluation."
+  chart={`flowchart LR
+    A[Plan] --> B[Act with tool or LLM]
+    B --> C[Observe result]
+    C --> D[Evaluator]
+    D --> E{Decision}
+    E -- Continue --> A
+    E -- Deliver --> F[Respond]
+    E -- Escalate --> G[Ask for help]`}
+/>
+
+## Implementation walkthrough
+
+The eventual article can include a local WebM demo or a privacy-friendly video embed using the `<Video />` MDX component. The media stays optional, responsive, captioned, and outside the critical reading path.
+
+This preview article is intentionally marked as a draft. It is visible while developing locally, but it will not appear in production listings, RSS, sitemap entries, or the JSON article feed until its frontmatter changes to `draft: false`.
