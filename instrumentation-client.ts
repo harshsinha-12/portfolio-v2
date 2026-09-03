@@ -4,10 +4,14 @@ import { ANALYTICS_APP } from "@/lib/analytics";
 const projectToken = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
 const host =
   process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
+const isProduction = process.env.NODE_ENV === "production";
 
+// Only start PostHog in production builds. In `next dev` the SDK would report
+// developer-machine exceptions and session recordings as if they came from a
+// real visitor.
 // Session recordings require cookies / local storage, so cookieless mode is off.
 // Enable "Record user sessions" in the PostHog project settings after adding the token.
-if (projectToken) {
+if (projectToken && isProduction) {
   posthog.init(projectToken, {
     api_host: host,
     defaults: "2026-01-30",
@@ -23,7 +27,6 @@ if (projectToken) {
       maskAllInputs: true,
       recordCrossOriginIframes: false,
     },
-    debug: process.env.NODE_ENV === "development",
     loaded: (client) => {
       client.register({ app: ANALYTICS_APP });
     },
