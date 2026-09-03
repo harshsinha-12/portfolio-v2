@@ -9,7 +9,7 @@ export const siteConfig = {
   url: "https://www.harshsinha.dev",
   githubUsername: "harshsinha-12",
   role: "Prev Founder's Office and AI Engineer",
-  tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend",
+  tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27 · Working on AI Agents, Quant and Backend",
 };
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
@@ -103,6 +103,35 @@ export const introBullets: IntroBullet[] = [
   {
     id: "intro-2",
     segments: [
+      { type: "text", value: "I'm in my " },
+      { type: "hand", value: "final year of undergrad" },
+      { type: "text", value: " at " },
+      {
+        type: "link",
+        label: "IIT Patna",
+        href: "https://www.iitp.ac.in/",
+        previewTitle: "Indian Institute of Technology Patna",
+        previewDescription: "IIT Patna — undergraduate program.",
+      },
+      { type: "text", value: ". Was also the " },
+      { type: "hand", value: "national finalist" },
+      { type: "text", value: " at " },
+      {
+        type: "link",
+        label: "IFF–FinTech Olympiad '24",
+        href: "https://www.linkedin.com/posts/harshsinha12_fintecholympiad2024-fintech-nationalfinalist-activity-7259242419387314176-kO12",
+        previewTitle: "National Finalist — Fintech Olympiad 2024",
+        previewDescription:
+          "Top 30 among 1 lakh+ applicants; national finals at IFTA 2024, Mumbai — India FinTech Forum.",
+      },
+      { type: "text", value: ", among the top 30 out of " },
+      { type: "hand", value: ">1 lakh" },
+      { type: "text", value: " candidates." },
+    ],
+  },
+  {
+    id: "intro-3",
+    segments: [
       { type: "text", value: "I love building " },
       { type: "hand", value: "AI agents" },
       {
@@ -113,7 +142,7 @@ export const introBullets: IntroBullet[] = [
     ],
   },
   {
-    id: "intro-3",
+    id: "intro-4",
     segments: [
       { type: "text", value: "I've mainly worked on " },
       {
@@ -148,35 +177,6 @@ export const introBullets: IntroBullet[] = [
           "Shark Tank India's Match-Off featuring Multibagg AI on Sony LIV.",
       },
       { type: "text", value: "." },
-    ],
-  },
-  {
-    id: "intro-4",
-    segments: [
-      { type: "text", value: "I'm in my " },
-      { type: "hand", value: "final year of undergrad" },
-      { type: "text", value: " at " },
-      {
-        type: "link",
-        label: "IIT Patna",
-        href: "https://www.iitp.ac.in/",
-        previewTitle: "Indian Institute of Technology Patna",
-        previewDescription: "IIT Patna — undergraduate program.",
-      },
-      { type: "text", value: ". Was also the " },
-      { type: "hand", value: "national finalist" },
-      { type: "text", value: " at " },
-      {
-        type: "link",
-        label: "IFF–FinTech Olympiad '24",
-        href: "https://www.linkedin.com/posts/harshsinha12_fintecholympiad2024-fintech-nationalfinalist-activity-7259242419387314176-kO12",
-        previewTitle: "National Finalist — Fintech Olympiad 2024",
-        previewDescription:
-          "Top 30 among 1 lakh+ applicants; national finals at IFTA 2024, Mumbai — India FinTech Forum.",
-      },
-      { type: "text", value: ", among the top 30 out of " },
-      { type: "hand", value: ">1 lakh" },
-      { type: "text", value: " candidates." },
     ],
   },
   {

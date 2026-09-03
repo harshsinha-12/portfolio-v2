@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "AI Engineer",
     "Multibagg AI",
     "IFF-FinTech Olympiad’24",
-    "IITP'27",
+    "IIT Patna'27",
     "Software Developer",
     "Quant",
     "Backend",

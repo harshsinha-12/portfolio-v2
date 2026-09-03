@@ -39,7 +39,7 @@ description: "AI Engineer · Prev Founder's Office @ Multibagg AI · National Fi
 url: "https://www.harshsinha.dev"
 githubUsername: "harshsinha-12"
 role: "Prev Founder's Office and AI Engineer"
-tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend"
+tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27 · Working on AI Agents, Quant and Backend"
 ```
 
 **Notes:**
@@ -193,7 +193,7 @@ keywords:
   - "AI Engineer"
   - "Multibagg AI"
   - "IFF-FinTech Olympiad’24"
-  - "IITP'27"
+  - "IIT Patna'27"
   - "Quant"
   - "Backend"
   - "AI Agents"
@@ -223,7 +223,7 @@ personJsonLd:
 
 ```yaml
 NAME: "Harsh Sinha"
-TAGLINE: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend"
+TAGLINE: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27 · Working on AI Agents, Quant and Backend"
 socials:
   - handle: "harshsinha12"
   - handle: "harshsinha-12"
