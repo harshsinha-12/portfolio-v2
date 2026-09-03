@@ -12,6 +12,8 @@ import {
 } from "@/components/articles/ArticleChrome";
 import { createArticleComponents } from "@/components/articles/ArticleContent";
 import { ShareButtons } from "@/components/articles/ShareButtons";
+import { ArticleViewTracker } from "@/components/articles/ArticleViewTracker";
+import { SiteVisitorTracker } from "@/components/analytics/SiteVisitorTracker";
 import { siteConfig } from "@/data/portfolio";
 import { articleOgPath } from "@/lib/articleOgImage";
 import { getAllArticles, getArticle } from "@/lib/articles";
@@ -119,6 +121,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       markdownUrl={markdownUrl}
       social={article.social}
     >
+      <SiteVisitorTracker />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -129,6 +132,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <time dateTime={article.date}>{formatDate(article.date)}</time>
           <span aria-hidden="true">·</span>
           <span>{article.readingTime}</span>
+          <span aria-hidden="true">·</span>
+          <ArticleViewTracker articleSlug={article.slug} />
         </div>
         <h1>{article.title}</h1>
         <div className="article-title-rule" aria-hidden="true" />

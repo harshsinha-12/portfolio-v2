@@ -13,6 +13,8 @@ let visitorCountRequest: Promise<number | null> | undefined;
 function requestVisitorCount() {
   visitorCountRequest ??= fetch("/api/visitor", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ type: "site" }),
     cache: "no-store",
   })
     .then(async (response) => {
@@ -101,7 +103,7 @@ export function VisitorQuoteCard() {
                 {ordinal.number}
                 <sup className="ml-0.5 text-[9px]">{ordinal.suffix}</sup>
               </strong>{" "}
-              visitor
+              site visitor
             </p>
           ) : (
             <span className="text-sm text-[var(--color-ink-subtle)]">

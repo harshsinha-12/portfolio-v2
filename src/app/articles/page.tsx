@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FiArrowLeft } from "react-icons/fi";
 import { ArticleIndexChrome } from "@/components/articles/ArticleChrome";
 import { ArticlePreview } from "@/components/articles/ArticlePreview";
+import { SiteVisitorTracker } from "@/components/analytics/SiteVisitorTracker";
 import { getAllArticles } from "@/lib/articles";
 
 export const metadata: Metadata = {
@@ -40,6 +41,7 @@ export default function ArticlesPage() {
 
   return (
     <ArticleIndexChrome>
+      <SiteVisitorTracker />
       <Link className="article-index-back" href="/">
         <FiArrowLeft aria-hidden="true" /> Back to portfolio
       </Link>
