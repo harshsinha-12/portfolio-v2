@@ -40,11 +40,13 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
 
   useEffect(() => {
     const controller = new AbortController();
+    let retryTimer: number | undefined;
 
     async function loadTrack() {
       try {
         const response = await fetch("/api/spotify", {
           signal: controller.signal,
+          cache: "no-store",
         });
 
         if (!response.ok) {
@@ -54,6 +56,14 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
         const body = (await response.json()) as SpotifyResponse;
         setTrack(body.track);
         setRetryAt(body.cacheStatus === "cooldown" ? body.retryAt ?? null : null);
+
+        if (body.cacheStatus === "cooldown" && body.retryAt) {
+          const delay = Math.max(
+            1_000,
+            new Date(body.retryAt).getTime() - Date.now() + 1_000,
+          );
+          retryTimer = window.setTimeout(loadTrack, delay);
+        }
       } catch {
         // Keep the hero uncluttered when Spotify is unavailable.
       }
@@ -63,6 +73,7 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
 
     return () => {
       controller.abort();
+      if (retryTimer) window.clearTimeout(retryTimer);
     };
   }, []);
 
