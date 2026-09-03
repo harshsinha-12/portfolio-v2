@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AiFillLinkedin } from "react-icons/ai";
 import { FaXTwitter } from "react-icons/fa6";
-import { FiCheck, FiCopy, FiShare2 } from "react-icons/fi";
+import { FiCheck, FiCopy, FiFileText, FiShare2 } from "react-icons/fi";
 import { track, trackOutboundClick } from "@/lib/analytics";
 import type { ArticleSocialLinks } from "@/types/articles";
 
@@ -11,10 +11,17 @@ type ShareButtonsProps = {
   title: string;
   url: string;
   social?: ArticleSocialLinks;
+  markdownUrl?: string;
   compact?: boolean;
 };
 
-export function ShareButtons({ title, url, social, compact = false }: ShareButtonsProps) {
+export function ShareButtons({
+  title,
+  url,
+  social,
+  markdownUrl,
+  compact = false,
+}: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
@@ -70,6 +77,20 @@ export function ShareButtons({ title, url, social, compact = false }: ShareButto
           <span>{compact ? platform === "twitter" ? "X" : "LinkedIn" : label}</span>
         </a>
       ))}
+      {markdownUrl ? (
+        <a
+          href={markdownUrl}
+          target="_blank"
+          rel="alternate"
+          type="text/markdown"
+          className="article-share__action"
+          title="View AI-readable Markdown"
+          onClick={() => track("article_markdown_opened", { title, url: markdownUrl })}
+        >
+          <FiFileText aria-hidden="true" />
+          <span>{compact ? "Markdown" : "View Markdown"}</span>
+        </a>
+      ) : null}
       <button type="button" className="article-share__action" onClick={copyLink}>
         {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />}
         <span>{copied ? "Copied" : compact ? "Copy" : "Copy link"}</span>

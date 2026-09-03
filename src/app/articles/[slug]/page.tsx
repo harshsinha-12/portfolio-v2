@@ -13,6 +13,7 @@ import {
 import { createArticleComponents } from "@/components/articles/ArticleContent";
 import { ShareButtons } from "@/components/articles/ShareButtons";
 import { siteConfig } from "@/data/portfolio";
+import { articleOgPath } from "@/lib/articleOgImage";
 import { getAllArticles, getArticle } from "@/lib/articles";
 import { getSiteUrl } from "@/lib/siteUrl";
 
@@ -41,14 +42,19 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   if (!article) return {};
 
   const canonical = article.canonical ?? `/articles/${article.slug}`;
-  const image = article.cover ?? "/og.jpg";
+  const markdown = `/articles/${article.slug}/article.md`;
 
   return {
     title: article.title,
     description: article.description,
     authors: [{ name: siteConfig.name, url: getSiteUrl() }],
     keywords: article.tags,
-    alternates: { canonical },
+    alternates: {
+      canonical,
+      types: {
+        "text/markdown": [{ url: markdown, title: `${article.title} — Markdown` }],
+      },
+    },
     robots: article.draft ? { index: false, follow: false } : undefined,
     openGraph: {
       type: "article",
@@ -59,14 +65,12 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
       modifiedTime: article.updatedAt,
       authors: [siteConfig.name],
       tags: article.tags,
-      images: [{ url: image, alt: article.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: article.title,
       description: article.description,
       creator: "@sinhaharsh12",
-      images: [image],
     },
   };
 }
@@ -87,6 +91,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       : undefined;
   const articlePath = article.canonical ?? `/articles/${article.slug}`;
   const articleUrl = new URL(articlePath, getSiteUrl()).toString();
+  const markdownUrl = new URL(
+    `/articles/${article.slug}/article.md`,
+    getSiteUrl(),
+  ).toString();
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -95,7 +103,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     datePublished: article.date,
     dateModified: article.updatedAt ?? article.date,
     mainEntityOfPage: articleUrl,
-    image: new URL(article.cover ?? "/og.jpg", getSiteUrl()).toString(),
+    image: new URL(articleOgPath(article.slug), getSiteUrl()).toString(),
     author: {
       "@type": "Person",
       name: siteConfig.name,
@@ -108,6 +116,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       headings={article.headings}
       title={article.title}
       url={articleUrl}
+      markdownUrl={markdownUrl}
       social={article.social}
     >
       <script
@@ -143,6 +152,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <ShareButtons
             title={article.title}
             url={articleUrl}
+            markdownUrl={markdownUrl}
             social={article.social}
             compact
           />

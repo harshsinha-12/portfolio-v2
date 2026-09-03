@@ -7,6 +7,10 @@ export function GET() {
   const articles = getPublishedArticles().map((article) => ({
     ...article,
     url: new URL(article.canonical ?? `/articles/${article.slug}`, getSiteUrl()).toString(),
+    markdownUrl: new URL(
+      `/articles/${article.slug}/article.md`,
+      getSiteUrl(),
+    ).toString(),
   }));
 
   return Response.json(

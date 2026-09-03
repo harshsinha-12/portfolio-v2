@@ -385,6 +385,7 @@ Run `pnpm seed-link-previews` after adding new URLs to `link-preview-sources.jso
 **Routes:**
 - `/articles` — article index and discovery page
 - `/articles/[slug]` — statically generated long-form article page
+- `/articles/[slug]/article.md` — AI-readable Markdown source with section links and companion structured data
 
 **One-folder publishing bundle:** every article keeps its long-form source, structured data, and social launch drafts together.
 
@@ -405,7 +406,7 @@ content/articles/<slug>/
 
 **Rich content:** responsive local images and captions, highlighted code, callouts, tables, video embeds, Mermaid flowcharts, table of contents, reading time, and previous/next navigation.
 
-**Sharing and author identity:** X, LinkedIn, and copy-link controls; footer with profile photo, short bio, and existing social links. The social draft files are authoring sources, while the rendered share buttons always share the canonical article URL.
+**Sharing and author identity:** X, LinkedIn, copy-link, and AI-readable Markdown controls; footer with profile photo, short bio, and existing social links. The social draft files are authoring sources, while the rendered share buttons always share the canonical article URL.
 
 **Homepage Writing section (`ArticlesSection.tsx`):**
 - Replace the current `Coming soon` note with article previews as soon as the first non-draft article bundle is available.
@@ -416,7 +417,7 @@ content/articles/<slug>/
 - Show a `View all articles` link to `/articles` once more than the homepage preview limit is available.
 - External social links must open safely in a new tab and use the existing outbound-link analytics and link-preview conventions.
 
-**SEO and discovery:** per-article metadata and canonical URLs, Open Graph images, `Article` JSON-LD, sitemap entries, RSS, and article/social destinations surfaced from the current homepage Writing section.
+**SEO and discovery:** per-article metadata and canonical URLs, Open Graph images, `Article` JSON-LD, sitemap entries, RSS, and article/social destinations surfaced from the current homepage Writing section. Each HTML article declares its Markdown alternate, while `/llms.txt` and `/llms-full.txt` enumerate published AI-readable article URLs.
 
 **Branch:** `feature/harsh/articles`
 

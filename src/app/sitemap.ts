@@ -1,19 +1,24 @@
 import type { MetadataRoute } from "next";
+import { articleOgPath, articlesIndexOgPath } from "@/lib/articleOgImage";
 import { getPublishedArticles } from "@/lib/articles";
 import { getSiteUrl } from "@/lib/siteUrl";
 
 const siteUrl = getSiteUrl();
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const articles = getPublishedArticles().map((article) => ({
-    url: new URL(article.canonical ?? `/articles/${article.slug}`, siteUrl).toString(),
-    lastModified: new Date(article.updatedAt ?? article.date),
-    changeFrequency: "monthly" as const,
-    priority: article.featured ? 0.8 : 0.7,
-    images: article.cover
-      ? [new URL(article.cover, siteUrl).toString()]
-      : undefined,
-  }));
+  const articles = getPublishedArticles().map((article) => {
+    const images = [new URL(articleOgPath(article.slug), siteUrl).toString()];
+    if (article.cover) {
+      images.push(new URL(article.cover, siteUrl).toString());
+    }
+    return {
+      url: new URL(article.canonical ?? `/articles/${article.slug}`, siteUrl).toString(),
+      lastModified: new Date(article.updatedAt ?? article.date),
+      changeFrequency: "monthly" as const,
+      priority: article.featured ? 0.8 : 0.7,
+      images,
+    };
+  });
 
   return [
     {
@@ -27,6 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
+      images: [new URL(articlesIndexOgPath, siteUrl).toString()],
     },
     {
       url: `${siteUrl}/llms.txt`,

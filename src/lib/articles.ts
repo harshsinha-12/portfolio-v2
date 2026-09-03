@@ -166,3 +166,41 @@ export function getAllArticles(options?: { includeDrafts?: boolean }): ArticleSu
 export function getPublishedArticles() {
   return getAllArticles({ includeDrafts: false });
 }
+
+export function buildArticleMarkdown(article: Article, siteUrl: string) {
+  const articleUrl = new URL(
+    article.canonical ?? `/articles/${article.slug}`,
+    siteUrl,
+  ).toString();
+  const markdownUrl = new URL(
+    `/articles/${article.slug}/article.md`,
+    siteUrl,
+  ).toString();
+  const sectionLinks = article.headings
+    .map((heading) => `- [${heading.text}](${articleUrl}#${heading.id})`)
+    .join("\n");
+  const structuredData =
+    Object.keys(article.data).length > 0
+      ? `\n\n## Companion structured data\n\n\`\`\`json\n${JSON.stringify(article.data, null, 2)}\n\`\`\``
+      : "";
+
+  return `---
+title: ${JSON.stringify(article.title)}
+description: ${JSON.stringify(article.description)}
+date: ${JSON.stringify(article.date)}
+updatedAt: ${JSON.stringify(article.updatedAt ?? article.date)}
+author: "Harsh Sinha"
+canonical: ${JSON.stringify(articleUrl)}
+markdown: ${JSON.stringify(markdownUrl)}
+tags: ${JSON.stringify(article.tags)}
+---
+
+> AI-readable source for [the published article](${articleUrl}). Interactive components are preserved as MDX, and their structured datasets are included at the end.
+
+## Section links
+
+${sectionLinks}
+
+${article.body.trim()}${structuredData}
+`;
+}

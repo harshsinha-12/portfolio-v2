@@ -44,6 +44,7 @@ type ArticlePageChromeProps = {
   headings: ArticleHeading[];
   title: string;
   url: string;
+  markdownUrl: string;
   social: ArticleSocialLinks;
 };
 
@@ -52,6 +53,7 @@ export function ArticlePageChrome({
   headings,
   title,
   url,
+  markdownUrl,
   social,
 }: ArticlePageChromeProps) {
   return (
@@ -65,7 +67,12 @@ export function ArticlePageChrome({
             <ArticleTableOfContents headings={headings} />
           ) : null}
           <div className="article-rail__share-label">Share this article</div>
-          <ShareButtons title={title} url={url} social={social} />
+          <ShareButtons
+            title={title}
+            url={url}
+            markdownUrl={markdownUrl}
+            social={social}
+          />
         </aside>
         <div className="article-column">{children}</div>
       </main>

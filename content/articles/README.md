@@ -57,9 +57,7 @@ The article renderer provides these components without imports:
 
 <Mermaid
   caption="How the request moves through the system."
-  chart={`flowchart LR
-    A[Request] --> B[Agent]
-    B --> C[Answer]`}
+  chart="flowchart LR; A[Request] --> B[Agent]; B --> C[Answer]"
 />
 
 <DataTable
@@ -84,6 +82,14 @@ The article renderer provides these components without imports:
 ```
 
 Standard Markdown, GitHub-flavoured tables, fenced code blocks, and Markdown images also work. Prefer the explicit `ArticleImage` component when dimensions or a caption matter.
+
+Keep Mermaid `chart` values as quoted, one-line strings separated with semicolons. This keeps the value serializable across the React Server Component boundary.
+
+## Markdown for AI agents
+
+Every published article automatically has an AI-readable endpoint at `/articles/<slug>/article.md`. The HTML article advertises it as a `text/markdown` alternate, the article tools include a **View Markdown** action, and `/llms.txt` lists all published Markdown articles.
+
+The Markdown response includes frontmatter, canonical and Markdown URLs, direct links to every article section, the MDX source, and the companion `data.json` content. Draft endpoints return 404 in production.
 
 ## Media
 

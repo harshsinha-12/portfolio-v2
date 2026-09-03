@@ -17,6 +17,13 @@ export const metadata: Metadata = {
       "Field notes on AI agents, backend systems, quant, and building products.",
     url: "/articles",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Articles | Harsh Sinha",
+    description:
+      "Field notes on AI agents, backend systems, quant, and building products.",
+    creator: "@sinhaharsh12",
+  },
 };
 
 export default function ArticlesPage() {
