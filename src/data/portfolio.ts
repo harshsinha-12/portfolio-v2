@@ -6,7 +6,7 @@ export const siteConfig = {
   title: "Harsh Sinha | AI Engineer",
   description:
     "AI Engineer · Prev Founder's Office @ Multibagg AI · National Finalist IFF-FinTech Olympiad '24 · IIT Patna '27.",
-  url: "https://harsh-portfolio-two-sigma.vercel.app/",
+  url: "https://www.harshsinha.dev",
   githubUsername: "harshsinha-12",
   role: "Prev Founder's Office and AI Engineer",
   tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend",

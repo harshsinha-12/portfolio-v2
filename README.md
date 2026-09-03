@@ -4,7 +4,7 @@ A fun yet functional portfolio that captures important aspects of my life in a n
 
 ![Portfolio screenshot](public/assets/portfolio-screenshot.webp)
 
-**Live:** [harsh-portfolio-two-sigma.vercel.app](https://harsh-portfolio-two-sigma.vercel.app/)
+**Live:** [www.harshsinha.dev](https://www.harshsinha.dev/)
 
 ## Features
 
@@ -40,7 +40,6 @@ Open [http://localhost:3000](http://localhost:3000).
 ## Environment
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://harsh-portfolio-two-sigma.vercel.app
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 SPOTIFY_CLIENT_ID=...
@@ -52,6 +51,9 @@ REDIS_HOST=...
 REDIS_PORT=...
 REDIS_TLS=false
 ```
+
+The canonical production URL is defined once in `src/data/portfolio.ts`. Metadata,
+structured data, sitemaps, robots, feeds, and share links all derive from it.
 
 PostHog is initialized from `instrumentation-client.ts` when
 `NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is set. `NEXT_PUBLIC_POSTHOG_HOST` defaults

@@ -1,6 +1,8 @@
 import { siteConfig } from "@/data/portfolio";
 
+/** The single canonical production origin used by metadata and public feeds. */
+export const SITE_URL = new URL(siteConfig.url).origin;
+
 export function getSiteUrl(): string {
-  const raw = process.env.NEXT_PUBLIC_SITE_URL ?? siteConfig.url;
-  return raw.replace(/\/$/, "");
+  return SITE_URL;
 }

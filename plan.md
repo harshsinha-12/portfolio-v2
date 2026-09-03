@@ -84,7 +84,7 @@ Identity, data, and docs now live under Harsh. Remaining polish is custom domain
 
 | File | What to change | Status |
 |------|----------------|--------|
-| `.env.local` | `NEXT_PUBLIC_SITE_URL` for a custom domain when you have one | [ ] |
+| `src/data/portfolio.ts` | Canonical custom domain in `siteConfig.url` | [x] |
 | `README.md` | Live URL, screenshot, example env URL | [x] |
 | PostHog (optional) | Keep upstream token or swap/remove in `.env.local` | [ ] |
 
@@ -515,4 +515,4 @@ After merge: if `portfolio.ts` conflicts, keep **your** content from `Harsh.md`.
 | Link previews | `pnpm seed-link-previews` |
 | Article authoring guide | `content/articles/README.md` |
 | New article bundle | Copy `content/articles/_template/` to `content/articles/<slug>/` |
-| Site URL | `.env.local` → `NEXT_PUBLIC_SITE_URL` |
+| Site URL | `src/data/portfolio.ts` → `siteConfig.url` |

@@ -26,7 +26,7 @@ Canonical content lives in `src/data/portfolio.ts`. This file is a readable snap
 | Project demo videos (deployed) | `public/assets/videos/*.webm` |
 | Decorative stickers | `public/assets/sticker-*.webp` |
 | Link hover previews | `public/assets/link-previews/` — run `pnpm seed-link-previews` after adding URLs |
-| Site URL (production) | `.env.local` → `NEXT_PUBLIC_SITE_URL` |
+| Site URL (production) | `siteConfig.url` in `src/data/portfolio.ts` |
 
 ---
 
@@ -36,7 +36,7 @@ Canonical content lives in `src/data/portfolio.ts`. This file is a readable snap
 name: "Harsh Sinha"
 title: "Harsh Sinha | AI Engineer"
 description: "AI Engineer · Prev Founder's Office @ Multibagg AI · National Finalist IFF-FinTech Olympiad '24 · IIT Patna '27."
-url: "https://harsh-portfolio-two-sigma.vercel.app/"
+url: "https://www.harshsinha.dev"
 githubUsername: "harshsinha-12"
 role: "Prev Founder's Office and AI Engineer"
 tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IITP'27 · Working on AI Agents, Quant and Backend"
@@ -261,7 +261,6 @@ Regenerate with `pnpm generate-og` after changing name/tagline.
 ## 16. Environment variables
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://harsh-portfolio-two-sigma.vercel.app
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 SPOTIFY_CLIENT_ID=...
@@ -277,7 +276,7 @@ CONTACT_TO_EMAIL=...
 CONTACT_FROM_EMAIL=...
 ```
 
-Custom domain: swap `NEXT_PUBLIC_SITE_URL` when you attach one.
+Canonical domain: `https://www.harshsinha.dev` (configured in `siteConfig.url`).
 
 ---
 

@@ -124,7 +124,7 @@ Content lives in `Harsh.md`. Integration checklist:
 | 0.7 | Update `src/components/layout/Footer.tsx` (copyright name) | [ ] | |
 | 0.8 | Update `scripts/generate-og.mjs` + run `pnpm generate-og` | [ ] | |
 | 0.9 | Add your company/school/hackathon/project images | [ ] | See `Harsh.md` §15 |
-| 0.10 | Create `.env.local` with `NEXT_PUBLIC_SITE_URL` | [ ] | |
+| 0.10 | Set the canonical domain in `siteConfig.url` | [x] | `https://www.harshsinha.dev` |
 | 0.11 | Run `pnpm seed-link-previews` for your URLs | [ ] | |
 | 0.12 | `pnpm build` + manual QA on mobile and desktop | [ ] | |
 
@@ -214,7 +214,7 @@ Features you want that may **not** exist upstream. Edit freely.
 - **Resume button** — wire `resumeLink` from `portfolio.ts` into nav or About section
 - **Blog / writing section** — new nav item + MDX or external links
 - **Dark mode** — mat palette variant (non-trivial; touches `globals.css`)
-- **Custom domain + deploy** — Vercel/Cloudflare; set `NEXT_PUBLIC_SITE_URL`
+- **Custom domain + deploy** — configured as `https://www.harshsinha.dev`
 - **Remove/replace PostHog** — drop analytics or use your own project token
 - **Different sticker set** — swap `experienceStickers` / `projectStickers` images and tooltips
 - **Skills / tech stack section** — not in upstream; new section component
