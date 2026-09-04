@@ -159,6 +159,118 @@ body {
     infinite;
 }
 
+/* Hand-drawn workshop-map connectors. They stay bound to the live grid. */
+.workshop-flow-arrow {
+  position: relative;
+  display: block;
+  height: 2.5rem;
+  width: 2px;
+  justify-self: center;
+  background: color-mix(in oklch, var(--color-mat) 66%, transparent);
+  border-radius: 999px;
+  transform: rotate(-1deg);
+  box-shadow:
+    1px 0 0 color-mix(in oklch, var(--color-mat) 16%, transparent),
+    -1px 1px 0 color-mix(in oklch, var(--color-mat) 9%, transparent);
+}
+
+.workshop-flow-arrow::after {
+  position: absolute;
+  right: -3px;
+  bottom: 0;
+  height: 8px;
+  width: 8px;
+  content: "";
+  border-right: 2px solid color-mix(in oklch, var(--color-mat) 72%, transparent);
+  border-bottom: 2px solid color-mix(in oklch, var(--color-mat) 72%, transparent);
+  transform: rotate(45deg);
+}
+
+.workshop-branch {
+  position: relative;
+  height: 3rem;
+  margin-block: 0.75rem 0.35rem;
+  color: color-mix(in oklch, var(--color-mat) 68%, transparent);
+}
+
+.workshop-branch__stem,
+.workshop-branch__curl {
+  position: absolute;
+  display: block;
+  border-color: currentColor;
+  filter: drop-shadow(1px 0 0 color-mix(in oklch, var(--color-mat) 15%, transparent));
+}
+
+.workshop-branch__stem {
+  top: -4.75rem;
+  left: 50%;
+  height: calc(4.75rem + 50%);
+  border-left: 2px solid;
+  border-radius: 50% 50% 0 0;
+  transform: rotate(0.45deg);
+}
+
+.workshop-branch__curl {
+  top: 50%;
+  width: 25%;
+  height: 50%;
+  border-top: 2px solid;
+}
+
+.workshop-branch__curl--left {
+  left: 25%;
+  border-left: 2px solid;
+  border-top-left-radius: 1.35rem;
+  transform: rotate(0.35deg);
+}
+
+.workshop-branch__curl--right {
+  left: 50%;
+  border-right: 2px solid;
+  border-top-right-radius: 1.35rem;
+  transform: rotate(-0.35deg);
+}
+
+@media (min-width: 64rem) {
+  .workshop-flow-arrow {
+    align-self: start;
+    height: 2px;
+    width: clamp(2rem, 3vw, 3.25rem);
+    margin-top: 7.5rem;
+    transform: rotate(-0.8deg);
+  }
+
+  .workshop-flow-arrow::after {
+    top: -3px;
+    right: 0;
+    bottom: auto;
+    transform: rotate(-45deg);
+  }
+
+  .workshop-stage--bracketed {
+    position: relative;
+    padding-right: 0.65rem;
+  }
+
+  .workshop-stage--bracketed::after {
+    position: absolute;
+    top: 4.4rem;
+    right: 0;
+    bottom: 0.4rem;
+    width: 0.6rem;
+    content: "";
+    border-top: 2px solid color-mix(in oklch, var(--color-mat) 55%, transparent);
+    border-right: 2px solid color-mix(in oklch, var(--color-mat) 55%, transparent);
+    border-bottom: 2px solid color-mix(in oklch, var(--color-mat) 55%, transparent);
+    border-radius: 0 45% 45% 0;
+    transform: rotate(-0.6deg);
+  }
+
+  .workshop-branch__stem {
+    left: 50%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .link-preview-pop {
     animation: none;

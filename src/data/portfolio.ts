@@ -428,6 +428,76 @@ export const techStack: ProjectStackItem[] = [
   { name: "Zod" },
 ];
 
+export type TechWorkshopGroup = {
+  title: string;
+  description: string;
+  items: ProjectStackItem[];
+};
+
+/** Each tool appears once in the workshop map, grouped by the job it does. */
+export const techWorkshopMap = {
+  product: {
+    title: "Product",
+    description: "what users see and interact with",
+    items: [
+      { name: "Next.js" }, { name: "React" }, { name: "TypeScript" },
+      { name: "JavaScript" }, { name: "Vue.js" }, { name: "Tailwind CSS" },
+    ],
+  },
+  api: {
+    title: "APIs",
+    description: "the contracts and gateways",
+    items: [{ name: "RESTful APIs" }],
+  },
+  data: {
+    title: "Data",
+    description: "store, shape and access",
+    items: [
+      { name: "Node.js" }, { name: "SQL" }, { name: "Express.js" },
+      { name: "PostgreSQL" }, { name: "Fastify" }, { name: "MongoDB" },
+      { name: "Prisma" },
+    ],
+  },
+  automation: {
+    title: "Automation",
+    description: "work that keeps moving after the click",
+    items: [
+      { name: "Cron jobs" }, { name: "BullMQ" }, { name: "Redis" },
+      { name: "Caching" }, { name: "Background processing" },
+      { name: "Event-driven architecture" },
+    ],
+  },
+  delivery: {
+    title: "Delivery",
+    description: "reach users and ship reliably",
+    items: [
+      { name: "AWS SES" }, { name: "WhatsApp Business API" },
+      { name: "Realtime alerting" }, { name: "Transactional email" },
+    ],
+  },
+  aiMl: {
+    title: "AI / ML bench",
+    description: "models, agents, data and retrieval",
+    items: [
+      { name: "Python" }, { name: "OpenAI" }, { name: "LangChain" },
+      { name: "LangGraph" }, { name: "TensorFlow" }, { name: "PyTorch" },
+      { name: "scikit-learn" }, { name: "Keras" }, { name: "Pandas" },
+      { name: "NumPy" }, { name: "Pinecone" }, { name: "Qdrant" },
+    ],
+  },
+  tools: {
+    title: "Other tools",
+    description: "the things that help me test, observe and ship",
+    items: [
+      { name: "Zod" }, { name: "Docker" }, { name: "Authentication and 2FA" },
+      { name: "Jest" }, { name: "Vitest" }, { name: "Git" },
+      { name: "GitHub" }, { name: "C++" }, { name: "OOP" },
+      { name: "Azure" }, { name: "Grafana" }, { name: "Razorpay" },
+      { name: "FFmpeg" },
+    ],
+  },
+} satisfies Record<string, TechWorkshopGroup>;
+
 export type Position = {
   title: string;
   duration: string;
