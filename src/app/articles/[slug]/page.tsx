@@ -118,6 +118,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     <ArticlePageChrome
       headings={article.headings}
       title={article.title}
+      slug={article.slug}
       url={articleUrl}
       markdownUrl={markdownUrl}
       social={article.social}
@@ -141,7 +142,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <span aria-hidden="true">·</span>
           <span>{article.readingTime}</span>
           <span aria-hidden="true">·</span>
-          <ArticleViewTracker articleSlug={article.slug} />
+          <ArticleViewTracker articleSlug={article.slug} articleTitle={article.title} />
         </div>
         <h1>{article.title}</h1>
         <div className="article-title-rule" aria-hidden="true" />
@@ -164,6 +165,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="article-mobile-share">
           <ShareButtons
             title={article.title}
+            slug={article.slug}
             url={articleUrl}
             markdownUrl={markdownUrl}
             social={article.social}

@@ -20,6 +20,7 @@ export function ScatterDecor() {
         <DraggableSticker
           key={id}
           id={id}
+          label="star"
           Icon={Icon}
           {...position}
           draggable={draggable}

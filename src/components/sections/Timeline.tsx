@@ -22,6 +22,7 @@ import {
   totalTenureFromDurations,
 } from "@/lib/tenure";
 import { cn } from "@/lib/utils";
+import { track } from "@/lib/analytics";
 
 const timelineArticleClass =
   "relative flex gap-3 [--logo-w:2.25rem] [--logo-gap:0.5rem] [--row-gap:0.75rem] sm:gap-3.5 sm:[--logo-w:2.5rem] sm:[--logo-gap:0.625rem] sm:[--row-gap:0.875rem]";
@@ -82,7 +83,12 @@ function OrgHeader({
   tenure?: string | null;
 }) {
   const name = link ? (
-    <LinkPreview href={link} title={title}>
+    <LinkPreview
+      href={link}
+      title={title}
+      analytics={{ kind: "timeline_org", org_name: title }}
+      onClick={() => track("timeline_org_clicked", { org_name: title })}
+    >
       <span className="text-sm font-semibold text-[var(--color-ink)]">
         {title}
       </span>

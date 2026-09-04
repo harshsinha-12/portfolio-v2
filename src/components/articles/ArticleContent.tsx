@@ -2,6 +2,10 @@ import type { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 import type { MDXComponents } from "mdx/types";
 import { MermaidDiagram } from "@/components/articles/MermaidDiagram";
+import {
+  TrackedExternalLink,
+  TrackedMarkdownLink,
+} from "@/components/analytics/TrackedLink";
 
 type ArticleImageProps = {
   src: string;
@@ -165,9 +169,13 @@ export function ReferenceList({
           return (
             <li key={`${referenceTitle}-${index}`}>
               {url ? (
-                <a href={url} target="_blank" rel="noopener noreferrer">
+                <TrackedExternalLink
+                  href={url}
+                  kind="article_reference"
+                  label={referenceTitle}
+                >
                   {referenceTitle}
-                </a>
+                </TrackedExternalLink>
               ) : (
                 <strong>{referenceTitle}</strong>
               )}
@@ -198,6 +206,7 @@ function MarkdownImage(props: ComponentProps<"img">) {
 export function createArticleComponents(data: Record<string, unknown>): MDXComponents {
   return {
     img: MarkdownImage,
+    a: TrackedMarkdownLink,
     ArticleImage,
     Callout,
     MarginNote,

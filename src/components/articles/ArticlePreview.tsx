@@ -33,13 +33,21 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
     article.social.linkedin ??
     `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
 
+  function trackArticleOpen() {
+    track("article_opened", {
+      slug: article.slug,
+      article_title: article.title,
+      placement: variant,
+    });
+  }
+
   return (
     <article className={`article-preview article-preview--${variant}`}>
       <Link
         className="article-preview__media"
         href={articleUrl}
         aria-label={`Read ${article.title}`}
-        onClick={() => track("article_opened", { slug: article.slug, placement: variant })}
+        onClick={trackArticleOpen}
       >
         <Image
           src={`/articles/${article.slug}/opengraph-image`}
@@ -63,14 +71,14 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
         <h3>
           <Link
             href={articleUrl}
-            onClick={() => track("article_opened", { slug: article.slug, placement: variant })}
+            onClick={trackArticleOpen}
           >
             {article.title}
           </Link>
         </h3>
         <p>{article.description}</p>
         <div className="article-preview__footer">
-          <Link className="article-preview__read" href={articleUrl}>
+          <Link className="article-preview__read" href={articleUrl} onClick={trackArticleOpen}>
             Read article <FiArrowUpRight aria-hidden="true" />
           </Link>
           <div className="article-preview__socials" aria-label="Article social links">
@@ -86,8 +94,10 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
               title={article.social.twitter ? "Original X post" : "Share on X"}
               onClick={() =>
                 trackOutboundClick(xUrl, {
+                  kind: article.social.twitter ? "article_original_post" : "article_share",
                   platform: "twitter",
                   slug: article.slug,
+                  article_title: article.title,
                   placement: `${variant}_article_preview`,
                 })
               }
@@ -107,8 +117,10 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
               title={article.social.linkedin ? "Original LinkedIn post" : "Share on LinkedIn"}
               onClick={() =>
                 trackOutboundClick(linkedInUrl, {
+                  kind: article.social.linkedin ? "article_original_post" : "article_share",
                   platform: "linkedin",
                   slug: article.slug,
+                  article_title: article.title,
                   placement: `${variant}_article_preview`,
                 })
               }

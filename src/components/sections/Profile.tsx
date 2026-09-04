@@ -47,6 +47,7 @@ function SocialStamps() {
                 href={social.link}
                 ariaLabel={social.label}
                 className={stampLinkClassName}
+                analytics={{ kind: "social", platform: social.platform, placement: "profile" }}
                 onClick={onSocialClick}
               >
                 <Icon className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5" aria-hidden="true" />
@@ -60,8 +61,10 @@ function SocialStamps() {
                 className={stampLinkClassName}
                 onClick={() => {
                   trackOutboundClick(social.link, {
+                    kind: "social",
                     label: social.label,
                     platform: social.platform,
+                    placement: "profile",
                   });
                   onSocialClick();
                 }}
@@ -174,8 +177,8 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => {
-                track("resume_clicked");
-                trackOutboundClick(resumeLink, { label: "resume" });
+                track("resume_clicked", { kind: "resume" });
+                trackOutboundClick(resumeLink, { kind: "resume", label: "resume" });
               }}
               className="mt-2 inline-flex h-7 items-center gap-1.5 rounded-full border border-[var(--color-on-mat)]/35 bg-[var(--color-mat-deep)]/45 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)] shadow-[1px_2px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:text-xs"
             >

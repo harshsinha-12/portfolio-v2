@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FaSpotify } from "react-icons/fa";
 import { PiWaveformBold } from "react-icons/pi";
+import { track as trackEvent, trackOutboundClick } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 type LastPlayedTrack = {
@@ -132,6 +133,17 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
           target="_blank"
           rel="noopener noreferrer"
           title={`${track.title} — ${track.artist}`}
+          onClick={() => {
+            trackEvent("spotify_track_clicked", {
+              track_title: track.title,
+              artist: track.artist,
+              is_playing: track.isPlaying,
+            });
+            trackOutboundClick(track.url, {
+              kind: "spotify",
+              label: `${track.title} — ${track.artist}`,
+            });
+          }}
           className="min-w-0 truncate font-medium text-[var(--color-heading-on-mat)] underline decoration-[var(--color-link-squiggle-on-mat)] underline-offset-[0.2em] transition-colors hover:text-[#1ed760] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         >
           {track.title} · {track.artist}
@@ -139,7 +151,17 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
         {embedUrl && (
           <button
             type="button"
-            onClick={() => setPlayerOpen((open) => !open)}
+            onClick={() => {
+              setPlayerOpen((open) => {
+                const nextOpen = !open;
+                trackEvent("spotify_player_toggled", {
+                  action: nextOpen ? "open" : "close",
+                  track_title: track.title,
+                  artist: track.artist,
+                });
+                return nextOpen;
+              });
+            }}
             aria-expanded={playerOpen}
             aria-controls="spotify-last-played-player"
             aria-label={

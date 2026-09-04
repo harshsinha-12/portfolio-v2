@@ -20,7 +20,10 @@ import {
   getLinkPreviewImageSources,
 } from "@/data/linkPreviews";
 import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
-import { trackOutboundClick } from "@/lib/analytics";
+import {
+  trackOutboundClick,
+  type AnalyticsProperties,
+} from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 const PREVIEW_SIZES = "9rem";
@@ -36,6 +39,7 @@ type LinkPreviewProps = {
   ariaLabel?: string;
   onClick?: () => void;
   side?: "top" | "right" | "bottom" | "left";
+  analytics?: AnalyticsProperties;
 };
 
 type PreviewImage =
@@ -190,6 +194,7 @@ export function LinkPreview({
   ariaLabel,
   onClick,
   side = "top",
+  analytics,
 }: LinkPreviewProps) {
   const domain = getDisplayDomain(href);
   const caption = getLinkPreviewCaption(href);
@@ -222,6 +227,7 @@ export function LinkPreview({
           onClick={() => {
             trackOutboundClick(href, {
               label: ariaLabel ?? title ?? null,
+              ...analytics,
             });
             onClick?.();
           }}

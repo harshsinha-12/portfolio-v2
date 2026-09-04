@@ -2,7 +2,8 @@ import posthog from "posthog-js";
 
 export const ANALYTICS_APP = "portfolio-v2";
 
-type AnalyticsProperty = string | number | boolean | null;
+export type AnalyticsProperty = string | number | boolean | null;
+export type AnalyticsProperties = Record<string, AnalyticsProperty>;
 
 function isBrowser(): boolean {
   return typeof window !== "undefined";

@@ -107,6 +107,7 @@ export function CreditsLink({ className }: { className?: string }) {
             className="marker-link mt-1 inline-block text-[0.9375rem] font-medium antialiased"
             onClick={() =>
               trackOutboundClick(UPSTREAM_HREF, {
+                kind: "github",
                 label: UPSTREAM_LABEL,
                 placement: "credits",
               })
@@ -125,6 +126,7 @@ export function CreditsLink({ className }: { className?: string }) {
             )}
             onClick={() =>
               trackOutboundClick(UPSTREAM_HREF, {
+                kind: "github",
                 label: "view repository",
                 placement: "credits",
               })

@@ -22,6 +22,11 @@ type MusicPlayerResult = {
   handlers: MusicPlayerHandlers;
 };
 
+type MusicStickerAnalytics = {
+  sticker_id: string;
+  sticker_name: string;
+};
+
 /**
  * Manages a hidden YouTube IFrame player for a sticker.
  *
@@ -43,11 +48,15 @@ type MusicPlayerResult = {
 export function useMusicPlayer(
   videoId: string | undefined,
   stickerRef: React.RefObject<HTMLDivElement | null>,
+  stickerAnalytics?: MusicStickerAnalytics,
 ): MusicPlayerResult {
   const playerTargetRef = useRef<HTMLDivElement | null>(null);
   const playerRef = useRef<YTPlayer | null>(null);
   const videoIdRef = useRef(videoId);
+  const stickerAnalyticsRef = useRef(stickerAnalytics);
   const [canHover, setCanHover] = useState(true);
+
+  stickerAnalyticsRef.current = stickerAnalytics;
 
   // Keep videoIdRef current for use in callbacks without re-creating the player.
   useEffect(() => {
@@ -173,7 +182,11 @@ export function useMusicPlayer(
     if (!player) return;
 
     player.playVideo();
-    track("music_play", { video_id: videoIdRef.current, trigger: "hover" });
+    track("music_play", {
+      video_id: videoIdRef.current,
+      trigger: "hover",
+      ...stickerAnalyticsRef.current,
+    });
   }, [canHover, stickerRef]);
 
   const onMouseLeave = useCallback(() => {
@@ -184,7 +197,11 @@ export function useMusicPlayer(
     if (!player) return;
 
     player.pauseVideo();
-    track("music_pause", { video_id: videoIdRef.current, trigger: "leave" });
+    track("music_pause", {
+      video_id: videoIdRef.current,
+      trigger: "leave",
+      ...stickerAnalyticsRef.current,
+    });
   }, [canHover]);
 
   const onTap = useCallback(() => {
@@ -196,12 +213,20 @@ export function useMusicPlayer(
     const state = player.getPlayerState();
     if (state === YTPlayerState.PLAYING) {
       player.pauseVideo();
-      track("music_pause", { video_id: videoIdRef.current, trigger: "tap" });
+      track("music_pause", {
+        video_id: videoIdRef.current,
+        trigger: "tap",
+        ...stickerAnalyticsRef.current,
+      });
       return;
     }
 
     player.playVideo();
-    track("music_play", { video_id: videoIdRef.current, trigger: "tap" });
+    track("music_play", {
+      video_id: videoIdRef.current,
+      trigger: "tap",
+      ...stickerAnalyticsRef.current,
+    });
   }, []);
 
   return {

@@ -30,6 +30,8 @@ type DraggableOptions = {
   onDragEnd?: () => void;
   /** Fires on pointer up when movement stayed below tap threshold (mobile play/toggle). */
   onTap?: () => void;
+  /** Human-readable name for analytics (tooltip, "trophy", "X-Acto knife"). */
+  label?: string;
 };
 
 function isDragOffset(value: unknown): value is DragOffset {
@@ -40,6 +42,10 @@ function isDragOffset(value: unknown): value is DragOffset {
 
 function storageKey(id: string): string {
   return `${STORAGE_PREFIX}${id}`;
+}
+
+function analyticsStickerId(id: string): string {
+  return id.replace(/-mobile$/, "");
 }
 
 function isStickerVisible(el: HTMLElement): boolean {
@@ -142,6 +148,7 @@ export function useDraggable({
   onDrag,
   onDragEnd,
   onTap,
+  label,
 }: DraggableOptions) {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -158,6 +165,7 @@ export function useDraggable({
   const onDragRef = useRef(onDrag);
   const onDragEndRef = useRef(onDragEnd);
   const onTapRef = useRef(onTap);
+  const labelRef = useRef(label);
   const movedRef = useRef(false);
 
   useEffect(() => {
@@ -168,7 +176,8 @@ export function useDraggable({
     onDragRef.current = onDrag;
     onDragEndRef.current = onDragEnd;
     onTapRef.current = onTap;
-  }, [bounds, onDrag, onDragEnd, onDragStart, onTap, persist, rotate]);
+    labelRef.current = label;
+  }, [bounds, label, onDrag, onDragEnd, onDragStart, onTap, persist, rotate]);
 
   useEffect(() => {
     if (!persist) {
@@ -291,9 +300,12 @@ export function useDraggable({
         }
         setOffset(current);
         markPointerDragEnd();
-        if (movedRef.current) {
-          track("sticker_moved", { sticker_id: id });
-        }
+        const stickerId = analyticsStickerId(id);
+        const stickerName = labelRef.current ?? stickerId;
+        track(movedRef.current ? "sticker_moved" : "sticker_clicked", {
+          sticker_id: stickerId,
+          sticker_name: stickerName,
+        });
         onDragEndRef.current?.();
       };
 

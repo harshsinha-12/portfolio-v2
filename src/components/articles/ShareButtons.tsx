@@ -9,6 +9,7 @@ import type { ArticleSocialLinks } from "@/types/articles";
 
 type ShareButtonsProps = {
   title: string;
+  slug?: string;
   url: string;
   social?: ArticleSocialLinks;
   markdownUrl?: string;
@@ -17,6 +18,7 @@ type ShareButtonsProps = {
 
 export function ShareButtons({
   title,
+  slug,
   url,
   social,
   markdownUrl,
@@ -44,7 +46,7 @@ export function ShareButtons({
   async function copyLink() {
     await navigator.clipboard.writeText(url);
     setCopied(true);
-    track("article_link_copied", { title, url });
+    track("article_link_copied", { title, slug: slug ?? null, url });
     window.setTimeout(() => setCopied(false), 1800);
   }
 
@@ -53,7 +55,7 @@ export function ShareButtons({
 
     try {
       await navigator.share({ title, url });
-      track("article_shared", { title, platform: "native" });
+      track("article_shared", { title, slug: slug ?? null, platform: "native" });
     } catch {
       // Closing the native share sheet is not an error state for the reader.
     }
@@ -69,8 +71,15 @@ export function ShareButtons({
           rel="noopener noreferrer"
           className="article-share__action"
           onClick={() => {
-            trackOutboundClick(href, { label, platform, placement: "article_share" });
-            track("article_shared", { title, platform });
+            trackOutboundClick(href, {
+              kind: "article_share",
+              label,
+              platform,
+              placement: "article_share",
+              slug: slug ?? null,
+              title,
+            });
+            track("article_shared", { title, slug: slug ?? null, platform });
           }}
         >
           <Icon aria-hidden="true" />
@@ -85,7 +94,13 @@ export function ShareButtons({
           type="text/markdown"
           className="article-share__action"
           title="View AI-readable Markdown"
-          onClick={() => track("article_markdown_opened", { title, url: markdownUrl })}
+          onClick={() =>
+            track("article_markdown_opened", {
+              title,
+              slug: slug ?? null,
+              url: markdownUrl,
+            })
+          }
         >
           <FiFileText aria-hidden="true" />
           <span>{compact ? "Markdown" : "View Markdown"}</span>
@@ -107,12 +122,36 @@ export function ShareButtons({
         <div className="article-discussion-links">
           <span>Original posts</span>
           {social.twitter ? (
-            <a href={social.twitter} target="_blank" rel="noopener noreferrer">
+            <a
+              href={social.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackOutboundClick(social.twitter!, {
+                  kind: "article_original_post",
+                  platform: "twitter",
+                  slug: slug ?? null,
+                  title,
+                })
+              }
+            >
               X
             </a>
           ) : null}
           {social.linkedin ? (
-            <a href={social.linkedin} target="_blank" rel="noopener noreferrer">
+            <a
+              href={social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() =>
+                trackOutboundClick(social.linkedin!, {
+                  kind: "article_original_post",
+                  platform: "linkedin",
+                  slug: slug ?? null,
+                  title,
+                })
+              }
+            >
               LinkedIn
             </a>
           ) : null}

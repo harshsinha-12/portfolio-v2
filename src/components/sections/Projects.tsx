@@ -96,7 +96,18 @@ function ProjectLinks({
         <LinkPreview
           href={project.github}
           ariaLabel={`GitHub for ${project.title}`}
-          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "github" })}
+          analytics={{
+            kind: "github",
+            project_id: project.id,
+            project_name: project.title,
+          }}
+          onClick={() =>
+            track("project_link_clicked", {
+              project_id: project.id,
+              project_name: project.title,
+              link_type: "github",
+            })
+          }
           className={projectLinkClassName}
         >
           <AiFillGithub size={projectLinkIconSize} aria-hidden="true" />
@@ -106,7 +117,18 @@ function ProjectLinks({
         <LinkPreview
           href={project.readme}
           ariaLabel={`README for ${project.title}`}
-          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "readme" })}
+          analytics={{
+            kind: "readme",
+            project_id: project.id,
+            project_name: project.title,
+          }}
+          onClick={() =>
+            track("project_link_clicked", {
+              project_id: project.id,
+              project_name: project.title,
+              link_type: "readme",
+            })
+          }
           title={`${project.title} README`}
           description="Architecture, setup, implementation details, and current limitations."
           className={projectLinkClassName}
@@ -118,7 +140,18 @@ function ProjectLinks({
         <LinkPreview
           href={project.youtube}
           ariaLabel={`Video for ${project.title}`}
-          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "youtube" })}
+          analytics={{
+            kind: "youtube",
+            project_id: project.id,
+            project_name: project.title,
+          }}
+          onClick={() =>
+            track("project_link_clicked", {
+              project_id: project.id,
+              project_name: project.title,
+              link_type: "youtube",
+            })
+          }
           className={projectLinkClassName}
         >
           <AiFillYoutube size={projectLinkIconSize} aria-hidden="true" />
@@ -127,7 +160,18 @@ function ProjectLinks({
       {project.link && (
         <LinkPreview
           href={project.link}
-          onClick={() => track("project_link_clicked", { project_id: project.id, link_type: "live_site" })}
+          analytics={{
+            kind: "live_site",
+            project_id: project.id,
+            project_name: project.title,
+          }}
+          onClick={() =>
+            track("project_link_clicked", {
+              project_id: project.id,
+              project_name: project.title,
+              link_type: "live_site",
+            })
+          }
           title={liveLinkTitle}
           description={liveLinkDescription}
           className={projectLinkClassName}

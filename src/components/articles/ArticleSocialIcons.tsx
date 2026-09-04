@@ -40,7 +40,12 @@ export function ArticleSocialIcons({ variant }: ArticleSocialIconsProps) {
               rel="noopener noreferrer"
               aria-label={label}
               onClick={() => {
-                trackOutboundClick(href, { label, platform });
+                trackOutboundClick(href, {
+                  kind: "social",
+                  label,
+                  platform,
+                  placement,
+                });
                 onSocialClick();
               }}
             >
@@ -56,6 +61,7 @@ export function ArticleSocialIcons({ variant }: ArticleSocialIconsProps) {
             ariaLabel={label}
             className=""
             side={variant === "topbar" ? "bottom" : "top"}
+            analytics={{ kind: "social", platform, placement }}
             onClick={onSocialClick}
           >
             <Icon aria-hidden="true" />

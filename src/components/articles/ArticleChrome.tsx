@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Image from "next/image";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 import { CanvasBackground } from "@/components/canvas/CanvasBackground";
 import { ArticleSocialIcons } from "@/components/articles/ArticleSocialIcons";
 import { ShareButtons } from "@/components/articles/ShareButtons";
@@ -39,7 +39,17 @@ export function ArticleBreadcrumbs({ items }: { items: ArticleBreadcrumbItem[] }
                 {isCurrent ? (
                   <span aria-current="page">{item.label}</span>
                 ) : (
-                  <Link href={item.href}>{item.label}</Link>
+                  <TrackedLink
+                    href={item.href}
+                    event="article_nav_clicked"
+                    eventProperties={{
+                      destination: item.href,
+                      label: item.label,
+                      placement: "breadcrumb",
+                    }}
+                  >
+                    {item.label}
+                  </TrackedLink>
                 )}
               </li>
             );
@@ -59,15 +69,31 @@ export function ArticleBreadcrumbs({ items }: { items: ArticleBreadcrumbItem[] }
 export function ArticleTopNav() {
   return (
     <header className="article-topbar">
-      <Link href="/" className="article-brand">
+      <TrackedLink
+        href="/"
+        className="article-brand"
+        event="article_nav_clicked"
+        eventProperties={{ destination: "home", placement: "article_topbar" }}
+      >
         <span aria-hidden="true" />
         {siteConfig.name}
-      </Link>
+      </TrackedLink>
       <nav aria-label="Article navigation">
-        <Link className="is-active" href="/articles">
+        <TrackedLink
+          className="is-active"
+          href="/articles"
+          event="articles_index_opened"
+          eventProperties={{ placement: "article_topbar" }}
+        >
           Articles
-        </Link>
-        <Link href="/">Portfolio</Link>
+        </TrackedLink>
+        <TrackedLink
+          href="/"
+          event="article_nav_clicked"
+          eventProperties={{ destination: "portfolio", placement: "article_topbar" }}
+        >
+          Portfolio
+        </TrackedLink>
         <ArticleSocialIcons variant="topbar" />
       </nav>
     </header>
@@ -78,6 +104,7 @@ type ArticlePageChromeProps = {
   children: React.ReactNode;
   headings: ArticleHeading[];
   title: string;
+  slug: string;
   url: string;
   markdownUrl: string;
   social: ArticleSocialLinks;
@@ -87,6 +114,7 @@ export function ArticlePageChrome({
   children,
   headings,
   title,
+  slug,
   url,
   markdownUrl,
   social,
@@ -104,6 +132,7 @@ export function ArticlePageChrome({
           <div className="article-rail__share-label">Share this article</div>
           <ShareButtons
             title={title}
+            slug={slug}
             url={url}
             markdownUrl={markdownUrl}
             social={social}
@@ -153,17 +182,31 @@ export function ArticleAuthorFooter({ nextArticle }: ArticleAuthorFooterProps) {
         </div>
       </div>
       {nextArticle ? (
-        <Link className="article-next" href={`/articles/${nextArticle.slug}`}>
+        <TrackedLink
+          className="article-next"
+          href={`/articles/${nextArticle.slug}`}
+          event="article_opened"
+          eventProperties={{
+            slug: nextArticle.slug,
+            article_title: nextArticle.title,
+            placement: "article_next",
+          }}
+        >
           <span>Next up</span>
           <strong>{nextArticle.title}</strong>
           <p>{nextArticle.description}</p>
           <FiArrowRight aria-hidden="true" />
-        </Link>
+        </TrackedLink>
       ) : (
-        <Link className="article-next article-next--index" href="/articles">
+        <TrackedLink
+          className="article-next article-next--index"
+          href="/articles"
+          event="articles_index_opened"
+          eventProperties={{ placement: "article_footer" }}
+        >
           <FiArrowLeft aria-hidden="true" />
           <span>Back to all writing</span>
-        </Link>
+        </TrackedLink>
       )}
     </footer>
   );

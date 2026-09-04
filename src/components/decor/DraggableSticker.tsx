@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 
 type BaseProps = {
   id: string;
+  label?: string;
   Icon: LucideIcon;
   rotate?: number;
   draggable: boolean;
@@ -28,12 +29,13 @@ type InlineDraggableStickerProps = BaseProps & {
 export type DraggableStickerProps = AbsoluteDraggableStickerProps | InlineDraggableStickerProps;
 
 export function DraggableSticker(props: DraggableStickerProps) {
-  const { id, Icon, rotate = 0, draggable, className, iconSize = 20 } = props;
+  const { id, Icon, rotate = 0, draggable, className, iconSize = 20, label } = props;
   const stickerSounds = useStickerSounds();
   const { ref, style, dragHandlers } = useDraggable({
     id,
     disabled: !draggable,
     rotate,
+    label: label ?? id,
     ...stickerSounds,
   });
   const isAbsolute = props.layout !== "inline";

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FiEye } from "react-icons/fi";
+import { track } from "@/lib/analytics";
 
 type ArticleViewResponse = {
   count: number | null;
@@ -9,6 +10,7 @@ type ArticleViewResponse = {
 
 type ArticleViewTrackerProps = {
   articleSlug: string;
+  articleTitle?: string;
   className?: string;
 };
 
@@ -38,13 +40,19 @@ function requestArticleView(articleSlug: string) {
 }
 
 export function ArticleViewTracker({ 
-  articleSlug, 
+  articleSlug,
+  articleTitle,
   className = "" 
 }: ArticleViewTrackerProps) {
   const [viewCount, setViewCount] = useState<number | null>();
 
   useEffect(() => {
     let mounted = true;
+
+    track("article_viewed", {
+      slug: articleSlug,
+      article_title: articleTitle ?? null,
+    });
 
     void requestArticleView(articleSlug).then((count) => {
       if (mounted) {
@@ -55,7 +63,7 @@ export function ArticleViewTracker({
     return () => {
       mounted = false;
     };
-  }, [articleSlug]);
+  }, [articleSlug, articleTitle]);
 
   return (
     <div className={`inline-flex items-center gap-1.5 text-sm text-[var(--color-ink-subtle)] ${className}`}>

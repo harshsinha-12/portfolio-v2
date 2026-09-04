@@ -1,5 +1,8 @@
+"use client";
+
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import type { IntroSegment } from "@/data/portfolio";
+import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
 
 type IntroSegmentsProps = {
@@ -48,6 +51,10 @@ export function IntroSegments({
                 href={segment.href}
                 title={segment.previewTitle ?? segment.label}
                 description={segment.previewDescription}
+                analytics={{ kind: "intro_link", label: segment.label }}
+                onClick={() =>
+                  track("intro_link_clicked", { label: segment.label })
+                }
               >
                 {segment.label}
               </LinkPreview>

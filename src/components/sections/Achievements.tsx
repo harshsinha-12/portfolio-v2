@@ -163,7 +163,19 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
                 key={key}
                 href={href}
                 ariaLabel={`${label} for ${item.event}`}
-                onClick={() => track("achievement_link_clicked", { achievement_id: item.id, link_type: key })}
+                analytics={{
+                  kind: "achievement",
+                  achievement_id: item.id,
+                  achievement_name: item.event,
+                  link_type: key,
+                }}
+                onClick={() =>
+                  track("achievement_link_clicked", {
+                    achievement_id: item.id,
+                    achievement_name: item.event,
+                    link_type: key,
+                  })
+                }
                 className="flex h-5 w-5 items-center justify-center rounded border border-[var(--color-ink-subtle)]/25 text-[var(--color-ink-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
               >
                 <Icon size={10} aria-hidden="true" />
@@ -416,6 +428,7 @@ export function AchievementsSection() {
         trailing={
           <DraggableSticker
             id="trophy"
+            label="trophy"
             Icon={Trophy}
             layout="inline"
             rotate={8}

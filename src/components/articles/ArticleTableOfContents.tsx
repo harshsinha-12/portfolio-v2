@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { ArticleHeading } from "@/types/articles";
+import { track } from "@/lib/analytics";
 
 type ArticleTableOfContentsProps = {
   headings: ArticleHeading[];
@@ -66,6 +67,12 @@ export function ArticleTableOfContents({ headings }: ArticleTableOfContentsProps
                 href={`#${heading.id}`}
                 className={isActive ? "is-active" : undefined}
                 aria-current={isActive ? "location" : undefined}
+                onClick={() =>
+                  track("article_toc_clicked", {
+                    heading_id: heading.id,
+                    heading_text: heading.text,
+                  })
+                }
               >
                 {heading.text}
               </a>

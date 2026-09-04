@@ -1,7 +1,7 @@
 import { StickyNote, TapedCard } from "@/components/decor/Decor";
 import { ArticlePreview } from "@/components/articles/ArticlePreview";
+import { TrackedLink } from "@/components/analytics/TrackedLink";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import Link from "next/link";
 import { FiArrowRight } from "react-icons/fi";
 import type { ArticleSummary } from "@/types/articles";
 
@@ -34,9 +34,14 @@ export function ArticlesSection({
               ))}
             </div>
             {hasMoreArticles ? (
-              <Link className="home-articles__all marker-link" href="/articles">
+              <TrackedLink
+                className="home-articles__all marker-link"
+                href="/articles"
+                event="articles_index_opened"
+                eventProperties={{ placement: "home_articles" }}
+              >
                 View all field notes <FiArrowRight aria-hidden="true" />
-              </Link>
+              </TrackedLink>
             ) : null}
           </div>
         ) : (

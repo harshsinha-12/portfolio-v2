@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusE
 import { levelFromCount, type ContributionDay } from "@/lib/githubContributions";
 import { cn } from "@/lib/utils";
 import { LinkPreview } from "@/components/ui/LinkPreview";
+import { track } from "@/lib/analytics";
 
 type TooltipState = {
   text: string;
@@ -226,6 +227,13 @@ export function GitHubGraph({
         <p className="text-xs font-medium text-[var(--color-ink-muted)]">GitHub activity</p>
         <LinkPreview
           href={`https://github.com/${username}`}
+          analytics={{ kind: "github", placement: "github_map", username }}
+          onClick={() =>
+            track("github_profile_clicked", {
+              username,
+              placement: "github_map",
+            })
+          }
           className="text-xs text-[var(--color-ink-subtle)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         >
           @{username}

@@ -33,6 +33,7 @@ export function Footer() {
                 href={social.link}
                 ariaLabel={social.label}
                 className={socialButtonClassName}
+                analytics={{ kind: "social", platform: social.platform, placement: "footer" }}
                 onClick={onSocialClick}
               >
                 <Icon size={16} aria-hidden="true" />
@@ -50,8 +51,10 @@ export function Footer() {
               className={socialButtonClassName}
               onClick={() => {
                 trackOutboundClick(social.link, {
+                  kind: "social",
                   label: social.label,
                   platform: social.platform,
+                  placement: "footer",
                 });
                 onSocialClick();
               }}
@@ -67,6 +70,7 @@ export function Footer() {
           title="Connect"
           description="Connect on LinkedIn"
           onClick={() => track("connect_link_clicked", { placement: "footer" })}
+          analytics={{ kind: "connect", placement: "footer" }}
         >
           <span className="marker-link marker-link--on-mat !text-[var(--color-on-mat)]">Connect</span>
         </LinkPreview>

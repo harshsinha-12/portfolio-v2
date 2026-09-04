@@ -12,7 +12,7 @@ type ProjectPreviewVideoProps = {
   sizes: string;
 };
 
-function useProjectPreviewVideo(projectId: string) {
+function useProjectPreviewVideo(projectId: string, projectName: string) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -60,12 +60,16 @@ function useProjectPreviewVideo(projectId: string) {
       try {
         await video.play();
         setIsPlaying(true);
-        track("project_video_play", { project_id: projectId, trigger });
+        track("project_video_play", {
+          project_id: projectId,
+          project_name: projectName,
+          trigger,
+        });
       } catch {
         setIsPlaying(false);
       }
     },
-    [projectId],
+    [projectId, projectName],
   );
 
   const toggleVideo = useCallback(() => {
@@ -110,7 +114,7 @@ export function ProjectPreviewVideo({
     onMouseLeave,
     onClick,
     toggleVideo,
-  } = useProjectPreviewVideo(projectId);
+  } = useProjectPreviewVideo(projectId, title);
 
   return (
     <div

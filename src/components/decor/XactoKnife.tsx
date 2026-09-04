@@ -97,6 +97,7 @@ export function XactoKnife({
     rotate,
     onDrag: handleDrag,
     onDragEnd: handleDragEnd,
+    label: "X-Acto knife",
   });
 
   return (

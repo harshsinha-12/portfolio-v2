@@ -58,10 +58,14 @@ export function DieCutSticker(sticker: DieCutStickerProps) {
     bounds: isMobile ? "viewport" : "none",
     rotate: layout.rotate,
     onTap: () => tapHandlerRef.current?.(),
+    label: tooltip,
     ...stickerSounds,
   });
 
-  const { playerTargetRef, handlers: musicHandlers } = useMusicPlayer(musicVideoId, ref);
+  const { playerTargetRef, handlers: musicHandlers } = useMusicPlayer(musicVideoId, ref, {
+    sticker_id: id,
+    sticker_name: tooltip,
+  });
 
   useEffect(() => {
     tapHandlerRef.current =
