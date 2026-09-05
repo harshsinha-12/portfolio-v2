@@ -184,8 +184,18 @@ function matToDataUri() {
   return svgToDataUri(buildMatSvg());
 }
 
-function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
+function ellipsize(value, max) {
+  return value.length > max ? `${value.slice(0, max - 1)}…` : value;
+}
 
+function durationLabel(durationMs) {
+  if (!durationMs) return "";
+  const minutes = Math.floor(durationMs / 60000);
+  const seconds = String(Math.floor(durationMs / 1000) % 60).padStart(2, "0");
+  return `${minutes}:${seconds}`;
+}
+
+function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
   return el(
     "div",
     {
@@ -216,11 +226,12 @@ function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
       {
         style: {
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
+          alignItems: "center",
           width: "100%",
           height: "100%",
-          padding: "48px 68px 40px",
-          position: "relative",
+          padding: "56px 68px",
+          gap: 52,
         },
       },
       el(
@@ -228,12 +239,11 @@ function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
         {
           style: {
             display: "flex",
-            flexDirection: "row",
+            flexDirection: "column",
             alignItems: "center",
-            height: track ? 336 : 542,
+            position: "relative",
+            transform: "rotate(-4deg)",
             flexShrink: 0,
-            gap: 52,
-            minHeight: 0,
           },
         },
         el(
@@ -243,65 +253,27 @@ function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              position: "relative",
-              transform: "rotate(-4deg)",
-              flexShrink: 0,
+              position: "absolute",
+              top: -16,
             },
           },
-          el(
-            "div",
-            {
-              style: {
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                position: "absolute",
-                top: -16,
-              },
+          el("div", {
+            style: {
+              width: 22,
+              height: 22,
+              borderRadius: 11,
+              backgroundColor: PIN,
+              boxShadow: "0 2px 3px rgba(9, 26, 17, 0.35)",
             },
-            el("div", {
-              style: {
-                width: 22,
-                height: 22,
-                borderRadius: 11,
-                backgroundColor: PIN,
-                boxShadow: "0 2px 3px rgba(9, 26, 17, 0.35)",
-              },
-            }),
-            el("div", {
-              style: {
-                width: 4,
-                height: 10,
-                backgroundColor: PIN_STEM,
-                marginTop: -2,
-              },
-            }),
-          ),
-          el(
-            "div",
-            {
-              style: {
-                display: "flex",
-                flexDirection: "column",
-                backgroundColor: PAPER,
-                padding: 14,
-                paddingBottom: 48,
-                boxShadow: SHADOW,
-              },
+          }),
+          el("div", {
+            style: {
+              width: 4,
+              height: 10,
+              backgroundColor: PIN_STEM,
+              marginTop: -2,
             },
-            el("img", {
-              src: photoSrc,
-              width: 228,
-              height: 228,
-              alt: "",
-              style: {
-                width: 228,
-                height: 228,
-                objectFit: "cover",
-                border: `1px solid ${PHOTO_FRAME}`,
-              },
-            }),
-          ),
+          }),
         ),
         el(
           "div",
@@ -309,113 +281,256 @@ function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
             style: {
               display: "flex",
               flexDirection: "column",
-              justifyContent: "center",
-              flex: 1,
-              minWidth: 0,
+              backgroundColor: PAPER,
+              padding: 14,
+              paddingBottom: 48,
+              boxShadow: SHADOW,
             },
           },
-          el(
-            "div",
-            {
-              style: {
-                display: "flex",
-                fontFamily: "Inter",
-                fontSize: 54,
-                fontWeight: 600,
-                lineHeight: 1.05,
-                letterSpacing: "-0.03em",
-              },
+          el("img", {
+            src: photoSrc,
+            width: 248,
+            height: 248,
+            alt: "",
+            style: {
+              width: 248,
+              height: 248,
+              objectFit: "cover",
+              border: `1px solid ${PHOTO_FRAME}`,
             },
-            NAME,
-          ),
-          el(
-            "div",
-            {
-              style: {
-                display: "flex",
-                fontFamily: "Indie Flower",
-                fontSize: 26,
-                color: ACCENT,
-                marginTop: 12,
-                lineHeight: 1.3,
-              },
+          }),
+        ),
+      ),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            flex: 1,
+            minWidth: 0,
+          },
+        },
+        el(
+          "div",
+          {
+            style: {
+              display: "flex",
+              fontFamily: "Inter",
+              fontSize: 58,
+              fontWeight: 600,
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
             },
-            TAGLINE,
-          ),
-          el(
-            "div",
-            {
-              style: {
-                display: "flex",
-                flexDirection: "column",
-                marginTop: 22,
-                gap: 12,
-              },
+          },
+          NAME,
+        ),
+        el(
+          "div",
+          {
+            style: {
+              display: "flex",
+              fontFamily: "Indie Flower",
+              fontSize: 30,
+              color: ACCENT,
+              marginTop: 14,
+              lineHeight: 1.35,
             },
-            ...socials.map((social, index) =>
+          },
+          TAGLINE,
+        ),
+        el(
+          "div",
+          {
+            style: {
+              display: "flex",
+              flexDirection: "column",
+              marginTop: 22,
+              gap: 14,
+            },
+          },
+          ...socials.map((social, index) =>
+            el(
+              "div",
+              {
+                style: {
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: 12,
+                },
+              },
+              el("img", {
+                src: socialIcons[index],
+                width: 28,
+                height: 28,
+                alt: "",
+                style: { width: 28, height: 28 },
+              }),
               el(
                 "div",
                 {
                   style: {
                     display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 12,
+                    fontFamily: "Inter",
+                    fontSize: 24,
+                    fontWeight: 400,
+                    color: HEADING,
                   },
                 },
-                el("img", {
-                  src: socialIcons[index],
-                  width: 26,
-                  height: 26,
-                  alt: "",
-                  style: { width: 26, height: 26 },
-                }),
-                el(
-                  "div",
-                  {
-                    style: {
-                      display: "flex",
-                      fontFamily: "Inter",
-                      fontSize: 22,
-                      fontWeight: 400,
-                      color: HEADING,
-                    },
-                  },
-                  social.handle,
-                ),
+                social.handle,
               ),
             ),
           ),
         ),
+        track ? spotifyPlayer(track, spotifyIcon) : null,
       ),
-      track ? spotifyPlayer(track, spotifyIcon) : null,
     ),
   );
 }
 
 function spotifyPlayer(track, spotifyIcon) {
   const text = (value, style) => el("div", { style: { display: "flex", ...style } }, value);
-  const duration = track.durationMs ? `${Math.floor(track.durationMs / 60000)}:${String(Math.floor(track.durationMs / 1000) % 60).padStart(2, "0")}` : "";
-  const icon = (path, size, circle = false) => el("svg", { width: size, height: size, viewBox: "0 0 48 48" },
-    circle ? el("circle", { cx: 24, cy: 24, r: 24, fill: "white" }) : null,
-    el("path", { d: path, fill: "none", stroke: circle ? "#202020" : "#b3b3b3", strokeWidth: 4, strokeLinecap: "round", strokeLinejoin: "round" }));
-  return el("div", { style: { display: "flex", flexDirection: "column", marginTop: 16, gap: 10, fontFamily: "Inter" } },
-    text(track.isPlaying ? "Currently playing on Spotify" : "Last played on Spotify", { fontSize: 16, color: "#d3d9d0" }),
-    el("div", { style: { display: "flex", alignItems: "center", gap: 32, padding: 16, height: 160, borderRadius: 40, backgroundColor: "#202020" } },
-      track.albumArt ? el("img", { src: track.albumArt, width: 128, height: 128, style: { borderRadius: 16, objectFit: "cover", flexShrink: 0 } }) : el("div", { style: { display: "flex", width: 128, height: 128, borderRadius: 16, backgroundColor: "#333333", alignItems: "center", justifyContent: "center" } }, el("img", { src: spotifyIcon, width: 56, height: 56 })),
-      el("div", { style: { display: "flex", flexDirection: "column", flex: 1, minWidth: 0, alignSelf: "stretch", paddingTop: 2 } },
-        text(track.title.length > 40 ? track.title.slice(0, 39) + "…" : track.title, { fontSize: 28, fontWeight: 600, color: "white", whiteSpace: "nowrap", overflow: "hidden" }),
-        text(track.artist.length > 48 ? track.artist.slice(0, 47) + "…" : track.artist, { fontSize: 22, color: "#929292", marginTop: 4, whiteSpace: "nowrap" }),
-        el("div", { style: { display: "flex", alignItems: "center", gap: 36, marginTop: "auto", height: 48 } },
-          el("div", { style: { display: "flex", height: 8, borderRadius: 4, backgroundColor: "#666666", flex: 1 } }),
-          text(duration, { fontSize: 25, color: "#b3b3b3" }),
-          icon("M15 24l6 6 13-14", 44, true),
-          text("•••", { fontSize: 23, letterSpacing: 5, color: "#b3b3b3" }),
+  const icon = (path, size, circle = false) =>
+    el(
+      "svg",
+      { width: size, height: size, viewBox: "0 0 48 48" },
+      circle ? el("circle", { cx: 24, cy: 24, r: 24, fill: "white" }) : null,
+      el("path", {
+        d: path,
+        fill: "none",
+        stroke: circle ? "#202020" : "#b3b3b3",
+        strokeWidth: 4,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      }),
+    );
+  const art = track.albumArt
+    ? el("img", {
+        src: track.albumArt,
+        width: 72,
+        height: 72,
+        style: { width: 72, height: 72, borderRadius: 10, objectFit: "cover", flexShrink: 0 },
+      })
+    : el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            width: 72,
+            height: 72,
+            borderRadius: 10,
+            backgroundColor: "#333333",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          },
+        },
+        el("img", { src: spotifyIcon, width: 32, height: 32 }),
+      );
+
+  return el(
+    "div",
+    {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        marginTop: 18,
+        gap: 6,
+        width: "100%",
+        fontFamily: "Inter",
+      },
+    },
+    text(track.isPlaying ? "Currently playing on Spotify" : "Last played on Spotify", {
+      fontSize: 13,
+      color: "#d3d9d0",
+    }),
+    el(
+      "div",
+      {
+        style: {
+          display: "flex",
+          alignItems: "center",
+          gap: 16,
+          padding: 10,
+          height: 92,
+          borderRadius: 24,
+          backgroundColor: "#202020",
+        },
+      },
+      art,
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            minWidth: 0,
+            alignSelf: "stretch",
+            paddingTop: 1,
+          },
+        },
+        text(ellipsize(track.title, 28), {
+          fontSize: 18,
+          fontWeight: 600,
+          color: "white",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+        }),
+        text(ellipsize(track.artist, 32), {
+          fontSize: 14,
+          color: "#929292",
+          marginTop: 2,
+          whiteSpace: "nowrap",
+        }),
+        el(
+          "div",
+          {
+            style: {
+              display: "flex",
+              alignItems: "center",
+              gap: 14,
+              marginTop: "auto",
+              height: 28,
+            },
+          },
+          el("div", {
+            style: {
+              display: "flex",
+              height: 5,
+              borderRadius: 3,
+              backgroundColor: "#666666",
+              flex: 1,
+            },
+          }),
+          text(durationLabel(track.durationMs), { fontSize: 15, color: "#b3b3b3" }),
+          icon("M15 24l6 6 13-14", 26, true),
+          text("•••", { fontSize: 14, letterSpacing: 3, color: "#b3b3b3" }),
         ),
       ),
-      el("div", { style: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", alignSelf: "stretch", width: 64 } },
-        el("img", { src: spotifyIcon, width: 32, height: 32 }),
-        el("svg", { width: 58, height: 58, viewBox: "0 0 58 58" }, el("circle", { cx: 29, cy: 29, r: 29, fill: "white" }), el("path", { d: "M23 17 L43 29 L23 41 Z", fill: "#202020" })),
+      el(
+        "div",
+        {
+          style: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+            alignSelf: "stretch",
+            width: 36,
+            paddingTop: 2,
+            paddingBottom: 2,
+          },
+        },
+        el("img", { src: spotifyIcon, width: 18, height: 18 }),
+        el(
+          "svg",
+          { width: 32, height: 32, viewBox: "0 0 58 58" },
+          el("circle", { cx: 29, cy: 29, r: 29, fill: "white" }),
+          el("path", { d: "M23 17 L43 29 L23 41 Z", fill: "#202020" }),
+        ),
       ),
     ),
   );
