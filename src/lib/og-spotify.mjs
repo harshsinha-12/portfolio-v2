@@ -1,8 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createElement as h } from "react";
-import { ImageResponse } from "next/og.js";
-import sharp from "sharp";
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -55,9 +53,10 @@ function el(type, props, ...children) {
   return h(type, props, ...children);
 }
 
-async function svgToDataUri(svg, size = 48) {
-  const png = await sharp(Buffer.from(svg)).resize(size, size).png().toBuffer();
-  return `data:image/png;base64,${png.toString("base64")}`;
+function svgToDataUri(svg, size = 48) {
+  // Satori accepts SVG images directly; no platform-specific native module needed.
+  const sized = svg.includes('width="') ? svg : svg.replace("<svg ", `<svg width="${size}" height="${size}" `);
+  return `data:image/svg+xml;base64,${Buffer.from(sized).toString("base64")}`;
 }
 
 function buildMatSvg() {
@@ -181,12 +180,8 @@ function buildMatSvg() {
   return parts.join("");
 }
 
-async function matToDataUri() {
-  const png = await sharp(Buffer.from(buildMatSvg()))
-    .resize(WIDTH, HEIGHT)
-    .png()
-    .toBuffer();
-  return `data:image/png;base64,${png.toString("base64")}`;
+function matToDataUri() {
+  return svgToDataUri(buildMatSvg());
 }
 
 function card(photoSrc, socialIcons, matSrc, spotifyIcon, track) {
@@ -426,7 +421,7 @@ function spotifyPlayer(track, spotifyIcon) {
   );
 }
 
-export async function renderSpotifyOg(track) {
+export async function buildSpotifyOg(track) {
   const photoSrc = `data:image/jpeg;base64,${await readFile(join(process.cwd(), "public/assets/profile-pic.jpg"), "base64")}`;
   const [socialIcons, matSrc, spotifyIcon, semibold, regular, handwriting] = await Promise.all([
     Promise.all(socials.map((social) => svgToDataUri(social.svg))), matToDataUri(), svgToDataUri(SPOTIFY_ICON_SVG, 40),
@@ -439,5 +434,5 @@ export async function renderSpotifyOg(track) {
     { name: "Inter", data: regular, weight: 400, style: "normal" },
     { name: "Indie Flower", data: handwriting, weight: 400, style: "normal" },
   ];
-  return new ImageResponse(card(photoSrc, socialIcons, matSrc, spotifyIcon, track), { width: WIDTH, height: HEIGHT, fonts });
+  return { element: card(photoSrc, socialIcons, matSrc, spotifyIcon, track), options: { width: WIDTH, height: HEIGHT, fonts } };
 }

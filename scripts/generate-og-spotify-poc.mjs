@@ -5,7 +5,8 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import sharp from "sharp";
-import { renderSpotifyOg } from "../src/lib/og-spotify.mjs";
+import { ImageResponse } from "next/og.js";
+import { buildSpotifyOg } from "../src/lib/og-spotify.mjs";
 const SAMPLE_TRACK_URL = "https://open.spotify.com/track/4uLU6hMCjMI75M1A2tKUQC";
 
 async function fetchSampleTrack() {
@@ -40,7 +41,8 @@ const track = process.env.SPOTIFY_PREVIEW_JSON
   : await fetchSampleTrack();
 const outDir = join(process.cwd(), "tmp/og-spotify-poc");
 await mkdir(outDir, { recursive: true });
-const image = await renderSpotifyOg(track);
+const { element, options } = await buildSpotifyOg(track);
+const image = new ImageResponse(element, options);
 const output = join(outDir, "og-with-spotify.png");
 await writeFile(output, Buffer.from(await image.arrayBuffer()));
 console.log(`Preview fixture (not live listening): ${track?.title ?? "unavailable"}`);
