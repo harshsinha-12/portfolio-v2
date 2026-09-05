@@ -1,0 +1,42 @@
+{
+  "dataNote": "All observations are fictional teaching data. Predictions, residuals, and squared-error totals are calculated from the five deliveries below.",
+  "deliverySeries": [{ "key": "actual", "label": "Observed delivery time" }],
+  "candidateSeries": [
+    { "key": "flat", "label": "Always 17 minutes", "color": "#88619a" },
+    { "key": "fitted", "label": "8 + 3 × distance", "color": "#356b51" },
+    { "key": "steep", "label": "8 + 4 × distance", "color": "#b65332" }
+  ],
+  "residualSeries": [{ "key": "residual", "label": "Observed minus predicted", "color": "#b65332" }],
+  "errorSeries": [{ "key": "squaredError", "label": "Sum of squared errors" }],
+  "deliveries": [
+    { "distanceKm": 1, "actual": 12 },
+    { "distanceKm": 2, "actual": 13 },
+    { "distanceKm": 3, "actual": 17 },
+    { "distanceKm": 4, "actual": 19 },
+    { "distanceKm": 5, "actual": 24 }
+  ],
+  "candidateLines": [
+    { "distanceKm": 1, "flat": 17, "fitted": 11, "steep": 12 },
+    { "distanceKm": 2, "flat": 17, "fitted": 14, "steep": 16 },
+    { "distanceKm": 3, "flat": 17, "fitted": 17, "steep": 20 },
+    { "distanceKm": 4, "flat": 17, "fitted": 20, "steep": 24 },
+    { "distanceKm": 5, "flat": 17, "fitted": 23, "steep": 28 }
+  ],
+  "residuals": [
+    { "distanceKm": 1, "residual": 1 },
+    { "distanceKm": 2, "residual": -1 },
+    { "distanceKm": 3, "residual": 0 },
+    { "distanceKm": 4, "residual": -1 },
+    { "distanceKm": 5, "residual": 1 }
+  ],
+  "modelErrors": [
+    { "model": "Fitted", "squaredError": 4 },
+    { "model": "Steep", "squaredError": 59 },
+    { "model": "Flat", "squaredError": 94 }
+  ],
+  "citations": [
+    { "title": "Least Squares", "publisher": "NIST/SEMATECH e-Handbook of Statistical Methods", "url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd431.htm", "note": "Least-squares objective and the formulas for a straight-line slope and intercept." },
+    { "title": "Linear Least Squares Regression", "publisher": "NIST/SEMATECH e-Handbook of Statistical Methods", "url": "https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd141.htm", "note": "Model definition, extrapolation limitations, and sensitivity to unusual observations." },
+    { "title": "An Introduction to Statistical Learning, second edition", "publisher": "Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani", "url": "https://www.statlearning.com/s/ISLRSeventhPrinting.pdf", "note": "Chapter 2 covers training and test error; Chapter 3 develops linear regression and its interpretation." }
+  ]
+}

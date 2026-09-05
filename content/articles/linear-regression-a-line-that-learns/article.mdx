@@ -1,0 +1,224 @@
+---
+title: "Linear Regression: A Line That Learns"
+description: "Learn linear regression through a delivery-time story, interactive charts, and small prediction exercises. No calculus or coding required."
+date: "2026-09-05"
+updatedAt: "2026-09-05"
+tags:
+  - Machine Learning
+  - Statistics
+  - Learning by Doing
+draft: false
+featured: true
+canonical: "/articles/linear-regression-a-line-that-learns"
+social:
+  twitter: ""
+  linkedin: ""
+---
+
+Your lunch is on its way. The restaurant is four kilometres away. How long might the delivery take?
+
+You could guess. Or you could look at previous deliveries and use their pattern to make a better guess.
+
+That second approach is the starting point for **linear regression**: learning a straight-line relationship from examples, then using it to predict a number.
+
+We will build one together. You only need addition, multiplication, and a little curiosity.
+
+<Callout title="How to explore this article">
+  Hover over charts, tap a bar or point, or focus a chart and use the arrow keys to inspect values. Every chart has a “View chart data” table. The short exercises have answers you can reveal after making a guess. All delivery data here is invented for teaching; it is not a real delivery benchmark.
+</Callout>
+
+## 1. Start with five deliveries
+
+Imagine we recorded the distance and total time for five trips.
+
+<Chart
+  dataset="deliveries"
+  type="bar"
+  title="Longer trips generally took more time"
+  xKey="distanceKm"
+  series="deliverySeries"
+  yUnit=" min"
+  caption="Horizontal axis: distance in kilometres. Vertical axis: delivery time in minutes. Each bar represents one fictional trip."
+/>
+
+Inspect the first and last bars: one kilometre took 12 minutes; five kilometres took 24 minutes. There is a pattern, but the increases are uneven. Traffic lights, preparation time, and the route could all matter.
+
+We will use **distance** as our input, usually called `x`. **Delivery time** is the number we want to predict, usually called `y`.
+
+“Regression” means we are predicting a numerical quantity. Here, our answer will be a number of minutes.
+
+## 2. Give your guess two controls
+
+A straight line needs just two numbers: a starting height and a slope.
+
+```text
+predicted time = starting time + minutes per kilometre × distance
+```
+
+For our five trips, the least-squares fit turns out to be:
+
+```text
+predicted time = 8 + 3 × distance
+```
+
+The **8** is the *intercept*: where the line meets the vertical axis, at zero kilometres. The **3** is the *slope*: the prediction increases by three minutes for each extra kilometre.
+
+You might imagine the eight minutes as preparation and handoff time. But our data does not establish that explanation. We have no zero-kilometre trip, and the fitted intercept is a mathematical starting point.
+
+<MarginNote>
+  Move the intercept and the whole line shifts. Change the slope and it tilts.
+</MarginNote>
+
+<details>
+  <summary>Try it: what does this line predict for four kilometres?</summary>
+  <p>8 + 3 × 4 = <strong>20 minutes</strong>. Our observed four-kilometre trip took 19 minutes. A useful prediction can still miss an individual trip.</p>
+</details>
+
+## 3. Compare three possible lines
+
+Why choose those two numbers? Why not predict 17 minutes for everyone, or use a steeper line?
+
+<Chart
+  dataset="candidateLines"
+  type="line"
+  title="Three guesses for the same five trips"
+  xKey="distanceKm"
+  series="candidateSeries"
+  yUnit=" min"
+  caption="Horizontal axis: kilometres. These are model predictions, not observations. Compare their values with the bars above."
+/>
+
+The flat line ignores distance. It predicts 17 minutes because that is the average of our five observed times.
+
+The steep line adds four minutes per kilometre. At five kilometres it predicts 28 minutes, compared with the observed 24.
+
+The green line predicts 23 minutes there. It looks more promising, but we need a rule that judges **all five trips**, not just the last one.
+
+## 4. Measure each miss
+
+For each trip, subtract the prediction from what actually happened:
+
+```text
+residual = observed time − predicted time
+```
+
+A **residual** is simply the model's miss on an example used to fit it.
+
+For the one-kilometre trip, the line predicts 11 minutes and the delivery took 12. The residual is `12 − 11 = +1`. The delivery was one minute slower than predicted.
+
+<Chart
+  dataset="residuals"
+  type="bar"
+  title="Where the fitted line misses"
+  xKey="distanceKm"
+  series="residualSeries"
+  yUnit=" min"
+  caption="Positive means the delivery took longer than predicted. Negative means it arrived sooner. At three kilometres, the residual is zero."
+/>
+
+<details>
+  <summary>Try it: the two-kilometre residual is −1. Was the prediction too high or too low?</summary>
+  <p><strong>Too high.</strong> The model predicted 14 minutes, but the delivery took 13. The residual is 13 − 14 = −1 minute.</p>
+</details>
+
+Our five residuals are `+1, −1, 0, −1, +1`. Adding them gives zero, even though four predictions were wrong. Positive and negative mistakes cancel out. We need a score that prevents that.
+
+## 5. Square the misses, then add them
+
+Squaring means multiplying a number by itself. A miss of `−1` becomes `1`; a miss of `+1` also becomes `1`. A miss of `4` becomes `16`, so larger misses count much more.
+
+```text
+fitted line's squared errors = 1 + 1 + 0 + 1 + 1 = 4
+```
+
+**Ordinary least squares** chooses the intercept and slope that make this total as small as possible. The name describes the job: find the least sum of squared misses. This is the criterion in [NIST's explanation of least squares](https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd431.htm).
+
+<Chart
+  dataset="modelErrors"
+  type="bar"
+  title="Lower total squared error wins"
+  xKey="model"
+  series="errorSeries"
+  caption="Vertical axis: squared minutes. All three scores use the same five trips. The fitted line scores 4, the steep line 59, and the flat line 94."
+/>
+
+The green line from earlier wins this comparison. In fact, `8 + 3 × distance` minimizes the squared-error total among **all** straight lines for these five observations, not just the three we drew.
+
+The model's “learning” is finding those two numbers from the examples.
+
+<details>
+  <summary>Optional: where did 8 and 3 actually come from?</summary>
+  <p>The average distance is 3 km and the average time is 17 minutes. For each trip, multiply its distance-minus-average by its time-minus-average, then add those products. The total is 30. The sum of squared distance-minus-average values is 10.</p>
+  <p><code>slope = 30 / 10 = 3</code></p>
+  <p><code>intercept = average time − slope × average distance = 17 − 3 × 3 = 8</code></p>
+  <p>This is the straight-line least-squares formula. You do not need to memorize it to understand what the fit is doing.</p>
+</details>
+
+## 6. Turn the line into a prediction
+
+Suppose a restaurant is 3.5 kilometres away.
+
+```text
+predicted time = 8 + 3 × 3.5 = 18.5 minutes
+```
+
+That is **interpolation**: predicting between input values we observed. The model can make this calculation even though our table has no 3.5-kilometre trip.
+
+<details>
+  <summary>Try it: what would it predict at 30 kilometres, and would you trust it?</summary>
+  <p>The calculation gives <strong>98 minutes</strong>: 8 + 3 × 30. But our examples cover only 1–5 kilometres. A 30-kilometre route could involve very different roads or delivery arrangements. The arithmetic works; its reliability is untested.</p>
+</details>
+
+Predicting beyond the observed range is **extrapolation**. [NIST highlights extrapolation and sensitivity to unusual observations](https://www.itl.nist.gov/div898/handbook/pmd/section1/pmd141.htm) as limitations of least-squares regression.
+
+## 7. A good fit is only the first check
+
+Our line looks excellent on these deliberately tidy examples. That does not tell us how it will perform on tomorrow's deliveries.
+
+One practical check is to set aside some observations before fitting. Learn from the training examples, then measure mistakes on the held-out examples. For a future-delivery task, testing on later trips helps mimic the actual prediction setting. Keep those test answers out of the fitting process. This training-versus-test distinction is introduced in [An Introduction to Statistical Learning, Chapter 2](https://www.statlearning.com/s/ISLRSeventhPrinting.pdf).
+
+For a score in familiar units, use **mean absolute error**: take the size of each miss and average them. On our five training trips, that is `(1 + 1 + 0 + 1 + 1) / 5 = 0.8 minutes`. We have not measured a test error here.
+
+<Callout title="A prediction is an estimate">
+  “18.5 minutes” is a point prediction, not a promise. The training error of 0.8 minutes is not a guaranteed ±0.8-minute window for a future delivery.
+</Callout>
+
+## 8. Know when the line is telling an incomplete story
+
+Before trusting a regression, look at its misses as well as its predictions.
+
+**A curved pattern in the residuals** can suggest that a straight line is missing part of the relationship. **Larger misses on longer trips** can suggest that uncertainty grows with distance. Five examples are too few to diagnose these patterns confidently.
+
+**One very unusual trip** can pull the fitted line because squaring gives a large miss so much weight. Investigate it: a data-entry mistake and a genuine two-hour traffic jam need different treatment.
+
+**Association is not proof of cause.** A fitted slope describes a relationship in the recorded data. It does not, by itself, prove that adding one kilometre causes exactly three extra minutes. Route type, traffic, and other differences may be mixed into that relationship.
+
+These questions matter even when a chart looks convincing. [Chapter 3 of An Introduction to Statistical Learning](https://www.statlearning.com/s/ISLRSeventhPrinting.pdf) discusses regression diagnostics and the distinction between prediction and causal interpretation.
+
+## 9. What if distance is not enough?
+
+You could also record preparation time and whether a trip happens during rush hour. **Multiple linear regression** uses more than one input:
+
+```text
+predicted time = intercept
+               + distance coefficient × distance
+               + preparation coefficient × preparation time
+               + rush-hour coefficient × rush-hour indicator
+```
+
+The indicator could be `1` during rush hour and `0` otherwise. The model learns each coefficient from data. We would need additional recorded inputs and many more examples before trying this sensibly.
+
+For this article, one input is enough to see the whole process: collect examples, fit a line, inspect the misses, and check new predictions.
+
+## 10. Explain it to a friend
+
+Try saying this before opening the answer below: what does linear regression learn, and how does it choose?
+
+<details>
+  <summary>Reveal a plain-language explanation</summary>
+  <p>“It looks at past examples and finds a straight line for predicting a number. It learns where the line starts and how steep it is. With least squares, it picks the line with the smallest total squared mistakes. Then we check whether that line also makes useful predictions on new examples.”</p>
+</details>
+
+The next time an app gives you an estimated arrival time, you can ask a more interesting question: what examples taught it that estimate, and how well does it work on trips it has not seen?
+
+<References dataset="citations" />

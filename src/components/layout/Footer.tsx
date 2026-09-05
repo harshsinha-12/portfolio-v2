@@ -78,6 +78,15 @@ export function Footer() {
         {" · "}
         <CreditsLink />
       </div>
+      <p className="mt-3 text-sm text-[var(--color-on-mat)]/85">
+        AI agent?{" "}
+        <a
+          href="/llms-full.txt"
+          className="marker-link marker-link--on-mat !text-[var(--color-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)]"
+        >
+          Here’s my llms-full.txt
+        </a>
+      </p>
     </footer>
   );
 }

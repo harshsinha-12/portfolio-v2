@@ -100,6 +100,10 @@ Add a named array to the article's `data.json` (these values are illustrative):
 
 ```json
 {
+  "resultSeries": [
+    { "key": "baseline", "label": "Baseline" },
+    { "key": "improved", "label": "With memory", "color": "#b65332" }
+  ],
   "results": [
     { "run": "Run 1", "baseline": 42, "improved": 55 },
     { "run": "Run 2", "baseline": 48, "improved": 67 },
@@ -116,10 +120,7 @@ Then insert this in `article.mdx`:
   type="line"
   title="Completion rate by run"
   xKey="run"
-  series={[
-    { key: "baseline", label: "Baseline" },
-    { key: "improved", label: "With memory", color: "#b65332" }
-  ]}
+  series="resultSeries"
   yUnit="%"
   caption="Illustrative data only. Replace with sourced measurements."
 />
@@ -129,13 +130,13 @@ Then insert this in `article.mdx`:
 - `type`: `line` (default), `bar`, or `area`.
 - `title`: required visible title and accessible chart label.
 - `xKey`: the string or numeric category column; categories follow row order and are spaced equally. This is not a continuous numeric or time axis.
-- `series`: one or more unique numeric columns, each with a `key`, optional `label`, and optional CSS `color`. Use JSON numbers, not formatted strings. Use `null` for missing observations; line and area charts leave gaps. Each series must have at least one numeric observation.
-- `height`: optional height in pixels, from 200 to 800; defaults to 320. Width follows the article container.
-- `stacked`: set to `{true}` for stacked bars or areas; use only when the series are additive and share units.
+- `series`: the name of a top-level series array in `data.json`. Each entry has a unique numeric column `key`, optional `label`, and optional CSS `color`. Use JSON numbers, not formatted strings. Use `null` for missing observations; line and area charts leave gaps. Each series must have at least one numeric observation.
+- `height`: optional height in pixels, from 200 to 800; use `height="400"`. Defaults to 320. Width follows the article container.
+- `stacked`: add the bare `stacked` attribute for stacked bars or areas; use only when the series are additive and share units.
 - `yUnit`: optional shared suffix, such as `%` or `ms`, for axis ticks and tooltips.
 - `caption`: optional context, takeaway, or source attribution.
 
-Props must be serializable: use plain objects and arrays, with no formatter functions or imports. Invalid or empty datasets display a diagnostic message. Charts include a legend, tooltips, and Recharts keyboard navigation; readers can also expand **View chart data**. Keep factual claims sourced in the surrounding article. Use `Mermaid` for flow diagrams.
+The MDX renderer strips JavaScript expressions, including JSX attributes in braces. Use quoted strings and bare boolean attributes in MDX; put series arrays in `data.json`. Invalid or empty datasets display a diagnostic message. Charts include a legend, tooltips, and Recharts keyboard navigation; readers can also expand **View chart data**. Keep factual claims sourced in the surrounding article. Use `Mermaid` for flow diagrams.
 
 ## Markdown for AI agents
 
