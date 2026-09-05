@@ -4,6 +4,10 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+## Article writing
+
+For article writing or rewriting, read `content/articles/README.md` and `content/articles/WRITING_STYLE.md` first. Apply Harsh's writing voice to both the article and its social launch copy.
+
 ## Local image assets
 
 When adding or replacing a raster image (`.png`, `.jpg`, `.jpeg`) under `public/assets/`:
@@ -44,4 +48,3 @@ When adding a hover/tap demo video for a project card:
 - `public/assets/videos/<slug>.webm` — VP9, max width 960, no audio
 
 Existing outputs are never overwritten — delete a file to re-encode. The project card reuses its static `image` as the video poster and no-JS fallback. Videos prefetch when their card scrolls near the viewport; playback is hover on desktop and tap on mobile.
-

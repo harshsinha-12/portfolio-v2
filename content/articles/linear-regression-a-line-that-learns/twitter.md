@@ -1,8 +1,8 @@
 # X/Twitter launch copy
 
-Linear regression, explained through five fictional lunch deliveries.
+Four kilometres away. Delivery in 20 minutes. Where did that 20 come from?
 
-Explore four charts, compare possible lines, inspect their mistakes, and try a few prediction exercises. No calculus required.
+I followed that question into linear regression, then LLM latency. Six charts, concrete numbers, and a catch: knowing an answer's final token count is easier after it arrives.
 
 https://www.harshsinha.dev/articles/linear-regression-a-line-that-learns
 

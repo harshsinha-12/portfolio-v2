@@ -1,14 +1,16 @@
 # LinkedIn launch copy
 
-If a restaurant is four kilometres away, how long might delivery take?
+The restaurant is four kilometres away. The app says 20 minutes. What taught it to predict that number?
 
-That is the starting point for my new beginner-friendly article on linear regression.
+I used that question to work through linear regression, starting with five fictional deliveries and ending with an LLM latency example.
 
-Using five fictional deliveries, it walks through how a line learns its slope and intercept, why we square prediction errors, and why a good fit still needs testing on new examples.
+A starting time, plus a little more per kilometre, gives us a line. Squaring its mistakes gives us a way to choose that line. Then one unusual delivery changes the slope from three to seven.
 
-There are four interactive charts and short exercises with answers you can reveal. You can inspect every value and follow the calculations without calculus or code.
+There are six interactive charts and short prediction exercises. The numbers are small enough to check yourself; all observations are clearly labelled teaching data.
 
-The aim is to make the idea clear enough to explain to a friend, including when a prediction deserves some skepticism.
+The part I find most interesting is what happens after the fit looks good. A latency model using final output length can explain completed requests. But do we know that length when a new request arrives?
+
+A good-looking fit and a useful prediction system are different things. The article works through that gap without requiring calculus or code.
 
 Read it here: https://www.harshsinha.dev/articles/linear-regression-a-line-that-learns
 

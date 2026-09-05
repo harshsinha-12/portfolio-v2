@@ -1,5 +1,7 @@
 # Article authoring guide
 
+Before writing or rewriting an article or its social launch copy, read [Harsh's writing style guide](./WRITING_STYLE.md). Use it for voice, examples, explanation flow, technical depth, and endings. The conventions below govern the publishing bundle and MDX components.
+
 Each article is a self-contained publishing bundle. Copy `_template/` into a new kebab-case folder and keep the website article, structured data, and social launch copy together.
 
 ```text

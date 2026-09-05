@@ -1,5 +1,27 @@
 {
-  "dataNote": "All observations are fictional teaching data. Predictions, residuals, and squared-error totals are calculated from the five deliveries below.",
+  "dataNote": "All delivery and LLM observations are fictional teaching data, not product or provider benchmarks. The outlier scenario replaces only the five-kilometre delivery time with 44 minutes. Predictions and scores are calculated from the corresponding observations.",
+  "outlierSeries": [
+    { "key": "originalFit", "label": "Original fit: 8 + 3 × distance", "color": "#356b51" },
+    { "key": "changedFit", "label": "Changed observation: 7 × distance", "color": "#b65332" }
+  ],
+  "outlierPredictions": [
+    { "distanceKm": 1, "originalFit": 11, "changedFit": 7 },
+    { "distanceKm": 2, "originalFit": 14, "changedFit": 14 },
+    { "distanceKm": 3, "originalFit": 17, "changedFit": 21 },
+    { "distanceKm": 4, "originalFit": 20, "changedFit": 28 },
+    { "distanceKm": 5, "originalFit": 23, "changedFit": 35 }
+  ],
+  "llmSeries": [
+    { "key": "observedMs", "label": "Observed completion time", "color": "#b65332" },
+    { "key": "predictedMs", "label": "Fitted completion time", "color": "#356b51" }
+  ],
+  "llmLatency": [
+    { "outputTokens": 100, "observedMs": 850, "predictedMs": 800 },
+    { "outputTokens": 200, "observedMs": 1150, "predictedMs": 1200 },
+    { "outputTokens": 300, "observedMs": 1600, "predictedMs": 1600 },
+    { "outputTokens": 400, "observedMs": 1950, "predictedMs": 2000 },
+    { "outputTokens": 500, "observedMs": 2450, "predictedMs": 2400 }
+  ],
   "deliverySeries": [{ "key": "actual", "label": "Observed delivery time" }],
   "candidateSeries": [
     { "key": "flat", "label": "Always 17 minutes", "color": "#88619a" },
