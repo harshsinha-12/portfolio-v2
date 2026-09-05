@@ -49,10 +49,10 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [
       {
-        url: "/og.jpg",
+        url: "/api/og/spotify",
         width: 1200,
         height: 630,
-        type: "image/jpeg",
+        type: "image/png",
         alt: `${siteConfig.name} — ${siteConfig.tagline}`,
       },
     ],
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     creator: "@sinhaharsh12",
-    images: ["/og.jpg"],
+    images: ["/api/og/spotify"],
   },
   robots: {
     index: true,
