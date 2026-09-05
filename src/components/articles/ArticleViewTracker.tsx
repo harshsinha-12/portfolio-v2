@@ -14,7 +14,7 @@ type ArticleViewTrackerProps = {
   className?: string;
 };
 
-let viewRequests = new Map<string, Promise<number | null>>();
+const viewRequests = new Map<string, Promise<number | null>>();
 
 function requestArticleView(articleSlug: string) {
   if (!viewRequests.has(articleSlug)) {

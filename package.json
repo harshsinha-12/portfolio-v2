@@ -11,7 +11,8 @@
     "optimize-images": "node scripts/optimize-images.mjs",
     "optimize-videos": "node scripts/optimize-videos.mjs",
     "seed-link-previews": "node scripts/seed-link-previews.mjs",
-    "generate-og": "node scripts/generate-og.mjs"
+    "generate-og": "node scripts/generate-og.mjs",
+    "generate-og-spotify-poc": "node scripts/generate-og-spotify-poc.mjs"
   },
   "dependencies": {
     "@radix-ui/react-hover-card": "^1.1.19",
