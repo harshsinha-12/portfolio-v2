@@ -1668,6 +1668,28 @@ button.article-share__action {
   border-radius: var(--radius-sm);
 }
 
+.article-chart__title {
+  display: block;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.article-chart__canvas {
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-sans);
+}
+
+.article-chart__data {
+  margin-top: 0.8rem;
+  font-size: 0.78rem;
+}
+
+.article-chart__data summary {
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
 .article-table-wrap table {
   width: 100%;
   border-collapse: collapse;

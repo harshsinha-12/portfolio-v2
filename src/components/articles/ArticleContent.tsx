@@ -2,6 +2,7 @@ import type { ComponentProps, ReactNode } from "react";
 import Image from "next/image";
 import type { MDXComponents } from "mdx/types";
 import { MermaidDiagram } from "@/components/articles/MermaidDiagram";
+import { DatasetChart, type DatasetChartProps } from "@/components/articles/DatasetChart";
 import {
   TrackedExternalLink,
   TrackedMarkdownLink,
@@ -211,6 +212,7 @@ export function createArticleComponents(data: Record<string, unknown>): MDXCompo
     Callout,
     MarginNote,
     Mermaid: MermaidDiagram,
+    Chart: (props: DatasetChartProps) => <DatasetChart {...props} data={data} />,
     Video: VideoEmbed,
     DataTable: (props: Omit<DatasetTableProps, "data">) => (
       <DatasetTable {...props} data={data} />
