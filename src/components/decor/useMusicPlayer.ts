@@ -56,12 +56,14 @@ export function useMusicPlayer(
   const stickerAnalyticsRef = useRef(stickerAnalytics);
   const [canHover, setCanHover] = useState(true);
 
-  stickerAnalyticsRef.current = stickerAnalytics;
-
-  // Keep videoIdRef current for use in callbacks without re-creating the player.
+  // Keep refs current for use in callbacks without re-creating the player.
   useEffect(() => {
     videoIdRef.current = videoId;
   }, [videoId]);
+
+  useEffect(() => {
+    stickerAnalyticsRef.current = stickerAnalytics;
+  }, [stickerAnalytics]);
 
   // --- Hover capability (mirrors ProjectPreviewVideo's canHover) ------------
   useEffect(() => {
