@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { track } from "@/lib/analytics";
+import { VOICE_PLAY_DEMO_EVENT } from "@/voice/functions/events";
 
 type ProjectPreviewVideoProps = {
   video: string;
@@ -71,6 +72,21 @@ function useProjectPreviewVideo(projectId: string, projectName: string) {
     },
     [projectId, projectName],
   );
+
+  useEffect(() => {
+    function onPlay(event: Event) {
+      const id = (event as CustomEvent<{ id?: string }>).detail?.id;
+      if (id !== projectId) return;
+      const video = videoRef.current;
+      if (video) {
+        video.preload = "auto";
+      }
+      void playVideo("tap");
+    }
+
+    window.addEventListener(VOICE_PLAY_DEMO_EVENT, onPlay);
+    return () => window.removeEventListener(VOICE_PLAY_DEMO_EVENT, onPlay);
+  }, [playVideo, projectId]);
 
   const toggleVideo = useCallback(() => {
     const video = videoRef.current;
