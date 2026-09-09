@@ -18,6 +18,7 @@ A fun yet functional portfolio that captures important aspects of my life in a n
 - Sound effects for UI interactions (toggleable, off by default on mobile)
 - SEO-ready — Open Graph image, sitemap, robots, and JSON-LD person schema
 - Agent-readable profile — `/llms.txt` index, `/llms-full.txt` markdown CV, `/api/about` JSON
+- Voice concierge — OpenAI Realtime mic plus typed Q&A that can scroll the page, focus projects, and answer from the CV
 - Fully responsive and accessible
 
 ## Tech Stack
@@ -50,6 +51,7 @@ REDIS_PASSWORD=...
 REDIS_HOST=...
 REDIS_PORT=...
 REDIS_TLS=false
+OPENAI_API_KEY=sk-...
 ```
 
 The canonical production URL is defined once in `src/data/portfolio.ts`. Metadata,
@@ -74,6 +76,10 @@ The Redis variables power the footer visitor counter. Set `REDIS_TLS=true`
 when the Redis Cloud database requires TLS. A one-year, HTTP-only cookie keeps
 ordinary page refreshes from incrementing the counter repeatedly in the same
 browser.
+
+`OPENAI_API_KEY` powers the desk intercom (bottom-right). It stays server-only:
+the browser receives a short-lived Realtime client secret, never the key.
+Without it the control still renders but Talk/Send stay disabled.
 
 ## Content
 
