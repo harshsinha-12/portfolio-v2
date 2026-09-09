@@ -16,7 +16,7 @@ let reserved: Window | null = null;
 let serial = 0;
 
 function isUsable(win: Window | null): win is Window {
-  return Boolean(win) && !win.closed;
+  return win != null && !win.closed;
 }
 
 function navigateWindow(win: Window, url: string) {
