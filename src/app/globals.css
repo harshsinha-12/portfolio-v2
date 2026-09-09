@@ -2619,6 +2619,14 @@ button.article-share__action {
   box-shadow: 0 0 0 2px var(--color-focus);
 }
 
+.voice-sheet__scroller {
+  min-height: 0;
+  overflow-y: scroll;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+}
+
 .voice-sheet__empty {
   max-width: 22rem;
   font-size: 0.8125rem;

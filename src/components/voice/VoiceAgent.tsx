@@ -22,6 +22,49 @@ const statusCopy: Record<VoiceStatus, string> = {
   error: "Try again",
 };
 
+function useBodyScrollLock(locked: boolean) {
+  useEffect(() => {
+    if (!locked) return;
+
+    const { body, documentElement } = document;
+    const scrollY = window.scrollY;
+    const previous = {
+      htmlOverflow: documentElement.style.overflow,
+      htmlOverscroll: documentElement.style.overscrollBehavior,
+      bodyOverflow: body.style.overflow,
+      bodyOverscroll: body.style.overscrollBehavior,
+      bodyPosition: body.style.position,
+      bodyTop: body.style.top,
+      bodyLeft: body.style.left,
+      bodyRight: body.style.right,
+      bodyWidth: body.style.width,
+    };
+
+    documentElement.style.overflow = "hidden";
+    documentElement.style.overscrollBehavior = "none";
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+
+    return () => {
+      documentElement.style.overflow = previous.htmlOverflow;
+      documentElement.style.overscrollBehavior = previous.htmlOverscroll;
+      body.style.overflow = previous.bodyOverflow;
+      body.style.overscrollBehavior = previous.bodyOverscroll;
+      body.style.position = previous.bodyPosition;
+      body.style.top = previous.bodyTop;
+      body.style.left = previous.bodyLeft;
+      body.style.right = previous.bodyRight;
+      body.style.width = previous.bodyWidth;
+      window.scrollTo({ top: scrollY, left: 0, behavior: "auto" });
+    };
+  }, [locked]);
+}
+
 export function VoiceAgent() {
   const [compose, setCompose] = useState(false);
   const [sheetHidden, setSheetHidden] = useState(false);
@@ -60,10 +103,15 @@ export function VoiceAgent() {
   const showCaption =
     status === "connecting" || isListening || status === "thinking" || status === "speaking";
 
+  useBodyScrollLock(showSheet);
+
   useEffect(() => {
     const node = scrollerRef.current;
     if (!node) return;
-    node.scrollTop = node.scrollHeight;
+    const fromBottom = node.scrollHeight - node.scrollTop - node.clientHeight;
+    if (fromBottom < 96) {
+      node.scrollTop = node.scrollHeight;
+    }
   }, [transcript, status, showSheet]);
 
   useEffect(() => {
@@ -113,7 +161,12 @@ export function VoiceAgent() {
   }
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex flex-col items-center px-3 sm:bottom-5">
+    <div
+      className={cn(
+        "fixed inset-x-0 bottom-4 z-50 flex flex-col items-center px-3 sm:bottom-5",
+        showSheet ? "pointer-events-auto" : "pointer-events-none",
+      )}
+    >
       <VoiceHint
         visible={hint.visible}
         onDismiss={hint.dismiss}
@@ -122,7 +175,7 @@ export function VoiceAgent() {
       {showSheet ? (
         <section
           aria-label="Conversation"
-          className="voice-sheet pointer-events-auto relative mb-2 w-[min(52rem,calc(100vw-1.5rem))] overflow-hidden rounded-[18px] border border-[var(--color-ink)]/10 bg-[var(--color-paper)] shadow-[3px_5px_0_var(--color-shadow)]"
+          className="voice-sheet pointer-events-auto relative mb-2 flex max-h-[min(28rem,58dvh)] w-[min(52rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-[18px] border border-[var(--color-ink)]/10 bg-[var(--color-paper)] shadow-[3px_5px_0_var(--color-shadow)]"
         >
           <button
             type="button"
@@ -134,7 +187,7 @@ export function VoiceAgent() {
           </button>
           <div
             ref={scrollerRef}
-            className="max-h-[min(28rem,58dvh)] overflow-y-auto px-4 py-4 pr-11"
+            className="voice-sheet__scroller min-h-0 flex-1 px-4 py-4 pr-11"
           >
             {transcript.length === 0 ? (
               <p className="voice-sheet__empty">
@@ -146,7 +199,7 @@ export function VoiceAgent() {
           </div>
           {compose ? (
             <form
-              className="flex items-center gap-1.5 border-t border-[var(--color-ink)]/8 px-3 py-2.5"
+              className="flex shrink-0 items-center gap-1.5 border-t border-[var(--color-ink)]/8 px-3 py-2.5"
               onSubmit={(event) => {
                 event.preventDefault();
                 if (messageLooksLikeOutbound(draft)) {
