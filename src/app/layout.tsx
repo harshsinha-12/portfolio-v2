@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Indie_Flower } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import { VoiceAgent } from "@/components/voice/VoiceAgent";
 import { siteConfig } from "@/data/portfolio";
 import { getSiteUrl } from "@/lib/siteUrl";
 import "./globals.css";
@@ -143,6 +144,7 @@ export default function RootLayout({
       <body className="min-h-full">
         {children}
         <Analytics />
+        <VoiceAgent />
       </body>
     </html>
   );
