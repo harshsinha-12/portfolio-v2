@@ -8,10 +8,6 @@ import { useVoiceLevels } from "@/components/voice/useVoiceLevels";
 import { VoiceSpinner, VoiceWaveform } from "@/components/voice/VoiceWaveform";
 import { VoiceHint, useVoiceHint } from "@/components/voice/VoiceHint";
 import { VoiceTranscript } from "@/components/voice/VoiceTranscript";
-import {
-  messageLooksLikeOutbound,
-  reserveOutboundWindow,
-} from "@/voice/functions/open-url";
 
 const statusCopy: Record<VoiceStatus, string> = {
   idle: "Tap to talk",
@@ -167,9 +163,6 @@ export function VoiceAgent() {
   }
 
   function startTalk() {
-    if (ready && !voiceActive) {
-      reserveOutboundWindow();
-    }
     void toggleTalk();
   }
 
@@ -222,9 +215,6 @@ export function VoiceAgent() {
               className="flex shrink-0 items-center gap-1.5 border-t border-[var(--color-ink)]/8 px-3 py-2.5"
               onSubmit={(event) => {
                 event.preventDefault();
-                if (messageLooksLikeOutbound(draft)) {
-                  reserveOutboundWindow();
-                }
                 void sendText(draft);
               }}
             >
