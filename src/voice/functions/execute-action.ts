@@ -110,16 +110,20 @@ export async function executeSiteAction(
       if (!url) {
         return result(action.type, false, `No ${action.kind} link for that project.`);
       }
-      const opened = openOutboundUrl(url);
-      await ensureHome(ctx, "#projects");
-      await focusDomTarget(projectDomId(action.projectId), "#projects");
+      const opened = openOutboundUrl(url, action.where ?? "tab");
+      if (opened.mode !== "same") {
+        await ensureHome(ctx, "#projects");
+        await focusDomTarget(projectDomId(action.projectId), "#projects");
+      }
       return result(
         action.type,
-        opened,
-        opened
-          ? `Opened ${action.kind} for ${action.projectId}.`
-          : `Could not open a new tab (popup blocked). The ${action.kind} URL is ${url} — tell the visitor to tap Open on the preview card.`,
-        { url },
+        opened.ok,
+        opened.ok
+          ? opened.mode === "same"
+            ? `Opened ${action.kind} for ${action.projectId} in this tab.`
+            : `Opened ${action.kind} for ${action.projectId} in a new tab.`
+          : `Could not open ${url}. Tell the visitor to tap Open on the preview card.`,
+        { url, mode: opened.mode },
       );
     }
     case "open_article": {
@@ -143,11 +147,13 @@ export async function executeSiteAction(
       const opened = openOutboundUrl(url);
       return result(
         action.type,
-        opened,
-        opened
-          ? "Opened the résumé."
-          : `Could not open a new tab (popup blocked). The résumé URL is ${url} — tell the visitor to tap Open on the preview card.`,
-        { url },
+        opened.ok,
+        opened.ok
+          ? opened.mode === "same"
+            ? "Opened the résumé in this tab."
+            : "Opened the résumé in a new tab."
+          : `Could not open ${url}. Tell the visitor to tap Open on the preview card.`,
+        { url, mode: opened.mode },
       );
     }
     case "open_contact": {
@@ -160,11 +166,13 @@ export async function executeSiteAction(
       const opened = openOutboundUrl(url);
       return result(
         action.type,
-        opened,
-        opened
-          ? `Opened ${action.kind}.`
-          : `Could not open a new tab (popup blocked). The ${action.kind} URL is ${url} — tell the visitor to tap Open on the preview card.`,
-        { url },
+        opened.ok,
+        opened.ok
+          ? opened.mode === "same"
+            ? `Opened ${action.kind} in this tab.`
+            : `Opened ${action.kind} in a new tab.`
+          : `Could not open ${url}. Tell the visitor to tap Open on the preview card.`,
+        { url, mode: opened.mode },
       );
     }
     case "go_home": {

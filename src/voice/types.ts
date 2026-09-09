@@ -18,6 +18,9 @@ export const PROJECT_LINK_KINDS = [
 
 export type ProjectLinkKind = (typeof PROJECT_LINK_KINDS)[number];
 
+export const OUTBOUND_WHERE = ["tab", "here"] as const;
+export type OutboundWhere = (typeof OUTBOUND_WHERE)[number];
+
 export const CONTACT_KINDS = [
   "linkedin",
   "github",
@@ -40,7 +43,7 @@ export type SiteAction =
   | { type: "focus_experience"; id: string }
   | { type: "focus_education"; id: string }
   | { type: "focus_achievement"; id: string }
-  | { type: "open_project_link"; projectId: string; kind: ProjectLinkKind }
+  | { type: "open_project_link"; projectId: string; kind: ProjectLinkKind; where?: OutboundWhere }
   | { type: "open_article"; slug: string }
   | { type: "open_articles_index" }
   | { type: "open_resume" }
