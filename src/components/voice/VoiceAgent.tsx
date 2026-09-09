@@ -22,49 +22,6 @@ const statusCopy: Record<VoiceStatus, string> = {
   error: "Try again",
 };
 
-function useBodyScrollLock(locked: boolean) {
-  useEffect(() => {
-    if (!locked) return;
-
-    const { body, documentElement } = document;
-    const scrollY = window.scrollY;
-    const previous = {
-      htmlOverflow: documentElement.style.overflow,
-      htmlOverscroll: documentElement.style.overscrollBehavior,
-      bodyOverflow: body.style.overflow,
-      bodyOverscroll: body.style.overscrollBehavior,
-      bodyPosition: body.style.position,
-      bodyTop: body.style.top,
-      bodyLeft: body.style.left,
-      bodyRight: body.style.right,
-      bodyWidth: body.style.width,
-    };
-
-    documentElement.style.overflow = "hidden";
-    documentElement.style.overscrollBehavior = "none";
-    body.style.overflow = "hidden";
-    body.style.overscrollBehavior = "none";
-    body.style.position = "fixed";
-    body.style.top = `-${scrollY}px`;
-    body.style.left = "0";
-    body.style.right = "0";
-    body.style.width = "100%";
-
-    return () => {
-      documentElement.style.overflow = previous.htmlOverflow;
-      documentElement.style.overscrollBehavior = previous.htmlOverscroll;
-      body.style.overflow = previous.bodyOverflow;
-      body.style.overscrollBehavior = previous.bodyOverscroll;
-      body.style.position = previous.bodyPosition;
-      body.style.top = previous.bodyTop;
-      body.style.left = previous.bodyLeft;
-      body.style.right = previous.bodyRight;
-      body.style.width = previous.bodyWidth;
-      window.scrollTo({ top: scrollY, left: 0, behavior: "auto" });
-    };
-  }, [locked]);
-}
-
 export function VoiceAgent() {
   const [compose, setCompose] = useState(false);
   const [sheetHidden, setSheetHidden] = useState(false);
@@ -84,6 +41,8 @@ export function VoiceAgent() {
     disconnect,
     sendText,
   } = useVoiceAgent({ speakTextReplies: true });
+  const dockRef = useRef<HTMLDivElement>(null);
+  const sheetRef = useRef<HTMLElement>(null);
   const scrollerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -103,7 +62,66 @@ export function VoiceAgent() {
   const showCaption =
     status === "connecting" || isListening || status === "thinking" || status === "speaking";
 
-  useBodyScrollLock(showSheet);
+  useEffect(() => {
+    if (!showSheet) {
+      document.documentElement.style.scrollPaddingBottom = "";
+      return;
+    }
+    const dock = dockRef.current;
+    if (!dock) return;
+
+    const apply = () => {
+      document.documentElement.style.scrollPaddingBottom = `${Math.ceil(dock.getBoundingClientRect().height + 12)}px`;
+    };
+    apply();
+    const observer = new ResizeObserver(apply);
+    observer.observe(dock);
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.scrollPaddingBottom = "";
+    };
+  }, [showSheet]);
+
+  useEffect(() => {
+    const pane = sheetRef.current;
+    const scroller = scrollerRef.current;
+    if (!showSheet || !pane) return;
+    const sheetNode: HTMLElement = pane;
+
+    let startY = 0;
+
+    function onTouchStart(event: TouchEvent) {
+      startY = event.touches[0]?.clientY ?? 0;
+    }
+
+    function onTouchMove(event: TouchEvent) {
+      if (event.touches.length !== 1) return;
+      const point = event.touches[0];
+      const target = event.target;
+      if (!point || !(target instanceof Node) || !sheetNode.contains(target)) return;
+
+      if (!scroller || !scroller.contains(target)) {
+        event.preventDefault();
+        return;
+      }
+
+      const delta = point.clientY - startY;
+      const { scrollTop, scrollHeight, clientHeight } = scroller;
+      const canScroll = scrollHeight > clientHeight + 1;
+      const atTop = scrollTop <= 0;
+      const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+      if (!canScroll || (atTop && delta > 0) || (atBottom && delta < 0)) {
+        event.preventDefault();
+      }
+    }
+
+    sheetNode.addEventListener("touchstart", onTouchStart, { passive: true });
+    sheetNode.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      sheetNode.removeEventListener("touchstart", onTouchStart);
+      sheetNode.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [showSheet]);
 
   useEffect(() => {
     const node = scrollerRef.current;
@@ -162,6 +180,7 @@ export function VoiceAgent() {
 
   return (
     <div
+      ref={dockRef}
       className={cn(
         "fixed inset-x-0 bottom-4 z-50 flex flex-col items-center px-3 sm:bottom-5",
         showSheet ? "pointer-events-auto" : "pointer-events-none",
@@ -174,6 +193,7 @@ export function VoiceAgent() {
       />
       {showSheet ? (
         <section
+          ref={sheetRef}
           aria-label="Conversation"
           className="voice-sheet pointer-events-auto relative mb-2 flex max-h-[min(28rem,58dvh)] w-[min(52rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-[18px] border border-[var(--color-ink)]/10 bg-[var(--color-paper)] shadow-[3px_5px_0_var(--color-shadow)]"
         >

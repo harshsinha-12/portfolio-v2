@@ -10,10 +10,23 @@ export function scrollToId(id: string, block: ScrollLogicalPosition = "center") 
   const element = document.getElementById(id);
   if (!element) return false;
 
-  element.scrollIntoView({
+  const html = document.documentElement;
+  const styles = getComputedStyle(html);
+  const paddingTop = Number.parseFloat(styles.scrollPaddingTop) || 0;
+  const paddingBottom = Number.parseFloat(styles.scrollPaddingBottom) || 0;
+  const visibleHeight = Math.max(0, window.innerHeight - paddingTop - paddingBottom);
+  const rect = element.getBoundingClientRect();
+  let nextTop = window.scrollY + rect.top - paddingTop;
+
+  if (block === "center") {
+    nextTop -= Math.max(0, (visibleHeight - rect.height) / 2);
+  } else if (block === "end") {
+    nextTop -= Math.max(0, visibleHeight - rect.height);
+  }
+
+  window.scrollTo({
+    top: Math.max(0, nextTop),
     behavior: prefersReducedMotion() ? "auto" : "smooth",
-    block,
-    inline: "nearest",
   });
   return true;
 }
