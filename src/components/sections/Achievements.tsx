@@ -26,6 +26,7 @@ import {
 } from "@/components/decor/Clothesline";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { VOICE_SHOW_ACHIEVEMENT_EVENT } from "@/voice/functions/events";
 
 const MOBILE_BREAKPOINT = "(max-width: 1023px)";
 const MOBILE_PAGE_SIZE = 2;
@@ -96,6 +97,7 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
 
   return (
     <Polaroid
+      id={`achievement-${item.id}`}
       rotation={rotation}
       imageClassName="aspect-[5/4] shrink-0"
       className="!flex h-full flex-col !pb-3 sm:!pb-4"
@@ -353,6 +355,19 @@ export function AchievementsSection() {
     },
     [isMobile, safePage, pageCount, transitioning, visible],
   );
+
+  useEffect(() => {
+    function onShow(event: Event) {
+      const id = (event as CustomEvent<{ id?: string }>).detail?.id;
+      if (!id) return;
+      const index = achievements.findIndex((item) => item.id === id);
+      if (index < 0) return;
+      setPage(Math.floor(index / pageSize));
+    }
+
+    window.addEventListener(VOICE_SHOW_ACHIEVEMENT_EVENT, onShow);
+    return () => window.removeEventListener(VOICE_SHOW_ACHIEVEMENT_EVENT, onShow);
+  }, [pageSize]);
 
   const handleTouchStart = useCallback((event: TouchEvent<HTMLDivElement>) => {
     if (transitioning) return;

@@ -202,7 +202,11 @@ function ProjectStory({
   const liveLinkDescription = ogPreview?.description ?? project.content;
 
   return (
-    <article className={cn("min-w-0", className)}>
+    <article
+      id={`project-${project.id}`}
+      data-voice-target="true"
+      className={cn("min-w-0 scroll-mt-24", className)}
+    >
       <div className="relative px-1 pt-2">
         <PushPin className="top-0 left-[58%]" />
         <ProjectPreview project={project} shape={shape} />

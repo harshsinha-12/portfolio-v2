@@ -177,7 +177,11 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
     exp.positions.map((position) => position.duration),
   );
   return (
-    <article className={timelineArticleClass}>
+    <article
+      id={exp.id}
+      data-voice-target="true"
+      className={`${timelineArticleClass} scroll-mt-24`}
+    >
       <TimelineRailColumn icon={exp.logo} />
 
       <div className="min-w-0 flex-1">
@@ -235,7 +239,11 @@ function EducationItem({ edu }: { edu: (typeof educationList)[number] }) {
   const tenure = totalTenureFromDurations([edu.duration]);
 
   return (
-    <article className={timelineArticleClass}>
+    <article
+      id={edu.id}
+      data-voice-target="true"
+      className={`${timelineArticleClass} scroll-mt-24`}
+    >
       <TimelineRailColumn icon={edu.icon} />
 
       <div className="min-w-0 flex-1">

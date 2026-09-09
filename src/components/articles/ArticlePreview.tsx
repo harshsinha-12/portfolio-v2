@@ -11,7 +11,7 @@ import type { ArticleSummary } from "@/types/articles";
 
 type ArticlePreviewProps = {
   article: ArticleSummary;
-  variant?: "home" | "index";
+  variant?: "home" | "index" | "voice";
 };
 
 function formatDate(date: string) {
@@ -32,6 +32,7 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
   const linkedInUrl =
     article.social.linkedin ??
     `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`;
+  const inVoiceSheet = variant === "voice";
 
   function trackArticleOpen() {
     track("article_opened", {
@@ -42,7 +43,11 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
   }
 
   return (
-    <article className={`article-preview article-preview--${variant}`}>
+    <article
+      id={inVoiceSheet ? undefined : `article-${article.slug}`}
+      data-voice-target={inVoiceSheet ? undefined : "true"}
+      className={`article-preview article-preview--${variant}`}
+    >
       <Link
         className="article-preview__media"
         href={articleUrl}
@@ -55,9 +60,11 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
           width={1200}
           height={630}
           sizes={
-            variant === "home"
-              ? "(max-width: 700px) 100vw, 360px"
-              : "(max-width: 700px) 100vw, 380px"
+            inVoiceSheet
+              ? "320px"
+              : variant === "home"
+                ? "(max-width: 700px) 100vw, 360px"
+                : "(max-width: 700px) 100vw, 380px"
           }
         />
       </Link>
@@ -69,10 +76,7 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
           {article.draft ? <span className="article-preview__draft">Local draft</span> : null}
         </div>
         <h3>
-          <Link
-            href={articleUrl}
-            onClick={trackArticleOpen}
-          >
+          <Link href={articleUrl} onClick={trackArticleOpen}>
             {article.title}
           </Link>
         </h3>
@@ -81,54 +85,56 @@ export function ArticlePreview({ article, variant = "home" }: ArticlePreviewProp
           <Link className="article-preview__read" href={articleUrl} onClick={trackArticleOpen}>
             Read article <FiArrowUpRight aria-hidden="true" />
           </Link>
-          <div className="article-preview__socials" aria-label="Article social links">
-            <a
-              href={xUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={
-                article.social.twitter
-                  ? `Open the original ${article.title} post on X`
-                  : `Share ${article.title} on X`
-              }
-              title={article.social.twitter ? "Original X post" : "Share on X"}
-              onClick={() =>
-                trackOutboundClick(xUrl, {
-                  kind: article.social.twitter ? "article_original_post" : "article_share",
-                  platform: "twitter",
-                  slug: article.slug,
-                  article_title: article.title,
-                  placement: `${variant}_article_preview`,
-                })
-              }
-            >
-              <FaXTwitter aria-hidden="true" />
-              <span>{article.social.twitter ? "X post" : "Share"}</span>
-            </a>
-            <a
-              href={linkedInUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={
-                article.social.linkedin
-                  ? `Open the original ${article.title} post on LinkedIn`
-                  : `Share ${article.title} on LinkedIn`
-              }
-              title={article.social.linkedin ? "Original LinkedIn post" : "Share on LinkedIn"}
-              onClick={() =>
-                trackOutboundClick(linkedInUrl, {
-                  kind: article.social.linkedin ? "article_original_post" : "article_share",
-                  platform: "linkedin",
-                  slug: article.slug,
-                  article_title: article.title,
-                  placement: `${variant}_article_preview`,
-                })
-              }
-            >
-              <AiFillLinkedin aria-hidden="true" />
-              <span>{article.social.linkedin ? "LinkedIn" : "Share"}</span>
-            </a>
-          </div>
+          {inVoiceSheet ? null : (
+            <div className="article-preview__socials" aria-label="Article social links">
+              <a
+                href={xUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={
+                  article.social.twitter
+                    ? `Open the original ${article.title} post on X`
+                    : `Share ${article.title} on X`
+                }
+                title={article.social.twitter ? "Original X post" : "Share on X"}
+                onClick={() =>
+                  trackOutboundClick(xUrl, {
+                    kind: article.social.twitter ? "article_original_post" : "article_share",
+                    platform: "twitter",
+                    slug: article.slug,
+                    article_title: article.title,
+                    placement: `${variant}_article_preview`,
+                  })
+                }
+              >
+                <FaXTwitter aria-hidden="true" />
+                <span>{article.social.twitter ? "X post" : "Share"}</span>
+              </a>
+              <a
+                href={linkedInUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={
+                  article.social.linkedin
+                    ? `Open the original ${article.title} post on LinkedIn`
+                    : `Share ${article.title} on LinkedIn`
+                }
+                title={article.social.linkedin ? "Original LinkedIn post" : "Share on LinkedIn"}
+                onClick={() =>
+                  trackOutboundClick(linkedInUrl, {
+                    kind: article.social.linkedin ? "article_original_post" : "article_share",
+                    platform: "linkedin",
+                    slug: article.slug,
+                    article_title: article.title,
+                    placement: `${variant}_article_preview`,
+                  })
+                }
+              >
+                <AiFillLinkedin aria-hidden="true" />
+                <span>{article.social.linkedin ? "LinkedIn" : "Share"}</span>
+              </a>
+            </div>
+          )}
         </div>
       </div>
     </article>

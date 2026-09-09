@@ -12,6 +12,7 @@ type PolaroidProps = {
   captionClassName?: string;
   rotation?: number;
   pinned?: boolean;
+  id?: string;
 };
 
 export function Polaroid({
@@ -24,9 +25,12 @@ export function Polaroid({
   captionClassName,
   rotation = -2,
   pinned = false,
+  id,
 }: PolaroidProps) {
   return (
     <div
+      id={id}
+      data-voice-target={id ? true : undefined}
       className={cn(
         "relative w-full bg-[var(--color-paper)] p-1.5 pb-5 shadow-[4px_6px_0_var(--color-shadow)] sm:p-2 sm:pb-6",
         className,
