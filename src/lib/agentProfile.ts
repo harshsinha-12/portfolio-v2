@@ -98,6 +98,7 @@ export function getAgentProfile() {
       url: edu.link,
     })),
     projects: projects.map((project) => ({
+      id: project.id,
       title: project.title,
       summary: project.content,
       highlight: project.highlight,
