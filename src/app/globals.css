@@ -2619,6 +2619,108 @@ button.article-share__action {
   box-shadow: 0 0 0 2px var(--color-focus);
 }
 
+.voice-sheet__empty {
+  max-width: 22rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-ink-muted);
+}
+
+.voice-log {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.voice-turn {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  column-gap: 0.7rem;
+  row-gap: 0.42rem;
+  align-items: start;
+}
+
+.voice-turn + .voice-turn {
+  padding-top: 1.15rem;
+  border-top: 1px dashed color-mix(in oklch, var(--color-ink) 12%, transparent);
+}
+
+.voice-turn__avatar {
+  grid-column: 1;
+  grid-row: 1;
+  display: inline-flex;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+
+.voice-turn__avatar--you {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.voice-turn__avatar--agent {
+  border: 1px solid color-mix(in oklch, var(--color-accent) 42%, transparent);
+  background: color-mix(in oklch, var(--color-accent) 16%, var(--color-paper));
+  color: var(--color-accent-hover);
+}
+
+.voice-turn__who {
+  grid-column: 2;
+  grid-row: 1;
+  min-height: 1.5rem;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-hand);
+  font-size: 1.05rem;
+  line-height: 1;
+  color: var(--color-ink);
+}
+
+.voice-turn__body {
+  grid-column: 2;
+  grid-row: 2;
+  display: flex;
+  max-width: 40rem;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.voice-turn__ask {
+  width: fit-content;
+  max-width: 100%;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: color-mix(in oklch, var(--color-marker) 48%, transparent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.28em 0.5em;
+  border-radius: 6px;
+}
+
+.voice-turn__reply {
+  font-size: 0.8125rem;
+  font-weight: 450;
+  line-height: 1.62;
+  color: var(--color-ink);
+}
+
+.voice-turn__note {
+  font-size: 0.72rem;
+  font-style: italic;
+  line-height: 1.45;
+  color: var(--color-ink-subtle);
+}
+
+.voice-turn .voice-preview,
+.voice-turn .article-preview--voice {
+  margin-block: 0.4rem;
+}
+
 .voice-spinner {
   position: relative;
   display: block;

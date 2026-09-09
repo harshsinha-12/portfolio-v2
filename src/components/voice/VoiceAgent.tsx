@@ -7,7 +7,11 @@ import { useVoiceAgent, type VoiceStatus } from "@/components/voice/useVoiceAgen
 import { useVoiceLevels } from "@/components/voice/useVoiceLevels";
 import { VoiceSpinner, VoiceWaveform } from "@/components/voice/VoiceWaveform";
 import { VoiceHint, useVoiceHint } from "@/components/voice/VoiceHint";
-import { VoicePreviewCard } from "@/components/voice/VoicePreviewCard";
+import { VoiceTranscript } from "@/components/voice/VoiceTranscript";
+import {
+  messageLooksLikeOutbound,
+  reserveOutboundWindow,
+} from "@/voice/functions/open-url";
 
 const statusCopy: Record<VoiceStatus, string> = {
   idle: "Tap to talk",
@@ -59,12 +63,6 @@ export function VoiceAgent() {
   useEffect(() => {
     const node = scrollerRef.current;
     if (!node) return;
-    const cards = node.querySelectorAll(".voice-preview, .article-preview--voice");
-    const lastCard = cards[cards.length - 1];
-    if (lastCard instanceof HTMLElement) {
-      lastCard.scrollIntoView({ block: "start", inline: "nearest" });
-      return;
-    }
     node.scrollTop = node.scrollHeight;
   }, [transcript, status, showSheet]);
 
@@ -102,9 +100,16 @@ export function VoiceAgent() {
     await connect();
   }
 
+  function startTalk() {
+    if (ready && !voiceActive) {
+      reserveOutboundWindow();
+    }
+    void toggleTalk();
+  }
+
   function tryTalkFromHint() {
     hint.dismiss();
-    void toggleTalk();
+    startTalk();
   }
 
   return (
@@ -116,50 +121,37 @@ export function VoiceAgent() {
       />
       {showSheet ? (
         <section
-          aria-label="Voice transcript"
+          aria-label="Conversation"
           className="voice-sheet pointer-events-auto relative mb-2 w-[min(52rem,calc(100vw-1.5rem))] overflow-hidden rounded-[18px] border border-[var(--color-ink)]/10 bg-[var(--color-paper)] shadow-[3px_5px_0_var(--color-shadow)]"
         >
           <button
             type="button"
             onClick={hideSheet}
             aria-label="Hide transcript"
-            className="voice-sheet__close absolute top-2 right-2 z-10 inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-ink)]/6 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+            className="voice-sheet__close absolute top-2.5 right-2.5 z-10 inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-ink)]/6 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           >
             <X size={14} strokeWidth={2.4} />
           </button>
           <div
             ref={scrollerRef}
-            className="max-h-[min(26rem,56dvh)] space-y-2 overflow-y-auto px-3 py-3 pr-10"
+            className="max-h-[min(28rem,58dvh)] overflow-y-auto px-4 py-4 pr-11"
           >
             {transcript.length === 0 ? (
-              <p className="text-[12px] leading-snug text-[var(--color-ink-muted)]">
+              <p className="voice-sheet__empty">
                 Ask what Harsh builds, or say “open RecoveryOS.”
               </p>
             ) : (
-              transcript.map((item) =>
-                item.preview ? (
-                  <VoicePreviewCard key={item.id} preview={item.preview} />
-                ) : (
-                  <p
-                    key={item.id}
-                    className={cn(
-                      "text-[12px] leading-snug",
-                      item.role === "user" && "text-[var(--color-ink)]",
-                      item.role === "assistant" && "text-[var(--color-ink-muted)]",
-                      item.role === "system" && "text-[var(--color-accent-hover)]",
-                    )}
-                  >
-                    {item.text}
-                  </p>
-                ),
-              )
+              <VoiceTranscript items={transcript} />
             )}
           </div>
           {compose ? (
             <form
-              className="flex items-center gap-1.5 border-t border-[var(--color-ink)]/8 px-2.5 py-2"
+              className="flex items-center gap-1.5 border-t border-[var(--color-ink)]/8 px-3 py-2.5"
               onSubmit={(event) => {
                 event.preventDefault();
+                if (messageLooksLikeOutbound(draft)) {
+                  reserveOutboundWindow();
+                }
                 void sendText(draft);
               }}
             >
@@ -201,7 +193,7 @@ export function VoiceAgent() {
       <div className="pointer-events-auto flex items-center gap-2">
         <button
           type="button"
-          onClick={() => void toggleTalk()}
+          onClick={() => startTalk()}
           disabled={configured === null}
           aria-label={isListening ? "Listening. Tap to stop voice." : voiceActive ? "Stop voice" : "Start voice"}
           aria-pressed={voiceActive}

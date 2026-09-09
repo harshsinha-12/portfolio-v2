@@ -5,7 +5,7 @@ import type { SiteToolDefinition } from "@/voice/types";
 export const focusExperienceTool: SiteToolDefinition = {
   name: "focus_experience",
   description:
-    "Scroll to a work experience entry on the homepage. Use for Multibagg or other listed roles.",
+    "Scroll to a work experience entry on the homepage and expand its details. Use for Multibagg or other listed roles.",
   parameters: {
     type: "object",
     properties: {

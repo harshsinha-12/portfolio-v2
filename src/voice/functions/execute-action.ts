@@ -1,8 +1,10 @@
 import {
+  dispatchExpandExperience,
   dispatchPlayProjectDemo,
   dispatchShowAchievement,
 } from "@/voice/functions/events";
 import { focusDomTarget, scrollToId } from "@/voice/functions/highlight-target";
+import { openOutboundUrl } from "@/voice/functions/open-url";
 import { getContactUrl, getProjectLink } from "@/voice/functions/site-catalog";
 import {
   achievementDomId,
@@ -15,10 +17,6 @@ import type { ActionContext, ActionResult, SiteAction } from "@/voice/types";
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
-
-function openUrl(url: string) {
-  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 async function ensureHome(ctx: ActionContext, hash?: string) {
@@ -47,6 +45,10 @@ export async function executeSiteAction(
   switch (action.type) {
     case "scroll_to_section": {
       await ensureHome(ctx, `#${action.id}`);
+      if (action.id === "experience") {
+        dispatchExpandExperience();
+        await new Promise((resolve) => window.setTimeout(resolve, 80));
+      }
       const ok = await focusDomTarget(action.id, `#${action.id}`);
       return result(
         action.type,
@@ -69,6 +71,8 @@ export async function executeSiteAction(
     case "focus_experience": {
       const id = experienceDomId(action.id);
       await ensureHome(ctx, "#experience");
+      dispatchExpandExperience(action.id);
+      await new Promise((resolve) => window.setTimeout(resolve, 80));
       const ok = await focusDomTarget(id, "#experience");
       return result(
         action.type,
@@ -106,12 +110,17 @@ export async function executeSiteAction(
       if (!url) {
         return result(action.type, false, `No ${action.kind} link for that project.`);
       }
+      const opened = openOutboundUrl(url);
       await ensureHome(ctx, "#projects");
       await focusDomTarget(projectDomId(action.projectId), "#projects");
-      openUrl(url);
-      return result(action.type, true, `Opened ${action.kind} for ${action.projectId}.`, {
-        url,
-      });
+      return result(
+        action.type,
+        opened,
+        opened
+          ? `Opened ${action.kind} for ${action.projectId}.`
+          : `Could not open a new tab (popup blocked). The ${action.kind} URL is ${url} — tell the visitor to tap Open on the preview card.`,
+        { url },
+      );
     }
     case "open_article": {
       await ctx.navigate(`/articles/${action.slug}`);
@@ -131,18 +140,32 @@ export async function executeSiteAction(
     case "open_resume": {
       const url = getContactUrl("resume");
       if (!url) return result(action.type, false, "Résumé link is missing.");
-      openUrl(url);
-      return result(action.type, true, "Opened the résumé.", { url });
+      const opened = openOutboundUrl(url);
+      return result(
+        action.type,
+        opened,
+        opened
+          ? "Opened the résumé."
+          : `Could not open a new tab (popup blocked). The résumé URL is ${url} — tell the visitor to tap Open on the preview card.`,
+        { url },
+      );
     }
     case "open_contact": {
       const url = getContactUrl(action.kind);
       if (!url) return result(action.type, false, `No ${action.kind} link.`);
       if (action.kind === "email") {
         window.location.href = url;
-      } else {
-        openUrl(url);
+        return result(action.type, true, "Opened email.", { url });
       }
-      return result(action.type, true, `Opened ${action.kind}.`, { url });
+      const opened = openOutboundUrl(url);
+      return result(
+        action.type,
+        opened,
+        opened
+          ? `Opened ${action.kind}.`
+          : `Could not open a new tab (popup blocked). The ${action.kind} URL is ${url} — tell the visitor to tap Open on the preview card.`,
+        { url },
+      );
     }
     case "go_home": {
       await ctx.navigate("/");

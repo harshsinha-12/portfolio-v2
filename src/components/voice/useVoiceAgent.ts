@@ -9,6 +9,7 @@ import {
   stopMediaStream,
 } from "@/voice/functions/capture-microphone";
 import { executeSiteAction } from "@/voice/functions/execute-action";
+import { releaseUnusedOutboundWindow, reserveOutboundWindow } from "@/voice/functions/open-url";
 import { previewFromAction } from "@/voice/functions/preview-from-action";
 import { parseSiteAction } from "@/voice/tools";
 import { connectRealtimeSession, type RealtimeConnection } from "@/voice/realtime/connect";
@@ -316,10 +317,12 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
     setLive(false);
     setStatus("idle");
     stopSpeech();
+    releaseUnusedOutboundWindow();
   }, [micStream, stopSpeech]);
 
   const connect = useCallback(async () => {
     if (connectionRef.current || status === "connecting") return;
+    reserveOutboundWindow();
     setError(null);
     setStatus("connecting");
     let stream: MediaStream | null = null;
@@ -357,6 +360,7 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
       stopMediaStream(stream);
       setMicStream(null);
       setRemoteStream(null);
+      releaseUnusedOutboundWindow();
       const message = caught instanceof Error ? caught.message : "Could not start voice";
       setError(message);
       setStatus("error");
@@ -386,6 +390,8 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
         const message = caught instanceof Error ? caught.message : "Could not answer";
         setError(message);
         setStatus("error");
+      } finally {
+        releaseUnusedOutboundWindow();
       }
     },
     [appendTranscript, runTextLoop, stopSpeech],
@@ -396,6 +402,7 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
       connectionRef.current?.close();
       stopMediaStream(micStreamRef.current);
       stopSpeech();
+      releaseUnusedOutboundWindow();
     };
   }, [stopSpeech]);
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import {
   educationList,
@@ -23,6 +23,7 @@ import {
 } from "@/lib/tenure";
 import { cn } from "@/lib/utils";
 import { track } from "@/lib/analytics";
+import { VOICE_EXPAND_EXPERIENCE_EVENT } from "@/voice/functions/events";
 
 const timelineArticleClass =
   "relative flex gap-3 [--logo-w:2.25rem] [--logo-gap:0.5rem] [--row-gap:0.75rem] sm:gap-3.5 sm:[--logo-w:2.5rem] sm:[--logo-gap:0.625rem] sm:[--row-gap:0.875rem]";
@@ -161,6 +162,18 @@ function ExpandedPositionContent({ content }: { content: ContentBlock[] }) {
 
 function ExperienceCompany({ exp }: { exp: Experience }) {
   const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    function onExpand(event: Event) {
+      const targetId = (event as CustomEvent<{ id?: string }>).detail?.id;
+      if (targetId && targetId !== exp.id) return;
+      setExpanded(true);
+    }
+
+    window.addEventListener(VOICE_EXPAND_EXPERIENCE_EVENT, onExpand);
+    return () => window.removeEventListener(VOICE_EXPAND_EXPERIENCE_EVENT, onExpand);
+  }, [exp.id]);
+
   const latest = exp.positions[0];
   const summary =
     latest?.content[0]?.segments != null
