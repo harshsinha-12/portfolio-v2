@@ -835,6 +835,23 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    id: "lidar-room-capture",
+    title: "LiDAR Room Capture",
+    github: "https://github.com/harshsinha-12/assignment-cozmo",
+    image: "/assets/lidar-room-capture.webp",
+    content:
+      "A local pipeline that turns iPhone photos, video, or LiDAR into a metric FloorPlan — walls, openings, ceilings, damage, and a confidence interval on every measurement.",
+    highlight:
+      "Cozmo AI take-home · geometry owns centimetres, the LLM cannot write wall lengths",
+    stack: [
+      { name: "Python" },
+      { name: "Swift" },
+      { name: "OpenAI" },
+      { name: "OpenCV" },
+      { name: "NumPy" },
+    ],
+  },
+  {
     id: "recovery-os",
     title: "RecoveryOS",
     github: "https://github.com/harshsinha-12/rzpy-agent",

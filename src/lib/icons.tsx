@@ -20,6 +20,7 @@ import {
   SiJquery,
   SiNextdotjs,
   SiNodedotjs,
+  SiOpencv,
   SiPostgresql,
   SiPrisma,
   SiPython,
@@ -54,6 +55,7 @@ import {
   SiVercel,
   SiVitest,
   SiScikitlearn,
+  SiSwift,
   SiZod,
 } from "react-icons/si";
 import { FaHardHat, FaRust } from "react-icons/fa";
@@ -96,6 +98,8 @@ export const stackIconMap: Record<string, IconType> = {
   "Twitter API": FaXTwitter,
   "Google Cloud Platform": SiGooglecloud,
   OpenAI: RiOpenaiFill,
+  OpenCV: SiOpencv,
+  Swift: SiSwift,
   Fastify: SiFastify,
   FFmpeg: SiFfmpeg,
   GitHub: SiGithub,

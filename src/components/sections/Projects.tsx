@@ -277,6 +277,7 @@ function getProject(id: string) {
 
 export function ProjectsSection() {
   const recoveryOs = getProject("recovery-os");
+  const lidarRoomCapture = getProject("lidar-room-capture");
   const tradingArena = getProject("llm-trading-arena-frontend");
   const vritta = getProject("vritta-ai");
   const creativeIntelligence = getProject("instagram-creative-intelligence");
@@ -336,6 +337,7 @@ export function ProjectsSection() {
           <section className="project-storyboard-chapter project-storyboard-chapter--last xl:pl-6">
             <ChapterHeading number="3">Agents &amp; automation</ChapterHeading>
             <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-1">
+              <ProjectStory project={lidarRoomCapture} shape="wide" />
               <ProjectStory project={creativeIntelligence} shape="wide" />
               <ProjectStory project={goRabbit} shape="wide" />
             </div>
