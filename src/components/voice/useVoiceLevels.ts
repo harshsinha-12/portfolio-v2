@@ -13,7 +13,6 @@ export function useVoiceLevels(stream: MediaStream | null, enabled: boolean) {
 
   useEffect(() => {
     if (!stream || !enabled) {
-      setLevels(emptyLevels());
       return;
     }
 
@@ -57,6 +56,7 @@ export function useVoiceLevels(stream: MediaStream | null, enabled: boolean) {
       window.cancelAnimationFrame(frame);
       source.disconnect();
       void audioContext.close();
+      setLevels(emptyLevels());
     };
   }, [enabled, stream]);
 

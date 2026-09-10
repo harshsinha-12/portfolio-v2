@@ -88,9 +88,9 @@ export function useVoiceHint(suppressed: boolean) {
 
   useEffect(() => {
     const stored = window.localStorage.getItem(STORAGE_KEY) === "1";
-    setDismissed(stored);
     const timer = window.setTimeout(() => {
       setReady(true);
+      setDismissed(stored);
       if (!stored) {
         track("voice_hint_shown");
       }

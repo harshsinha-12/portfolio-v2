@@ -104,6 +104,16 @@
     "fallback": "assets/cert-jpmorgan-forage.webp"
   },
   {
+    "href": "https://github.com/harshsinha-12/dev-sweep",
+    "image": "github-dev-sweep.webp",
+    "fallback": "assets/devsweep.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/dev-sweep#readme",
+    "image": "github-dev-sweep.webp",
+    "fallback": "assets/devsweep.webp"
+  },
+  {
     "href": "https://github.com/harshsinha-12/assignment-cozmo",
     "image": "github-assignment-cozmo.webp",
     "fallback": "assets/lidar-room-capture.webp"
