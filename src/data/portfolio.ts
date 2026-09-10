@@ -405,6 +405,7 @@ export const techStack: ProjectStackItem[] = [
   { name: "TypeScript" },
   { name: "JavaScript" },
   { name: "Python" },
+  { name: "Swift" },
   { name: "React" },
   { name: "Next.js" },
   { name: "Node.js" },
@@ -493,7 +494,7 @@ export const techWorkshopMap = {
       { name: "Jest" }, { name: "Vitest" }, { name: "Git" },
       { name: "GitHub" }, { name: "C++" }, { name: "OOP" },
       { name: "Azure" }, { name: "Grafana" }, { name: "Razorpay" },
-      { name: "FFmpeg" },
+      { name: "FFmpeg" }, { name: "Swift" },
     ],
   },
 } satisfies Record<string, TechWorkshopGroup>;
@@ -834,6 +835,21 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    id: "devsweep",
+    title: "DevSweep",
+    github: "https://github.com/harshsinha-12/dev-sweep",
+    readme: "https://github.com/harshsinha-12/dev-sweep#readme",
+    image: "/assets/devsweep.webp",
+    content:
+      "A native macOS utility that finds regeneratable developer files — node_modules, build caches, DerivedData — explains why each folder was detected, and moves only the items you approve to Trash.",
+    highlight: "Native SwiftUI · Trash-only cleanup, never rm -rf",
+    stack: [
+      { name: "Swift" },
+      { name: "SwiftUI" },
+      { name: "macOS" },
+    ],
+  },
   {
     id: "lidar-room-capture",
     title: "LiDAR Room Capture",

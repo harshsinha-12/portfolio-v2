@@ -278,6 +278,7 @@ function getProject(id: string) {
 export function ProjectsSection() {
   const recoveryOs = getProject("recovery-os");
   const lidarRoomCapture = getProject("lidar-room-capture");
+  const devSweep = getProject("devsweep");
   const tradingArena = getProject("llm-trading-arena-frontend");
   const vritta = getProject("vritta-ai");
   const creativeIntelligence = getProject("instagram-creative-intelligence");
@@ -298,7 +299,8 @@ export function ProjectsSection() {
         <div className="grid gap-10 xl:grid-cols-[0.9fr_1.55fr_1.1fr] xl:gap-0">
           <section className="project-storyboard-chapter project-storyboard-chapter--first xl:pr-6">
             <ChapterHeading number="1">Ship &amp; recover</ChapterHeading>
-            <ProjectStory project={recoveryOs} />
+            <ProjectStory project={devSweep} shape="wide" />
+            <ProjectStory project={recoveryOs} className="mt-8" />
             <PencilNote
               icon={PiArrowBendUpRightThin}
               className="mt-8 max-w-[17rem] -rotate-2"

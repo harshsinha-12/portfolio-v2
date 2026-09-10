@@ -5,7 +5,7 @@ import type { SiteAction, VoicePreview } from "@/voice/types";
 export const sectionBlurbs: Record<string, string> = {
   profile: "Who Harsh is, what he’s looking for, and how to reach him.",
   experience: "Multibagg AI, Founder's Office & AI Engineer, plus IIT Patna.",
-  projects: "RecoveryOS, LiDAR Room Capture, Trading Arena, Vritta, and more.",
+  projects: "DevSweep, RecoveryOS, LiDAR Room Capture, Trading Arena, and more.",
   "tech-stack": "The workshop map — product, data, agents, and delivery.",
   hackathons: "Olympiads, hackathons, and certifications on the clothesline.",
   articles: "Field notes on agents, backend, and building in public.",
