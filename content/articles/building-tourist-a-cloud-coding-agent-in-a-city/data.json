@@ -1,0 +1,416 @@
+{
+  "dataNote": "Cursor figures are from published Cursor research. Token composition and context scores are teaching illustrations, not Tourist measurements. Tourist has not shipped yet.",
+  "mcpTokenSeries": [
+    { "key": "tokens", "label": "Relative total agent tokens", "color": "#b65332" }
+  ],
+  "mcpTokenUsage": [
+    { "setup": "MCP tools always loaded", "tokens": 100 },
+    { "setup": "Tool descriptions as files", "tokens": 53.1 }
+  ],
+  "semsearchSeries": [
+    { "key": "lift", "label": "Question accuracy lift", "color": "#356b51" }
+  ],
+  "semsearchLift": [
+    { "model": "Lowest model in Cursor's set", "lift": 6.5 },
+    { "model": "Average across models", "lift": 12.5 },
+    { "model": "Highest model in Cursor's set", "lift": 23.5 }
+  ],
+  "contextCompositionSeries": [
+    { "key": "statusAndTree", "label": "Repo status / tree", "color": "#356b51" },
+    { "key": "retrievedCode", "label": "Retrieved code", "color": "#4a8c6a" },
+    { "key": "memories", "label": "Memories", "color": "#88619a" },
+    { "key": "toolSchemas", "label": "Tool schemas", "color": "#b65332" },
+    { "key": "history", "label": "History / summaries", "color": "#c4893a" }
+  ],
+  "contextComposition": [
+    {
+      "strategy": "Static dump",
+      "statusAndTree": 12000,
+      "retrievedCode": 8000,
+      "memories": 5000,
+      "toolSchemas": 14000,
+      "history": 9000
+    },
+    {
+      "strategy": "Dynamic discovery",
+      "statusAndTree": 300,
+      "retrievedCode": 3500,
+      "memories": 800,
+      "toolSchemas": 900,
+      "history": 4500
+    }
+  ],
+  "contextScoreSeries": [
+    { "key": "score", "label": "Illustrative context score", "color": "#b65332" }
+  ],
+  "contextScores": [
+    { "file": "auth.ts", "score": 416.5 },
+    { "file": "session.ts", "score": 146.7 },
+    { "file": "README.md", "score": 10.6 }
+  ],
+  "contextScoreInputs": [
+    {
+      "File": "auth.ts",
+      "Tokens": "1,800",
+      "Relevance": "0.98",
+      "Expected usefulness": "0.90",
+      "Confidence": "0.85",
+      "Score × 1,000,000": "416.5"
+    },
+    {
+      "File": "session.ts",
+      "Tokens": "2,400",
+      "Relevance": "0.71",
+      "Expected usefulness": "0.62",
+      "Confidence": "0.80",
+      "Score × 1,000,000": "146.7"
+    },
+    {
+      "File": "README.md",
+      "Tokens": "7,000",
+      "Relevance": "0.31",
+      "Expected usefulness": "0.40",
+      "Confidence": "0.60",
+      "Score × 1,000,000": "10.6"
+    }
+  ],
+  "cursorOnlineAb": [
+    {
+      "Metric": "Code retention, all agent queries",
+      "Reported change": "+0.3% with semantic search",
+      "Caveat": "Many queries do not need search"
+    },
+    {
+      "Metric": "Code retention, repos with 1,000+ files",
+      "Reported change": "+2.6% with semantic search",
+      "Caveat": "Larger effect on large codebases"
+    },
+    {
+      "Metric": "Dissatisfied follow-up requests",
+      "Reported change": "+2.2% when semantic search was removed",
+      "Caveat": "Measured across all agent queries"
+    }
+  ],
+  "whatTouristIs": [
+    {
+      "Layer": "Context engine",
+      "Job": "Start light; pull files, logs, skills, and memories on demand",
+      "Not this": "Paste the repo tree, tool catalog, and chat history into every prompt"
+    },
+    {
+      "Layer": "Scoped memory",
+      "Job": "Remember user, repo, and task lessons with promotion rules",
+      "Not this": "A global junk drawer the agent can write into freely"
+    },
+    {
+      "Layer": "Trajectories and rewards",
+      "Job": "Log every completed run with reward_v1 from day one",
+      "Not this": "Train GPT weights, or reconstruct traces later from vibes"
+    },
+    {
+      "Layer": "Generated city",
+      "Job": "Turn a run into a shareable spatial report, then later a live world",
+      "Not this": "A dashboard skin, or a claim that the city is already autonomous"
+    }
+  ],
+  "stack": [
+    {
+      "Layer": "Web + city",
+      "Choice": "Next.js, React, Tailwind, React Three Fiber",
+      "Why": "One frontend language; R3F keeps a Three.js scene inside React"
+    },
+    {
+      "Layer": "API",
+      "Choice": "Fastify + TypeScript",
+      "Why": "Control plane for GitHub, events, and auth"
+    },
+    {
+      "Layer": "Agent runtime",
+      "Choice": "Python + OpenAI Agents SDK",
+      "Why": "Python-first SDK, Responses API, native sandbox execution"
+    },
+    {
+      "Layer": "Sandboxes",
+      "Choice": "Daytona",
+      "Why": "Isolated cloud workspaces, pause/resume, first-class Agents SDK client"
+    },
+    {
+      "Layer": "GitHub",
+      "Choice": "GitHub App + Octokit",
+      "Why": "PRs are the delivery primitive, not chat transcripts"
+    },
+    {
+      "Layer": "Primary DB",
+      "Choice": "Postgres (Neon)",
+      "Why": "Source of truth for tasks, trajectories, memory records, reports"
+    },
+    {
+      "Layer": "Vectors",
+      "Choice": "Qdrant",
+      "Why": "Hybrid search for code chunks and memories"
+    },
+    {
+      "Layer": "Cache / jobs",
+      "Choice": "Redis + BullMQ",
+      "Why": "Hot state and background work; Temporal later if workflows get gnarly"
+    },
+    {
+      "Layer": "Artifacts",
+      "Choice": "R2 / S3",
+      "Why": "Trajectories, logs, CitySnapshots"
+    },
+    {
+      "Layer": "Indexing",
+      "Choice": "Tree-sitter, ripgrep, LSP, embeddings",
+      "Why": "Deterministic search first; semantic search as a complement"
+    }
+  ],
+  "memoryScopes": [
+    {
+      "Scope": "User",
+      "Holds": "Preferences such as TypeScript, smaller PRs, pnpm",
+      "Write rule": "User- or workspace-scoped; never promoted globally"
+    },
+    {
+      "Scope": "Codebase",
+      "Holds": "Architecture, conventions, fragile areas, past agent work on this repo",
+      "Write rule": "Repo-scoped; versioned with the tree"
+    },
+    {
+      "Scope": "Episodic",
+      "Holds": "This task failed because X, then Y worked",
+      "Write rule": "Task-scoped; retrievable, not always in the prompt"
+    },
+    {
+      "Scope": "Procedural / tool",
+      "Holds": "For this class of problem, use that tool",
+      "Write rule": "Candidate until replayed"
+    },
+    {
+      "Scope": "Shared task",
+      "Holds": "Scratch space for later multi-agent runs",
+      "Write rule": "Exists in the schema; unused until Gate C"
+    },
+    {
+      "Scope": "Global",
+      "Holds": "Reusable patterns across repos",
+      "Write rule": "Default deny. Agents never write scope=global, status=active"
+    }
+  ],
+  "supervisorArms": [
+    {
+      "Decision": "model",
+      "Example arms": "fast / coding / reasoning"
+    },
+    {
+      "Decision": "topology",
+      "Example arms": "solo_coder / coder_tester / …"
+    },
+    {
+      "Decision": "context_budget",
+      "Example arms": "4k / 8k / 16k"
+    },
+    {
+      "Decision": "tool_pack",
+      "Example arms": "retrieved tool ids"
+    },
+    {
+      "Decision": "memory_pack",
+      "Example arms": "retrieved memory ids"
+    },
+    {
+      "Decision": "stop_policy",
+      "Example arms": "stop_on_green / max_3_retries / ask human"
+    },
+    {
+      "Decision": "test_policy",
+      "Example arms": "unit_only / unit+lint / full CI"
+    }
+  ],
+  "gates": [
+    {
+      "Gate": "A / MVP 1",
+      "What must be true": "Real repo, BYOK, Daytona sandbox, real PR, complete trajectory with reward_v1, PublicReport whose CitySnapshot matches the run",
+      "Still forbidden": "Swarms, Tool Builder product, active Global Memory, live-autonomous-city claims"
+    },
+    {
+      "Gate": "B / MVP 2",
+      "What must be true": "Indexing plus scoped memory; Global Memory only after sanitization and promotion",
+      "Still forbidden": "Letting the agent self-promote global rules"
+    },
+    {
+      "Gate": "C / MVP 3–4",
+      "What must be true": "Live agent events bind onto the Track 0 city, then multi-agent",
+      "Still forbidden": "Starting multi-agent in the first 30 days"
+    },
+    {
+      "Gate": "D / MVP 5–6",
+      "What must be true": "Tool builder, then bandits / retrieval learning behind an eval gate",
+      "Still forbidden": "Calling logging 'learning', or promoting a policy on vibes"
+    }
+  ],
+  "cityMapping": [
+    {
+      "Software": "Repository",
+      "City object": "Island / city"
+    },
+    {
+      "Software": "Major folder",
+      "City object": "Sector"
+    },
+    {
+      "Software": "Subdirectory",
+      "City object": "District"
+    },
+    {
+      "Software": "File",
+      "City object": "Building"
+    },
+    {
+      "Software": "Agent",
+      "City object": "Character"
+    },
+    {
+      "Software": "Tool creation",
+      "City object": "Workshop"
+    },
+    {
+      "Software": "Tests",
+      "City object": "Testing facility"
+    },
+    {
+      "Software": "GitHub / PRs",
+      "City object": "Harbor"
+    }
+  ],
+  "firstThirtyDays": [
+    {
+      "Week": "1",
+      "City / reports": "Scaffold, world schema, art spikes",
+      "Agent": "GitHub App skeleton"
+    },
+    {
+      "Week": "2",
+      "City / reports": "Fixture repo renders as a city",
+      "Agent": "Daytona hello-world + BYOK path"
+    },
+    {
+      "Week": "3",
+      "City / reports": "PublicReport anchors + share URL stub",
+      "Agent": "Edit → commit → push → PR"
+    },
+    {
+      "Week": "4",
+      "City / reports": "CitySnapshot persist; polish report page",
+      "Agent": "Trajectory + reward_v1; one real run → report → city"
+    }
+  ],
+  "fears": [
+    {
+      "Fear": "Six products at once",
+      "Control": "Quality gates. Fancy layers cannot start until Gate A is green"
+    },
+    {
+      "Fear": "Vague 'RL'",
+      "Control": "A small, versioned decision table. No PPO against GPT in v1"
+    },
+    {
+      "Fear": "Global memory as a secret-shaped junk drawer",
+      "Control": "Default deny, sanitization, promotion, demotion"
+    },
+    {
+      "Fear": "City polish replacing agent quality",
+      "Control": "Track 0 is schema, viewer, and reports. Gate A still blocks live claims"
+    },
+    {
+      "Fear": "Multi-agent too early",
+      "Control": "One agent that ships beats a planner-coder-reviewer triangle that argues in a sandbox"
+    }
+  ],
+  "citations": [
+    {
+      "title": "Dynamic context discovery",
+      "publisher": "Jediah Katz, Cursor Blog, 6 Jan 2026",
+      "url": "https://cursor.com/blog/dynamic-context-discovery",
+      "note": "Static vs dynamic context; long tool outputs as files; chat history as files after summarization; Agent Skills; MCP tool descriptions as files; 46.9% fewer total agent tokens on MCP-calling runs; terminals as files."
+    },
+    {
+      "title": "Continually improving our agent harness",
+      "publisher": "Cursor",
+      "url": "https://cursor.com/blog/continually-improving-agent-harness",
+      "note": "Less static preload; agents start light and discover."
+    },
+    {
+      "title": "Improving agent with semantic search",
+      "publisher": "Stefan Heule, Emily Jia & Naman Jain, Cursor Blog, 6 Nov 2025",
+      "url": "https://cursor.com/blog/semsearch",
+      "note": "+12.5% average question accuracy with semantic search (range 6.5%–23.5%); grep + semantic together best; trace-trained embeddings; code retention and follow-up A/B results."
+    },
+    {
+      "title": "Dropbox uses Cursor to index over 550,000 files",
+      "publisher": "Cursor",
+      "url": "https://cursor.com/blog/dropbox",
+      "note": "Indexing at scale is a product problem. The model does not eat the whole corpus."
+    },
+    {
+      "title": "The next evolution of the Agents SDK",
+      "publisher": "OpenAI",
+      "url": "https://openai.com/index/the-next-evolution-of-the-agents-sdk/",
+      "note": "Model-native harness, sandbox execution, skills / AGENTS.md / shell / apply-patch, providers including Daytona."
+    },
+    {
+      "title": "Sandbox agents",
+      "publisher": "OpenAI Developers",
+      "url": "https://developers.openai.com/api/docs/guides/agents/sandboxes",
+      "note": "SandboxAgent still has tools, handoffs, and guardrails; the execution boundary is the sandbox."
+    },
+    {
+      "title": "Using the OpenAI Agents SDK with Daytona Sandboxes",
+      "publisher": "Daytona",
+      "url": "https://www.daytona.io/docs/en/guides/openai/openai-agents-sdk-with-sandboxes/",
+      "note": "Shell and filesystem in-sandbox; pause_on_exit / resume; isolated cloud execution."
+    },
+    {
+      "title": "Equipping agents for the real world with Agent Skills",
+      "publisher": "Anthropic",
+      "url": "https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills",
+      "note": "Skills as files with a name and description; load full instructions on demand."
+    },
+    {
+      "title": "A Contextual-Bandit Approach to Personalized News Article Recommendation",
+      "publisher": "Li, Chu, Langford, Schapire, WWW 2010",
+      "url": "https://arxiv.org/abs/1003.0146",
+      "note": "LinUCB: discrete arms plus context, without training the underlying model."
+    },
+    {
+      "title": "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?",
+      "publisher": "Jimenez et al., ICLR 2024",
+      "url": "https://www.swebench.com/",
+      "note": "Opening a PR is not enough. Held-out eval still matters."
+    },
+    {
+      "title": "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering",
+      "publisher": "Yang et al., NeurIPS 2024",
+      "url": "https://arxiv.org/abs/2405.15793",
+      "note": "Interface and harness design change agent success, not only the base model."
+    },
+    {
+      "title": "React Three Fiber documentation",
+      "publisher": "Poimandres",
+      "url": "https://docs.pmnd.rs/react-three-fiber",
+      "note": "React renderer for Three.js — the city viewer stack."
+    },
+    {
+      "title": "GitHub Apps documentation",
+      "publisher": "GitHub",
+      "url": "https://docs.github.com/en/apps",
+      "note": "Installation, permissions, PR creation — delivery is GitHub-native."
+    },
+    {
+      "title": "Model Context Protocol",
+      "publisher": "Anthropic / MCP",
+      "url": "https://modelcontextprotocol.io/",
+      "note": "Why tool catalogs explode; background for Cursor's MCP token result."
+    }
+  ]
+}
