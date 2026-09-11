@@ -18,5 +18,5 @@ Read the full article: /articles/building-tourist-a-cloud-coding-agent-in-a-city
 ## Publishing notes
 
 - Final URL:
-- Media to attach: city mapping diagram or Gate A flowchart
+- Media to attach: Pixel-Art Software Development Island City (article image; do not replace the custom Open Graph card)
 - Published post URL:

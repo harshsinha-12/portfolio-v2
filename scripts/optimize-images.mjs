@@ -54,6 +54,10 @@ function getOptimizationPlan(relativePath) {
     return { kind: "webp", maxWidth: 480, quality: 82 };
   }
 
+  if (normalized.includes("assets/articles/")) {
+    return { kind: "webp", maxWidth: 1600, quality: 85 };
+  }
+
   return { kind: "webp", maxWidth: 500, quality: 82 };
 }
 
