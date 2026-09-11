@@ -12,8 +12,9 @@ type ArticleImageProps = {
   src: string;
   alt: string;
   caption?: string;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
+  preload?: boolean;
 };
 
 export function ArticleImage({
@@ -22,15 +23,22 @@ export function ArticleImage({
   caption,
   width = 1200,
   height = 675,
+  preload = false,
 }: ArticleImageProps) {
+  const imageWidth = Number(width);
+  const imageHeight = Number(height);
+  const resolvedWidth = Number.isFinite(imageWidth) && imageWidth > 0 ? imageWidth : 1200;
+  const resolvedHeight = Number.isFinite(imageHeight) && imageHeight > 0 ? imageHeight : 675;
+
   return (
     <figure className="article-figure">
       <Image
         src={src}
         alt={alt}
-        width={width}
-        height={height}
+        width={resolvedWidth}
+        height={resolvedHeight}
         sizes="(max-width: 768px) 100vw, 680px"
+        preload={preload}
       />
       {caption ? <figcaption>{caption}</figcaption> : null}
     </figure>
