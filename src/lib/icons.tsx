@@ -7,7 +7,9 @@ import {
 import {
   SiDjango,
   SiDocker,
+  SiCloudflare,
   SiExpress,
+  SiFastapi,
   SiFastify,
   SiFfmpeg,
   SiFlask,
@@ -21,6 +23,7 @@ import {
   SiNextdotjs,
   SiNodedotjs,
   SiOpencv,
+  SiYolo,
   SiPostgresql,
   SiPrisma,
   SiPython,
@@ -59,10 +62,11 @@ import {
   SiSwift,
   SiZod,
 } from "react-icons/si";
-import { FaHardHat, FaRust } from "react-icons/fa";
+import { FaBrain, FaHardHat, FaRust } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { LuWorkflow } from "react-icons/lu";
 import { IoIosNotificationsOutline } from "react-icons/io";
-import { MdCandlestickChart } from "react-icons/md";
+import { MdCandlestickChart, MdRadar } from "react-icons/md";
 import { RiGeminiFill, RiOpenaiFill } from "react-icons/ri";
 import { TbBrandAzure } from "react-icons/tb";
 import type { IconType } from "react-icons";
@@ -100,9 +104,15 @@ export const stackIconMap: Record<string, IconType> = {
   "Google Cloud Platform": SiGooglecloud,
   OpenAI: RiOpenaiFill,
   OpenCV: SiOpencv,
+  YOLO: SiYolo,
+  LiDAR: MdRadar,
+  "Reinforcement learning": FaBrain,
+  "Agentic Systems": LuWorkflow,
   Swift: SiSwift,
   SwiftUI: SiSwift,
   macOS: SiApple,
+  Cloudflare: SiCloudflare,
+  FastAPI: SiFastapi,
   Fastify: SiFastify,
   FFmpeg: SiFfmpeg,
   GitHub: SiGithub,
@@ -151,6 +161,7 @@ export const stackIconMap: Record<string, IconType> = {
 export const stackImageIconMap: Record<string, string> = {
   Pinecone: "/assets/favicons/pinecone.png",
   BullMQ: "/assets/favicons/bullmq.png",
+  LangSmith: "/assets/favicons/langsmith.svg",
 };
 
 export function getStackIcon(name: string): IconType | null {

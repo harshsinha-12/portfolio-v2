@@ -1,5 +1,5 @@
 {
-  "dataNote": "Cursor figures are from published Cursor research. Token composition and context scores are teaching illustrations, not Tourist measurements. Tourist has not shipped yet.",
+  "dataNote": "Cursor figures are from published Cursor research. Token composition and context scores are teaching illustrations, not Tourist measurements. Tourist's city foundation is runnable; its cloud agent loop has not shipped.",
   "mcpTokenSeries": [
     { "key": "tokens", "label": "Relative total agent tokens", "color": "#b65332" }
   ],
@@ -115,52 +115,67 @@
   ],
   "stack": [
     {
-      "Layer": "Web + city",
-      "Choice": "Next.js, React, Tailwind, React Three Fiber",
-      "Why": "One frontend language; R3F keeps a Three.js scene inside React"
+      "Layer": "City foundation (current)",
+      "Choice": "Next.js, React, TypeScript, SVG/DOM, Vitest",
+      "Why": "Versioned protocol, deterministic world generator, per-file components, fixture report, and tests"
     },
     {
-      "Layer": "API",
+      "Layer": "3D world (possible later)",
+      "Choice": "React Three Fiber + Three.js",
+      "Why": "An option if the live world needs true 3D; the working viewer is isometric SVG/DOM"
+    },
+    {
+      "Layer": "API (planned)",
       "Choice": "Fastify + TypeScript",
       "Why": "Control plane for GitHub, events, and auth"
     },
     {
-      "Layer": "Agent runtime",
+      "Layer": "Agent runtime (planned)",
       "Choice": "Python + OpenAI Agents SDK",
       "Why": "Python-first SDK, Responses API, native sandbox execution"
     },
     {
-      "Layer": "Sandboxes",
+      "Layer": "Sandboxes (planned)",
       "Choice": "Daytona",
       "Why": "Isolated cloud workspaces, pause/resume, first-class Agents SDK client"
     },
     {
-      "Layer": "GitHub",
+      "Layer": "GitHub delivery (planned)",
       "Choice": "GitHub App + Octokit",
       "Why": "PRs are the delivery primitive, not chat transcripts"
     },
     {
-      "Layer": "Primary DB",
+      "Layer": "Primary DB (planned)",
       "Choice": "Postgres (Neon)",
       "Why": "Source of truth for tasks, trajectories, memory records, reports"
     },
     {
-      "Layer": "Vectors",
+      "Layer": "Vectors (planned)",
       "Choice": "Qdrant",
       "Why": "Hybrid search for code chunks and memories"
     },
     {
-      "Layer": "Cache / jobs",
+      "Layer": "Retrieval alternative (planned)",
+      "Choice": "Pinecone",
+      "Why": "A candidate to compare with Qdrant when the indexing and retrieval path exists"
+    },
+    {
+      "Layer": "Agent tooling (planned)",
+      "Choice": "LangChain, LangGraph, LangSmith",
+      "Why": "Possible orchestration and tracing tools; no dependency on them in the current city prototype"
+    },
+    {
+      "Layer": "Cache / jobs (planned)",
       "Choice": "Redis + BullMQ",
       "Why": "Hot state and background work; Temporal later if workflows get gnarly"
     },
     {
-      "Layer": "Artifacts",
+      "Layer": "Artifacts (planned)",
       "Choice": "R2 / S3",
       "Why": "Trajectories, logs, CitySnapshots"
     },
     {
-      "Layer": "Indexing",
+      "Layer": "Indexing (planned)",
       "Choice": "Tree-sitter, ripgrep, LSP, embeddings",
       "Why": "Deterministic search first; semantic search as a complement"
     }

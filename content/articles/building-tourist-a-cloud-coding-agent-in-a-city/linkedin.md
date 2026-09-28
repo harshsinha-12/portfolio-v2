@@ -6,18 +6,20 @@ They can search a repo, edit files, run tests, and open a pull request. Tomorrow
 
 The model is not the bottleneck anymore. The session is.
 
-I'm about to build Tourist: a cloud coding agent you connect to a GitHub repo with your own OpenAI key. You describe the work. It inspects the codebase, edits and tests in an isolated sandbox, and opens a PR. That loop is the product.
+I'm building Tourist: a cloud coding agent you would connect to a GitHub repo with your own OpenAI key. You describe the work; an isolated agent edits, tests, and opens a PR. That loop is the goal, and it has not shipped yet.
+
+The first slice does run. A versioned protocol and deterministic generator turn a fixture repo into an interactive isometric city. Files get their own buildings, and a public fixture report links sections to files, tests, and PR anchors.
 
 Under it I'm building four things most chat-wrapped agents skip:
 
 - a context engine that discovers files, logs, skills, and memories instead of preloading them
 - scoped memory, with Global Memory treated as dangerous by default
 - trajectories and rewards from day one — structured policy learning later, not "RL on GPT"
-- a generated software city, used first as a shareable report, later as a live world
+- a generated software city, already working for a fixture report and intended later to reflect live agent events
 
-The article is a build plan, not a retrospective. Two tracks start now: a city schema that can render fixture reports, and a solo agent that has to open a real PR before anything fancier is allowed. Multi-agent, a tool factory, and live-autonomous-city claims are gated on purpose.
+The article is a build plan with a progress checkpoint. The fixture city is underway. A solo agent still has to open a real PR before the multi-agent, tool-builder, or learning claims make sense.
 
-The city is the brand. The PR loop is the product. If I confuse those, I'll spend three months making buildings prettier while the agent still can't ship.
+The city makes the work visible. The next proof is whether the agent can ship.
 
 Read the full article: /articles/building-tourist-a-cloud-coding-agent-in-a-city
 

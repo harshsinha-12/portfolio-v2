@@ -104,6 +104,21 @@
     "fallback": "assets/cert-jpmorgan-forage.webp"
   },
   {
+    "href": "https://github.com/harshsinha-12/tourist",
+    "image": "tourist.webp",
+    "fallback": "assets/tourist.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/tourist#readme",
+    "image": "tourist.webp",
+    "fallback": "assets/tourist.webp"
+  },
+  {
+    "href": "https://web-sigma-orpin-64.vercel.app",
+    "image": "tourist.webp",
+    "fallback": "assets/tourist.webp"
+  },
+  {
     "href": "https://github.com/harshsinha-12/dev-sweep",
     "image": "github-dev-sweep.webp",
     "fallback": "assets/devsweep.webp"
@@ -114,9 +129,24 @@
     "fallback": "assets/devsweep.webp"
   },
   {
-    "href": "https://github.com/harshsinha-12/assignment-cozmo",
-    "image": "github-assignment-cozmo.webp",
-    "fallback": "assets/lidar-room-capture.webp"
+    "href": "https://github.com/harshsinha-12/roomplan",
+    "image": "room-floorplan.webp",
+    "fallback": "assets/room-floorplan.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/roomplan#readme",
+    "image": "room-floorplan.webp",
+    "fallback": "assets/room-floorplan.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/library-estimate",
+    "image": "library-survey.webp",
+    "fallback": "assets/library-survey.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/library-estimate#readme",
+    "image": "library-survey.webp",
+    "fallback": "assets/library-survey.webp"
   },
   {
     "href": "https://github.com/harshsinha-12/rzpy-agent",

@@ -31,6 +31,14 @@ const projectCoverSizes =
 
 type PreviewShape = "standard" | "wide";
 
+function ProjectStatusBanner({ label }: { label: string }) {
+  return (
+    <p className="pointer-events-none absolute top-2 left-2 z-10 -rotate-2 bg-[var(--color-marker)] px-2 py-1 font-hand text-sm leading-none text-[var(--color-ink)] shadow-[1px_2px_0_var(--color-shadow)]">
+      {label}
+    </p>
+  );
+}
+
 function ProjectPreview({
   project,
   shape = "standard",
@@ -74,6 +82,7 @@ function ProjectPreview({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={previewImage} alt="" className="h-full w-full object-cover" />
         )}
+        {project.status ? <ProjectStatusBanner label={project.status} /> : null}
       </div>
     );
   }
@@ -278,6 +287,8 @@ function getProject(id: string) {
 export function ProjectsSection() {
   const recoveryOs = getProject("recovery-os");
   const lidarRoomCapture = getProject("lidar-room-capture");
+  const librarySurvey = getProject("library-survey");
+  const tourist = getProject("tourist");
   const devSweep = getProject("devsweep");
   const tradingArena = getProject("llm-trading-arena-frontend");
   const vritta = getProject("vritta-ai");
@@ -299,7 +310,8 @@ export function ProjectsSection() {
         <div className="grid gap-10 xl:grid-cols-[0.9fr_1.55fr_1.1fr] xl:gap-0">
           <section className="project-storyboard-chapter project-storyboard-chapter--first xl:pr-6">
             <ChapterHeading number="1">Ship &amp; recover</ChapterHeading>
-            <ProjectStory project={devSweep} shape="wide" />
+            <ProjectStory project={tourist} shape="wide" />
+            <ProjectStory project={devSweep} shape="wide" className="mt-8" />
             <ProjectStory project={recoveryOs} className="mt-8" />
             <PencilNote
               icon={PiArrowBendUpRightThin}
@@ -340,6 +352,7 @@ export function ProjectsSection() {
             <ChapterHeading number="3">Agents &amp; automation</ChapterHeading>
             <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-1">
               <ProjectStory project={lidarRoomCapture} shape="wide" />
+              <ProjectStory project={librarySurvey} shape="wide" />
               <ProjectStory project={creativeIntelligence} shape="wide" />
               <ProjectStory project={goRabbit} shape="wide" />
             </div>

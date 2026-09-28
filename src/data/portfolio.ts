@@ -412,6 +412,11 @@ export const techStack: ProjectStackItem[] = [
   { name: "Fastify" },
   { name: "Tailwind CSS" },
   { name: "OpenAI" },
+  { name: "LangChain" },
+  { name: "LangGraph" },
+  { name: "LangSmith" },
+  { name: "Agentic Systems" },
+  { name: "Reinforcement learning" },
   { name: "PostgreSQL" },
   { name: "Prisma" },
   { name: "Redis" },
@@ -481,7 +486,8 @@ export const techWorkshopMap = {
     description: "models, agents, data and retrieval",
     items: [
       { name: "Python" }, { name: "OpenAI" }, { name: "LangChain" },
-      { name: "LangGraph" }, { name: "TensorFlow" }, { name: "PyTorch" },
+      { name: "LangGraph" }, { name: "LangSmith" }, { name: "Agentic Systems" },
+      { name: "Reinforcement learning" }, { name: "TensorFlow" }, { name: "PyTorch" },
       { name: "scikit-learn" }, { name: "Keras" }, { name: "Pandas" },
       { name: "NumPy" }, { name: "Pinecone" }, { name: "Qdrant" },
     ],
@@ -828,6 +834,7 @@ export type Project = {
   link?: string;
   youtube?: string;
   image?: string;
+  status?: string;
   video?: string;
   content: string;
   stack: ProjectStackItem[];
@@ -835,6 +842,37 @@ export type Project = {
 };
 
 export const projects: Project[] = [
+  {
+    id: "tourist",
+    title: "Tourist",
+    github: "https://github.com/harshsinha-12/tourist",
+    readme: "https://github.com/harshsinha-12/tourist#readme",
+    link: "https://web-sigma-orpin-64.vercel.app",
+    image: "/assets/tourist.webp",
+    status: "Work in progress",
+    content:
+      "Building a cloud coding agent with persistent memory, dynamic context discovery, and GitHub PR delivery. The first working slice turns a fixture repository into an interactive software city with file buildings, inspection, and report anchors; the autonomous agent loop is still planned.",
+    highlight:
+      "Runnable city foundation · cloud agent, memory, and learning in progress",
+    stack: [
+      { name: "TypeScript" },
+      { name: "Next.js" },
+      { name: "React" },
+      { name: "GitHub" },
+      { name: "Vitest" },
+      { name: "Python" },
+      { name: "OpenAI" },
+      { name: "Agentic Systems" },
+      { name: "LangChain" },
+      { name: "LangGraph" },
+      { name: "LangSmith" },
+      { name: "PostgreSQL" },
+      { name: "Redis" },
+      { name: "Pinecone" },
+      { name: "Qdrant" },
+      { name: "Reinforcement learning" },
+    ],
+  },
   {
     id: "devsweep",
     title: "DevSweep",
@@ -852,19 +890,44 @@ export const projects: Project[] = [
   },
   {
     id: "lidar-room-capture",
-    title: "LiDAR Room Capture",
-    github: "https://github.com/harshsinha-12/assignment-cozmo",
-    image: "/assets/lidar-room-capture.webp",
+    title: "Room FloorPlan",
+    github: "https://github.com/harshsinha-12/roomplan",
+    readme: "https://github.com/harshsinha-12/roomplan#readme",
+    image: "/assets/room-floorplan.webp",
     content:
       "A local pipeline that turns iPhone photos, video, or LiDAR into a metric FloorPlan — walls, openings, ceilings, damage, and a confidence interval on every measurement.",
     highlight:
-      "Cozmo AI take-home · geometry owns centimetres, the LLM cannot write wall lengths",
+      "Room AI take-home · geometry owns centimetres, the LLM cannot write wall lengths",
     stack: [
       { name: "Python" },
       { name: "Swift" },
       { name: "OpenAI" },
       { name: "OpenCV" },
       { name: "NumPy" },
+      { name: "LiDAR" },
+      { name: "Reinforcement learning" },
+    ],
+  },
+  {
+    id: "library-survey",
+    title: "Library Survey",
+    github: "https://github.com/harshsinha-12/library-estimate",
+    readme: "https://github.com/harshsinha-12/library-estimate#readme",
+    image: "/assets/library-survey.webp",
+    content:
+      "An iPhone LiDAR capture app and FastAPI backend that turn a sealed library scan into room geometry, physical-copy inventory, draft local prices, and a signed replacement-cost report.",
+    highlight:
+      "Replacement-cost survey · models propose, they don't write count or money",
+    stack: [
+      { name: "Swift" },
+      { name: "FastAPI" },
+      { name: "Redis" },
+      { name: "OpenAI" },
+      { name: "Cloudflare" },
+      { name: "OpenCV" },
+      { name: "YOLO" },
+      { name: "LiDAR" },
+      { name: "Reinforcement learning" },
     ],
   },
   {

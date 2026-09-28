@@ -2,16 +2,18 @@
 
 Most coding agents still behave like a very smart intern who forgets the office every morning.
 
-I'm building Tourist: connect a GitHub repo, bring your OpenAI key, describe the work, get a PR from a cloud sandbox.
+I'm building Tourist. The first slice is running: a fixture repo becomes an isometric software city, with a building for each file and report links to files, tests, and PRs.
+
+The cloud agent that takes a task, works in a sandbox, and opens a real PR is the next gate.
 
 The interesting part is everything around that loop:
 
 — huge available context, tiny active context
 — scoped memory, with Global Memory denied by default
 — trajectories logged from day one, before anything "learns"
-— a generated city as the report, not a log stream
+— the city as a report first, then a view of real agent events
 
-The city is the brand. The PR loop is the product.
+The fixture city is a start. The PR loop still has to prove itself.
 
 Read the full article: /articles/building-tourist-a-cloud-coding-agent-in-a-city
 

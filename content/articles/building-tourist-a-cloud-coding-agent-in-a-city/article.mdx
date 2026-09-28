@@ -1,8 +1,8 @@
 ---
 title: "How I'm Building Tourist: A Cloud Coding Agent That Lives in a City"
-description: "A build plan for Tourist: a GitHub-native cloud coding agent with dynamic context, scoped memory, trajectory learning, and a generated software city as the report—not a chat UI around the latest model."
+description: "Tourist's city foundation is running. Here is the build plan for the cloud coding agent, scoped memory, dynamic context, GitHub delivery, and learning that should follow."
 date: "2026-09-11"
-updatedAt: "2026-09-11"
+updatedAt: "2026-09-28"
 tags:
   - AI Agents
   - Context Engineering
@@ -31,7 +31,7 @@ You describe a bug. The agent searches, finds `auth.ts`, patches it, runs tests,
 
 The model is not the bottleneck anymore. The session is.
 
-I usually write about systems I have already poked at. This time I want to write about a project I am about to build. The working name is **Tourist**. The short version:
+I usually write about systems I have already poked at. **Tourist** now has a working city foundation. The larger product I am building looks like this:
 
 ```text
 Connect a GitHub repo
@@ -43,7 +43,11 @@ Connect a GitHub repo
 
 The longer version is the actual product. Most agents are still chat sessions with tools. Tourist is an attempt to make something closer to a persistent engineering environment: memory across tasks, context that is discovered instead of dumped, learning from outcomes, and a visual world that makes autonomous work inspectable.
 
-This post is the build plan. Not the pitch deck. Not the 2,800-line PRD. The decisions I want to freeze before the first real loop exists, and the sources I am stealing from.
+This post is the build plan and a progress marker. The first city and report slice works. The cloud agent loop, persistent memory, tool creation, and learning are still work ahead.
+
+<Callout title="Current checkpoint — September 2026">
+  The repository runs a versioned city/report protocol, a deterministic fixture-to-city generator, an interactive isometric city, file-specific building components with a generic fallback, a building inspector, and a fixture PublicReport with file, test, and PR anchors. You can run the fixture locally. It is not yet proof of a cloud agent opening a PR or of live agents moving through the city.
+</Callout>
 
 <Callout title="The bet">
   The model is not the product. The harness, memory, retrieval, sandbox, delivery loop, and visibility are. If the city is only a skin, the project failed. If the city is how a run becomes understandable, the visualization is doing engineering work.
@@ -106,7 +110,7 @@ If I confuse those, I will spend three months making buildings prettier while th
 
 The failure mode for a project like this is obvious. Memory, multi-agent, tool factories, RL, and a 3D world are five startups. I wrote quality gates into the PRD so I cannot “just quickly add a swarm.”
 
-There are two tracks that start now. Everything else is gated.
+There are two tracks. The first Track 0 slice is runnable; the solo PR loop remains the next major gate. Everything else is gated.
 
 <Mermaid
   caption="Track 0 and the solo PR loop can run in parallel. Multi-agent and the tool builder cannot start in the first 30 days."
@@ -128,7 +132,7 @@ The important product decision: **a public report generates a city.**
 
 A file diff anchors to a building. Tests anchor to the testing facility. A PR anchors to the harbor. Failures put a warning on a district. Agent steps can highlight a path.
 
-Track 0 can run on fixture repos and mock events. I do not need a working agent to generate a city. I do need a working city before I pretend live visualization is done.
+Track 0 already runs on a fixture repo. The report route can navigate from sections to file, test, and pull-request anchors. That establishes the city/report contract; it does not establish live task events or autonomous delivery.
 
 ### MVP 1 — solo agent to PR, plus trajectories (Gate A)
 
@@ -153,10 +157,12 @@ I want to spend engineering time on agent quality, context, memory, and the city
 
 <DataTable
   dataset="stack"
-  caption="Two languages on purpose. TypeScript owns the product surface. Python owns orchestration, retrieval experiments, reward math, and eval."
+  caption="The current slice is TypeScript, Next.js, React, and Vitest. The remaining rows are architecture choices for later phases, not implemented services."
 />
 
 Rust is not a v1 flex. A typical run is waiting on the model, `npm install`, tests, and git — not on the orchestrator’s allocation speed.
+
+The project card shows the technology set for Tourist as a whole. The current prototype only uses part of it. OpenAI, Postgres, Redis, Pinecone, Qdrant, LangChain, LangGraph, and LangSmith belong to the agent, memory, retrieval, and observability plan. Qdrant is the present vector-search choice; Pinecone is another candidate. Reinforcement learning means a later, evaluated policy over discrete agent decisions, not model-weight training in v1.
 
 BYOK is a product constraint, not a billing footnote. The user’s OpenAI key runs the agent. I meter usage. I do not become an opaque model reseller on day one.
 
@@ -380,13 +386,15 @@ Software is spatial whether we admit it or not. You already say “the auth area
   chart="flowchart TB; Repo[Repository] --> Island[Island]; Folder[Major folder] --> Sector[Sector]; Sub[Subdirectory] --> District[District]; File[File] --> Building[Building]; Tests[Tests] --> Facility[Testing facility]; PR[GitHub PR] --> Harbor[Harbor]; Agent[Agent] --> Character[Character]; Tool[Tool creation] --> Workshop[Workshop]"
 />
 
-Art direction: isometric, pixel-art / low-poly, closer to a strategy game than to a Graphviz screenshot. React Three Fiber, instancing, LOD, archetypes per language and file kind — not unique image-gen for every file on day one.
+Art direction: isometric pixel art, closer to a strategy game than to a Graphviz screenshot. The working viewer uses SVG and DOM components, with one configurable building per file and a generic building when the file type is unmapped. React Three Fiber and Three.js remain possible later choices for a true 3D world; they are not the current renderer.
+
+The building collection is intended to grow toward roughly 75 distinct file-type or semantic-role designs. Equivalent extensions can share a design, while files such as `*.test.ts` can use a testing design instead of an ordinary TypeScript building. Command Center, Research Lab, Workshop, and Harbor are landmarks rather than file buildings. That collection is a target, not a claim that all 75 designs are finished.
 
 Build order for the city:
 
-1. World schema + archetypes
-2. Fixture repo → layout → viewer that you can fly around
-3. Anchors + PublicReport share page
+1. World schema + file-building registry — working first slice
+2. Fixture repo → deterministic layout → interactive viewer — working first slice
+3. Anchors + fixture PublicReport route — working first slice
 4. Persist CitySnapshot
 5. Only after Gate A: bind live pawns, construction, harbor traffic
 
@@ -414,20 +422,20 @@ tourist/
 
 Schema changes update `packages/protocol` in the same PR. If the city and the agent disagree about what a “building” is, that is a protocol bug, not a frontend bug.
 
-Branching follows the gates: scaffold, city foundation, public reports, cloud agent, trajectories, Gate A, then indexing/memory, living city, multi-agent, tools, learning. Track 0 and Phase 1 may run in parallel. They must not block each other. Multi-agent and Tool Builder must not start in the first 30 days.
+Branching follows the gates: city foundation and fixture reports, cloud agent, trajectories, Gate A, then indexing/memory, living city, multi-agent, tools, learning. Track 0 and Phase 1 can progress in parallel, with the completed city slice providing a concrete report contract for the agent work.
 
-## First 30 days
+## Original first-month plan
 
 <DataTable
   dataset="firstThirtyDays"
-  caption="Success at day 30 is not AGI intern. It is a fixture city you can fly, a solo agent that can open a PR, and a trajectory left behind every completed run."
+  caption="The original sequence, retained as a plan rather than a completed milestone. The fixture city and report route are running; the real solo-agent PR and trajectory gates remain open."
 />
 
-That is the whole Gate A contract, compressed into a month:
+The fixture PublicReport and its navigable city now cover the first part of that contract. Gate A still needs:
 
-- a fixture PublicReport that opens a navigable generated city with working anchors
 - a solo agent that can open a PR on a real repo
 - every completed run leaving a trajectory behind
+- a real run producing a PublicReport whose CitySnapshot matches that run
 
 ## What I am afraid of
 
@@ -444,7 +452,7 @@ The honest bet: **harness + discovery + persistence + a spatial report** is stil
 
 If that city is only a skin, the project failed. If the city is how a run becomes understandable — files, tests, harbor, failures — then the visualization is doing engineering work, not marketing.
 
-That’s the plan. Next is scaffold and a fixture city, not a swarm.
+That is the plan. The fixture city exists. Next the cloud loop has to earn the harbor: a real sandbox run, a tested change, a PR, and a trajectory that lets us explain what happened.
 
 The next time a cloud agent opens a PR while your laptop is closed, the interesting question is not only whether the patch is right.
 
