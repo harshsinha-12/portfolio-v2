@@ -851,7 +851,7 @@ export const projects: Project[] = [
     image: "/assets/tourist.webp",
     status: "Work in progress",
     content:
-      "Building a cloud coding agent with persistent memory, dynamic context discovery, and GitHub PR delivery. The first working slice turns a fixture repository into an interactive software city with file buildings, inspection, and report anchors; the autonomous agent loop is still planned.",
+      "Imagine Clash of Clans for your codebase: every file is a village building, and you can watch builders work on it. I'm building a cloud agent to fix issues and open PRs, with six layers of memory and a reinforcement learning loop planned to make its decisions more accurate and cost-efficient.",
     highlight:
       "Runnable city foundation · cloud agent, memory, and learning in progress",
     stack: [
@@ -880,7 +880,7 @@ export const projects: Project[] = [
     readme: "https://github.com/harshsinha-12/dev-sweep#readme",
     image: "/assets/devsweep.webp",
     content:
-      "A native macOS utility that finds regeneratable developer files — node_modules, build caches, DerivedData — explains why each folder was detected, and moves only the items you approve to Trash.",
+      "A native macOS utility that finds regeneratable developer files: node_modules, build caches, DerivedData, explains why each folder was detected, and moves only the items you approve to Trash.",
     highlight: "Native SwiftUI · Trash-only cleanup, never rm -rf",
     stack: [
       { name: "Swift" },
@@ -895,7 +895,7 @@ export const projects: Project[] = [
     readme: "https://github.com/harshsinha-12/roomplan#readme",
     image: "/assets/room-floorplan.webp",
     content:
-      "A local pipeline that turns iPhone photos, video, or LiDAR into a metric FloorPlan — walls, openings, ceilings, damage, and a confidence interval on every measurement.",
+      "Imagine assessing a house for an insurance claim: every wall and patch of damage needs measuring. This local pipeline uses iPhone LiDAR to map the floor area and room geometry, then computer vision and LLMs to find and classify damage, producing a measured floor plan with evidence for an estimate.",
     highlight:
       "Room AI take-home · geometry owns centimetres, the LLM cannot write wall lengths",
     stack: [
@@ -915,7 +915,7 @@ export const projects: Project[] = [
     readme: "https://github.com/harshsinha-12/library-estimate#readme",
     image: "/assets/library-survey.webp",
     content:
-      "An iPhone LiDAR capture app and FastAPI backend that turn a sealed library scan into room geometry, physical-copy inventory, draft local prices, and a signed replacement-cost report.",
+      "An iPhone LiDAR app uses a live AI guide to walk a surveyor through the library's floor plan, damage, shelves, and other objects. Computer vision counts books from their spines; ISBN, barcode, and title evidence help identify editions; web searches draft local prices. After sealing, two models independently review the same evidence, and Jev suggests recapture or human review under fixed rules. An offline reinforcement-learning loop is designed to improve that routing, while a signed report estimates the whole library's replacement cost.",
     highlight:
       "Replacement-cost survey · models propose, they don't write count or money",
     stack: [
@@ -958,7 +958,7 @@ export const projects: Project[] = [
     link: "https://the-llm-trading-arena-frontend.vercel.app",
     image: "/assets/llm-trading-arena.webp",
     content:
-      "A read-only research dashboard where LLMs paper-trade the Nifty 50 under realistic constraints, with rankings, trade history, portfolio analytics and deterministic Redis-backed replay.",
+      "An experiment where LLMs paper-trade Nifty 50 stocks using market news, including each story's sentiment and importance, custom technical indicators, quantitative analysis, and portfolio strategies. The read-only dashboard lets you follow their trades, rankings, and portfolio performance, with reproducible Redis-backed replay.",
     highlight: "Frontend · Nifty 50 paper-trading arena",
     stack: [
       { name: "Next.js" },
@@ -976,8 +976,8 @@ export const projects: Project[] = [
     image: "/assets/vritta.webp",
     link: "https://vritta-one.vercel.app/",
     content:
-      "A financial event-intelligence platform that organizes filings, disclosures and news into structured, traceable events with materiality and source context for Indian-equity research.",
-    highlight: "Structured event intelligence for Indian equities",
+      "A financial-news platform for following topics and regions on demand. It fetches news, filings, and disclosures, ranks their importance, and connects related items to structured, traceable events with source context and materiality. Its current focus is Indian equities, helping researchers move from a headline to the evidence behind it.",
+    highlight: "Ranked financial news · traceable events · Indian equities first",
     stack: [
       { name: "Next.js" },
       { name: "TypeScript" },
