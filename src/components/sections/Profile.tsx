@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FileText } from "lucide-react";
 import {
   githubGraphConfig,
+  ossContributions,
   introBullets,
   profileStickers,
   resumeLink,
@@ -206,6 +207,7 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
             <GitHubGraph
               username={siteConfig.githubUsername}
               {...githubGraphConfig}
+              ossContributions={ossContributions}
               initialDays={initialContributions}
               className="w-full min-w-0"
             />

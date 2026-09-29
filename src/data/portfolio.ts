@@ -23,6 +23,31 @@ export const githubGraphConfig = {
   showMonthLabels: true,
 } as const;
 
+/** Public PRs and issues in repositories outside this GitHub account. */
+export const ossContributions = [
+  {
+    repository: "superplanehq/superplane",
+    href: "https://github.com/superplanehq/superplane/pull/6454",
+    count: 1,
+    kind: "PR",
+    technologies: ["Go"],
+  },
+  {
+    repository: "OpenBB-finance/OpenBB",
+    href: "https://github.com/OpenBB-finance/OpenBB/issues/6845",
+    count: 1,
+    kind: "issue",
+    technologies: ["Python"],
+  },
+  {
+    repository: "codebasics/langchain",
+    href: "https://github.com/codebasics/langchain/issues/2",
+    count: 1,
+    kind: "issue",
+    technologies: ["Python"],
+  },
+] as const;
+
 export type SocialLink = {
   id: string;
   platform: "linkedin" | "github" | "mail" | "twitter";

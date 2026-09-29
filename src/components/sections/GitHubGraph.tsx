@@ -5,6 +5,7 @@ import { levelFromCount, type ContributionDay } from "@/lib/githubContributions"
 import { cn } from "@/lib/utils";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { track } from "@/lib/analytics";
+import { OSSContributions, type OSSContribution } from "@/components/sections/OSSContributions";
 
 type TooltipState = {
   text: string;
@@ -22,6 +23,7 @@ export type GitHubGraphProps = {
   showWeekdayLabels?: boolean;
   showMonthLabels?: boolean;
   colors?: string[];
+  ossContributions?: readonly OSSContribution[];
   className?: string;
 };
 
@@ -127,6 +129,7 @@ export function GitHubGraph({
   showWeekdayLabels = true,
   showMonthLabels = true,
   colors = DEFAULT_COLORS,
+  ossContributions = [],
   className,
 }: GitHubGraphProps) {
   const isMobileLayout = useMobileGraphLayout();
@@ -342,6 +345,7 @@ export function GitHubGraph({
               <span>More</span>
             </div>
           )}
+          <OSSContributions contributions={ossContributions} />
         </>
       )}
     </div>
