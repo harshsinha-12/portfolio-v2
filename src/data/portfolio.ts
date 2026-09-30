@@ -712,7 +712,7 @@ export const educationList: Education[] = [
     id: "education-1",
     icon: "/assets/iitp-logo.webp",
     title: "Indian Institute of Technology, Patna",
-    degree: "Bachelor of Technology",
+    degree: "Bachelor of Science",
     duration: "Aug 2023 - May 2027",
     content: [
       "Major: Computer Science and Engineering",
