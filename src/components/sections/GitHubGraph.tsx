@@ -181,10 +181,14 @@ export function GitHubGraph({
     return () => controller.abort();
   }, [initialDays, username]);
 
+  // Anchor the window to the newest day in the data, not the clock: the server
+  // (UTC, possibly stale ISR) and the visitor's browser can be on different
+  // dates, and a clock-based cutoff then breaks hydration.
   const visibleDays = useMemo(() => {
-    const cutoff = new Date();
+    const latestDay = days.at(-1);
+    if (!latestDay) return [];
+    const cutoff = parseDate(latestDay.date);
     cutoff.setMonth(cutoff.getMonth() - resolvedMonths);
-    cutoff.setHours(0, 0, 0, 0);
     return days.filter((day) => parseDate(day.date) >= cutoff);
   }, [days, resolvedMonths]);
 
