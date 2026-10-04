@@ -1,8 +1,8 @@
 ---
 title: "How I'm Building Tourist: A Cloud Coding Agent That Lives in a City"
-description: "Tourist's city foundation is running. Here is the build plan for the cloud coding agent, scoped memory, dynamic context, GitHub delivery, and learning that should follow."
+description: "Tourist loads a repository as a city, one building per file, and runs coding agents against it. Scoring, memory, and a reinforcement-learning policy sit on the same run. A real pull request is stage 8."
 date: "2026-09-11"
-updatedAt: "2026-09-28"
+updatedAt: "2026-10-04"
 tags:
   - AI Agents
   - Context Engineering
@@ -31,27 +31,90 @@ You describe a bug. The agent searches, finds `auth.ts`, patches it, runs tests,
 
 The model is not the bottleneck anymore. The session is.
 
-I usually write about systems I have already poked at. **Tourist** now has a working city foundation. The larger product I am building looks like this:
+Tourist is that office, drawn as a city and staffed like a small engineering team. The goal is one system, not a chat window with a map taped on:
 
 ```text
-Connect a GitHub repo
-→ bring your own OpenAI key
-→ describe the work
-→ a cloud agent inspects the codebase, edits and tests in an isolated sandbox
-→ a pull request shows up
+A repository becomes an island. Each file is a building.
+Agents read, edit, test, and review on that tree.
+Every finished run gets a score.
+Memory keeps what the score says was worth keeping.
+A reinforcement-learning policy later prefers the choices that scored well.
+GitHub is where the work leaves as a pull request.
 ```
 
-The longer version is the actual product. Most agents are still chat sessions with tools. Tourist is an attempt to make something closer to a persistent engineering environment: memory across tasks, context that is discovered instead of dumped, learning from outcomes, and a visual world that makes autonomous work inspectable.
+The city is the part you can open. Paste a public GitHub URL and Tourist fetches that default branch, drops images and generated assets, and lays the remaining files out as buildings. Folders become sectors. Tests, tools, review, and the harbor are landmarks, not files. The same generator draws Tourist’s own repo. That viewer is deployed.
 
-This post is the build plan and a progress marker. The first city and report slice works. The cloud agent loop, persistent memory, tool creation, and learning are still work ahead.
+The agents, the score, and a first memory file are in the repository behind it. A coder, a coder–tester–reviewer chain, and an opt-in swarm can edit a checkout, run `node --test`, and commit locally. The cloud API can run that same runtime in a Daytona sandbox and return a patch. `reward_v1` is written on the run. Notes live in a JSON file and come back by keyword overlap. The policy that would learn from those scores is specified, and it is not allowed to change behavior yet. A real pull request is stage 8. `create_pull_request` records the call.
 
-<Callout title="Current checkpoint — September 2026">
-  The repository runs a versioned city/report protocol, a deterministic fixture-to-city generator, an interactive isometric city, file-specific building components with a generic fallback, a building inspector, and a fixture PublicReport with file, test, and PR anchors. You can run the fixture locally. It is not yet proof of a cloud agent opening a PR or of live agents moving through the city.
+[`checkpoints.md`](https://github.com/harshsinha-12/tourist/blob/main/checkpoints.md) is the build order. Where it disagrees with the older [`plan.md`](https://github.com/harshsinha-12/tourist/blob/main/plan.md), the board wins. The old plan wanted a real pull request before a swarm or a tool builder. The repo built the agent on a local checkout first, and left GitHub for last.
+
+<Callout title="Current checkpoint — 4 October 2026">
+  This matches the repository as last pushed on 29 September 2026. The city loads a public repo, one building per file. Stages 1–5 are checked: tools, one coder, sub-agents, an opt-in swarm, and one runtime with a run-scoped tool builder. Scoring logs `heuristic_v1` / `reward_v1`. Memory is a JSON keyword store; the Postgres and code-rule layer is stage 6. Policy promotion is stage 7. The GitHub App and a real pull request are stage 8. The board’s own note is that a live Daytona run had not been performed.
 </Callout>
 
 <Callout title="The bet">
-  The model is not the product. The harness, memory, retrieval, sandbox, delivery loop, and visibility are. If the city is only a skin, the project failed. If the city is how a run becomes understandable, the visualization is doing engineering work.
+  The model is not the product. The city, the agents, the score, the memory, and the policy are. If the city is only a skin, the project failed. If a building is how you see what the agent touched, the visualization is doing engineering work.
 </Callout>
+
+## The six layers
+
+The user flow I want is still boring on purpose. Connect GitHub, bring a key, describe a task, wait. Under that loop the product is six layers. The table is the goal and the code, side by side.
+
+<DataTable
+  dataset="whatTouristIs"
+  caption="Goal is the system Tourist is for. In the repo now is what the 29 September tree actually does."
+/>
+
+<Mermaid
+  caption="One run is supposed to touch every layer. The city and the agents run today. The score is logged. Memory is a file. The policy does not steer yet. The pull request is recorded."
+  chart="flowchart LR; R[Repository] --> City[City: one building per file]; T[Task] --> Agents[Solo, team, or swarm]; Agents --> Score[reward_v1]; Agents --> Mem[Memory pack]; Score --> Policy[Policy]; Mem --> Agents; Policy -.-> Agents; Agents --> PR[Recorded pull request]; PR -.-> City"
+/>
+
+The public site at [the Tourist city](https://web-sigma-orpin-64.vercel.app/) shows the first layer. You can paste `owner/repo` and walk the island. The page still marks “give it work” and the memory section as coming soon, because those layers are not started from that prompt. They are started from the `tourist` CLI and the cloud API. A visitor can paste a run id and a viewer token into the terminal panel if a cloud run already exists.
+
+What I am not building, at least not first:
+
+- a new foundation model
+- online PPO against the model that writes the code
+- Kubernetes as a personality trait
+- a custom sandbox runtime
+- a 40-agent swarm that starts because the prompt was long
+- a VS Code clone
+- a claim that the city is alive because the cars move
+
+<MarginNote>
+  The city is the brand. The PR loop is the product.
+</MarginNote>
+
+If I confuse those, I will spend the next month making ships prettier while `create_pull_request` is still a notebook entry.
+
+## The city loads the repository
+
+This is the layer that runs in the browser. I care about it more than a dashboard, and the pull request is still what has to leave the island.
+
+Software is spatial whether we admit it or not. You already say “the auth area,” “the payments module,” “the messy legacy folder.” Mapping that to an island is not a gimmick if the mapping is generated from the repo tree, not hand-authored.
+
+<DataTable
+  dataset="cityMapping"
+  caption="The mapping is generated. A hand-authored pretty city is a trailer. The live import uses this mapping on the default-branch file list."
+/>
+
+Paste `owner/repo` on the landing page, or open `/owner/repo`. The page calls the public GitHub API with no user token, asks the world generator for a `CitySnapshot`, and renders it. The same generator serves the local island. Images and generated assets stay off the map. The import keeps at most 400 files. Line counts are not read from the files. They are a hash of the path: 24 plus that hash modulo 420. Building height on an imported city is a costume.
+
+The viewer is isometric SVG and DOM. React Three Fiber is still a possible later renderer. It is not this one. The catalog has 68 building designs, including a generic fallback and a testing building so `*.test.ts` does not have to look like an ordinary TypeScript file. Equivalent extensions share a design. `.yml` and `.yaml` are the same building.
+
+Landmarks in the protocol are the command center, testing facility, data archive, tool workshop, research lab, review center, and merge harbor. On the island you meet them as town hall, the test facility, the skill harbor, the review navy, and the airbase where a repository arrives. Cars follow the street grid. Ships loop the water and pause at the harbor. Clouds take curved routes. That motion is atmosphere. The code comment in the canvas is explicit: snapshot states are historical report evidence, and builders leave town hall only when a caller passes live edit ids. The public city page does not pass them. The crew stands in the plaza. The operations modal’s pull-request list is empty, with the copy “No pull requests are connected to this snapshot yet.”
+
+Private repositories wait for stage 8, when an installation token exists. Storing a city so it can be reopened by id, and replacing the hashed line count with a real one, are deferred city work. They are not the next AI stage.
+
+<Mermaid
+  caption="A public tree becomes a snapshot. Live agent events are a later binding onto the same schema."
+  chart="flowchart LR; A[Public GitHub tree] --> B[World generator]; B --> C[CitySnapshot]; C --> D[Isometric viewer]; E[Agent events] --> F[CLI and cloud log]; F -.-> G[Builders and harbor, not wired]"
+/>
+
+A file diff is supposed to anchor to a building. Tests anchor to the testing facility. A pull request anchors to the harbor. Failures put a warning on a district. The fixture report route still has file, test, and pull-request anchors. A GitHub import’s report section points at the island and says the tree was mapped. It does not describe a run, because there was no run.
+
+If stage 8 regresses, or never arrives, city polish pauses. A beautiful empty harbor is a trailer. A shareable report whose snapshot matches a real run is a product.
 
 ## The problem I am actually trying to solve
 
@@ -64,121 +127,91 @@ Coding agents got good fast. They can search a repo, edit files, run tests, and 
 - they do not systematically get better from merged PRs, reverted PRs, flaky tests, or “please don’t do it that way”
 - when they work in the cloud, you get a log stream, not a place you can look at
 
-I have already written about two pieces of this: [memory as a coordination layer](/articles/self-improving-agents-memory-missing-layer), and [agents that know when to stop](/articles/building-ai-agents-that-know-when-to-stop). Tourist is the project that would have to survive those constraints in production, then make the work visible.
+I have already written about two pieces of this: [memory as a coordination layer](/articles/self-improving-agents-memory-missing-layer), and [agents that know when to stop](/articles/building-ai-agents-that-know-when-to-stop). Tourist is where those constraints have to survive contact with a repository.
 
-Cursor’s own writing on this is unusually clear. In *Dynamic context discovery*, they argue that as models get better as agents, you should give them **fewer details up front** and make it cheap to pull the rest. Their contrast is static context versus dynamic context discovery. The claim is not just “saves tokens.” They say it can also improve quality by keeping contradictory or irrelevant material out of the window ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery)).
+Cursor’s writing on this is still the clearest outside reference. In *Dynamic context discovery*, the argument is that as models get better as agents, you should give them **fewer details up front** and make it cheap to pull the rest. Static context versus dynamic context discovery. The claim is not just “saves tokens.” Keeping contradictory or irrelevant material out of the window can improve the answer ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery)).
 
-That is the first architectural tenet I am copying:
+That is still the architectural tenet:
 
 > Huge available context. Tiny active context.
 
-The rest of Tourist is what happens if you take that seriously, then add persistence, GitHub-native delivery, and a city as the reporting surface.
+The rest of Tourist is what happens if you take that seriously, then add persistence, GitHub-native delivery, and a city as the reporting surface. The tenet is ahead of the code. Today’s agent searches with ripgrep and receives a memory pack of at most eight notes. The retrieval ladder below is the design it is supposed to grow into.
 
-## What Tourist is (and is not)
+## The sequence changed
 
-The user flow for v1 is boring on purpose. Connect GitHub, paste an OpenAI key, describe a task, wait. The interesting work is under that loop.
+The failure mode for a project like this is obvious. Memory, multi-agent, tool factories, reinforcement learning, and a 3D world are five startups. The first plan put a quality gate in front of that: no swarm, no tool builder, no “live city” claim, until one agent could open a real pull request.
 
-<Mermaid
-  caption="v1 is a GitHub-native loop, not a chat transcript."
-  chart="flowchart LR; A[Connect GitHub repo] --> B[Bring OpenAI key]; B --> C[Describe a task]; C --> D[Cloud agent in a sandbox]; D --> E[Commit, push, open PR]; E --> F[PublicReport city snapshot]"
-/>
-
-Under that loop I am building four things that most chat-wrapped agents skip:
+The checkpoint board reversed the early order, on purpose. It says that where it disagrees with `plan.md`, follow the board. Stages 1 through 7 do not connect a GitHub account. Repository work happens on a local fixture or a sandbox clone. GitHub tool names exist so the agent can call them. The adapter records the call.
 
 <DataTable
-  dataset="whatTouristIs"
-  caption="The PR loop is the product. These four layers are why it is not just another wrapper."
+  dataset="stages"
+  caption="Tick means the behavior works in the repo. Stages 6–8 are the plan from here. The cloud API sits beside this list: it can execute stages 2–5 in Daytona, and it still does not count as stage 8."
 />
 
-What I am not building, at least not first:
+The reason for the flip is practical. You cannot reconstruct a faithful tool trace later, and you cannot tell whether a topology was a good idea if the only thing you ever ran was a happy-path coder. So the board builds the agent on a checkout first: tools without a model, then one coder, then specialists, then a swarm that is hard to start by accident, then one entry point. Memory that other tasks can reuse comes after that architecture holds. A policy is allowed to change behavior only after an eval. GitHub is the last adapter to go live, because a push is the first action that leaves the machine.
 
-- a new foundation model
-- online PPO against GPT
-- Kubernetes as a personality trait
-- a custom sandbox runtime
-- a 40-agent swarm
-- a VS Code clone
-- a claim that “the city is alive” before a solo agent can open a real PR
-
-<MarginNote>
-  The city is the brand. The PR loop is the product.
-</MarginNote>
-
-If I confuse those, I will spend three months making buildings prettier while the agent still cannot ship.
-
-## Two tracks, not six products
-
-The failure mode for a project like this is obvious. Memory, multi-agent, tool factories, RL, and a 3D world are five startups. I wrote quality gates into the PRD so I cannot “just quickly add a swarm.”
-
-There are two tracks. The first Track 0 slice is runnable; the solo PR loop remains the next major gate. Everything else is gated.
+The risk is the one the old gate was designed to prevent. A swarm that has never opened a pull request can become the product. I am keeping the fear and moving the control: city polish and topology experiments do not get to count as shipping until stage 8’s exit is checked. That exit is specific. A connected repo and an issue go through the stage 5 runtime and come back as a real pull request, and the same trajectory’s reward updates from that pull request.
 
 <Mermaid
-  caption="Track 0 and the solo PR loop can run in parallel. Multi-agent and the tool builder cannot start in the first 30 days."
-  chart="flowchart TB; Start[Day 0] --> City[Track 0: city schema and public reports]; Start --> Agent[MVP 1: solo agent to PR]; City --> GateA[Gate A]; Agent --> GateA; GateA --> Index[MVP 2: indexing and scoped memory]; Index --> Live[MVP 3: bind live events to the city]; Live --> Multi[MVP 4: multi-agent]; Multi --> Tools[MVP 5: tool builder]; Tools --> Learn[MVP 6: bandits on logged trajectories]"
+  caption="What is left, in the order the checkpoint board requires."
+  chart="flowchart LR; S6[Stage 6: Postgres, embeddings, code rules] --> S7[Stage 7: shadow, canary, active policy]; S7 --> S8[Stage 8: GitHub App, push, real PR]"
 />
 
-### Track 0 — city foundation and public reports
+## The agents
 
-Build the world schema before the agent is impressive.
+The runtime is TypeScript, behind our own interfaces, using the [AI SDK tool loop](https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling). The older docs still describe a Python process and the OpenAI Agents SDK. That is not what `packages/agent-runtime` is.
 
-Why early: if folders become sectors, files become buildings, tests become a facility, and PRs become the harbor, then events, reports, and later live agents all have a stable target. Integration later is cheaper if the world exists first. It also makes the project demoable before Gate A is green.
+A task carries a model id and a key. The catalog is explicit: unknown ids fail before any provider request. The default is `gpt-6-sol`. OpenAI, Anthropic, and Gemini models are in the table, with reasoning levels where the provider supports them. The key is passed into the run. It is not written into the trajectory, and it is not handed to a tool. The board records bounded live OpenAI runs, in `solo.live.test.ts` and `team.live.test.ts`, that each produced a passing fixture commit. Anthropic and Gemini routing is contract-tested. Those paths were not live-tested without keys.
 
-The important product decision: **a public report generates a city.**
-
-<Mermaid
-  caption="Private in-product world and public report world share a schema. The report world is an immutable snapshot."
-  chart="flowchart LR; A[Run finishes or fixture report] --> B[ReportComposer]; B --> C[WorldGenerator]; C --> D[CitySnapshot]; D --> E[Shareable PublicReport URL]; E --> F[City viewer]; E --> G[Panels anchored to buildings]"
-/>
-
-A file diff anchors to a building. Tests anchor to the testing facility. A PR anchors to the harbor. Failures put a warning on a district. Agent steps can highlight a path.
-
-Track 0 already runs on a fixture repo. The report route can navigate from sections to file, test, and pull-request anchors. That establishes the city/report contract; it does not establish live task events or autonomous delivery.
-
-### MVP 1 — solo agent to PR, plus trajectories (Gate A)
-
-In parallel: GitHub App, BYOK OpenAI, Daytona sandbox, one coding agent, commit, push, PR.
-
-Until Gate A is green, I am not allowed to ship multi-agent swarms, build the Tool Builder product, turn on active Global Memory, or claim a finished “live autonomous city.”
-
-Allowed: Track 0, fixture report → city, event schema, text inspector, logging memory that is not globally active.
+Topology is a function, not a model acting as a manager. If the caller passes two to four disjoint file assignments, the run is a swarm. Otherwise a task that mentions a bug, a fix, a race, a regression, auth, security, or a refactor — or any task longer than 120 characters — takes the team path. Everything else is one coder. The “supervisor” in the design notes is real as a role with no file-editing tools. The choice it is supposed to make is, today, that heuristic.
 
 <DataTable
-  dataset="gates"
-  caption="Fancy layers amplify whatever quality already exists. A tool factory on a bad solo agent is a chaos amplifier."
+  dataset="topologies"
+  caption="Swarm is opt-in. A long prompt does not start one. A one-file change must not start one either."
 />
 
-Gate A, in plain language: a real repo, a real key, a real sandbox, a real PR, 100% of completed runs write a complete trajectory with `reward_v1`, and a real run can mint a PublicReport whose CitySnapshot matches that run.
+The coder may only act through the registry. Search is ripgrep with a fixed string, at most 20 matches per file, and the tool returns at most 50,000 characters. `read_file` refuses a file above 200,000 characters. Shell is an allowlist: `node --test`, or `pnpm` / `npm` with `test`, `typecheck`, or `build`. There is no arbitrary shell string, and the git tools cannot push.
 
-This is boring on purpose. OpenAI’s Agents SDK direction is also “harness first”: files, shell, sandboxes, skills, compaction — not “spawn a company of agents on day one” ([OpenAI](https://openai.com/index/the-next-evolution-of-the-agents-sdk/)).
+On a local coding run the checkout has to be clean. The runtime creates `tourist/task-…`, lets the agent edit, runs `node --test` with a 120 second limit, commits, and then calls `create_pull_request`. That call appends a recorded flag to the run. GitHub is never contacted. Plan and ask modes get `read_file`, `search`, `git_status`, and `git_diff`, capped at 12 model steps. Debug mode wraps the task as “reproduce, find the cause, fix, add a regression test,” then uses the coding path.
 
-## The stack I am starting with, and why
+The team path is coder, then tester, then reviewer. The reviewer’s last message has to start with `ACCEPT`. `CHANGES_REQUIRED` sends the coder and tester around once. A second rejection fails the run. The research role exists, with read and search only. The default chain does not call it.
 
-I want to spend engineering time on agent quality, context, memory, and the city — not on inventing infrastructure.
+The swarm path is the one I am most careful about. Each coder gets a Git worktree and a write allowlist of its own files. An integration step merges those branches onto one task branch and runs tests. A failed test or a merge conflict goes back to the owner once, if the failure names that owner. If ownership is ambiguous, the run stops. The worktrees are removed afterwards.
+
+Events from these runs already use the names the city was given: `agent.spawned`, `file.changed`, `tool.called`, `test.passed`, `test.failed`. They feed the CLI and the cloud event log. They do not yet move a pawn on the island.
+
+### The tool builder is one operation
+
+Stage 5 includes a tool builder, and it is deliberately small.
+
+The solo coder can call `build_tool`. The manifest is Zod-checked. The id has to look like `local_something`. The only legal operation is `count_lines`. The caller supplies one to five fixtures, path plus expected line count. The implementation is a read of a file through the same path check as `read_file`, not generated JavaScript and not a shell. If a fixture disagrees, the tool is not registered. If it passes, the next model phase on that same run can call it. The registry forgets it when the process ends. It is not a global skill.
+
+That is the whole factory. A workshop that can invent arbitrary programs is a later product, and it stays behind the stage 5 constraint until a run can show that a reused tool improved the reward. Right now the interesting question is whether the agent even reaches for a line counter when the manifest is this strict. The tests show the registration path. They do not show that a model wanted the tool.
+
+### The cloud path returns a patch
+
+`apps/api` accepts a public `owner/repo`, a task, a mode, a model id, and an optional swarm assignment. The request also carries the provider key in a header. The key sits in the in-memory queue, goes into the sandbox environment, and is not written on the run record.
+
+The executor talks to Daytona. It creates a TypeScript sandbox, clones the public repository at depth 1, uploads a worker bundle and the task JSON, and runs the worker for up to 900 seconds. Tool and stage events are polled from a file inside the sandbox. On the way out, the API reads a result JSON — refused above 5 MB — keeps the patch, and deletes the sandbox.
+
+The queue is one process. It runs one job at a time and will hold ten waiting runs. Restart the API and unfinished runs are marked failed. A succeeded coding run stores `reward_v1` with the token counts from the model response, the latency, whether a patch exists, and `testsPassed: true`, because a failed test throws before success is recorded. A failed cloud run stores `completed: false` and zero tokens. Those zeros are a placeholder, not a measurement of the failed attempt.
+
+So the laptop-closed story is half true in code. The sandbox can outlive the request that started it, inside that 900 second command. The API does not push, does not open a pull request, and does not keep the machine. The checkpoint board says a real Daytona execution had not been run when the board was reviewed. Unit tests cover the server, the queue, and the executor’s contract. I am not going to describe a cloud run I cannot point at in that record.
+
+The CLI is the same runtime with a terminal in front of it. `tourist` can plan, ask, debug, or run against a local checkout, or send the task to `TOURIST_CLOUD_URL` when that is set. The interactive prompt has a command ribbon and a model picker with the price table. Coding still requires a clean checkout, which is an awkward way to protect work you have not committed, and the right one until the sandbox is the default.
+
+Local execution is not an operating-system sandbox. The instruction in the runtime README is to use a disposable checkout. That constraint stays until Daytona, or something like it, is the path a normal run takes.
 
 <DataTable
-  dataset="stack"
-  caption="The current slice is TypeScript, Next.js, React, and Vitest. The remaining rows are architecture choices for later phases, not implemented services."
+  dataset="runConstraints"
+  caption="These are limits in the current source, not targets. The retrieval and sandbox design further down is allowed to be more ambitious than this table."
 />
 
-Rust is not a v1 flex. A typical run is waiting on the model, `npm install`, tests, and git — not on the orchestrator’s allocation speed.
+## Context: the design is still discovery, the code is still a checkout
 
-The project card shows the technology set for Tourist as a whole. The current prototype only uses part of it. OpenAI, Postgres, Redis, Pinecone, Qdrant, LangChain, LangGraph, and LangSmith belong to the agent, memory, retrieval, and observability plan. Qdrant is the present vector-search choice; Pinecone is another candidate. Reinforcement learning means a later, evaluated policy over discrete agent decisions, not model-weight training in v1.
+This is the part I am most sure about, and the part the implementation has barely touched.
 
-BYOK is a product constraint, not a billing footnote. The user’s OpenAI key runs the agent. I meter usage. I do not become an opaque model reseller on day one.
-
-Daytona matters because the agent should outlive the laptop:
-
-```text
-Start task → close laptop → sandbox keeps working → tests → PR
-```
-
-OpenAI’s sandbox agent model is exactly this shape: the agent is still an agent (instructions, tools, handoffs, guardrails), but the execution boundary is a live sandbox that owns files, commands, and isolation. Providers include Daytona, E2B, Modal, Vercel, Docker, and others ([OpenAI Developers](https://developers.openai.com/api/docs/guides/agents/sandboxes)). I am picking Daytona because the Python SDK path is documented, pause-on-exit preserves the filesystem, and I do not want to own VM lifecycle yet ([Daytona](https://www.daytona.io/docs/en/guides/openai/openai-agents-sdk-with-sandboxes/)).
-
-## Context: copy Cursor’s discovery model, then make retrieval a learned decision
-
-This is the part I am most sure about.
-
-Older agent setups stuffed the prompt with the repo tree, semantic matches, memories, tool catalogs, and chat history “just in case.” Cursor’s current direction is the opposite. Agents start with lightweight facts (OS, git status, recent files) and **discover** the rest through tools ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery); [Cursor](https://cursor.com/blog/continually-improving-agent-harness)).
+Older agent setups stuffed the prompt with the repo tree, semantic matches, memories, tool catalogs, and chat history “just in case.” Cursor’s direction is the opposite. Agents start with lightweight facts and discover the rest through tools ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery); [Cursor](https://cursor.com/blog/continually-improving-agent-harness)).
 
 The teaching version of that contrast looks like this. These are not Tourist measurements. They are a sketch of why “just in case” is expensive:
 
@@ -190,12 +223,12 @@ The teaching version of that contrast looks like this. These are not Tourist mea
   xKey="strategy"
   series="contextCompositionSeries"
   yUnit=" tokens"
-  caption="Illustrative teaching data, not a Tourist benchmark. Static dump ≈ 48k tokens of 'might help.' Dynamic discovery ≈ 10k tokens of what the agent actually pulled. Cursor's claim is that the second shape can also improve quality by keeping contradictory material out."
+  caption="Illustrative teaching data, not a Tourist benchmark. Static dump ≈ 48k tokens of might-help. Dynamic discovery ≈ 10k tokens of what the agent actually pulled. Tourist's running prompt is a third thing: the task, a tool list, and at most eight memory notes, plus whatever ripgrep and read_file return."
 />
 
-### Search is hybrid, not “embed the repo into the prompt”
+### Search is hybrid in the design, and ripgrep in the code
 
-Cursor reports that semantic search improved coding-agent question accuracy by **12.5% on average** (range 6.5%–23.5% depending on the model), that grep + semantic search together currently perform best, and that the benefit is larger on big codebases. Their A/B tests also showed higher code retention on large repos when semantic search was available ([Heule, Jia & Jain, 2025](https://cursor.com/blog/semsearch)).
+Cursor reports that semantic search improved coding-agent question accuracy by **12.5% on average** (range 6.5%–23.5% depending on the model), that grep and semantic search together currently perform best, and that the benefit is larger on big codebases. Their A/B tests also showed higher code retention on large repos when semantic search was available ([Heule, Jia & Jain, 2025](https://cursor.com/blog/semsearch)).
 
 <Chart
   dataset="semsearchLift"
@@ -204,34 +237,29 @@ Cursor reports that semantic search improved coding-agent question accuracy by *
   xKey="model"
   series="semsearchSeries"
   yUnit="%"
-  caption="Source: Cursor Context Bench, reported in 'Improving agent with semantic search' (Nov 2025). These are Cursor's results, not Tourist's. Average +12.5%, range 6.5%–23.5% depending on the model."
+  caption="Source: Cursor Context Bench, reported in Improving agent with semantic search (Nov 2025). These are Cursor's results, not Tourist's. Average +12.5%, range 6.5%–23.5% depending on the model."
 />
 
 <DataTable
   dataset="cursorOnlineAb"
-  caption="Cursor's online A/B test, same model, semantic search on vs off. Effect sizes are smaller than the offline accuracy lift because not every agent query needs search."
+  caption="Cursor's online A/B test, same model, semantic search on versus off. Effect sizes are smaller than the offline accuracy lift because not every agent query needs search."
 />
 
-So the retrieval ladder is:
+The retrieval ladder I still want:
 
 ```text
 symbol lookup → ripgrep → LSP → semantic search → memory
 ```
 
-Not: embed everything and pray.
+Tourist has the second step. `embed_codebase` is registered and returns “Available in Stage 6.” There is no tree-sitter index, no language server, and no vector store in the running system. `plan.md` still names Qdrant. The checkpoint board says the embedding engine is chosen later. I am leaving that choice open until stage 6 has a record store worth indexing.
 
-<Mermaid
-  caption="Indexing happens ahead of time. The model does not receive the index. It receives a query interface."
-  chart="flowchart LR; A[Tree-sitter chunks] --> B[Symbols]; A --> C[Embeddings in Qdrant]; D[Agent] --> E[Symbol lookup]; E --> F[ripgrep]; F --> G[LSP]; G --> H[Semantic search]; H --> I[Memory]; B --> E; C --> H"
-/>
+Cursor’s Dropbox writeup is a useful existence proof that indexing hundreds of thousands of files is a product problem, not a prompt problem ([Cursor](https://cursor.com/blog/dropbox)). A Tourist import currently keeps 400 files and estimates their size. We are not at that problem yet. We should not pretend the city of a large repo is the same as an index of it.
 
-Cursor’s Dropbox writeup is a useful existence proof that indexing hundreds of thousands of files is a product problem, not a prompt problem ([Cursor](https://cursor.com/blog/dropbox)).
+### Long tool output is still in the model’s hands
 
-### Long tool output becomes a file
+`npm test` can be 40,000 tokens. Truncating it loses the assertion you needed. Cursor writes long tool responses to files and lets the agent read slices. They say this reduced unnecessary summarization ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery)).
 
-`npm test` can be 40k tokens. Truncating it loses the assertion you needed. Cursor writes long tool responses to files and lets the agent `tail` / read slices. They say this reduced unnecessary summarization ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery)).
-
-Sandbox contract I want:
+The trace Tourist stores is redacted: stdout, stderr, and file contents become a character count. The model receives the full tool result. Search is capped. A test log is not. The sandbox contract I still want is an artifact plus a tail:
 
 ```json
 {
@@ -241,15 +269,13 @@ Sandbox contract I want:
 }
 ```
 
-Maybe 300 tokens. Then `read_artifact("test-output.log", lines=550:620)` only if needed.
+Maybe 300 tokens. Then a line slice only if the agent asks. That is not built. It matters more once the test command is a real project’s suite and not `node --test` on a fixture.
 
-Terminal sessions get the same treatment: addressable artifacts, not an ever-growing transcript welded into context.
+### Tools should be discovered, not preloaded
 
-### Tools and skills are discovered, not preloaded
+This matters more once agents can create tools that are worth keeping.
 
-This matters even more later, when agents can create tools.
-
-Cursor’s MCP finding: loading every tool description is expensive; syncing descriptions to files and letting the agent look them up cut **total agent tokens by 46.9%** on runs that actually called an MCP tool ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery)). They also adopted the Agent Skills open standard: a name + description can sit in static context, and the full instructions / scripts are pulled when relevant ([Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)).
+Cursor’s MCP finding: loading every tool description is expensive; syncing descriptions to files and letting the agent look them up cut **total agent tokens by 46.9%** on runs that actually called an MCP tool ([Katz, 2026](https://cursor.com/blog/dynamic-context-discovery)). They also adopted the Agent Skills open standard: a name and a description can sit in static context, and the full instructions are pulled when relevant ([Anthropic](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)).
 
 <Chart
   dataset="mcpTokenUsage"
@@ -258,33 +284,20 @@ Cursor’s MCP finding: loading every tool description is expensive; syncing des
   xKey="setup"
   series="mcpTokenSeries"
   yUnit=""
-  caption="Relative total agent tokens on runs that called an MCP tool, indexed to 100. Cursor reports a 46.9% reduction (statistically significant, with high variance based on the number of MCPs installed). Source: Dynamic context discovery, Jan 2026. Not a Tourist result."
+  caption="Relative total agent tokens on runs that called an MCP tool, indexed to 100. Cursor reports a 46.9% reduction. Source: Dynamic context discovery, Jan 2026. Not a Tourist result. Tourist currently puts the role's tool list on the model every time."
 />
 
-If Tourist ever has hundreds of tools, dumping every schema into the system prompt is how you go broke and also how you confuse the model. The Tool Registry should retrieve a tiny pack per task.
-
-### Summaries must not destroy history
-
-Compaction is lossy. Cursor keeps chat history as files so the agent can recover details the summary dropped.
-
-For Tourist:
-
-- full task history → object storage
-- structured events → Postgres
-- semantic summaries → Qdrant
-- compact summary → current prompt
-
-The agent can `search_task_history("why did we reject Redis?")` instead of trusting a 3k-token amnesia note. That is episodic memory with a retrieval API.
+The registry can already hand a caller a subset by id. The team path uses that: a reviewer does not get `write_file`. What we do not have is retrieval over a large catalog. The solo coder’s list is short enough that dumping it is fine. It will not stay fine if stage 5’s one-line-counter grows into a real workshop.
 
 ### The extra step: context selection is part of the policy
 
-Cursor is already training retrieval from agent traces: look at what the agent eventually opened, ask a model what should have been retrieved earlier, train embeddings toward that ([Heule, Jia & Jain, 2025](https://cursor.com/blog/semsearch)).
+Cursor trains retrieval from agent traces: look at what the agent eventually opened, ask what should have been retrieved earlier, train embeddings toward that ([Heule, Jia & Jain, 2025](https://cursor.com/blog/semsearch)).
 
-I want that loop, but as a **discrete, logged decision**, not only as a better embedding model.
+I want that loop as a discrete, logged decision, not only as a better embedding model.
 
-Every run chooses a `context_budget` (`4k` / `8k` / `16k`), a `tool_pack`, a `memory_pack`. Those choices go into the trajectory. Later, contextual bandits can prefer packs that actually helped the PR get merged, without retraining GPT.
+Every run is supposed to choose a `context_budget` (`4k` / `8k` / `16k`), a `tool_pack`, and a `memory_pack`. Those choices go into the trajectory. Later, contextual bandits can prefer packs that helped. That decision table is stage 7. The field written today is smaller: `heuristic_v1`, the mode, and the topology the keyword rule picked.
 
-A useful scoring rule for the router:
+A useful scoring rule for the router, still a design:
 
 ```text
 context_score
@@ -304,21 +317,27 @@ If `auth.ts` is 1,800 tokens at 0.98 relevance and `README.md` is 7,000 tokens a
   title="Same formula, three files, very different claims on the window"
   xKey="file"
   series="contextScoreSeries"
-  caption="Illustrative context_score × 1,000,000. auth.ts wins because it is small and highly relevant. README.md is long and only loosely related, so its score collapses. Start the agent around ~10k tokens of active context even if the available universe is tens of millions."
+  caption="Illustrative context_score × 1,000,000. auth.ts wins because it is small and highly relevant. README.md is long and only loosely related, so its score collapses."
 />
 
 > The goal is not maximum context. It is minimum sufficient context.
 
-## Memory: persistent, scoped, and hostile to pollution
+## Memory: a JSON file now, a promotion pipeline later
 
-Memory is how the system stops being session-oriented. It is also how you leak secrets into the next user’s prompt if you are sloppy.
+Memory is how the system stops being session-oriented. It is also how you leak a secret into the next prompt if you are sloppy.
+
+What runs is `MemoryStore`, a JSON file. The CLI uses `~/.tourist/memory.json` unless `TOURIST_MEMORY_FILE` is set. Notes have a scope of `user`, `codebase`, or `episodic`, a repo id when they are not user-scoped, and a body of at most 2,000 characters. Retrieval is keyword overlap: words of three characters or more, user notes always eligible, others only if they share a word with the task, then at most eight notes. The cloud API loads its own file, mixes those hits with notes the CLI sent, and on a succeeded run that produced a patch writes one episodic line: “Completed” plus the first 300 characters of the task.
+
+The agent’s own tools, `read_memory`, `write_memory`, `delete_memory`, return “Available in Stage 6.” The pack is injected by the CLI or the API before the model starts. The coder does not query it.
+
+Stage 6 is the version I am willing to call memory. Postgres is the record store. An embedding index, engine still unchosen, holds vectors for those records and for code chunks. `read_code_rules` runs before the first edit and loads `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/**`, a user taste file, and saved `code_rule` memories. A file wins when it disagrees with a memory. The reviewer checks the diff against the pack that was loaded. Global rows may be logged as candidates. Nothing with `scope=global` and `status=active` is readable. Agents do not promote their own notes.
 
 <DataTable
   dataset="memoryScopes"
-  caption="Global Memory is the dangerous one. Logging can exist before Gate B. Promotion cannot."
+  caption="The right-hand column is the stage 6 rule. The running JSON store implements user, codebase, and episodic notes with keyword search, and it has no global scope at all."
 />
 
-Agents never write `scope=global, status=active` themselves. The pipeline is:
+The pipeline I still want, once that store exists:
 
 ```text
 default deny
@@ -329,133 +348,117 @@ default deny
 → demote
 ```
 
-Nothing secret, repo-specific, or user-specific graduates. Active global retrieval stays off until Gate B.
-
 <Mermaid
-  caption="No memory should move directly from one conversation into global behaviour."
+  caption="No memory should move directly from one conversation into global behaviour. This pipeline is stage 6 and Gate B. It is not what the JSON file does."
   chart="flowchart LR; A[Run evidence] --> B[Sanitize]; B --> C[Candidate]; C --> D{Scope?}; D -- User or repo --> E[Scoped store]; D -- Global --> F[Default deny]; F --> G[Multi-repo promote]; G --> H[Budgeted retrieve]; H --> I[Demote if it regresses]; E --> H"
 />
 
-This is less exciting than “the agent remembers everything” and much closer to how you would actually run it.
+Keyword overlap will happily retrieve “use pnpm” for a task about pnpm, and it will also retrieve it for a task that happens to contain the word “use.” That is a fine precursor. It is a bad thing to call codebase understanding.
 
-## Learning: around the model, not of the model
+## Scoring: reward_v1 on every finished run
 
-I am going to be strict about language. Tourist does **structured policy learning over trajectories**. It does not “do RL on GPT” in v1.
+The score is its own layer. It is not the reinforcement learner. It is the record the learner is allowed to read later.
 
-Non-negotiables:
+A finished run stores two objects. `policy` says which rule produced the run. Today that version is `heuristic_v1`, plus the mode (`run`, `plan`, `ask`, or `debug`) and the topology when the run has one. `reward_v1` stores:
 
-1. Do not train foundation-model weights in v1.
-2. Do not do online PPO against the main LLM.
-3. Every completed run writes a trajectory + reward. Incomplete learning records are bugs.
+```text
+completed
+testsPassed
+diffProduced
+inputTokens
+outputTokens
+latencyMs
+```
+
+On a coding run that returns, `testsPassed` is true because a failed `node --test` throws before the runtime records success. `diffProduced` is true when a local commit or a cloud patch exists. Token counts come from the model response. Latency is the wall clock of that request.
+
+The score is supposed to grow, not get invented. Stage 7 adds tool reuse, and retrieval credit for a memory that was in the prompt on a successful run. Stage 8 adds the delayed signals on the same object: pull request opened, CI finished, merged, reverted. Those fields are absent on purpose. A missing pull-request score is not a zero, and it is not a guess.
+
+A failed cloud run is the hole in the log. It stores `completed: false` and zero tokens. The zeros are a placeholder. They should be fixed before any policy is trained on the file.
+
+<Callout title="Why score runs before the policy exists?">
+  You cannot reconstruct a faithful trajectory later. The heuristic record is the start of that habit. It is not a claim that the system has learned anything.
+</Callout>
+
+## Reinforcement learning: discrete choices, not a new model
+
+I am going to stay strict about language. Tourist does **structured policy learning over trajectories**. It does not train the model that writes the code.
+
+The non-negotiables:
+
+1. Do not train foundation-model weights in this version.
+2. Do not do online PPO against the main model.
+3. Every completed run should write a trajectory and a reward. Incomplete learning records are bugs.
 4. Only discrete, versioned decisions are learned.
 5. No policy promotion without an eval gate. Logging is not learning.
-6. Global Memory graduates under rules.
+6. Global memory graduates under rules.
 
-The supervisor’s action space is small on purpose:
+The action space is small on purpose. The supervisor may pick a model class, a topology, a context budget, a tool pack, a memory pack, a stop policy, and a test policy. A new decision key needs a protocol change, a default, logging, and an eval. The context the bandit sees is the task: type, repo size, languages, whether CI exists, what failed last time. Li et al.’s LinUCB work is the usual citation for learning that choice without training the underlying model ([Li et al., 2010](https://arxiv.org/abs/1003.0146)).
 
 <DataTable
   dataset="supervisorArms"
-  caption="This is a contextual bandit problem, not a foundation-model training problem."
+  caption="This is the stage 7 action space. The live path does not pick from it yet. Topology is the keyword rule in the agent section, and the model is whichever id the user selected."
 />
 
-The classic result here is that you can learn which arm to pull given context (task type, repo size, languages, CI present, prior failures) without needing a full MDP and without updating GPT. Li et al.’s LinUCB work is the usual citation for contextual bandits with exploration that does not require training a giant policy network ([Li et al., 2010](https://arxiv.org/abs/1003.0146)).
+Policies go shadow, then canary, then active. A shadow policy scores runs without changing what the live path does. Promotion requires the eval to be at least as successful as the current default, at equal or lower cost. Rollback restores the previous version and keeps the trajectories. None of that machinery is in the repo. The eval set of fixture tasks is not either.
 
-Rewards are delayed and versioned (`reward_v1`): tests, CI, tokens, latency, PR merge/revert, user accept/reject. Retrieval gets credit assignment: if a file was retrieved early and actually used in the successful patch, that retrieval was good. If the agent wandered for 20 searches then found the file, the initial pack was wrong.
+SWE-bench exists so nobody has to pretend vibes are a metric ([Jimenez et al., 2024](https://www.swebench.com/)). I will still need a fixture-repo eval of our own, because Tourist’s loop includes a sandbox, a city, and eventually GitHub, not just a patch. SWE-agent is the supporting argument for spending time on the interface: the agent–computer boundary changes success rates ([Yang et al., 2024](https://arxiv.org/abs/2405.15793)). An allowlisted shell and a recorded pull request are already that kind of interface. They are a small one.
 
-Policies go shadow → canary → active. Eval harness before any “self-improving” claim. SWE-bench and related agent benchmarks exist so nobody has to pretend vibes are a metric ([Jimenez et al., 2024](https://www.swebench.com/)). I will still need my own fixture-repo eval (≥ 20 tasks) because Tourist’s loop includes GitHub + sandbox + city reports, not just patch generation.
+The live path does not consult this table. Topology is the keyword rule in the agent section. The model is whichever id the user picked. Stage 7 is the exit where a promoted policy beats that heuristic on success rate, or on cost at the same success rate, and every run still has a complete trajectory plus `reward_v1`.
 
-<Callout title="Why log trajectories from MVP 1 if learning is MVP 6?">
-  You cannot reconstruct a faithful trajectory later. If I wait until the bandit code exists, I will have thrown away the only data that could train it.
-</Callout>
+## The stack, as it is and as it was written down
 
-SWE-agent is useful supporting evidence for investing in the interface, not only the base model: the agent-computer interface changes success rates ([Yang et al., 2024](https://arxiv.org/abs/2405.15793)). Artifacts, tools, and a stop policy are part of that interface.
-
-## The city is the report, then it becomes the runtime
-
-I care about the city more than a dashboard, and less than the PR loop.
-
-Software is spatial whether we admit it or not. You already say “the auth area,” “the payments module,” “the messy legacy folder.” Mapping that to an island is not a gimmick if the mapping is generated from the repo tree and events, not hand-authored.
+I wanted to spend engineering time on agent quality, context, memory, and the city. The current code follows that more closely than the original service map did. It also leaves a documentation drift: `README.md` and `plan.md` still describe Python, OpenAI-only keys, Qdrant, and a Three.js world. The running tree is smaller.
 
 <DataTable
-  dataset="cityMapping"
-  caption="The mapping has to be generated. A hand-authored pretty city is a trailer."
+  dataset="stack"
+  caption="Rows marked running are in the repository and covered by tests or by the deployed city. Planned rows are still the checkpoint board, not services you can boot."
 />
 
-<Mermaid
-  caption="A file diff anchors to a building. A PR anchors to the harbor. Failures put a warning on a district."
-  chart="flowchart TB; Repo[Repository] --> Island[Island]; Folder[Major folder] --> Sector[Sector]; Sub[Subdirectory] --> District[District]; File[File] --> Building[Building]; Tests[Tests] --> Facility[Testing facility]; PR[GitHub PR] --> Harbor[Harbor]; Agent[Agent] --> Character[Character]; Tool[Tool creation] --> Workshop[Workshop]"
-/>
-
-Art direction: isometric pixel art, closer to a strategy game than to a Graphviz screenshot. The working viewer uses SVG and DOM components, with one configurable building per file and a generic building when the file type is unmapped. React Three Fiber and Three.js remain possible later choices for a true 3D world; they are not the current renderer.
-
-The building collection is intended to grow toward roughly 75 distinct file-type or semantic-role designs. Equivalent extensions can share a design, while files such as `*.test.ts` can use a testing design instead of an ordinary TypeScript building. Command Center, Research Lab, Workshop, and Harbor are landmarks rather than file buildings. That collection is a target, not a claim that all 75 designs are finished.
-
-Build order for the city:
-
-1. World schema + file-building registry — working first slice
-2. Fixture repo → deterministic layout → interactive viewer — working first slice
-3. Anchors + fixture PublicReport route — working first slice
-4. Persist CitySnapshot
-5. Only after Gate A: bind live pawns, construction, harbor traffic
-
-If Gate A regresses, city polish pauses. The report/snapshot path should keep working. A beautiful empty city is a trailer. A shareable report with a generated city for a real run is a product.
-
-## How I will implement it in the repo
-
-Monorepo from the start, because the protocol is the product.
+The monorepo that exists:
 
 ```text
 tourist/
-├── apps/web                     # city viewer + report pages early
-├── apps/api
-├── apps/worker
-├── services/agent-runtime       # Python
-├── services/indexing
-├── services/memory
-├── services/learning
-├── services/report-composer
-├── packages/protocol            # World, CitySnapshot, PublicReport, Trajectory, Reward
-├── packages/events
-├── packages/github
-└── packages/world-generator     # Track 0 — not “later”
+├── apps/web                  # city, landing page, run viewer
+├── apps/api                  # cloud queue, Daytona executor, run store
+├── packages/agent-runtime    # tools, topologies, models, JSON memory
+├── packages/cli              # tourist terminal, local and cloud
+├── packages/protocol         # CitySnapshot, PublicReport, world schema
+├── packages/world-generator  # file list → deterministic layout
+├── checkpoints.md            # build order
+├── plan.md                   # older gate write-up
+└── prd.md                    # design reference
 ```
 
-Schema changes update `packages/protocol` in the same PR. If the city and the agent disagree about what a “building” is, that is a protocol bug, not a frontend bug.
+There is no separate Python service, no worker app, and no package whose only job is GitHub. The sandbox worker is a bundle the API uploads. Schema changes still belong in `packages/protocol` in the same change as the viewer. If the city and the agent disagree about what a building is, that is a protocol bug.
 
-Branching follows the gates: city foundation and fixture reports, cloud agent, trajectories, Gate A, then indexing/memory, living city, multi-agent, tools, learning. Track 0 and Phase 1 can progress in parallel, with the completed city slice providing a concrete report contract for the agent work.
+Daytona stays the sandbox I want for the laptop-closed path. OpenAI’s sandbox-agent model is the shape: the agent still has instructions, tools, and guardrails, and the execution boundary is a machine that owns the files ([OpenAI Developers](https://developers.openai.com/api/docs/guides/agents/sandboxes)). The TypeScript SDK is what the API imports. Pause-on-exit is not what we do. We delete the sandbox in a `finally` block. That is the right default until a run is long enough to be worth resuming, and it means “close the laptop” currently means “the request already handed the work to Daytona,” not “the workspace will be there tomorrow.”
 
-## Original first-month plan
+Keys are a product constraint. The user’s provider key runs the agent. I do not want to become a model reseller in order to finish stage 8. The price table in the CLI is an estimate from provider docs checked on 29 September 2026, and the runtime README says to re-check it before anyone uses it for billing.
 
-<DataTable
-  dataset="firstThirtyDays"
-  caption="The original sequence, retained as a plan rather than a completed milestone. The fixture city and report route are running; the real solo-agent PR and trajectory gates remain open."
-/>
+## What has to happen before I call this a cloud agent
 
-The fixture PublicReport and its navigable city now cover the first part of that contract. Gate A still needs:
+Stage 6, then 7, then 8. The board says not to start a stage until the previous exit is checked. Stage 5’s exit is checked on local fixtures: one entry point completes a small task with one agent and a larger task with a swarm, and both runs can be inspected from the trajectory and the event list. The next exit is a second task that reuses a stored codebase or episodic note, with the run log showing which note was used.
 
-- a solo agent that can open a PR on a real repo
-- every completed run leaving a trajectory behind
-- a real run producing a PublicReport whose CitySnapshot matches that run
+After that, stage 7’s exit is an eval where a promoted policy beats the starting heuristic on success rate, or on cost at the same success rate, and every run still has a complete trajectory plus `reward_v1`.
 
-## What I am afraid of
+Stage 8 is the GitHub App. Permissions stay limited to the repositories the user selects. The browser starts the install. The server stores the installation id and mints a short-lived token. The token never enters the city snapshot, the trajectory, or the page. The same tool ids gain a live implementation: list issues, read an issue, list pull requests, open a pull request from the task branch, read checks. Push is allowed only for the task branch, only after the local commit. Private cities use the installation token. Anonymous public URLs keep using the public API.
+
+The original first month was a different calendar: city schema in week one, a fixture city in week two, report anchors in week three, a real run minting a report in week four. The city half of that month happened, and then kept going. The agent half happened on a checkout, without the pull request. I am leaving the old week table out of this update so it does not keep reading like a promise.
 
 <DataTable
   dataset="fears"
-  caption="Gates exist because I do not trust future-me to stay boring."
+  caption="The controls moved with the sequence. The fears did not."
 />
 
-The honest bet: **harness + discovery + persistence + a spatial report** is still underbuilt relative to “wrap the latest model in a chat UI.” Cursor is iterating on the harness in public. OpenAI is standardizing sandbox agents and skills. The open space I want is a cloud loop that remembers, learns discrete policies from PR outcomes, and makes the work visible as a city you can share.
+## Where that leaves the bet
 
-<MarginNote>
-  A log stream tells you the agent did something. A city tells you where.
-</MarginNote>
+Cursor is iterating on the harness in public. OpenAI is standardizing sandbox agents and skills. The open space I want is a cloud loop that remembers, learns discrete policies from outcomes, and makes the work visible as a city you can share.
 
-If that city is only a skin, the project failed. If the city is how a run becomes understandable — files, tests, harbor, failures — then the visualization is doing engineering work, not marketing.
+A log stream tells you the agent did something. A city tells you where. The city can already tell you where a public repository’s files are. It cannot yet tell you where an agent went, because the agent’s events stop at the log, and the harbor has no pull requests to receive.
 
-That is the plan. The fixture city exists. Next the cloud loop has to earn the harbor: a real sandbox run, a tested change, a PR, and a trajectory that lets us explain what happened.
+The next time a cloud agent opens a pull request while your laptop is closed, the interesting question is not only whether the patch is right.
 
-The next time a cloud agent opens a PR while your laptop is closed, the interesting question is not only whether the patch is right.
-
-It is what the system remembered from last Tuesday, what it refused to load into the window, and whether you can point at a building and see the work.
+It is what the system remembered from last Tuesday, what it refused to load into the window, and whether you can point at a building and see the work. Tourist can draw the building. The memory, the refusal, and the pull request are the next three stages, in that order.
 
 <References title="Sources and further reading" />
