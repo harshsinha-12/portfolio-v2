@@ -1,5 +1,5 @@
 {
-  "dataNote": "Cursor figures are from published Cursor research. Token composition and context scores are teaching illustrations, not Tourist measurements. Tourist's city foundation is runnable; its cloud agent loop has not shipped.",
+  "dataNote": "Cursor figures are from published Cursor research. Token composition and context scores are teaching illustrations, not Tourist measurements. Tourist status matches the repository as last pushed on 29 September 2026: stages 0–5 checked, cloud API wired to Daytona without a recorded live run, stages 6–8 unchecked.",
   "mcpTokenSeries": [
     { "key": "tokens", "label": "Relative total agent tokens", "color": "#b65332" }
   ],
@@ -93,91 +93,184 @@
   ],
   "whatTouristIs": [
     {
-      "Layer": "Context engine",
-      "Job": "Start light; pull files, logs, skills, and memories on demand",
-      "Not this": "Paste the repo tree, tool catalog, and chat history into every prompt"
+      "Layer": "City",
+      "Goal": "The repository is an island. Each file is a building. Tests, tools, review, and pull requests are landmarks.",
+      "In the repo now": "A public GitHub URL renders that default branch. 68 file-type buildings. Builders wait at town hall."
     },
     {
-      "Layer": "Scoped memory",
-      "Job": "Remember user, repo, and task lessons with promotion rules",
-      "Not this": "A global junk drawer the agent can write into freely"
+      "Layer": "Agents",
+      "Goal": "A supervisor picks one coder, a specialist chain, or a swarm. They edit, test, and review in a sandbox.",
+      "In the repo now": "solo_coder, coder–tester–reviewer, and an opt-in swarm. CLI, plus a Daytona API that returns a patch."
     },
     {
-      "Layer": "Trajectories and rewards",
-      "Job": "Log every completed run with reward_v1 from day one",
-      "Not this": "Train GPT weights, or reconstruct traces later from vibes"
+      "Layer": "Scoring",
+      "Goal": "Every finished run stores reward_v1: tests, diff, tokens, latency, and later the pull request, CI, merge, and revert.",
+      "In the repo now": "heuristic_v1 writes completed, tests, diff, tokens, and latency. Pull-request scores are not filled in."
     },
     {
-      "Layer": "Generated city",
-      "Job": "Turn a run into a shareable spatial report, then later a live world",
-      "Not this": "A dashboard skin, or a claim that the city is already autonomous"
+      "Layer": "Memory",
+      "Goal": "User, codebase, and episodic notes, plus code rules, retrieved as a small pack. Global memory stays inactive until it is promoted.",
+      "In the repo now": "JSON file, keyword overlap, at most 8 notes. The agent memory tools answer that stage 6 is not available."
+    },
+    {
+      "Layer": "Reinforcement learning",
+      "Goal": "Learn discrete choices — model, topology, context, tools, memory, stop, tests — from those scores. Do not train the model that writes the code.",
+      "In the repo now": "The decision table and shadow → canary → active rule are specified. No policy is promoted."
+    },
+    {
+      "Layer": "GitHub delivery",
+      "Goal": "A GitHub App pushes the task branch and opens a pull request. The harbor shows that pull request.",
+      "In the repo now": "create_pull_request records the call. Nothing pushes."
+    }
+  ],
+  "stages": [
+    {
+      "Stage": "0 · Village",
+      "Exit": "A public GitHub URL opens a city of that default branch",
+      "Status": "Checked. Landing page, /owner/repo, and the local report route"
+    },
+    {
+      "Stage": "1 · Tools",
+      "Exit": "A test script edits a fixture, runs tests, commits, and records a fake PR",
+      "Status": "Checked. Registry, allowlisted shell, recording GitHub adapter"
+    },
+    {
+      "Stage": "2 · Agent",
+      "Exit": "One agent produces a tested local commit and a tool trace",
+      "Status": "Checked. Live OpenAI fixture runs recorded; other providers contract-tested"
+    },
+    {
+      "Stage": "3 · Sub-agents",
+      "Exit": "Coder, tester, and reviewer run in order, with one review return",
+      "Status": "Checked on fixtures. Research exists as a role and is not in the default chain"
+    },
+    {
+      "Stage": "4 · Swarm",
+      "Exit": "Two independent edits finish as one tested branch",
+      "Status": "Checked on local worktrees. Opt-in, 2–4 disjoint file sets"
+    },
+    {
+      "Stage": "5 · One runtime",
+      "Exit": "The same entry point can run solo or swarm, and can register one run-scoped tool",
+      "Status": "Checked on fixtures. build_tool is count_lines only"
+    },
+    {
+      "Stage": "6 · Memory",
+      "Exit": "A second task reuses a stored note, and the log shows that id",
+      "Status": "Unchecked. JSON keyword store is a precursor, not this exit"
+    },
+    {
+      "Stage": "7 · Policy",
+      "Exit": "A promoted policy beats the heuristic on an eval, at equal or lower cost",
+      "Status": "Unchecked. reward_v1 is logged. Promotion is not built"
+    },
+    {
+      "Stage": "8 · GitHub",
+      "Exit": "A connected repo and an issue come back as a real pull request",
+      "Status": "Unchecked. create_pull_request records the call. Nothing pushes"
+    }
+  ],
+  "topologies": [
+    {
+      "Topology": "solo_coder",
+      "When it runs": "No swarm parts, and the task is short and does not match the bug keywords",
+      "Who works": "One coder. The runtime then tests, commits, and records a pull request"
+    },
+    {
+      "Topology": "coder_tester_reviewer",
+      "When it runs": "Task longer than 120 characters, or it mentions bug, fix, race, regression, auth, security, or refactor",
+      "Who works": "Coder, tester, reviewer. One CHANGES_REQUIRED loop. Review must start with ACCEPT"
+    },
+    {
+      "Topology": "swarm",
+      "When it runs": "Caller passes 2–4 disjoint file assignments",
+      "Who works": "One worktree per coder, then one integration branch and tests"
+    }
+  ],
+  "runConstraints": [
+    {
+      "Limit": "Search",
+      "What the code does": "ripgrep, fixed string, 20 matches per file, 50,000 characters returned"
+    },
+    {
+      "Limit": "Read and write",
+      "What the code does": "UTF-8 files inside the checkout. read_file refuses a file above 200,000 characters"
+    },
+    {
+      "Limit": "Shell and tests",
+      "What the code does": "node --test, or pnpm/npm test, typecheck, or build. Test tool limit is 120 seconds"
+    },
+    {
+      "Limit": "GitHub tools",
+      "What the code does": "list_issues, get_issue, and create_pull_request append the call. They do not use the network"
+    },
+    {
+      "Limit": "Tool builder",
+      "What the code does": "count_lines only, 1–5 fixtures must pass, forgotten when the process ends"
+    },
+    {
+      "Limit": "Memory pack",
+      "What the code does": "Keyword overlap, at most 8 notes, 1,000 characters each in the prompt"
+    },
+    {
+      "Limit": "Cloud run",
+      "What the code does": "Public repo, shallow clone, Daytona sandbox, patch returned, sandbox deleted. Queue is serial, 10 waiting"
+    },
+    {
+      "Limit": "GitHub import",
+      "What the code does": "Default branch, at most 400 files. Line count is 24 plus a hash of the path, modulo 420"
     }
   ],
   "stack": [
     {
-      "Layer": "City foundation (current)",
-      "Choice": "Next.js, React, TypeScript, SVG/DOM, Vitest",
-      "Why": "Versioned protocol, deterministic world generator, per-file components, fixture report, and tests"
+      "Layer": "City viewer (running)",
+      "Choice": "Next.js, React, TypeScript, isometric SVG/DOM",
+      "Why": "Public repo to CitySnapshot, 68 file-type buildings, inspection, ambient traffic"
+    },
+    {
+      "Layer": "Agent runtime (running)",
+      "Choice": "TypeScript + Vercel AI SDK + Zod",
+      "Why": "Provider-neutral tool loop. The older plan's Python and OpenAI Agents SDK are not this package"
+    },
+    {
+      "Layer": "Models (running)",
+      "Choice": "OpenAI, Anthropic, and Gemini, task-scoped keys",
+      "Why": "Explicit catalog, default gpt-6-sol. Live fixture evidence recorded for OpenAI"
+    },
+    {
+      "Layer": "CLI (running)",
+      "Choice": "tourist-agent-cli",
+      "Why": "Same runtime locally or against the cloud API. Ribbon, model picker, modes"
+    },
+    {
+      "Layer": "Cloud API (coded)",
+      "Choice": "Node HTTP server + Daytona SDK",
+      "Why": "Public clone, disposable sandbox, patch returned, sandbox deleted. A live Daytona run was not recorded on the board"
+    },
+    {
+      "Layer": "Memory (precursor)",
+      "Choice": "JSON file, keyword overlap",
+      "Why": "User, codebase, and episodic notes. Postgres and an embedding index are stage 6"
+    },
+    {
+      "Layer": "Rewards (precursor)",
+      "Choice": "heuristic_v1",
+      "Why": "Logged on finished runs. Shadow, canary, and active promotion are stage 7"
+    },
+    {
+      "Layer": "GitHub delivery (stage 8)",
+      "Choice": "GitHub App",
+      "Why": "Today the tools record the call. Push and a real pull request are the last stage"
+    },
+    {
+      "Layer": "Vectors (stage 6)",
+      "Choice": "Unchosen",
+      "Why": "plan.md still names Qdrant. The checkpoint board picks the engine when the record store exists"
     },
     {
       "Layer": "3D world (possible later)",
       "Choice": "React Three Fiber + Three.js",
-      "Why": "An option if the live world needs true 3D; the working viewer is isometric SVG/DOM"
-    },
-    {
-      "Layer": "API (planned)",
-      "Choice": "Fastify + TypeScript",
-      "Why": "Control plane for GitHub, events, and auth"
-    },
-    {
-      "Layer": "Agent runtime (planned)",
-      "Choice": "Python + OpenAI Agents SDK",
-      "Why": "Python-first SDK, Responses API, native sandbox execution"
-    },
-    {
-      "Layer": "Sandboxes (planned)",
-      "Choice": "Daytona",
-      "Why": "Isolated cloud workspaces, pause/resume, first-class Agents SDK client"
-    },
-    {
-      "Layer": "GitHub delivery (planned)",
-      "Choice": "GitHub App + Octokit",
-      "Why": "PRs are the delivery primitive, not chat transcripts"
-    },
-    {
-      "Layer": "Primary DB (planned)",
-      "Choice": "Postgres (Neon)",
-      "Why": "Source of truth for tasks, trajectories, memory records, reports"
-    },
-    {
-      "Layer": "Vectors (planned)",
-      "Choice": "Qdrant",
-      "Why": "Hybrid search for code chunks and memories"
-    },
-    {
-      "Layer": "Retrieval alternative (planned)",
-      "Choice": "Pinecone",
-      "Why": "A candidate to compare with Qdrant when the indexing and retrieval path exists"
-    },
-    {
-      "Layer": "Agent tooling (planned)",
-      "Choice": "LangChain, LangGraph, LangSmith",
-      "Why": "Possible orchestration and tracing tools; no dependency on them in the current city prototype"
-    },
-    {
-      "Layer": "Cache / jobs (planned)",
-      "Choice": "Redis + BullMQ",
-      "Why": "Hot state and background work; Temporal later if workflows get gnarly"
-    },
-    {
-      "Layer": "Artifacts (planned)",
-      "Choice": "R2 / S3",
-      "Why": "Trajectories, logs, CitySnapshots"
-    },
-    {
-      "Layer": "Indexing (planned)",
-      "Choice": "Tree-sitter, ripgrep, LSP, embeddings",
-      "Why": "Deterministic search first; semantic search as a complement"
+      "Why": "Not the current renderer. The working viewer is isometric SVG and DOM"
     }
   ],
   "memoryScopes": [
@@ -244,24 +337,24 @@
   ],
   "gates": [
     {
-      "Gate": "A / MVP 1",
-      "What must be true": "Real repo, BYOK, Daytona sandbox, real PR, complete trajectory with reward_v1, PublicReport whose CitySnapshot matches the run",
-      "Still forbidden": "Swarms, Tool Builder product, active Global Memory, live-autonomous-city claims"
+      "Gate": "Stages 0–5, checked",
+      "What must be true": "City from a public URL; tools; solo, team, and opt-in swarm on a local checkout; one run-scoped count_lines tool",
+      "Still required before calling it shipped": "A live Daytona run was not on the board. Local execution is not an OS sandbox"
     },
     {
-      "Gate": "B / MVP 2",
-      "What must be true": "Indexing plus scoped memory; Global Memory only after sanitization and promotion",
-      "Still forbidden": "Letting the agent self-promote global rules"
+      "Gate": "Stage 6",
+      "What must be true": "Postgres records, embeddings, code rules loaded before the first edit, a second task that reuses a note",
+      "Still required before calling it shipped": "Agents cannot activate global memory. The JSON keyword store does not satisfy the exit"
     },
     {
-      "Gate": "C / MVP 3–4",
-      "What must be true": "Live agent events bind onto the Track 0 city, then multi-agent",
-      "Still forbidden": "Starting multi-agent in the first 30 days"
+      "Gate": "Stage 7",
+      "What must be true": "Eval set, shadow then canary then active, promotion only when success holds at equal or lower cost",
+      "Still required before calling it shipped": "Logging heuristic_v1 is not learning. No model-weight training"
     },
     {
-      "Gate": "D / MVP 5–6",
-      "What must be true": "Tool builder, then bandits / retrieval learning behind an eval gate",
-      "Still forbidden": "Calling logging 'learning', or promoting a policy on vibes"
+      "Gate": "Stage 8",
+      "What must be true": "GitHub App, push of the task branch, a real pull request, CI written onto the same reward",
+      "Still required before calling it shipped": "The recording adapter stays for tests. Private cities use the installation token"
     }
   ],
   "cityMapping": [
@@ -298,48 +391,30 @@
       "City object": "Harbor"
     }
   ],
-  "firstThirtyDays": [
-    {
-      "Week": "1",
-      "City / reports": "Scaffold, world schema, art spikes",
-      "Agent": "GitHub App skeleton"
-    },
-    {
-      "Week": "2",
-      "City / reports": "Fixture repo renders as a city",
-      "Agent": "Daytona hello-world + BYOK path"
-    },
-    {
-      "Week": "3",
-      "City / reports": "PublicReport anchors + share URL stub",
-      "Agent": "Edit → commit → push → PR"
-    },
-    {
-      "Week": "4",
-      "City / reports": "CitySnapshot persist; polish report page",
-      "Agent": "Trajectory + reward_v1; one real run → report → city"
-    }
-  ],
   "fears": [
     {
       "Fear": "Six products at once",
-      "Control": "Quality gates. Fancy layers cannot start until Gate A is green"
+      "Control": "checkpoints.md is the order. Stage 6 before 7 before 8. plan.md loses when they disagree"
     },
     {
       "Fear": "Vague 'RL'",
-      "Control": "A small, versioned decision table. No PPO against GPT in v1"
+      "Control": "heuristic_v1 is a log. Promotion needs an eval. No PPO against the model that writes the code"
     },
     {
       "Fear": "Global memory as a secret-shaped junk drawer",
-      "Control": "Default deny, sanitization, promotion, demotion"
+      "Control": "The JSON store has no global scope. Stage 6 keeps global rows inactive"
     },
     {
-      "Fear": "City polish replacing agent quality",
-      "Control": "Track 0 is schema, viewer, and reports. Gate A still blocks live claims"
+      "Fear": "A swarm that has never opened a pull request",
+      "Control": "Swarm is opt-in on fixtures. It does not count as shipping until stage 8’s real PR exit"
     },
     {
-      "Fear": "Multi-agent too early",
-      "Control": "One agent that ships beats a planner-coder-reviewer triangle that argues in a sandbox"
+      "Fear": "City polish replacing the harbor",
+      "Control": "Ambient traffic stays atmosphere. Builders move only for live edit ids, which the public page does not send"
+    },
+    {
+      "Fear": "A tool factory that emits shell scripts",
+      "Control": "build_tool is count_lines, fixtures must pass, and the tool dies with the run"
     }
   ],
   "citations": [
@@ -371,19 +446,31 @@
       "title": "The next evolution of the Agents SDK",
       "publisher": "OpenAI",
       "url": "https://openai.com/index/the-next-evolution-of-the-agents-sdk/",
-      "note": "Model-native harness, sandbox execution, skills / AGENTS.md / shell / apply-patch, providers including Daytona."
+      "note": "Earlier architecture note: harness, sandbox execution, skills. The running Tourist runtime uses the Vercel AI SDK, not this Python SDK."
+    },
+    {
+      "title": "AI SDK: tools and tool calling",
+      "publisher": "Vercel",
+      "url": "https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling",
+      "note": "The provider-neutral tool loop in packages/agent-runtime. OpenAI, Anthropic, and Gemini adapters sit behind Tourist's own model catalog."
+    },
+    {
+      "title": "Tourist checkpoints",
+      "publisher": "Harsh Sinha, tourist repository, last reviewed 29 Sep 2026",
+      "url": "https://github.com/harshsinha-12/tourist/blob/main/checkpoints.md",
+      "note": "Build order. Stages 0–5 checked. Stages 6–8 unchecked. Where this file disagrees with plan.md, the repository says to follow this file."
     },
     {
       "title": "Sandbox agents",
       "publisher": "OpenAI Developers",
       "url": "https://developers.openai.com/api/docs/guides/agents/sandboxes",
-      "note": "SandboxAgent still has tools, handoffs, and guardrails; the execution boundary is the sandbox."
+      "note": "The execution boundary is the sandbox. Tourist's API creates a Daytona sandbox, returns a patch, and deletes the machine."
     },
     {
       "title": "Using the OpenAI Agents SDK with Daytona Sandboxes",
       "publisher": "Daytona",
       "url": "https://www.daytona.io/docs/en/guides/openai/openai-agents-sdk-with-sandboxes/",
-      "note": "Shell and filesystem in-sandbox; pause_on_exit / resume; isolated cloud execution."
+      "note": "Documented Agents SDK path with pause-on-exit. Tourist's executor uses the TypeScript SDK and deletes the sandbox instead of pausing it."
     },
     {
       "title": "Equipping agents for the real world with Agent Skills",
@@ -413,13 +500,13 @@
       "title": "React Three Fiber documentation",
       "publisher": "Poimandres",
       "url": "https://docs.pmnd.rs/react-three-fiber",
-      "note": "React renderer for Three.js — the city viewer stack."
+      "note": "A possible later renderer. The working city is isometric SVG and DOM, with 68 catalogued building sprites."
     },
     {
       "title": "GitHub Apps documentation",
       "publisher": "GitHub",
       "url": "https://docs.github.com/en/apps",
-      "note": "Installation, permissions, PR creation — delivery is GitHub-native."
+      "note": "Stage 8 plan: installation, limited permissions, short-lived tokens. The current tools record the call and do not contact GitHub."
     },
     {
       "title": "Model Context Protocol",

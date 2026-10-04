@@ -1,19 +1,10 @@
 # X/Twitter launch copy
 
-Most coding agents still behave like a very smart intern who forgets the office every morning.
+Most coding agents still forget the office every morning.
 
-I'm building Tourist. The first slice is running: a fixture repo becomes an isometric software city, with a building for each file and report links to files, tests, and PRs.
+Tourist is the office: a repository becomes a city, one building per file. Agents edit, test, and review. Every finished run gets a score. Memory keeps the notes. A reinforcement-learning policy is supposed to prefer the choices that scored well.
 
-The cloud agent that takes a task, works in a sandbox, and opens a real PR is the next gate.
-
-The interesting part is everything around that loop:
-
-— huge available context, tiny active context
-— scoped memory, with Global Memory denied by default
-— trajectories logged from day one, before anything "learns"
-— the city as a report first, then a view of real agent events
-
-The fixture city is a start. The PR loop still has to prove itself.
+What loads today is the city. Paste a public GitHub URL and walk the island. The agents run from the CLI and a Daytona sandbox that returns a patch. The score is logged. Memory is a JSON file. The policy is specified and does not steer yet. A real pull request is stage 8.
 
 Read the full article: /articles/building-tourist-a-cloud-coding-agent-in-a-city
 
