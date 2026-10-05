@@ -1,3 +1,4 @@
+import { OPENAI_PATHS, openaiUrl } from "@/voice/openai";
 import {
   functionCallOutputEvent,
   pageContextEvent,
@@ -6,7 +7,7 @@ import {
   type RealtimeServerEvent,
 } from "@/voice/realtime/events";
 
-const REALTIME_CALLS_URL = "https://api.openai.com/v1/realtime/calls";
+const REALTIME_CALLS_URL = openaiUrl(OPENAI_PATHS.realtimeCalls);
 
 export type RealtimeHandlers = {
   onEvent: (event: RealtimeServerEvent) => void;

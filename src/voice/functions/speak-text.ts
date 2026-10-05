@@ -1,7 +1,7 @@
 import "server-only";
 
 import { openaiFetch } from "@/voice/functions/openai";
-import { SITE_AGENT } from "@/voice/agents/site-agent";
+import { buildSpeechConfig } from "@/voice/agents/site-agent";
 
 const MAX_SPEECH_CHARS = 1200;
 
@@ -11,15 +11,8 @@ export async function speakText(text: string) {
     throw new Error("Nothing to speak");
   }
 
-  const response = await openaiFetch("/audio/speech", {
-    method: "POST",
-    body: JSON.stringify({
-      model: SITE_AGENT.ttsModel,
-      voice: SITE_AGENT.voice,
-      input: clipped,
-      response_format: "mp3",
-    }),
-  });
+  const request = buildSpeechConfig(clipped);
+  const response = await openaiFetch(request.path, request.init);
 
   return response.arrayBuffer();
 }

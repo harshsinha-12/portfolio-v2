@@ -2,7 +2,7 @@ import "server-only";
 
 import { buildVoiceKnowledge, getPublishedArticleSlugs } from "@/voice/functions/build-knowledge";
 import { openaiFetch } from "@/voice/functions/openai";
-import { buildTextTurnConfig } from "@/voice/agents/site-agent";
+import { buildChatCompletionConfig, buildTextTurnConfig } from "@/voice/agents/site-agent";
 import type {
   ChatTurnMessage,
   ChatToolCall,
@@ -35,19 +35,11 @@ export async function runTextTurn(
   const articleSlugs = getPublishedArticleSlugs();
   const config = buildTextTurnConfig(knowledge, articleSlugs, pageState);
 
-  const response = await openaiFetch("/chat/completions", {
-    method: "POST",
-    body: JSON.stringify({
-      model: config.model,
-      temperature: 0.4,
-      messages: [
-        { role: "system", content: config.instructions },
-        ...sanitizeMessages(messages),
-      ],
-      tools: config.tools,
-      tool_choice: "auto",
-    }),
-  });
+  const request = buildChatCompletionConfig(config, [
+    { role: "system", content: config.instructions },
+    ...sanitizeMessages(messages),
+  ]);
+  const response = await openaiFetch(request.path, request.init);
 
   const payload = (await response.json()) as CompletionsResponse;
   const message = payload.choices?.[0]?.message;

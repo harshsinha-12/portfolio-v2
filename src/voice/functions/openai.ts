@@ -1,4 +1,4 @@
-const OPENAI_API_BASE = "https://api.openai.com/v1";
+import { OPENAI_API_BASE } from "@/voice/openai";
 
 export function getOpenAIApiKey() {
   return process.env.OPENAI_API_KEY?.trim() ?? "";

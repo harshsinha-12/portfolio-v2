@@ -2,7 +2,7 @@ import "server-only";
 
 import { buildVoiceKnowledge, getPublishedArticleSlugs } from "@/voice/functions/build-knowledge";
 import { openaiFetch } from "@/voice/functions/openai";
-import { buildRealtimeSessionConfig } from "@/voice/agents/site-agent";
+import { buildClientSecretConfig, buildRealtimeSessionConfig, SITE_AGENT } from "@/voice/agents/site-agent";
 import type { PageState, RealtimeSessionPayload } from "@/voice/types";
 
 type ClientSecretResponse = {
@@ -21,16 +21,8 @@ export async function createRealtimeClientSecret(
   const articleSlugs = getPublishedArticleSlugs();
   const session = buildRealtimeSessionConfig(knowledge, articleSlugs, pageState);
 
-  const response = await openaiFetch("/realtime/client_secrets", {
-    method: "POST",
-    body: JSON.stringify({
-      expires_after: {
-        anchor: "created_at",
-        seconds: 600,
-      },
-      session,
-    }),
-  });
+  const request = buildClientSecretConfig(session);
+  const response = await openaiFetch(request.path, request.init);
 
   const payload = (await response.json()) as ClientSecretResponse;
   const clientSecret = payload.value ?? payload.client_secret?.value;
@@ -42,7 +34,7 @@ export async function createRealtimeClientSecret(
 
   return {
     clientSecret,
-    expiresAt: expiresAt ?? Math.floor(Date.now() / 1000) + 600,
+    expiresAt: expiresAt ?? Math.floor(Date.now() / 1000) + SITE_AGENT.clientSecretTtlSeconds,
     model: session.model,
   };
 }
