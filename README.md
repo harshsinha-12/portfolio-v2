@@ -81,6 +81,59 @@ browser.
 the browser receives a short-lived Realtime client secret, never the key.
 Without it the control still renders but Talk/Send stay disabled.
 
+## Voice concierge
+
+The live mic is an OpenAI Realtime session over WebRTC. Speech uses the peer connection's media tracks. Transcripts, tool calls, and page context use a data channel named `oai-events`. The browser exchanges SDP with `https://api.openai.com/v1/realtime/calls` using the client secret from `POST /api/voice/session`.
+
+Typed questions while the mic is off skip Realtime. They go through `POST /api/voice/turn` (Chat Completions) and can be read aloud with `POST /api/voice/speak`. Both paths share the same tools in `src/voice/tools/`.
+
+```mermaid
+sequenceDiagram
+  actor Visitor
+  participant Browser
+  participant API as Next.js API
+  participant OpenAI as OpenAI Realtime
+
+  Visitor->>Browser: Tap Talk
+  Browser->>API: POST /api/voice/session
+  API->>OpenAI: POST /realtime/client_secrets
+  OpenAI-->>API: Client secret and tool list
+  API-->>Browser: clientSecret
+  Browser->>OpenAI: WebRTC SDP offer
+  OpenAI-->>Browser: SDP answer
+  Note over Browser,OpenAI: Audio on media tracks. Events on data channel oai-events.
+
+  OpenAI-->>Browser: response.done with function calls
+  Browser->>Browser: parseSiteAction
+  Browser->>Browser: executeSiteAction
+  Browser->>OpenAI: function_call_output
+  Browser->>OpenAI: Silent page context
+  Browser->>OpenAI: response.create
+  OpenAI-->>Visitor: Spoken confirmation
+```
+
+The model chooses the tool (`tool_choice: auto`). `parseSiteAction` checks the name and arguments. `executeSiteAction` does the work in the page, then the result goes back on the data channel so the model can confirm it. The text path runs that same parse-and-execute step in a loop of up to four rounds.
+
+Scrolling is two of those tools. `scroll_to_section` jumps to a homepage hash. `scroll_page` moves about one viewport (`page`, 0.9× height) or a shorter step (`section`, 0.72×). `scrollToId` reads `scroll-padding` on `<html>` — the open transcript sheet sets the bottom padding to the dock height — and centers the target in the space above the dock. A `voice-target-flash` class marks it for 2.4s. Focus, demo, and achievement tools scroll the same way, then fire a window event so the card can expand or play.
+
+```mermaid
+flowchart TD
+  call[executeSiteAction] --> kind{Action}
+
+  kind -->|scroll_to_section| home[Navigate home if needed]
+  home --> wait[Wait for the section element]
+  wait --> toId[scrollToId]
+
+  kind -->|scroll_page| by["window.scrollBy up or down"]
+
+  kind -->|focus, demo, or achievement| card[scrollToId on that card]
+  card --> event["portfolio:voice-* event for expand, play, or show"]
+
+  toId --> padding["Offset by scroll-padding-top and scroll-padding-bottom"]
+  padding --> flash[Add voice-target-flash]
+  card --> flash
+```
+
 ## Content
 
 - Live data: `src/data/portfolio.ts`
