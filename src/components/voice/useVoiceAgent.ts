@@ -384,7 +384,6 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
         stream,
       );
       if (isStale()) throw new Error("cancelled");
-      connectingRef.current = false;
       connectionRef.current = connection;
       connection.sendPageContext(JSON.stringify(collectPageState()));
       track("voice_session_started", { model: session.model });
@@ -393,7 +392,6 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
       connection?.close();
       stopMediaStream(stream);
       if (isStale()) return "cancelled";
-      connectingRef.current = false;
       setMicStream(null);
       setRemoteStream(null);
       const errorName = caught instanceof Error ? caught.name : typeof caught;
@@ -402,6 +400,8 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
       setLive(false);
       track("voice_error", { source: "connect", step, error_name: errorName });
       return "failed";
+    } finally {
+      if (!isStale()) connectingRef.current = false;
     }
   }, [handleRealtimeEvent]);
 
@@ -431,14 +431,7 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
     [appendTranscript, runTextLoop, stopSpeech],
   );
 
-  useEffect(() => {
-    return () => {
-      connectAttemptRef.current += 1;
-      connectionRef.current?.close();
-      stopMediaStream(micStreamRef.current);
-      stopSpeech();
-    };
-  }, [stopSpeech]);
+  useEffect(() => disconnect, [disconnect]);
 
   return {
     open,

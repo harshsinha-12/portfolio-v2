@@ -61,6 +61,13 @@ export async function connectRealtimeSession(
 
   const channel = peer.createDataChannel("oai-events");
 
+  function teardown() {
+    channel.close();
+    peer.close();
+    audio.srcObject = null;
+    audio.remove();
+  }
+
   channel.addEventListener("open", () => handlers.onConnectionChange(true));
   channel.addEventListener("close", () => handlers.onConnectionChange(false));
   channel.addEventListener("message", (event) => {
@@ -102,10 +109,7 @@ export async function connectRealtimeSession(
     };
     await peer.setRemoteDescription(answer);
   } catch (error) {
-    channel.close();
-    peer.close();
-    audio.srcObject = null;
-    audio.remove();
+    teardown();
     throw error;
   }
 
@@ -132,10 +136,7 @@ export async function connectRealtimeSession(
     close() {
       handlers.onConnectionChange(false);
       handlers.onRemoteStream?.(null);
-      channel.close();
-      peer.close();
-      audio.srcObject = null;
-      audio.remove();
+      teardown();
     },
   };
 }
