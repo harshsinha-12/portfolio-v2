@@ -31,12 +31,28 @@ export type VoiceStatus =
   | "speaking"
   | "error";
 
+export type ConnectResult = "live" | "cancelled" | "failed";
+
+type ConnectStep = "microphone" | "session" | "webrtc";
+
 type UseVoiceAgentOptions = {
   speakTextReplies: boolean;
 };
 
 function newId(prefix: string) {
   return `${prefix}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+function connectErrorCopy(step: ConnectStep, errorName: string) {
+  if (step === "microphone") {
+    if (errorName === "NotAllowedError" || errorName === "SecurityError") {
+      return "Mic blocked — type instead";
+    }
+    if (errorName === "NotFoundError" || errorName === "NotReadableError") {
+      return "No mic available — type instead";
+    }
+  }
+  return "Voice didn't start — type instead";
 }
 
 async function fetchJson<T>(input: string, init?: RequestInit): Promise<T> {
@@ -69,6 +85,8 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
   const handlingToolsRef = useRef(false);
   const liveRef = useRef(false);
   const micStreamRef = useRef<MediaStream | null>(null);
+  const connectAttemptRef = useRef(0);
+  const connectingRef = useRef(false);
 
   useEffect(() => {
     liveRef.current = live;
@@ -308,37 +326,52 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
   );
 
   const disconnect = useCallback(() => {
+    connectAttemptRef.current += 1;
+    connectingRef.current = false;
     connectionRef.current?.close();
     connectionRef.current = null;
-    stopMediaStream(micStream);
+    stopMediaStream(micStreamRef.current);
     setMicStream(null);
     setRemoteStream(null);
     setLive(false);
     setStatus("idle");
     stopSpeech();
-  }, [micStream, stopSpeech]);
+  }, [stopSpeech]);
 
-  const connect = useCallback(async () => {
-    if (connectionRef.current || status === "connecting") return;
+  const connect = useCallback(async (): Promise<ConnectResult> => {
+    if (connectionRef.current || connectingRef.current) return "cancelled";
+    const attempt = ++connectAttemptRef.current;
+    const isStale = () => attempt !== connectAttemptRef.current;
+    connectingRef.current = true;
     setError(null);
     setStatus("connecting");
+    let step: ConnectStep = "microphone";
     let stream: MediaStream | null = null;
+    let connection: RealtimeConnection | null = null;
     try {
       stream = await captureMicrophone();
+      if (isStale()) throw new Error("cancelled");
       setMicStream(stream);
+      step = "session";
       const session = await fetchJson<RealtimeSessionPayload>("/api/voice/session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pageState: collectPageState() }),
       });
-      const connection = await connectRealtimeSession(
+      if (isStale()) throw new Error("cancelled");
+      step = "webrtc";
+      connection = await connectRealtimeSession(
         session.clientSecret,
         {
           onEvent: (event) => {
+            if (isStale()) return;
             void handleRealtimeEvent(event);
           },
-          onRemoteStream: setRemoteStream,
+          onRemoteStream: (remote) => {
+            if (!isStale()) setRemoteStream(remote);
+          },
           onConnectionChange: (openConnection) => {
+            if (isStale()) return;
             setLive(openConnection);
             if (openConnection) {
               setStatus("listening");
@@ -350,20 +383,27 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
         },
         stream,
       );
+      if (isStale()) throw new Error("cancelled");
+      connectingRef.current = false;
       connectionRef.current = connection;
       connection.sendPageContext(JSON.stringify(collectPageState()));
       track("voice_session_started", { model: session.model });
+      return "live";
     } catch (caught) {
+      connection?.close();
       stopMediaStream(stream);
+      if (isStale()) return "cancelled";
+      connectingRef.current = false;
       setMicStream(null);
       setRemoteStream(null);
-      const message = caught instanceof Error ? caught.message : "Could not start voice";
-      setError(message);
+      const errorName = caught instanceof Error ? caught.name : typeof caught;
+      setError(connectErrorCopy(step, errorName));
       setStatus("error");
       setLive(false);
-      track("voice_error", { source: "connect" });
+      track("voice_error", { source: "connect", step, error_name: errorName });
+      return "failed";
     }
-  }, [handleRealtimeEvent, status]);
+  }, [handleRealtimeEvent]);
 
   const sendText = useCallback(
     async (text: string) => {
@@ -393,6 +433,7 @@ export function useVoiceAgent({ speakTextReplies }: UseVoiceAgentOptions) {
 
   useEffect(() => {
     return () => {
+      connectAttemptRef.current += 1;
       connectionRef.current?.close();
       stopMediaStream(micStreamRef.current);
       stopSpeech();

@@ -56,7 +56,11 @@ export function VoiceAgent() {
   const hint = useVoiceHint(hintSuppressed);
   const label = configured === false ? "Add OPENAI_API_KEY" : (error ?? statusCopy[status]);
   const showCaption =
-    status === "connecting" || isListening || status === "thinking" || status === "speaking";
+    status === "connecting" ||
+    isListening ||
+    status === "thinking" ||
+    status === "speaking" ||
+    status === "error";
 
   useEffect(() => {
     if (!showSheet) {
@@ -159,7 +163,7 @@ export function VoiceAgent() {
     }
     hint.dismiss();
     revealSheet();
-    await connect();
+    if ((await connect()) === "failed") setCompose(true);
   }
 
   function startTalk() {
@@ -249,7 +253,7 @@ export function VoiceAgent() {
           )}
           aria-live="polite"
         >
-          {statusCopy[status]}
+          {status === "error" ? (error ?? statusCopy.error) : statusCopy[status]}
         </p>
       ) : null}
 
