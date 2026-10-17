@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import type { IntroSegment } from "@/data/portfolio";
 import { track } from "@/lib/analytics";
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils";
 type IntroSegmentsProps = {
   segments: IntroSegment[];
   handClassName?: string;
+  linkClassName?: string;
 };
 
 export function segmentsToPlainText(segments: IntroSegment[]): string {
@@ -31,6 +33,7 @@ export function segmentsToPlainText(segments: IntroSegment[]): string {
 export function IntroSegments({
   segments,
   handClassName = "font-hand text-sm text-[var(--color-accent)] sm:text-base",
+  linkClassName,
 }: IntroSegmentsProps) {
   return (
     <>
@@ -51,12 +54,26 @@ export function IntroSegments({
                 href={segment.href}
                 title={segment.previewTitle ?? segment.label}
                 description={segment.previewDescription}
+                className={
+                  segment.image ? "inline-block align-middle" : linkClassName
+                }
                 analytics={{ kind: "intro_link", label: segment.label }}
                 onClick={() =>
                   track("intro_link_clicked", { label: segment.label })
                 }
               >
-                {segment.label}
+                {segment.image ? (
+                  <Image
+                    src={segment.image}
+                    alt={segment.label}
+                    width={32}
+                    height={32}
+                    sizes="32px"
+                    className="inline-block h-[1.65em] w-[1.65em] rounded-sm object-contain"
+                  />
+                ) : (
+                  segment.label
+                )}
               </LinkPreview>
             );
           default: {

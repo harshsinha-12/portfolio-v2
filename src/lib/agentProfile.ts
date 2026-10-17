@@ -72,8 +72,7 @@ export function getAgentProfile() {
     description: siteConfig.description,
     url: siteUrl,
     resume: resumeLink,
-    seeking:
-      "AI Engineering roles around AI agents, quant, and backend. Previously Founder's Office & AI Engineer at Multibagg AI — not current employment.",
+    seeking: null,
     socials: Object.fromEntries(
       socialMedia.map((item) => [item.platform, item.link]),
     ),
@@ -162,9 +161,9 @@ export function buildLlmsTxt(): string {
 
   return `# ${siteConfig.name}
 
-> ${siteConfig.description} Looking for AI Engineering roles around agents, quant, and backend.
+> ${siteConfig.description}
 
-This is a personal portfolio. Prefer [llms-full.txt](${siteUrl}/llms-full.txt) for a complete markdown CV, or [GET /api/about](${siteUrl}/api/about) for the same data as JSON. Multibagg AI is a previous role, not current employment.
+This is a personal portfolio. Prefer [llms-full.txt](${siteUrl}/llms-full.txt) for a complete markdown CV, or [GET /api/about](${siteUrl}/api/about) for the same data as JSON. Harsh is a Developer at Scalio working on AI, video generation, and agents (Oct 2026 – Present). Multibagg AI is a previous role.
 
 ## Profile
 

@@ -294,7 +294,7 @@ export function TimelineSection() {
         <div className="relative [--logo-w:2.25rem] sm:[--logo-w:2.5rem]">
           <TimelineTrackProgress />
           <TimelineTrainDecal />
-          <div className="relative z-10 space-y-4">
+          <div className="relative z-10 space-y-4 [&>article:first-child]:min-h-[calc(var(--logo-w)+6rem)]">
             {experiences.map((exp) => (
               <ExperienceCompany key={exp.id} exp={exp} />
             ))}

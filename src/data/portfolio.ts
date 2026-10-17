@@ -5,11 +5,11 @@ export const siteConfig = {
   name: "Harsh Sinha",
   title: "Harsh Sinha | AI Engineer",
   description:
-    "AI Engineer · Prev Founder's Office @ Multibagg AI · National Finalist IFF-FinTech Olympiad '24 · IIT Patna '27.",
+    "Working @ Scalio on AI video generation and agents · Prev Founder's Office & AI Engineer @ Multibagg AI · IIT Patna '27.",
   url: "https://www.harshsinha.dev",
   githubUsername: "harshsinha-12",
-  role: "Prev Founder's Office and AI Engineer",
-  tagline: "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27 · Working on AI Agents, Quant and Backend",
+  role: "Working on AI, video generation, and agents at Scalio",
+  tagline: "Working @ Scalio on AI video generation and agents · Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27",
 };
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
@@ -93,6 +93,7 @@ export type IntroSegment =
       type: "link";
       label: string;
       href: string;
+      image?: string;
       previewTitle?: string;
       previewDescription?: string;
     };
@@ -102,16 +103,38 @@ export type IntroBullet = {
   segments: IntroSegment[];
 };
 
+const currentWorkSegments: IntroSegment[] = [
+  { type: "text", value: "Working @ " },
+  {
+    type: "link",
+    label: "Scalio",
+    href: "https://scalio.app/",
+    previewTitle: "Scalio",
+    previewDescription:
+      "AI marketing tools for businesses, including Reels, posts, and product photoshoots.",
+  },
+  { type: "text", value: " on " },
+  { type: "hand", value: "AI video generation and agents" },
+];
+
+export const profileTaglineSegments: IntroSegment[] = [
+  ...currentWorkSegments,
+  {
+    type: "text",
+    value: " · Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27",
+  },
+];
+
 export const introBullets: IntroBullet[] = [
   {
     id: "intro-1",
     segments: [
-      { type: "text", value: "I am currently " },
-      { type: "hand", value: "looking for AI Engineering roles" },
-      {
-        type: "text",
-        value: " around AI agents, quant, and backend. Previously, I was ",
-      },
+      ...currentWorkSegments.map((segment) =>
+        segment.type === "link" && segment.label === "Scalio"
+          ? { ...segment, image: "/assets/scalio.webp" }
+          : segment,
+      ),
+      { type: "text", value: ". Previously, I was " },
       { type: "hand", value: "Founder's Office & AI Engineer" },
       { type: "text", value: " at " },
       {
@@ -546,6 +569,28 @@ export type Experience = {
 };
 
 export const experiences: Experience[] = [
+  {
+    id: "exp-scalio",
+    organisation: "Scalio",
+    logo: "/assets/scalio.webp",
+    link: "https://scalio.app/",
+    positions: [
+      {
+        title: "Developer",
+        duration: "Oct 2026 - Present",
+        content: [
+          {
+            segments: [
+              {
+                type: "text",
+                value: "Working on AI, video generation, and related agents.",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   {
     id: "exp-multibagg",
     organisation: "Multibagg AI",

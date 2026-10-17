@@ -30,7 +30,7 @@ const SPOTIFY = "#ffffff";
 
 const NAME = "Harsh Sinha";
 const TAGLINE =
-  "Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27 · Working on AI Agents, Quant and Backend";
+  "Working @ Scalio on AI video generation and agents · Prev @ Multibagg AI · National Finalist IFF-FinTech Olympiad’24 · IIT Patna'27";
 
 const socials = [
   {

@@ -3,8 +3,8 @@ import { getProjectLink } from "@/voice/functions/site-catalog";
 import type { SiteAction, VoicePreview } from "@/voice/types";
 
 export const sectionBlurbs: Record<string, string> = {
-  profile: "Who Harsh is, what he’s looking for, and how to reach him.",
-  experience: "Multibagg AI, Founder's Office & AI Engineer, plus IIT Patna.",
+  profile: "Who Harsh is, his work on AI, video generation, and agents at Scalio, and how to reach him.",
+  experience: "Developer at Scalio, Oct 2026 – Present; previously Founder's Office & AI Engineer at Multibagg AI, plus IIT Patna.",
   projects: "Tourist, DevSweep, RecoveryOS, Room FloorPlan, and more.",
   "tech-stack": "The workshop map — product, data, agents, and delivery.",
   hackathons: "Olympiads, hackathons, and certifications on the clothesline.",

@@ -6,6 +6,7 @@ import {
   githubGraphConfig,
   ossContributions,
   introBullets,
+  profileTaglineSegments,
   profileStickers,
   resumeLink,
   siteConfig,
@@ -81,23 +82,14 @@ function SocialStamps() {
 }
 
 function MobileTagline() {
-  const lastBreak = siteConfig.tagline.lastIndexOf(" · ");
-
-  if (lastBreak === -1) {
-    return (
-      <span className="inline-flex flex-wrap items-center gap-x-1.5">
-        {siteConfig.tagline}
-        <SoundToggle />
-      </span>
-    );
-  }
-
   return (
     <>
-      {siteConfig.tagline.slice(0, lastBreak)}
-      <br />
-      <span className="inline-flex items-center gap-x-1.5">
-        {siteConfig.tagline.slice(lastBreak + 3)}
+      <IntroSegments
+        segments={profileTaglineSegments}
+        handClassName=""
+        linkClassName="marker-link marker-link--on-mat !text-[var(--color-accent-on-mat)] !decoration-[var(--color-accent-on-mat)]"
+      />
+      <span className="ml-1.5 inline-flex align-middle">
         <SoundToggle />
       </span>
     </>
@@ -117,7 +109,13 @@ function ProfileHeader() {
         <SocialStamps />
       </div>
       <p className="col-start-1 row-start-2 mt-1.5 hidden items-center gap-x-1.5 font-hand leading-snug text-[var(--color-accent-on-mat)] lg:flex lg:text-lg">
-        <span>{siteConfig.tagline}</span>
+        <span>
+          <IntroSegments
+            segments={profileTaglineSegments}
+            handClassName=""
+            linkClassName="marker-link marker-link--on-mat !text-[var(--color-accent-on-mat)] !decoration-[var(--color-accent-on-mat)]"
+          />
+        </span>
         <SoundToggle />
       </p>
     </div>

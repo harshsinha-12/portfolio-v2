@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   keywords: [
     "Harsh Sinha",
     "AI Engineer",
+    "Scalio",
+    "Video Agents",
     "Multibagg AI",
     "IFF-FinTech Olympiad’24",
     "IIT Patna'27",
@@ -90,11 +92,12 @@ const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Harsh Sinha",
-  jobTitle: "Looking for AI Engineering roles",
+  jobTitle: siteConfig.role,
+  description: siteConfig.description,
   worksFor: {
     "@type": "Organization",
-    name: "Multibagg AI",
-    url: "https://www.multibagg.ai",
+    name: "Scalio",
+    url: "https://scalio.app/",
   },
   alumniOf: [
     {
