@@ -61,6 +61,13 @@ export async function connectRealtimeSession(
 
   const channel = peer.createDataChannel("oai-events");
 
+  function teardown() {
+    channel.close();
+    peer.close();
+    audio.srcObject = null;
+    audio.remove();
+  }
+
   channel.addEventListener("open", () => handlers.onConnectionChange(true));
   channel.addEventListener("close", () => handlers.onConnectionChange(false));
   channel.addEventListener("message", (event) => {
@@ -72,34 +79,39 @@ export async function connectRealtimeSession(
     }
   });
 
-  const offer = await peer.createOffer();
-  await peer.setLocalDescription(offer);
-  await waitForIce(peer);
+  try {
+    const offer = await peer.createOffer();
+    await peer.setLocalDescription(offer);
+    await waitForIce(peer);
 
-  const sdp = peer.localDescription?.sdp ?? offer.sdp;
-  if (!sdp) {
-    throw new Error("Failed to create a WebRTC offer");
+    const sdp = peer.localDescription?.sdp ?? offer.sdp;
+    if (!sdp) {
+      throw new Error("Failed to create a WebRTC offer");
+    }
+
+    const sdpResponse = await fetch(REALTIME_CALLS_URL, {
+      method: "POST",
+      body: sdp,
+      headers: {
+        Authorization: `Bearer ${clientSecret}`,
+        "Content-Type": "application/sdp",
+      },
+    });
+
+    if (!sdpResponse.ok) {
+      const detail = await sdpResponse.text();
+      throw new Error(`Realtime connect failed (${sdpResponse.status}): ${detail.slice(0, 280)}`);
+    }
+
+    const answer: RTCSessionDescriptionInit = {
+      type: "answer",
+      sdp: await sdpResponse.text(),
+    };
+    await peer.setRemoteDescription(answer);
+  } catch (error) {
+    teardown();
+    throw error;
   }
-
-  const sdpResponse = await fetch(REALTIME_CALLS_URL, {
-    method: "POST",
-    body: sdp,
-    headers: {
-      Authorization: `Bearer ${clientSecret}`,
-      "Content-Type": "application/sdp",
-    },
-  });
-
-  if (!sdpResponse.ok) {
-    const detail = await sdpResponse.text();
-    throw new Error(`Realtime connect failed (${sdpResponse.status}): ${detail.slice(0, 280)}`);
-  }
-
-  const answer: RTCSessionDescriptionInit = {
-    type: "answer",
-    sdp: await sdpResponse.text(),
-  };
-  await peer.setRemoteDescription(answer);
 
   function send(payload: unknown) {
     if (channel.readyState !== "open") return;
@@ -124,10 +136,7 @@ export async function connectRealtimeSession(
     close() {
       handlers.onConnectionChange(false);
       handlers.onRemoteStream?.(null);
-      channel.close();
-      peer.close();
-      audio.srcObject = null;
-      audio.remove();
+      teardown();
     },
   };
 }
