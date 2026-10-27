@@ -349,12 +349,17 @@ export function GitHubGraph({
             </div>
           )}
           {scalioPRStats && (
-            <div className="mt-4 text-[var(--color-ink-muted)]">
-              <p className="text-sm font-medium sm:text-base">Scalio contributions</p>
-              <p className="mt-1 text-xs sm:text-sm" aria-label="Scalio organization pull request totals">
-                {scalioPRStats.total} PRs authored · {scalioPRStats.merged} merged · {scalioPRStats.open} open
-              </p>
-            </div>
+            <OSSContributions
+              heading="Scalio contributions"
+              initiallyExpanded
+              contributions={scalioPRStats.repositories.map(({ repository, count }) => ({
+                repository,
+                count,
+                kind: "PR" as const,
+                logo: "/assets/scalio.webp",
+              }))}
+              summary={`${scalioPRStats.total} PRs authored · ${scalioPRStats.merged} merged · ${scalioPRStats.open} open`}
+            />
           )}
           <OSSContributions contributions={ossContributions} />
         </>
