@@ -13,16 +13,19 @@ import { ProjectsSection } from "@/components/sections/Projects";
 import { TechStackSection } from "@/components/sections/TechStack";
 import { ArticlesSection } from "@/components/sections/Articles";
 import type { ContributionDay } from "@/lib/githubContributions";
+import type { ScalioPRStats } from "@/lib/scalioPullRequests";
 import type { ArticleSummary } from "@/types/articles";
 
 type SiteShellProps = {
   initialContributions?: ContributionDay[];
+  scalioPRStats?: ScalioPRStats | null;
   articles?: ArticleSummary[];
   hasMoreArticles?: boolean;
 };
 
 export function SiteShell({
   initialContributions,
+  scalioPRStats,
   articles = [],
   hasMoreArticles = false,
 }: SiteShellProps) {
@@ -36,7 +39,7 @@ export function SiteShell({
             <ScatterDecor />
             <FloatingNav />
             <main className="flex flex-col gap-[var(--space-2xl)] lg:gap-[var(--space-3xl)] [&>#hackathons]:-mt-2 lg:[&>#hackathons]:-mt-6">
-              <ProfileSection initialContributions={initialContributions} />
+              <ProfileSection initialContributions={initialContributions} scalioPRStats={scalioPRStats} />
               <TimelineSection />
               <ProjectsSection />
               <TechStackSection />

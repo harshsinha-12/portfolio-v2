@@ -22,6 +22,7 @@ import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import { SoundToggle } from "@/components/sound/SoundToggle";
 import { track, trackOutboundClick } from "@/lib/analytics";
+import type { ScalioPRStats } from "@/lib/scalioPullRequests";
 import type { ContributionDay } from "@/lib/githubContributions";
 
 function SocialStamps() {
@@ -139,9 +140,10 @@ function IntroList() {
 
 type ProfileSectionProps = {
   initialContributions?: ContributionDay[];
+  scalioPRStats?: ScalioPRStats | null;
 };
 
-export function ProfileSection({ initialContributions }: ProfileSectionProps) {
+export function ProfileSection({ initialContributions, scalioPRStats }: ProfileSectionProps) {
   return (
     <section id="profile" aria-labelledby="profile-heading" className="relative animate-fade-up">
       <LinkPreviewImagePreloader />
@@ -207,6 +209,7 @@ export function ProfileSection({ initialContributions }: ProfileSectionProps) {
               {...githubGraphConfig}
               ossContributions={ossContributions}
               initialDays={initialContributions}
+              scalioPRStats={scalioPRStats}
               className="w-full min-w-0"
             />
           </TapedCard>

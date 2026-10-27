@@ -5,6 +5,7 @@ import { levelFromCount, type ContributionDay } from "@/lib/githubContributions"
 import { cn } from "@/lib/utils";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { track } from "@/lib/analytics";
+import type { ScalioPRStats } from "@/lib/scalioPullRequests";
 import { OSSContributions, type OSSContribution } from "@/components/sections/OSSContributions";
 
 type TooltipState = {
@@ -24,6 +25,7 @@ export type GitHubGraphProps = {
   showMonthLabels?: boolean;
   colors?: string[];
   ossContributions?: readonly OSSContribution[];
+  scalioPRStats?: ScalioPRStats | null;
   className?: string;
 };
 
@@ -130,6 +132,7 @@ export function GitHubGraph({
   showMonthLabels = true,
   colors = DEFAULT_COLORS,
   ossContributions = [],
+  scalioPRStats,
   className,
 }: GitHubGraphProps) {
   const isMobileLayout = useMobileGraphLayout();
@@ -343,6 +346,14 @@ export function GitHubGraph({
                 />
               ))}
               <span>More</span>
+            </div>
+          )}
+          {scalioPRStats && (
+            <div className="mt-4 text-[var(--color-ink-muted)]">
+              <p className="text-sm font-medium sm:text-base">Scalio contributions</p>
+              <p className="mt-1 text-xs sm:text-sm" aria-label="Scalio organization pull request totals">
+                {scalioPRStats.total} PRs authored · {scalioPRStats.merged} merged · {scalioPRStats.open} open
+              </p>
             </div>
           )}
           <OSSContributions contributions={ossContributions} />

@@ -1,6 +1,7 @@
 import { SiteShell } from "@/components/layout/SiteShell";
 import { getAllArticles } from "@/lib/articles";
 import { fetchGitHubContributions } from "@/lib/githubContributions";
+import { fetchScalioPRStats } from "@/lib/scalioPullRequests";
 import { siteConfig } from "@/data/portfolio";
 
 export default async function Home() {
@@ -12,12 +13,15 @@ export default async function Home() {
     initialContributions = undefined;
   }
 
+  const scalioPRStats = await fetchScalioPRStats(siteConfig.githubUsername);
+
   const allArticles = getAllArticles();
   const articles = allArticles.slice(0, 3);
 
   return (
     <SiteShell
       initialContributions={initialContributions}
+      scalioPRStats={scalioPRStats}
       articles={articles}
       hasMoreArticles={allArticles.length > articles.length}
     />

@@ -151,3 +151,13 @@ flowchart TD
 - `pnpm optimize-videos` — convert source MP4s to VP9 WebM for project cards
 - `pnpm seed-link-previews` — fetch Open Graph images for link hover previews
 - `pnpm generate-og` — generate the Open Graph social share image
+
+## Scalio pull request statistics
+
+The GitHub activity card can optionally show **aggregate PR counts** for pull requests authored by `harshsinha-12` in repositories owned by the `scalio-app` organization. PRs in personal repositories and other organizations are excluded. The existing public OSS list is unaffected.
+
+Set `SCALIO_GITHUB_TOKEN` in the **server-side** deployment environment (for example Vercel Project Settings -> Environment Variables), then redeploy. Use a dedicated read-only GitHub credential authorized to read the relevant Scalio repositories and their pull requests. Organization approval or SSO authorization may be required. Never prefix the variable with `NEXT_PUBLIC_` or commit it to Git.
+
+The server queries GitHub Search API for authored, merged, and open PR totals and caches responses for 1 hour. The browser only receives three numeric totals, with no private repo names, links, or PR titles. If the token is absent, the API fails, or the query returns incomplete results, the Scalio section is hidden. A zero result is also hidden because it can indicate insufficient private-repository permissions.
+
+**Important:** Any aggregate totals displayed publicly are still a disclosure about company work. Confirm that publishing these counts is permitted before enabling the token on the public site.
