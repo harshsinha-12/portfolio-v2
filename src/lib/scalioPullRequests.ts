@@ -1,4 +1,4 @@
-/** Private repositories explicitly approved for display on the public portfolio. */
+/** Explicit public-display allowlist. Verify employer approval before deploying. */
 const SCALIO_REPOSITORIES = ["scalio-app/scalio", "scalio-app/mobile"] as const;
 
 export type ScalioPRStats = {
