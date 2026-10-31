@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { FileText } from "lucide-react";
+import { CalendarDays, FileText } from "lucide-react";
 import {
   githubGraphConfig,
   ossContributions,
   introBullets,
   profileTaglineSegments,
   profileStickers,
+  bookingLink,
   resumeLink,
   siteConfig,
   socialMedia,
@@ -173,20 +174,36 @@ export function ProfileSection({ initialContributions, scalioPRStats }: ProfileS
               <MobileTagline />
             </p>
             <SpotifyLastPlayed className="mt-2.5" />
-            <a
-              href={resumeLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => {
-                track("resume_clicked", { kind: "resume" });
-                trackOutboundClick(resumeLink, { kind: "resume", label: "resume" });
-              }}
-              className="mt-2 inline-flex h-7 items-center gap-1.5 rounded-full border border-[var(--color-on-mat)]/35 bg-[var(--color-mat-deep)]/45 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)] shadow-[1px_2px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:text-xs"
-            >
-              <FileText className="h-3.5 w-3.5 text-[var(--color-accent-on-mat)]" aria-hidden="true" />
-              Résumé
-              <span aria-hidden="true">↗</span>
-            </a>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <a
+                href={resumeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  track("resume_clicked", { kind: "resume" });
+                  trackOutboundClick(resumeLink, { kind: "resume", label: "resume" });
+                }}
+                className="inline-flex h-8 items-center gap-1.5 rounded-full border border-[var(--color-on-mat)]/35 bg-[var(--color-mat-deep)]/45 px-3 text-[11px] font-medium text-[var(--color-on-mat)] shadow-[1px_2px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:text-xs"
+              >
+                <FileText className="h-3.5 w-3.5 text-[var(--color-accent-on-mat)]" aria-hidden="true" />
+                Résumé
+                <span aria-hidden="true">↗</span>
+              </a>
+              <a
+                href={bookingLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => {
+                  track("booking_link_clicked", { placement: "profile" });
+                  trackOutboundClick(bookingLink, { kind: "booking", placement: "profile" });
+                }}
+                className="group inline-flex h-8 rotate-[-1deg] items-center gap-1.5 rounded-full border border-[var(--color-accent-on-mat)] bg-[var(--color-accent-on-mat)] px-3 text-[11px] font-semibold text-[var(--color-mat-deep)] shadow-[2px_3px_0_var(--color-shadow)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:rotate-0 hover:shadow-[3px_5px_0_var(--color-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:text-xs"
+              >
+                <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
+                Book a call
+                <span className="transition-transform group-hover:translate-x-0.5" aria-hidden="true">↗</span>
+              </a>
+            </div>
           </div>
         </div>
 

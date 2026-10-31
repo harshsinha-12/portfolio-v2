@@ -1,6 +1,7 @@
 "use client";
 
-import { connectLink, socialMedia } from "@/data/portfolio";
+import { bookingLink, connectLink, socialMedia } from "@/data/portfolio";
+import { ArrowUpRight, CalendarDays } from "lucide-react";
 import { socialIconMap } from "@/lib/icons";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { isHttpUrl } from "@/data/linkPreviews";
@@ -17,6 +18,30 @@ export function Footer() {
   return (
     <footer className="mt-[var(--space-3xl)] pb-[var(--space-2xl)] text-center text-shadow-on-mat">
       <VisitorQuoteCard />
+      <div className="mx-auto mb-[var(--space-xl)] flex max-w-4xl flex-col items-start gap-4 rounded-[var(--radius-lg)] border-2 border-dashed border-[var(--color-on-mat)]/35 bg-[var(--color-mat-deep)]/65 p-5 text-left shadow-[4px_6px_0_var(--color-shadow)] sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <div className="min-w-0">
+          <p className="font-hand text-xl leading-snug text-[var(--color-accent-on-mat)] sm:text-2xl">
+            A good conversation can start something great.
+          </p>
+          <p className="mt-1 text-sm leading-relaxed text-[var(--color-on-mat)]/80">
+            Building something, exploring an idea, or just want to talk AI? Pick a time that works.
+          </p>
+        </div>
+        <a
+          href={bookingLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => {
+            track("booking_link_clicked", { placement: "footer" });
+            trackOutboundClick(bookingLink, { kind: "booking", placement: "footer" });
+          }}
+          className="group inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[var(--color-on-mat)]/25 bg-[var(--color-accent-on-mat)] px-4 py-2.5 text-sm font-semibold text-[var(--color-mat-deep)] shadow-[3px_4px_0_var(--color-shadow)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[4px_6px_0_var(--color-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+        >
+          <CalendarDays size={17} aria-hidden="true" />
+          Book a call
+          <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+        </a>
+      </div>
       <div className="mb-[var(--space-md)] flex justify-center gap-3">
         {socialMedia.map((social) => {
           const Icon = socialIconMap[social.platform];

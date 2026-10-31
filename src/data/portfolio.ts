@@ -1,3 +1,5 @@
+export const bookingLink = "https://cal.com/harsh-sinha-hgmcxd";
+
 export const resumeLink =
   "https://drive.google.com/file/d/1Iq1ZV_sMimkoGrNui8gR6_VP04-el2TD/view?usp=sharing";
 
