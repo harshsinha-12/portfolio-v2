@@ -1,0 +1,253 @@
+---
+title: "Why ChatGPT Can Miss a Name and Still Have the Chat"
+description: "Dreaming rewrites a memory summary from old chats while the weights stay put. OpenAI’s June 2026 charts, the public architecture, and how that differs from gray matter."
+date: "2026-11-01"
+updatedAt: "2026-11-01"
+tags:
+  - Memory
+  - LLM
+  - Neuroscience
+  - ChatGPT
+draft: false
+featured: true
+canonical: "/articles/why-chatgpt-can-miss-a-name"
+social:
+  twitter: ""
+  linkedin: ""
+---
+
+You spent an evening in March planning a trip with Meera. In November you open ChatGPT's Memory summary. Your work is there. Cricket is there. Meera is not.
+
+You open a new chat, with reference chat history turned on, and ask who you were planning that trip with. The model names her, and points at the March conversation.
+
+Which store did you just read?
+
+<Callout title="Meera is a sketch">
+  The person, the trip, and the cricket are a teaching example, so the storage question is easy to see. They are not a record of anyone's account. The product behavior under the example comes from OpenAI's public documentation.
+</Callout>
+
+That question is the architecture. ChatGPT can hold a fact in an old chat, leave it out of the summary, and still retrieve it on a later turn. It can also fail the retrieval. From the summary page those outcomes look the same: a missing line.
+
+OpenAI's name for the background rewrite of that summary is Dreaming. The post that describes the current version is from 4 June 2026 ([OpenAI](https://openai.com/index/chatgpt-memory-dreaming/)). The user-facing rules live in the Memory help center ([OpenAI Help Center](https://help.openai.com/en/articles/8590148-memory-in-chatgpt)). What follows is that public behavior, and the comparison I wanted while reading it. Gray matter changes. This system files a briefing beside a model that does not.
+
+<MarginNote>
+  A missing line is a fact about the view. The archive is a separate question.
+</MarginNote>
+
+## The gap you can point at
+
+Inside one conversation, a frontier model can draft, code, and argue well enough that the old complaints feel dated. You close the chat. You open another. The parameters that produced the first conversation are the parameters that produce the second. Tuesday did not become part of the model.
+
+It is tempting to finish the observation in one step. The remaining difference between a person and a model is memory. The part I can defend is smaller, and it is the part you can test on a Tuesday and again on a Friday.
+
+A person also has a body, a day that arrives through the senses, and projects that continue when nobody has typed a prompt. Learning, in a person, changes tissue. Those differences are real. The one that shows up when a chatbot greets you as a stranger, after a month of shared work, is narrower: the chat did not update the weights. Some other store has to carry the fact, and some policy has to decide whether the next reply gets to see it.
+
+I have written before about memory as a coordination layer for agents that should get better at a class of jobs ([that architecture](/articles/self-improving-agents-memory-missing-layer)). ChatGPT's Memory has a different job. It personalizes one person. Promoting a lesson into the weights is a separate system, and this product does not claim to be that system.
+
+## Gray matter keeps a change
+
+The cortex is a sheet of gray matter. The sheet is dense with cell bodies, dendrites, and the synapses that join one cell to the next. White matter is the cabling: axons wrapped in myelin, running between regions. Local computation sits in the gray matter. The long routes sit in the white matter.
+
+When a fact sticks, the ordinary account is that synapses change. Some connections strengthen. Some weaken. Some are pruned. The change is physical. It is slow enough that one sentence does not rewrite you, and local enough that learning a phone number does not have to overwrite how you ride a bicycle.
+
+A model's parameters are a fixed list of strengths. Training set them. A conversation reads them. OpenAI's description of Memory is clear about the consequence. Saving a fact supplies context to a later response. The reply can sound like recognition. The parameter file is the one that shipped.
+
+> A person who remembers you has been altered. A model that remembers you has been briefed.
+
+That sentence is the one to keep. The rest of this piece is what the briefing is made of.
+
+## Sleep rewrites tissue. Dreaming rewrites a document.
+
+Biology already has a story about a system that takes a specific episode quickly and folds it into slower knowledge later. Complementary learning systems, the 1995 account from McClelland, McNaughton, and O'Reilly, splits the job. The hippocampus can take a particular episode: this room, this conversation, this Tuesday. The neocortex learns the stable structure of things more slowly. Write every episode straight into the slow system and new memories smear the old ones. That smear is the failure the theory was built to avoid ([McClelland, McNaughton, and O'Reilly, 1995](https://doi.org/10.1037/0033-295X.102.3.419)).
+
+Sleep is part of how the two systems share the work. During non-REM sleep, the hippocampus replays recent patterns in short, compressed bursts. Diekelmann and Born's review treats replay during slow-wave sleep as one route from a fragile episode toward longer-term storage ([Diekelmann and Born, 2010](https://doi.org/10.1038/nrn2762)). The dreams a person remembers in the morning are a poor nickname for that process. Dream reports are more often collected from REM sleep. The replay evidence consolidation researchers lean on is stronger for slow-wave sleep. Both can be true. Neither is a circuit diagram you could ship.
+
+There is a further argument, multiple-trace theory, that a vivid episode keeps a dependence on the hippocampus instead of handing all of its detail to cortex ([Nadel and Moscovitch, 1997](https://doi.org/10.1016/S0959-4388(97)80010-4)). I am not going to settle that. The disagreement is a useful warning against the cartoon in which sleep moves a file from one lobe to another and deletes the first copy.
+
+<Mermaid
+  caption="In a person, overnight replay is aimed at synapses. A specific episode can remain a memory while also shaping slower knowledge."
+  chart="flowchart LR; Episode[A specific episode] --> Hip[Hippocampus, fast]; Hip --> Replay[Replay in non-REM sleep]; Replay --> Cortex[Slower cortical change]; Cortex --> Later[Later behavior]"
+/>
+
+OpenAI uses Dreaming for a background job that reads chat history and rewrites a memory state, so a later conversation can start from fresher context. The schedule is the part that resembles sleep. The object being updated is a summary the model can be shown. The weights stay the weights.
+
+<Callout title="Where the analogy stops">
+  Dreaming is a good name for consolidation that happens off to the side of the conversation. It is a poor description of sleep, of dreaming, or of a model learning you.
+</Callout>
+
+## Two operations produce one reply
+
+The public product is easier to follow once the stores are separate from the moment a reply is assembled.
+
+Saved memories came first, in April 2024. They were written during a conversation, and they wanted a strong cue: remember that I am traveling to Singapore in July. OpenAI's picture of the experience is a person who took a few notes and forgot whatever was not written down. Notes also go stale. The trip ends. The note still thinks you are there.
+
+In April 2025 the product gained a way to use chat context beyond that list. That was the first Dreaming. A background process curates memory from history, including details you never explicitly asked it to save. For about a year it sat beside saved memories. OpenAI says the combination was a large improvement, and that this early Dreaming was still too weak to stand alone.
+
+On 4 June 2026 OpenAI started rolling out a more capable and cheaper synthesis system built on Dreaming. Their evaluation labels call it Dreaming V3, set against 2024 saved memories and against 2025 saved memories plus Dreaming V0. The synthesized memories are reviewable as a summary. From that page you can read the highlights, add or correct something, and say what the model should bring up. If you want a detail the summary skipped, the suggestion in the post is to ask in chat. The rollout began with Plus and Pro users in the US. Other countries, and Free and Go users, were to follow. The help center still says the controls you actually see depend on plan, region, platform, and workspace.
+
+The cost line is separate from the quality line. OpenAI says the compute required to serve Dreaming to Free users fell by about five times. Read that as a serving claim. It is why a wider rollout became practical. The quality charts are a different measurement.
+
+Under the summary, the two operations stay distinct.
+
+Memory synthesis runs in the background. It decides what the standing briefing should say, and it is allowed to revise that briefing as time passes. "You are going to Singapore in July" can become "you went to Singapore in July 2026."
+
+Historical retrieval runs on a turn, and only when the product judges that a look through older chats is likely to help. The help center states this directly. ChatGPT does not search your history for every response.
+
+<Mermaid
+  caption="What can enter this turn. Dreaming maintains the summary. History search runs on some turns. The weights are read, and a chat does not update them."
+  chart="flowchart LR; Chats[Past chats] --> Dream[Dreaming]; Dream --> Summary[Memory summary]; Chats --> Search[History search on some turns]; Summary --> Assemble[Context for this turn]; Search --> Assemble; Now[This conversation] --> Assemble; Instructions[Custom instructions] --> Assemble; Files[Files and connected apps] --> Assemble; Weights[Frozen weights] -.-> Assemble; Assemble --> Reply[Reply]"
+/>
+
+Custom instructions are a simpler object. You wrote them. They are standing orders, and the help center treats them as distinct from Memory. Files in a library, and content from a connected app such as Gmail where that connection exists, can also be drawn in. Disconnecting the app stops future access. Chats that already used the app can remain.
+
+A few controls change the shape of the store without looking like storage at all. Temporary chats do not create or update memories. A locked chat can read regular Memory, and messages sent while it is locked do not personalize regular chats. Where the switch exists, you can move between improved Memory, which keeps rewriting a broader summary, and the older saved-memory list. Switching experiences leaves your chat history in place. In ChatGPT for Healthcare, and in Enterprise workspaces marked as regulated, improved memory stays off unless an admin enables it. OpenAI says that feature is outside the business associate agreement, so protected health information does not belong in it.
+
+OpenAI also says reference chat history has no separate storage limit. The limit you feel is narrower: what a turn selects, and what the summary chooses to keep.
+
+<DataTable
+  dataset="timeline"
+  caption="The three systems OpenAI compares in the 4 June 2026 post."
+/>
+
+## What the charts measure
+
+OpenAI scores Plus and Pro memory on three jobs.
+
+Carry a fact forward. You discussed a camera once. Later you ask what to buy, and the useful reply uses that camera. Their example is underwater flash for a specific Sony body and housing. The reply that lacks the memory explains TTL in general and leaves the compatibility check to you. The reply that has it talks about that kit.
+
+Follow a preference. Some preferences are instructions, such as a request to stop bringing a topic up. Some are constraints, such as a vegetarian diet. Some are implicit: a city you live in should change which restaurants are plausible. The Singapore trip in the post is the clean demonstration. A generic reply offers hawker centres and a crowded evening. A reply that has the earlier context plans around wildlife photography, strong air conditioning, and a quiet dinner.
+
+Stay current. Time keeps moving after the chat ends. "A birthday party next Saturday" is a useful memory on Tuesday and a stale one on Sunday. The section on the page is called staying current. The chart itself is titled "Staying correct over time."
+
+The model is rewarded when the reply uses the relevant context correctly. OpenAI does not publish the item count, the grader, or how often the needed fact was already sitting in the summary. These are the rates printed on the charts in that post.
+
+<Chart
+  dataset="memoryEvals"
+  type="bar"
+  title="Task success on OpenAI's three memory evaluations"
+  xKey="year"
+  series="evalSeries"
+  yUnit="%"
+  height="360"
+  caption="Plus and Pro memory, from the charts in OpenAI's 4 June 2026 post. 2024 notes are saved memories. 2025 V0 is saved memories plus Dreaming V0. 2026 V3 is Dreaming V3. Horizontal axis: system. Vertical axis: task success. Hover a bar, or open View chart data."
+/>
+
+Read the levels along with the slopes. Factual recall goes from 41.5% to 67.9% to 82.8%. From the 2024 system, that is about double, and roughly 17% of those tasks still miss. Preference adherence goes from 31.4% to 55.3% to 71.3%. About 29% still miss. Staying correct over time goes from 9.4% to 52.2% to 75.1%.
+
+The time series explains the product. A saved note has no clock. The 2024 bar is what that looks like under evaluation: 9.4% task success. The jump to 52.2% is early Dreaming doing the job saved notes were weakest at. Dreaming V3 reaches 75.1%, just under eight times the 2024 rate. Set against a useful assistant, about one in four time-sensitive tasks still comes out wrong.
+
+<Chart
+  dataset="evalLift"
+  type="bar"
+  title="Percentage-point gain from 2024 saved memories to Dreaming V3"
+  xKey="task"
+  series="liftSeries"
+  yUnit=" pp"
+  caption="Calculated from the rates above. This is not a separate OpenAI metric. The time task gains the most because the 2024 baseline was the weakest."
+/>
+
+The gains are 41.3, 39.9, and 65.7 percentage points. The eight-times figure is real arithmetic on a small baseline. I would keep the baseline in the same sentence. Multiplying 9.4 and subtracting the misses you still have are different boasts.
+
+<MarginNote>
+  82.8% means a miss is still ordinary.
+</MarginNote>
+
+<details>
+  <summary>On Sunday, the note still says the party is next Saturday. What should a time-aware memory say?</summary>
+  <p><strong>The party is in the past, and it should carry a date.</strong> Advice that still assumes the party is ahead is the failure this evaluation is built to catch. OpenAI's own picture is a trip. "You are going to Singapore in July" should become "you went to Singapore in July 2026" once the dates have passed, and home should be the relevant place again.</p>
+</details>
+
+## A fact has several addresses
+
+The summary is a materialized view. The help center says it in product language. It is a high-level view, and it can omit details that are less relevant, unsuitable for the summary, or drawn from sources that are not listed one by one. Asking the model what it remembers produces another view of that kind. A view can drop a row while the underlying chat remains.
+
+<DataTable
+  dataset="stores"
+  caption="Places a fact about you can sit. The middle columns describe the public product, not a measured prompt template."
+/>
+
+<DataTable
+  dataset="brainCompare"
+  caption="The same job, on two substrates. The human column is the standard split in cognitive neuroscience, compressed. The ChatGPT column is public product behavior."
+/>
+
+Working memory is the row where the analogy gets loose. Nelson Cowan argued that the focus of attention holds about four chunks, and that George Miller's seven was a broader measurement ([Cowan, 2001](https://doi.org/10.1017/S0140525X01003922)). A context window holds far more than four chunks, and it is worse in one specific way. It does not decide what a chunk is. A stale plan, a tool error, and the question you actually asked can share the tray until something compacts them. Human working memory stays small because most of a day never reaches the desk. A model is handed a desk of a chosen size, and then a policy for what may sit on it.
+
+Procedural memory is the row that settles the weights. Riding a bicycle, typing, a diagnostic habit you can no longer explain: these depend on circuits that include the basal ganglia and the cerebellum, and they are hard to recite. Squire's map is the usual one, with episodic and semantic memory on the declarative side and skill on the procedural side ([Squire, 2004](https://doi.org/10.1016/j.nlm.2004.06.005)). In the model, skill lives in the weights. The Memory product writes a briefing beside them. You can tell the model you prefer a certain coding style. You have not trained that style into its parameters.
+
+<MarginNote>
+  Four chunks is a desk. A context window is a lit warehouse.
+</MarginNote>
+
+## Why the summary drops a name
+
+Meera appears in one March thread. The summary talks about backend work and cricket, because those come up every week. She has to compete with them for a short page.
+
+If that page is loaded often, and history search runs only on some turns, the page's priorities become the personality of the product. Repetition has an easy case. A person who shows up in a single planning thread can lose the election and still win a later search.
+
+That is a plausible account of a missing name. It follows from the public shape: a privileged short view, plus a conditional look at the archive. It is an inference. I cannot see the ranker, the features it scores, or the budget of the summary in tokens. The help center's wording is the claim I can stand on. Less relevant details may be omitted. Leaving a line out and deleting the chat are different events.
+
+<details>
+  <summary>Is Meera in the weights?</summary>
+  <p><strong>No.</strong> The March chat did not train the model. If a later reply names her, the name was in the context assembled for that turn.</p>
+</details>
+
+<details>
+  <summary>Does a missing line mean she was deleted?</summary>
+  <p><strong>No.</strong> The summary is allowed to be incomplete. A new chat can still find the March conversation when reference chat history is on and the product decides a search is worth running.</p>
+</details>
+
+<details>
+  <summary>What would move her from left out to gone?</summary>
+  <p><strong>Delete the March chat, or turn reference chat history off and wait.</strong> Turning that setting off schedules information remembered from past chats for deletion within 30 days. The chats themselves stay until you delete them. Saved memories are a separate list, so deleting the chat can leave a saved memory that was made from it. "Don't mention this again" is a fourth state. It reduces future references and leaves the underlying chat, file, or email in place.</p>
+</details>
+
+If you run the test and the new chat cannot find her either, you have learned less than it feels. A retrieval miss and a deletion look alike from the outside. The product does not hand you the log that would separate them. Sources under a reply help when they appear. The help center also says those sources can omit factors, and they are left off shared links.
+
+## The record I would rather keep
+
+A summary is a good cache and a bad archive. The failure in the Meera sketch is a rewrite that keeps the topics you repeat and drops the entities you mention once. The next rewrite can drop a different entity. The summary page shows the highlights. It does not, by itself, show you the row that used to be there.
+
+If I were keeping this in a system I operate, I would store the claim with a lifespan and a source, and I would let the summary be a flag.
+
+```json
+{
+  "entity": "Meera",
+  "relationship": "friend",
+  "claim": "Planned a trip together in March 2026",
+  "valid_from": "2026-03-02",
+  "valid_to": null,
+  "source_conversation_id": "chat_march_trip",
+  "confidence": 0.62,
+  "in_summary": false
+}
+```
+
+`valid_to` is the time problem in one field. The Singapore trip can remain in August, in the past tense, and stop driving dinner recommendations in Singapore. `in_summary` set to false, with the source id still live, is the Meera state. Retrievable. Off the desk. This record is a design, not a leak of OpenAI's schema.
+
+A graph is one way to keep the links: a person, a city, a project, edges with times. Embeddings are one way to find the March chat after the wording has been forgotten. JSON is one way to store the fields. Markdown is one way to show a summary to a model. OpenAI has not said which of these, if any, is the internal store. Each of them can produce the behavior we can see. Behavior at this resolution does not identify the database.
+
+<DataTable
+  dataset="formats"
+  caption="Formats a builder might reach for, and the claim the public record actually supports."
+/>
+
+A knowledge graph is the design I would pick when a relationship has to survive a summary rewrite. It remains a hypothesis about what is inside. The product in front of us is a summary, a set of controls, a history search that runs on some turns, and a model that reads whatever those pieces hand it.
+
+## Three outcomes, and one you can cause
+
+1. The summary has the fact, and a new chat uses it. Synthesis did the job.
+2. The summary lacks the fact, and a new chat still finds the old conversation. Stored, and left out of the current view. The help center describes this state. I would call it a cache miss on a view, and I would keep the word forgetting for something else.
+3. The summary lacks the fact, and the new chat cannot find it. Deletion, a retrieval miss, a "don't mention this" control, and a synthesis pass that dropped the source can all land here. From the chair you are sitting in, they are one result.
+
+<Callout title="Try it on something small">
+  Pick a detail you would not mind seeing in a prompt. Check the Memory summary. Ask a new chat for that detail without restating it. Then decide which of the three outcomes you got. The interesting case is the second one.
+</Callout>
+
+A person can forget a seating chart and still be someone the wedding changed. A song can land differently years later. Some of that change is in tissue, including in memories that can no longer be recited.
+
+A model that recites the seating chart has been briefed. Remove the briefing and the parameters are the parameters from before the wedding. The update was written beside the model. That is the memory gap you meet in ordinary use: wide, testable, and located in the document rather than in the weights.
+
+The next time a summary leaves someone out, ask which address you are looking at. The weights, which the chat left alone. The summary, which is a short view with a budget. Or the old conversation, which may still be there when a later turn goes looking.
+
+<References />
