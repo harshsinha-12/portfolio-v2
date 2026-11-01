@@ -1,0 +1,183 @@
+{
+  "timeline": [
+    {
+      "When": "April 2024",
+      "System": "Saved memories",
+      "What changed": "Explicit notes, written during a chat. Easy to leave stale once life moves on."
+    },
+    {
+      "When": "April 2025",
+      "System": "Saved memories + Dreaming V0",
+      "What changed": "A background pass can curate memory from chat history, including things you never said “remember” about."
+    },
+    {
+      "When": "4 June 2026",
+      "System": "Dreaming V3",
+      "What changed": "Synthesis becomes the main architecture, with a reviewable summary. OpenAI reports about 5× less compute to serve Dreaming."
+    }
+  ],
+  "evalSeries": [
+    { "key": "recall", "label": "Factual recall", "color": "#24527a" },
+    { "key": "preferences", "label": "Preference adherence", "color": "#b65332" },
+    { "key": "time", "label": "Staying correct over time", "color": "#356b51" }
+  ],
+  "memoryEvals": [
+    { "year": "2024 notes", "recall": 41.5, "preferences": 31.4, "time": 9.4 },
+    { "year": "2025 V0", "recall": 67.9, "preferences": 55.3, "time": 52.2 },
+    { "year": "2026 V3", "recall": 82.8, "preferences": 71.3, "time": 75.1 }
+  ],
+  "liftSeries": [
+    { "key": "points", "label": "Gain, 2024 to Dreaming V3", "color": "#b65332" }
+  ],
+  "evalLift": [
+    { "task": "Factual recall", "points": 41.3 },
+    { "task": "Preferences", "points": 39.9 },
+    { "task": "Stays correct", "points": 65.7 }
+  ],
+  "stores": [
+    {
+      "Store": "Weights",
+      "What sits there": "The model's parameters: skills, language, general knowledge from training.",
+      "On a later turn": "Always, as ability. A chat does not add your biography.",
+      "How it leaves": "A conversation does not update it."
+    },
+    {
+      "Store": "This conversation",
+      "What sits there": "The current thread, until it ends or is compacted.",
+      "On a later turn": "Only inside this chat.",
+      "How it leaves": "Close it, or let compaction drop detail."
+    },
+    {
+      "Store": "Memory summary",
+      "What sits there": "A high-level briefing Dreaming rewrites.",
+      "On a later turn": "Often, as text in the prompt. It can omit true details.",
+      "How it leaves": "Edit it, delete it, or let a later synthesis overwrite it."
+    },
+    {
+      "Store": "Saved memories",
+      "What sits there": "The explicit list, separate from chat history.",
+      "On a later turn": "When that experience is enabled.",
+      "How it leaves": "Delete the saved item. Deleting the original chat may leave it in place."
+    },
+    {
+      "Store": "Past chats",
+      "What sits there": "The episodes themselves.",
+      "On a later turn": "Only if history search runs and selects them.",
+      "How it leaves": "Delete the chat. Turning reference history off schedules derived memories for deletion within 30 days. The chats remain."
+    },
+    {
+      "Store": "Custom instructions",
+      "What sits there": "Standing orders you typed in settings.",
+      "On a later turn": "Yes, as instructions, distinct from Memory.",
+      "How it leaves": "Edit the settings."
+    },
+    {
+      "Store": "Files and connected apps",
+      "What sits there": "Library or Space files, and apps such as Gmail where the connection exists.",
+      "On a later turn": "When the feature is on and the product judges them relevant.",
+      "How it leaves": "Delete the file or disconnect the app. Chats that already used them can remain."
+    }
+  ],
+  "brainCompare": [
+    {
+      "Job": "Hold the current thought",
+      "In a person": "Working memory. Cowan puts the focus of attention at about four chunks, across prefrontal and parietal cortex.",
+      "In ChatGPT": "The context window of this conversation."
+    },
+    {
+      "Job": "Keep a specific episode",
+      "In a person": "Hippocampus and nearby medial temporal lobe, especially while the memory is new.",
+      "In ChatGPT": "The past chat. Retrieved on turns where a history search is likely to help."
+    },
+    {
+      "Job": "Keep a durable fact about you",
+      "In a person": "Semantic memory, distributed in cortex after consolidation.",
+      "In ChatGPT": "The memory summary, plus any saved memories still in use."
+    },
+    {
+      "Job": "Keep a skill",
+      "In a person": "Procedural memory, including basal ganglia and cerebellum. Hard to recite.",
+      "In ChatGPT": "The weights. The Memory product does not write there."
+    },
+    {
+      "Job": "Update off to the side",
+      "In a person": "Replay during sleep, aimed at synapses.",
+      "In ChatGPT": "Dreaming, a background job aimed at the summary."
+    },
+    {
+      "Job": "Leave something out",
+      "In a person": "Forgetting, inhibition, and the short version you would tell a stranger.",
+      "In ChatGPT": "A summary that is incomplete by design. Leaving a line out is a different event from deleting the chat."
+    }
+  ],
+  "formats": [
+    {
+      "Format": "Plain-text summary",
+      "What is public": "The memory summary is readable text, and corrections can be typed into it."
+    },
+    {
+      "Format": "Markdown",
+      "What is public": "A summary might be shown with light formatting. That does not establish the storage format."
+    },
+    {
+      "Format": "JSON records",
+      "What is public": "No public confirmation that every memory is a JSON row."
+    },
+    {
+      "Format": "Vector embeddings",
+      "What is public": "History search behaves like retrieval. The index type is not published."
+    },
+    {
+      "Format": "Knowledge graph",
+      "What is public": "No public confirmation of entity nodes, edges, or a graph database."
+    },
+    {
+      "Format": "Weight update",
+      "What is public": "Saving a memory does not retrain the model. The fact returns as context."
+    }
+  ],
+  "citations": [
+    {
+      "title": "Dreaming: Better memory for a more helpful ChatGPT",
+      "publisher": "OpenAI, 4 June 2026",
+      "url": "https://openai.com/index/chatgpt-memory-dreaming/",
+      "note": "Product history, Dreaming V0 and V3, the three evaluation charts, the five-times compute claim, and the rollout."
+    },
+    {
+      "title": "Memory in ChatGPT",
+      "publisher": "OpenAI Help Center",
+      "url": "https://help.openai.com/en/articles/8590148-memory-in-chatgpt",
+      "note": "Summary limits, history search, saved memories, deletion, temporary chats, and workspace controls."
+    },
+    {
+      "title": "Why there are complementary learning systems in the hippocampus and neocortex",
+      "publisher": "McClelland, McNaughton, and O'Reilly, Psychological Review, 1995",
+      "url": "https://doi.org/10.1037/0033-295X.102.3.419",
+      "note": "Fast hippocampal episodes, slow cortical structure, and why writing every episode straight into the slow system smears older learning."
+    },
+    {
+      "title": "The memory function of sleep",
+      "publisher": "Diekelmann and Born, Nature Reviews Neuroscience, 2010",
+      "url": "https://doi.org/10.1038/nrn2762",
+      "note": "Replay during slow-wave sleep as a consolidation route, and why remembered dreams are a poor name for that process."
+    },
+    {
+      "title": "Memory consolidation, retrograde amnesia and the hippocampal complex",
+      "publisher": "Nadel and Moscovitch, Current Opinion in Neurobiology, 1997",
+      "url": "https://doi.org/10.1016/S0959-4388(97)80010-4",
+      "note": "Multiple-trace theory: a vivid episode can keep a dependence on the hippocampus rather than fully handing its detail to cortex."
+    },
+    {
+      "title": "The magical number 4 in short-term memory",
+      "publisher": "Cowan, Behavioral and Brain Sciences, 2001",
+      "url": "https://doi.org/10.1017/S0140525X01003922",
+      "note": "The focus of attention holds about four chunks. Miller's seven measured something broader."
+    },
+    {
+      "title": "Memory systems of the brain: A brief history and current perspective",
+      "publisher": "Squire, Neurobiology of Learning and Memory, 2004",
+      "url": "https://doi.org/10.1016/j.nlm.2004.06.005",
+      "note": "The usual map from episodic and semantic memory to procedural skill."
+    }
+  ]
+}
