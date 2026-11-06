@@ -78,10 +78,12 @@ function OrgHeader({
   title,
   link,
   tenure,
+  location,
 }: {
   title: string;
   link?: string;
   tenure?: string | null;
+  location?: string;
 }) {
   const name = link ? (
     <LinkPreview
@@ -104,6 +106,16 @@ function OrgHeader({
     <div className="min-w-0 pt-0.5">
       <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5">
         {name}
+        {location && (
+          <>
+            <span className="text-[var(--color-ink-subtle)]" aria-hidden="true">
+              ·
+            </span>
+            <span className="text-[11px] text-[var(--color-ink-subtle)]">
+              {location}
+            </span>
+          </>
+        )}
         {tenure && (
           <>
             <span className="text-[var(--color-ink-subtle)]" aria-hidden="true">
@@ -202,6 +214,7 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
           title={exp.organisation}
           link={exp.link}
           tenure={tenure}
+          location={exp.location}
         />
 
         <div className="mt-3.5 space-y-3.5">

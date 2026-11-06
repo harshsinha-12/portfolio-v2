@@ -565,6 +565,7 @@ export type Position = {
 export type Experience = {
   id: string;
   organisation: string;
+  location?: string;
   logo: string;
   link: string;
   positions: Position[];
@@ -574,18 +575,73 @@ export const experiences: Experience[] = [
   {
     id: "exp-scalio",
     organisation: "Scalio",
+    location: "Bengaluru, India",
     logo: "/assets/scalio.webp",
     link: "https://scalio.app/",
     positions: [
       {
         title: "Developer",
         duration: "Oct 2026 - Present",
+        stack: [
+          { name: "Next.js" },
+          { name: "React Native" },
+          { name: "TypeScript" },
+          { name: "Zod" },
+          { name: "OpenAI" },
+          { name: "Azure" },
+        ],
         content: [
           {
             segments: [
               {
                 type: "text",
-                value: "Working on AI, video generation, and related agents.",
+                value:
+                  "I fucked up the first AI Content Calendar pretty badly. It was a pile of one-shot jobs, and I had not thought about scaling. Rebuilt it into strategies that can run up to 35 days, with copy and static media prepared on a rolling 7-day window. Scalio serves 600K+ people, 20K+ of them paying.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Built durable, idempotent background orchestration with job outboxes, recovery sweeps, copy and media dependency gates, and Generate Now, so deferred work can be picked back up without regenerating assets that already finished.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Stopped a fresh class of 12-hour AI scheduling errors by treating AM/PM and 24-hour times as one input: Zod validation, timezone-aware parsing, and the same saved time in Calendar, List, and previews.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Hardened image generation across Azure, Znap, OpenAI, and Google with bounded retries, Retry-After, deadline-aware fallbacks, and terminal-error classification, so failed Calendar and Image Studio jobs can be recovered.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Fixed Facebook and Instagram OAuth races on web, Android, and iOS with duplicate-exchange protection, stale-callback rejection, a check that the connection actually persisted, and reconnects that don't clobber a session that already worked.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "Shipped renewal-aware Calendar billing and recovery on Next.js and React Native/Expo. An expired plan and an empty credit balance are different failures, and neither one gets around the subscription.",
               },
             ],
           },

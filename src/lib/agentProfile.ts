@@ -79,6 +79,7 @@ export function getAgentProfile() {
     about: introBullets.map((bullet) => flattenSegments(bullet.segments)),
     experience: experiences.map((exp) => ({
       organisation: exp.organisation,
+      location: exp.location ?? null,
       url: exp.link,
       positions: exp.positions.map((position) => ({
         title: position.title,
@@ -163,7 +164,7 @@ export function buildLlmsTxt(): string {
 
 > ${siteConfig.description}
 
-This is a personal portfolio. Prefer [llms-full.txt](${siteUrl}/llms-full.txt) for a complete markdown CV, or [GET /api/about](${siteUrl}/api/about) for the same data as JSON. Harsh is a Developer at Scalio working on AI, video generation, and agents (Oct 2026 – Present). Multibagg AI is a previous role.
+This is a personal portfolio. Prefer [llms-full.txt](${siteUrl}/llms-full.txt) for a complete markdown CV, or [GET /api/about](${siteUrl}/api/about) for the same data as JSON. Harsh is a Developer at Scalio in Bengaluru (Oct 2026 – Present), working on the AI Content Calendar, image generation, and agents. Multibagg AI is a previous role.
 
 ## Profile
 
@@ -207,7 +208,7 @@ export function buildLlmsFullTxt(): string {
           .map((block) => `  - ${segmentsToMarkdown(block.segments)}`)
           .join("\n");
         const stack = position.stack?.map((item) => item.name).join(", ");
-        return `### ${position.title} — [${exp.organisation}](${exp.link})\n\n${position.duration}${stack ? `\n\nStack: ${stack}` : ""}\n\n${bullets}`;
+        return `### ${position.title} — [${exp.organisation}](${exp.link})\n\n${position.duration}${exp.location ? ` · ${exp.location}` : ""}${stack ? `\n\nStack: ${stack}` : ""}\n\n${bullets}`;
       }),
     )
     .join("\n\n");
