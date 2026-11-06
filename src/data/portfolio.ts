@@ -458,17 +458,21 @@ export const techStack: ProjectStackItem[] = [
   { name: "Swift" },
   { name: "React" },
   { name: "Next.js" },
+  { name: "Expo" },
   { name: "Node.js" },
   { name: "Fastify" },
   { name: "Tailwind CSS" },
   { name: "OpenAI" },
+  { name: "Mastra" },
   { name: "LangChain" },
   { name: "LangGraph" },
   { name: "LangSmith" },
   { name: "Agentic Systems" },
   { name: "Reinforcement learning" },
   { name: "PostgreSQL" },
+  { name: "Drizzle" },
   { name: "Prisma" },
+  { name: "Inngest" },
   { name: "Redis" },
   { name: "BullMQ" },
   { name: "Pinecone" },
@@ -496,7 +500,7 @@ export const techWorkshopMap = {
     title: "Product",
     description: "what users see and interact with",
     items: [
-      { name: "Next.js" }, { name: "React" }, { name: "TypeScript" },
+      { name: "Next.js" }, { name: "React" }, { name: "Expo" }, { name: "TypeScript" },
       { name: "JavaScript" }, { name: "Vue.js" }, { name: "Tailwind CSS" },
     ],
   },
@@ -510,7 +514,7 @@ export const techWorkshopMap = {
     description: "store, shape and access",
     items: [
       { name: "Node.js" }, { name: "SQL" }, { name: "Express.js" },
-      { name: "PostgreSQL" }, { name: "Fastify" }, { name: "MongoDB" },
+      { name: "PostgreSQL" }, { name: "Drizzle" }, { name: "Fastify" }, { name: "MongoDB" },
       { name: "Prisma" },
     ],
   },
@@ -518,7 +522,7 @@ export const techWorkshopMap = {
     title: "Automation",
     description: "work that keeps moving after the click",
     items: [
-      { name: "Cron jobs" }, { name: "BullMQ" }, { name: "Redis" },
+      { name: "Cron jobs" }, { name: "Inngest" }, { name: "BullMQ" }, { name: "Redis" },
       { name: "Caching" }, { name: "Background processing" },
       { name: "Event-driven architecture" },
     ],
@@ -535,7 +539,7 @@ export const techWorkshopMap = {
     title: "AI / ML bench",
     description: "models, agents, data and retrieval",
     items: [
-      { name: "Python" }, { name: "OpenAI" }, { name: "LangChain" },
+      { name: "Python" }, { name: "OpenAI" }, { name: "Mastra" }, { name: "LangChain" },
       { name: "LangGraph" }, { name: "LangSmith" }, { name: "Agentic Systems" },
       { name: "Reinforcement learning" }, { name: "TensorFlow" }, { name: "PyTorch" },
       { name: "scikit-learn" }, { name: "Keras" }, { name: "Pandas" },
@@ -583,12 +587,14 @@ export const experiences: Experience[] = [
         title: "Developer",
         duration: "Oct 2026 - Present",
         stack: [
-          { name: "Next.js" },
-          { name: "React Native" },
           { name: "TypeScript" },
-          { name: "Zod" },
-          { name: "OpenAI" },
-          { name: "Azure" },
+          { name: "React" },
+          { name: "Next.js" },
+          { name: "Expo" },
+          { name: "Node.js" },
+          { name: "PostgreSQL" },
+          { name: "Drizzle" },
+          { name: "Inngest" },
         ],
         content: [
           {
@@ -596,7 +602,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "I fucked up the first AI Content Calendar pretty badly. It was a pile of one-shot jobs, and I had not thought about scaling. Rebuilt it into strategies that can run up to 35 days, with copy and static media prepared on a rolling 7-day window. Scalio serves 600K+ people, 20K+ of them paying.",
+                  "I fucked up the first AI Content Calendar pretty badly. It was a pile of one-shot jobs, and I had not thought about scaling. Rebuilt it into strategies that can run up to 35 days, with copy and static media prepared on a rolling 7-day window across the backend, web, and the iOS and Android apps. Scalio serves 600K+ people, 20K+ of them paying.",
               },
             ],
           },
@@ -605,7 +611,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Built durable, idempotent background orchestration with job outboxes, recovery sweeps, copy and media dependency gates, and Generate Now, so deferred work can be picked back up without regenerating assets that already finished.",
+                  "Calendar and Autopilot prepare the next seven days on Inngest, with job priority in the scheduler and the plan stored in PostgreSQL through Drizzle. Deferred work, including Generate Now, can be picked back up without regenerating assets that already finished.",
               },
             ],
           },
@@ -623,7 +629,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Hardened image generation across Azure, Znap, OpenAI, and Google with bounded retries, Retry-After, deadline-aware fallbacks, and terminal-error classification, so failed Calendar and Image Studio jobs can be recovered.",
+                  "Hardened image generation around Azure and Znap failures with bounded retries, Retry-After, deadline-aware fallbacks, and terminal-error classification. Fixed 4:5 edits that could crop logos and footers, and added regression coverage for provider validation failures.",
               },
             ],
           },
@@ -632,7 +638,7 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Fixed Facebook and Instagram OAuth races on web, Android, and iOS with duplicate-exchange protection, stale-callback rejection, a check that the connection actually persisted, and reconnects that don't clobber a session that already worked.",
+                  "Fixed Facebook and Instagram OAuth races on web, Android, and iOS with duplicate-exchange protection, stale-callback rejection, a check that the connection actually persisted, and reconnects that don't clobber a session that already worked. Also shipped WhatsApp Embedded Signup, OTP request deduplication, and a Kotlin Expo module for Android Auth Tabs.",
               },
             ],
           },
@@ -641,7 +647,16 @@ export const experiences: Experience[] = [
               {
                 type: "text",
                 value:
-                  "Shipped renewal-aware Calendar billing and recovery on Next.js and React Native/Expo. An expired plan and an empty credit balance are different failures, and neither one gets around the subscription.",
+                  "Implemented renewal-aware Calendar billing and recovery UX across Next.js and React Native/Expo, distinguishing expired plans from insufficient credits without bypassing subscription entitlements.",
+              },
+            ],
+          },
+          {
+            segments: [
+              {
+                type: "text",
+                value:
+                  "On Maya, tested provider fallbacks across Google, Kie, and fal.ai, checked that an interrupted job can resume without a second charge, and started multilingual evaluation fixtures. Mastra is going in on the agent side. Checks ran through Vitest, physical iOS and Android builds, ngrok, Grafana/Loki, and read-only SQL.",
               },
             ],
           },
