@@ -148,7 +148,7 @@ export function ProfileSection({ initialContributions, scalioPRStats }: ProfileS
   return (
     <section id="profile" aria-labelledby="profile-heading" className="relative animate-fade-up">
       <LinkPreviewImagePreloader />
-      <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(0,11rem)_1fr] lg:items-start lg:gap-6">
+      <div className="flex flex-col gap-3 sm:gap-4 lg:grid lg:grid-cols-[minmax(0,11rem)_minmax(0,1fr)] lg:items-start lg:gap-6">
         <div className="flex items-start gap-3 lg:contents">
           <div className="flex w-fit shrink-0 flex-col items-start lg:col-start-1 lg:row-start-1 lg:row-span-3 lg:z-[35]">
             <Polaroid
@@ -215,11 +215,11 @@ export function ProfileSection({ initialContributions, scalioPRStats }: ProfileS
           <IntroList />
         </StickyNote>
 
-        <div className="relative w-full lg:col-start-2 lg:row-start-3">
+        <div className="relative w-full min-w-0 lg:col-start-2 lg:row-start-3">
           <CutoutStickers stickers={profileStickers} />
           <TapedCard
             rotation={-0.4}
-            className="w-full max-lg:!rotate-0 lg:w-fit lg:max-w-full [&>div]:p-3"
+            className="w-full min-w-0 max-lg:!rotate-0 lg:max-w-full [&>div]:min-w-0 [&>div]:p-3"
           >
             <GitHubGraph
               username={siteConfig.githubUsername}

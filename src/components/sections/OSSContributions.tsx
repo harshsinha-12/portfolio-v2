@@ -10,7 +10,7 @@ export type OSSContribution = {
   href?: string;
   logo?: string;
   count: number;
-  kind: "PR" | "issue";
+  kind: "PR" | "issue" | "contribution";
   technologies?: readonly string[];
 };
 

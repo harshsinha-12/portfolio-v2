@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusEvent, type MouseEvent } from "react";
-import { levelFromCount, type ContributionDay } from "@/lib/githubContributions";
+import {
+  contributionHistoryMonths,
+  loadGitHubContributions,
+  multibaggContributionTotal,
+  type ContributionDay,
+} from "@/lib/githubContributions";
 import { cn } from "@/lib/utils";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { track } from "@/lib/analytics";
@@ -41,7 +46,6 @@ const WEEKDAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
 const ESTIMATED_WEEKS = 53;
 const MOBILE_BREAKPOINT = "(max-width: 1023px)";
 const MOBILE_GRAPH = {
-  months: 7,
   cellSize: 8,
   cellGap: 2,
   showWeekdayLabels: false,
@@ -111,9 +115,12 @@ function getMonthLabels(weeks: (ContributionDay | null)[][]) {
     if (!firstDay) return;
     const month = parseDate(firstDay.date).getMonth();
     if (month !== lastMonth) {
+      const parsed = parseDate(firstDay.date);
+      const name = parsed.toLocaleString("en", { month: "short" });
+      const showYear = labels.length === 0 || month === 0;
       labels.push({
         weekIndex: wi,
-        label: parseDate(firstDay.date).toLocaleString("en", { month: "short" }),
+        label: showYear ? `${name} ’${String(parsed.getFullYear()).slice(2)}` : name,
       });
       lastMonth = month;
     }
@@ -137,12 +144,13 @@ export function GitHubGraph({
 }: GitHubGraphProps) {
   const isMobileLayout = useMobileGraphLayout();
   const gridRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [days, setDays] = useState<ContributionDay[]>(initialDays ?? []);
   const [loading, setLoading] = useState(!initialDays?.length);
   const [error, setError] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
 
-  const resolvedMonths = isMobileLayout ? MOBILE_GRAPH.months : months;
+  const resolvedMonths = Math.max(months, contributionHistoryMonths());
   const resolvedCellSize = isMobileLayout ? MOBILE_GRAPH.cellSize : cellSize;
   const resolvedCellGap = isMobileLayout ? MOBILE_GRAPH.cellGap : cellGap;
   const resolvedShowWeekdayLabels = isMobileLayout
@@ -157,27 +165,13 @@ export function GitHubGraph({
       try {
         setLoading(true);
         setError(null);
-        const res = await fetch(
-          `https://github-contributions-api.jogruber.de/v4/${username}?y=last`,
-          { signal: controller.signal },
-        );
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data = (await res.json()) as {
-          contributions?: Array<{ date: string; count: number; level?: number }>;
-        };
-        setDays(
-          (data.contributions ?? []).map((item) => ({
-            date: item.date,
-            count: item.count,
-            level: item.level ?? levelFromCount(item.count),
-          })),
-        );
+        setDays(await loadGitHubContributions(username, { signal: controller.signal }));
       } catch (err) {
         if ((err as Error).name !== "AbortError") {
           setError("Could not load GitHub activity.");
         }
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) setLoading(false);
       }
     }
     fetchContributions();
@@ -188,7 +182,13 @@ export function GitHubGraph({
     const cutoff = new Date();
     cutoff.setMonth(cutoff.getMonth() - resolvedMonths);
     cutoff.setHours(0, 0, 0, 0);
-    return days.filter((day) => parseDate(day.date) >= cutoff);
+    cutoff.setDate(cutoff.getDate() - cutoff.getDay());
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return days.filter((day) => {
+      const date = parseDate(day.date);
+      return date >= cutoff && date <= today;
+    });
   }, [days, resolvedMonths]);
 
   const weeks = useMemo(() => buildWeeks(visibleDays), [visibleDays]);
@@ -199,6 +199,17 @@ export function GitHubGraph({
   const gridWidth = weekCount * (resolvedCellSize + resolvedCellGap) - resolvedCellGap;
   const gridHeight = 7 * resolvedCellSize + 6 * resolvedCellGap;
   const cellStyle = { width: resolvedCellSize, height: resolvedCellSize };
+
+  useEffect(() => {
+    const scroller = scrollRef.current;
+    if (!scroller) return;
+    const pinToLatest = () => {
+      scroller.scrollLeft = scroller.scrollWidth;
+    };
+    pinToLatest();
+    const frame = requestAnimationFrame(pinToLatest);
+    return () => cancelAnimationFrame(frame);
+  }, [weeks.length, resolvedCellSize, resolvedCellGap, showMonthLabels]);
 
   function showTooltip(
     target: HTMLElement,
@@ -228,7 +239,7 @@ export function GitHubGraph({
   }
 
   return (
-    <div className={cn("w-full max-w-full lg:w-fit", className)} aria-label={`GitHub contributions for ${username}`}>
+    <div className={cn("w-full min-w-0 max-w-full", className)} aria-label={`GitHub contributions for ${username}`}>
       <div className="mb-2 flex items-baseline justify-between gap-3">
         <p className="text-xs font-medium text-[var(--color-ink-muted)]">GitHub activity</p>
         <LinkPreview
@@ -248,8 +259,8 @@ export function GitHubGraph({
 
       {loading && (
         <div
-          className="animate-pulse rounded-[var(--radius-md)] bg-[var(--color-paper-muted)]"
-          style={{ width: gridWidth + labelWidth + 4, height: gridHeight + (showLegend ? 24 : 0) }}
+          className="w-full animate-pulse rounded-[var(--radius-md)] bg-[var(--color-paper-muted)]"
+          style={{ height: gridHeight + (showLegend ? 24 : 0) }}
         />
       )}
       {error && !loading && (
@@ -258,44 +269,46 @@ export function GitHubGraph({
 
       {!loading && !error && weeks.length > 0 && (
         <>
-          {showMonthLabels && (
-            <div className="flex gap-1">
-              {resolvedShowWeekdayLabels && <div className="shrink-0" style={{ width: labelWidth }} />}
-              <div
-                className="relative mb-1.5 h-3.5 text-[10px] leading-none text-[var(--color-ink-subtle)]"
-                style={{ width: gridWidth }}
-              >
-                {monthLabels.map(({ weekIndex, label }) => (
-                  <span
-                    key={`${label}-${weekIndex}`}
-                    className="absolute top-0 whitespace-nowrap"
-                    style={{ left: weekIndex * (resolvedCellSize + resolvedCellGap) }}
-                  >
-                    {label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <div
-            ref={gridRef}
-            className="relative flex w-full gap-1 overflow-x-visible"
-            onMouseLeave={() => setTooltip(null)}
-          >
+          <div className="flex min-w-0 gap-1">
             {resolvedShowWeekdayLabels && (
-              <div
-                className="flex shrink-0 flex-col justify-between py-0.5 text-[9px] leading-none text-[var(--color-ink-subtle)]"
-                style={{ width: labelWidth, height: gridHeight }}
-              >
-                {WEEKDAY_LABELS.map((lbl, i) => (
-                  <span key={i} style={{ height: resolvedCellSize }}>
-                    {lbl}
-                  </span>
-                ))}
+              <div className="shrink-0" style={{ width: labelWidth }}>
+                {showMonthLabels && <div className="mb-1.5 h-3.5" />}
+                <div
+                  className="flex flex-col justify-between py-0.5 text-[9px] leading-none text-[var(--color-ink-subtle)]"
+                  style={{ height: gridHeight }}
+                >
+                  {WEEKDAY_LABELS.map((lbl, i) => (
+                    <span key={i} style={{ height: resolvedCellSize }}>
+                      {lbl}
+                    </span>
+                  ))}
+                </div>
               </div>
             )}
 
+            <div
+              ref={scrollRef}
+              className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
+              onMouseLeave={() => setTooltip(null)}
+            >
+              {showMonthLabels && (
+                <div
+                  className="relative mb-1.5 h-3.5 text-[10px] leading-none text-[var(--color-ink-subtle)]"
+                  style={{ width: gridWidth }}
+                >
+                  {monthLabels.map(({ weekIndex, label }) => (
+                    <span
+                      key={`${label}-${weekIndex}`}
+                      className="absolute top-0 whitespace-nowrap"
+                      style={{ left: weekIndex * (resolvedCellSize + resolvedCellGap) }}
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div ref={gridRef} className="relative" style={{ width: gridWidth, height: gridHeight }}>
             <div className="inline-flex shrink-0" style={{ gap: resolvedCellGap }}>
               {weeks.map((week, wi) => (
                 <div key={wi} className="flex flex-col" style={{ gap: resolvedCellGap }}>
@@ -332,6 +345,8 @@ export function GitHubGraph({
                 {tooltip.text}
               </div>
             )}
+              </div>
+            </div>
           </div>
 
           {showLegend && (
@@ -361,6 +376,19 @@ export function GitHubGraph({
               summary={`${scalioPRStats.total} PRs authored · ${scalioPRStats.merged} merged · ${scalioPRStats.open} open`}
             />
           )}
+          <OSSContributions
+            heading="Multibagg contributions"
+            initiallyExpanded
+            contributions={[
+              {
+                repository: "Multibagg AI",
+                count: multibaggContributionTotal,
+                kind: "contribution",
+                logo: "/assets/multibagg-ai.webp",
+              },
+            ]}
+            summary="Jan 2025 – Jun 2026"
+          />
           <OSSContributions contributions={ossContributions} />
         </>
       )}
