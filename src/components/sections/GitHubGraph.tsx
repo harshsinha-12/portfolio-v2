@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusEvent, type MouseEvent } from "react";
 import {
-  contributionHistoryMonths,
   loadGitHubContributions,
   multibaggContributionTotal,
   type ContributionDay,
@@ -61,6 +60,13 @@ function useMobileGraphLayout() {
     () => window.matchMedia(MOBILE_BREAKPOINT).matches,
     () => false,
   );
+}
+
+function toIsoDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function parseDate(dateStr: string): Date {
@@ -125,7 +131,15 @@ function getMonthLabels(weeks: (ContributionDay | null)[][]) {
       lastMonth = month;
     }
   });
-  return labels;
+
+  // A leading December can sit one column before January. Drop any label
+  // that doesn't have room before the next one.
+  return labels.filter((label, index) => {
+    const next = labels[index + 1];
+    if (!next) return true;
+    const minWeeks = label.label.includes("’") ? 3 : 2;
+    return next.weekIndex - label.weekIndex >= minWeeks;
+  });
 }
 
 export function GitHubGraph({
@@ -149,8 +163,9 @@ export function GitHubGraph({
   const [loading, setLoading] = useState(!initialDays?.length);
   const [error, setError] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
+  const [selectedYear, setSelectedYear] = useState(() => new Date().getFullYear());
 
-  const resolvedMonths = Math.max(months, contributionHistoryMonths());
+  const currentYear = new Date().getFullYear();
   const resolvedCellSize = isMobileLayout ? MOBILE_GRAPH.cellSize : cellSize;
   const resolvedCellGap = isMobileLayout ? MOBILE_GRAPH.cellGap : cellGap;
   const resolvedShowWeekdayLabels = isMobileLayout
@@ -178,18 +193,51 @@ export function GitHubGraph({
     return () => controller.abort();
   }, [initialDays, username]);
 
+  const availableYears = useMemo(() => {
+    const years = new Set<number>([currentYear]);
+    const monthsByYear = new Map<number, Set<number>>();
+    for (const day of days) {
+      const year = Number(day.date.slice(0, 4));
+      const month = Number(day.date.slice(5, 7));
+      const months = monthsByYear.get(year) ?? new Set<number>();
+      months.add(month);
+      monthsByYear.set(year, months);
+    }
+    for (const [year, months] of monthsByYear) {
+      const onlyLeadingDecember = months.size === 1 && months.has(12);
+      if (!onlyLeadingDecember && year <= currentYear) years.add(year);
+    }
+    return [...years].sort((a, b) => b - a);
+  }, [currentYear, days]);
+
   const visibleDays = useMemo(() => {
-    const cutoff = new Date();
-    cutoff.setMonth(cutoff.getMonth() - resolvedMonths);
-    cutoff.setHours(0, 0, 0, 0);
-    cutoff.setDate(cutoff.getDate() - cutoff.getDay());
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    return days.filter((day) => {
-      const date = parseDate(day.date);
-      return date >= cutoff && date <= today;
-    });
-  }, [days, resolvedMonths]);
+    const showingCurrentYear = selectedYear === currentYear;
+    const rangeStart = showingCurrentYear ? new Date(today) : new Date(selectedYear, 0, 1);
+    if (showingCurrentYear) rangeStart.setMonth(rangeStart.getMonth() - months);
+    let rangeEnd = showingCurrentYear ? new Date(today) : new Date(selectedYear, 11, 31);
+    if (rangeEnd > today && !showingCurrentYear) rangeEnd = new Date(today);
+    rangeStart.setHours(0, 0, 0, 0);
+    rangeStart.setDate(rangeStart.getDate() - rangeStart.getDay());
+    rangeEnd.setHours(0, 0, 0, 0);
+    rangeEnd.setDate(rangeEnd.getDate() + (6 - rangeEnd.getDay()));
+
+    const byDate = new Map(days.map((day) => [day.date, day]));
+    const aligned: ContributionDay[] = [];
+    for (let cursor = new Date(rangeStart); cursor <= rangeEnd; cursor.setDate(cursor.getDate() + 1)) {
+      const date = toIsoDate(cursor);
+      aligned.push(byDate.get(date) ?? { date, count: 0, level: 0 });
+    }
+    return aligned;
+  }, [currentYear, days, months, selectedYear]);
+
+  const contributionTotal = useMemo(() => {
+    return visibleDays.reduce((sum, day) => {
+      if (selectedYear !== currentYear && parseDate(day.date).getFullYear() !== selectedYear) return sum;
+      return sum + day.count;
+    }, 0);
+  }, [currentYear, selectedYear, visibleDays]);
 
   const weeks = useMemo(() => buildWeeks(visibleDays), [visibleDays]);
   const monthLabels = useMemo(() => getMonthLabels(weeks), [weeks]);
@@ -203,13 +251,13 @@ export function GitHubGraph({
   useEffect(() => {
     const scroller = scrollRef.current;
     if (!scroller) return;
-    const pinToLatest = () => {
-      scroller.scrollLeft = scroller.scrollWidth;
+    const pin = () => {
+      scroller.scrollLeft = selectedYear === currentYear ? scroller.scrollWidth : 0;
     };
-    pinToLatest();
-    const frame = requestAnimationFrame(pinToLatest);
+    pin();
+    const frame = requestAnimationFrame(pin);
     return () => cancelAnimationFrame(frame);
-  }, [weeks.length, resolvedCellSize, resolvedCellGap, showMonthLabels]);
+  }, [currentYear, selectedYear, weeks.length, resolvedCellSize, resolvedCellGap, showMonthLabels]);
 
   function showTooltip(
     target: HTMLElement,
@@ -241,7 +289,16 @@ export function GitHubGraph({
   return (
     <div className={cn("w-full min-w-0 max-w-full", className)} aria-label={`GitHub contributions for ${username}`}>
       <div className="mb-2 flex items-baseline justify-between gap-3">
-        <p className="text-xs font-medium text-[var(--color-ink-muted)]">GitHub activity</p>
+        <div>
+          <p className="text-xs font-medium text-[var(--color-ink-muted)]">GitHub activity</p>
+          {!loading && !error && (
+            <p className="mt-0.5 text-[11px] text-[var(--color-ink-subtle)]">
+              {contributionTotal.toLocaleString("en-US")}{" "}
+              {contributionTotal === 1 ? "contribution" : "contributions"}{" "}
+              {selectedYear === currentYear ? "in the last year" : `in ${selectedYear}`}
+            </p>
+          )}
+        </div>
         <LinkPreview
           href={`https://github.com/${username}`}
           analytics={{ kind: "github", placement: "github_map", username }}
@@ -269,13 +326,14 @@ export function GitHubGraph({
 
       {!loading && !error && weeks.length > 0 && (
         <>
-          <div className="flex min-w-0 gap-1">
+          <div className="flex min-w-0 items-start gap-2">
+          <div className="flex min-w-0 flex-1 items-start gap-1">
             {resolvedShowWeekdayLabels && (
               <div className="shrink-0" style={{ width: labelWidth }}>
                 {showMonthLabels && <div className="mb-1.5 h-3.5" />}
                 <div
-                  className="flex flex-col justify-between py-0.5 text-[9px] leading-none text-[var(--color-ink-subtle)]"
-                  style={{ height: gridHeight }}
+                  className="flex flex-col text-[9px] leading-none text-[var(--color-ink-subtle)]"
+                  style={{ gap: resolvedCellGap }}
                 >
                   {WEEKDAY_LABELS.map((lbl, i) => (
                     <span key={i} style={{ height: resolvedCellSize }}>
@@ -288,64 +346,92 @@ export function GitHubGraph({
 
             <div
               ref={scrollRef}
-              className="min-w-0 flex-1 overflow-x-auto overscroll-x-contain"
+              className="min-w-0 flex-1 overflow-x-auto overflow-y-hidden overscroll-x-contain"
               onMouseLeave={() => setTooltip(null)}
             >
-              {showMonthLabels && (
-                <div
-                  className="relative mb-1.5 h-3.5 text-[10px] leading-none text-[var(--color-ink-subtle)]"
-                  style={{ width: gridWidth }}
-                >
-                  {monthLabels.map(({ weekIndex, label }) => (
-                    <span
-                      key={`${label}-${weekIndex}`}
-                      className="absolute top-0 whitespace-nowrap"
-                      style={{ left: weekIndex * (resolvedCellSize + resolvedCellGap) }}
+              <div className="inline-flex w-max items-start">
+                <div className="pb-4">
+                  {showMonthLabels && (
+                    <div
+                      className="relative mb-1.5 h-3.5 text-[10px] leading-none text-[var(--color-ink-subtle)]"
+                      style={{ width: gridWidth }}
                     >
-                      {label}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              <div ref={gridRef} className="relative" style={{ width: gridWidth, height: gridHeight }}>
-            <div className="inline-flex shrink-0" style={{ gap: resolvedCellGap }}>
-              {weeks.map((week, wi) => (
-                <div key={wi} className="flex flex-col" style={{ gap: resolvedCellGap }}>
-                  {week.map((day, di) =>
-                    day ? (
-                      <div
-                        key={day.date}
-                        className="rounded-[2px] hover:ring-1 hover:ring-[var(--color-ink)]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
-                        style={{
-                          ...cellStyle,
-                          backgroundColor: colors[Math.min(day.level, 4)],
-                        }}
-                        role="img"
-                        aria-label={formatTooltip(day.date, day.count)}
-                        onMouseEnter={(event) => handleCellMouseEnter(event, day.date, day.count)}
-                        onFocus={(event) => handleCellFocus(event, day.date, day.count)}
-                        onBlur={() => setTooltip(null)}
-                        tabIndex={0}
-                      />
-                    ) : (
-                      <div key={`e-${wi}-${di}`} style={cellStyle} aria-hidden="true" />
-                    ),
+                      {monthLabels.map(({ weekIndex, label }) => (
+                        <span
+                          key={`${label}-${weekIndex}`}
+                          className="absolute top-0 whitespace-nowrap"
+                          style={{ left: weekIndex * (resolvedCellSize + resolvedCellGap) }}
+                        >
+                          {label}
+                        </span>
+                      ))}
+                    </div>
                   )}
+                  <div ref={gridRef} className="relative">
+                    <div className="inline-flex" style={{ gap: resolvedCellGap }}>
+                      {weeks.map((week, wi) => (
+                        <div key={wi} className="flex flex-col" style={{ gap: resolvedCellGap }}>
+                          {week.map((day, di) =>
+                            day ? (
+                              <div
+                                key={day.date}
+                                className="rounded-[2px] hover:ring-1 hover:ring-[var(--color-ink)]/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-focus)]"
+                                style={{
+                                  ...cellStyle,
+                                  backgroundColor: colors[Math.min(day.level, 4)],
+                                }}
+                                role="img"
+                                aria-label={formatTooltip(day.date, day.count)}
+                                onMouseEnter={(event) => handleCellMouseEnter(event, day.date, day.count)}
+                                onFocus={(event) => handleCellFocus(event, day.date, day.count)}
+                                onBlur={() => setTooltip(null)}
+                                tabIndex={0}
+                              />
+                            ) : (
+                              <div key={`e-${wi}-${di}`} style={cellStyle} aria-hidden="true" />
+                            ),
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                    {tooltip && (
+                      <div
+                        role="tooltip"
+                        className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-[4px] bg-[var(--color-ink)] px-2 py-1.5 text-[10px] leading-none text-[var(--color-paper)] shadow-[0_4px_12px_var(--color-shadow)]"
+                        style={{ left: tooltip.x, top: tooltip.y }}
+                      >
+                        {tooltip.text}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              ))}
+              </div>
             </div>
-
-            {tooltip && (
-              <div
-                role="tooltip"
-                className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded-[4px] bg-[var(--color-ink)] px-2 py-1.5 text-[10px] leading-none text-[var(--color-paper)] shadow-[0_4px_12px_var(--color-shadow)]"
-                style={{ left: tooltip.x, top: tooltip.y }}
-              >
-                {tooltip.text}
-              </div>
-            )}
-              </div>
+          </div>
+            <div className="flex shrink-0 flex-col gap-1" role="group" aria-label="Contribution year">
+              {showMonthLabels && <div className="mb-1.5 h-3.5" aria-hidden="true" />}
+              {availableYears.map((year) => {
+                const selected = year === selectedYear;
+                return (
+                  <button
+                    key={year}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => {
+                      setTooltip(null);
+                      setSelectedYear(year);
+                    }}
+                    className={cn(
+                      "rounded-md px-1.5 py-0.5 text-center text-[11px] font-medium tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
+                      selected
+                        ? "bg-[var(--color-ink)] text-[var(--color-paper)]"
+                        : "text-[var(--color-ink-subtle)] hover:bg-[var(--color-paper-muted)] hover:text-[var(--color-ink)]",
+                    )}
+                  >
+                    {year}
+                  </button>
+                );
+              })}
             </div>
           </div>
 

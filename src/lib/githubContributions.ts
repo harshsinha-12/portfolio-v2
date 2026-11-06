@@ -12,8 +12,6 @@ type ContributionResponse = {
 
 type ContributionFetchInit = RequestInit & { next?: { revalidate?: number } };
 
-const HISTORY_START = multibaggContributions.days[0]?.date ?? "2025-01-01";
-
 /** Calendar contributions from the Multibagg account. The total does not change. */
 export const multibaggContributionTotal = multibaggContributions.total;
 
@@ -23,13 +21,6 @@ export function levelFromCount(count: number): number {
   if (count <= 5) return 2;
   if (count <= 9) return 3;
   return 4;
-}
-
-/** Months needed to keep the frozen Multibagg history on the graph. */
-export function contributionHistoryMonths(now = new Date()): number {
-  const [year, month] = HISTORY_START.split("-").map(Number);
-  const span = (now.getFullYear() - year) * 12 + (now.getMonth() - (month - 1)) + 1;
-  return Math.max(12, span);
 }
 
 function formatIsoDate(date: Date): string {
@@ -50,13 +41,6 @@ function contributionsFromResponse(data: ContributionResponse): ContributionDay[
     count: item.count,
     level: item.level ?? levelFromCount(item.count),
   }));
-}
-
-function contributionYears(now = new Date()): number[] {
-  const startYear = Number(HISTORY_START.slice(0, 4));
-  const years: number[] = [];
-  for (let year = startYear; year <= now.getFullYear(); year += 1) years.push(year);
-  return years;
 }
 
 /**
@@ -101,19 +85,12 @@ export async function loadGitHubContributions(
   username: string,
   init?: ContributionFetchInit,
 ): Promise<ContributionDay[]> {
-  const groups = await Promise.all(
-    contributionYears().map(async (year) => {
-      const response = await fetch(
-        `https://github-contributions-api.jogruber.de/v4/${username}?y=${year}`,
-        init,
-      );
-      if (response.status === 404) return [];
-      if (!response.ok) throw new Error("Failed to fetch GitHub contributions");
-      return contributionsFromResponse((await response.json()) as ContributionResponse);
-    }),
+  const response = await fetch(
+    `https://github-contributions-api.jogruber.de/v4/${username}?y=all`,
+    init,
   );
-
-  const personal = groups.flat();
+  if (!response.ok) throw new Error("Failed to fetch GitHub contributions");
+  const personal = contributionsFromResponse((await response.json()) as ContributionResponse);
   if (personal.length === 0) throw new Error("Failed to fetch GitHub contributions");
   return withMultibaggContributions(personal);
 }

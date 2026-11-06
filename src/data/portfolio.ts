@@ -16,10 +16,7 @@ export const siteConfig = {
 
 /** GitHub contribution graph — tweak months, labels, and sizing here. */
 export const githubGraphConfig = {
-  /**
-   * Minimum rolling window in months. The graph also keeps the frozen
-   * Multibagg calendar, so the visible range reaches back to 2025.
-   */
+  /** Rolling window for the current-year view. Other years use the calendar year. */
   months: 12,
   cellSize: 11,
   cellGap: 3,
