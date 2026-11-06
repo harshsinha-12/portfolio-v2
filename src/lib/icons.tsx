@@ -7,6 +7,8 @@ import {
 import {
   SiDjango,
   SiDocker,
+  SiDrizzle,
+  SiExpo,
   SiCloudflare,
   SiExpress,
   SiFastapi,
@@ -88,6 +90,7 @@ export const stackIconMap: Record<string, IconType> = {
   "React.js": SiReact,
   React: SiReact,
   "React Native": SiReact,
+  Expo: SiExpo,
   TailwindCSS: SiTailwindcss,
   "Tailwind CSS": SiTailwindcss,
   Vercel: SiVercel,
@@ -120,6 +123,7 @@ export const stackIconMap: Record<string, IconType> = {
   Go: SiGo,
   Git: SiGit,
   PostgreSQL: SiPostgresql,
+  Drizzle: SiDrizzle,
   Prisma: SiPrisma,
   Grafana: SiGrafana,
   Razorpay: SiRazorpay,
@@ -164,6 +168,8 @@ export const stackImageIconMap: Record<string, string> = {
   Pinecone: "/assets/favicons/pinecone.png",
   BullMQ: "/assets/favicons/bullmq.png",
   LangSmith: "/assets/favicons/langsmith.svg",
+  Inngest: "/assets/favicons/inngest.svg",
+  Mastra: "/assets/favicons/mastra.svg",
 };
 
 export function getStackIcon(name: string): IconType | null {
