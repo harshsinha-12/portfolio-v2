@@ -1,8 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // PostHog's reverse proxy needs trailing-slash API paths left untouched.
+  skipTrailingSlashRedirect: true,
   outputFileTracingIncludes: {
     "/api/og/spotify": ["./src/fonts/*.ttf", "./public/assets/profile-pic.jpg", "./public/og.jpg"],
+  },
+  // Same-origin path for PostHog so ad blockers don't drop analytics requests.
+  async rewrites() {
+    return [
+      {
+        source: "/relay-hs/static/:path*",
+        destination: "https://us-assets.i.posthog.com/static/:path*",
+      },
+      {
+        source: "/relay-hs/:path*",
+        destination: "https://us.i.posthog.com/:path*",
+      },
+    ];
   },
   async headers() {
     return [
