@@ -406,6 +406,24 @@ export const projectStickers: CutoutSticker[] = [
       displayWidth: "2.4rem",
     },
   },
+  {
+    id: "sticker-clash",
+    src: "/assets/sticker-clash.webp",
+    width: 500,
+    height: 377,
+    tooltip:
+      "I love Clash of Clans a lot. On and off since 2014 — picked up some real strategy.",
+    rotate: 7,
+    top: "-2.15rem",
+    right: "6.5rem",
+    displayWidth: "6.15rem",
+    zIndex: 5,
+    mobile: {
+      top: "-0.2rem",
+      right: "0.35rem",
+      displayWidth: "2.7rem",
+    },
+  },
   // {
   //   id: "sticker-gym",
   //   src: "/assets/sticker-gym.webp",
