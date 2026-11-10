@@ -352,6 +352,37 @@ export const profileStickers: CutoutSticker[] = [
   },
 ];
 
+/**
+ * Desktop sits in the green gap under the social stamps.
+ * Mobile sits on the GitHub card, left of the username.
+ * Each copy is rendered in its own layout; see Profile.tsx.
+ */
+const clashStickerBase = {
+  id: "sticker-clash",
+  src: "/assets/sticker-clash.webp",
+  width: 500,
+  height: 377,
+  tooltip:
+    "I love Clash of Clans a lot. On and off since 2014 — picked up some real strategy.",
+  rotate: 7,
+} as const;
+
+export const profileClashSticker: CutoutSticker = {
+  ...clashStickerBase,
+  top: "3.2rem",
+  right: "-0.15rem",
+  displayWidth: "6.9rem",
+  zIndex: 7,
+};
+
+export const profileClashStickerMobile: CutoutSticker = {
+  ...clashStickerBase,
+  top: "1.15rem",
+  right: "7.55rem",
+  displayWidth: "2.45rem",
+  zIndex: 6,
+};
+
 export const projectStickers: CutoutSticker[] = [
   {
     id: "sticker-coffee",
@@ -404,24 +435,6 @@ export const projectStickers: CutoutSticker[] = [
       bottom: "-5.35rem",
       right: "8.4rem",
       displayWidth: "2.4rem",
-    },
-  },
-  {
-    id: "sticker-clash",
-    src: "/assets/sticker-clash.webp",
-    width: 500,
-    height: 377,
-    tooltip:
-      "I love Clash of Clans a lot. On and off since 2014 — picked up some real strategy.",
-    rotate: 7,
-    top: "-2.15rem",
-    right: "6.5rem",
-    displayWidth: "6.15rem",
-    zIndex: 5,
-    mobile: {
-      top: "-0.2rem",
-      right: "0.35rem",
-      displayWidth: "2.7rem",
     },
   },
   // {

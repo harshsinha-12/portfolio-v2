@@ -7,6 +7,8 @@ import {
   ossContributions,
   introBullets,
   profileTaglineSegments,
+  profileClashSticker,
+  profileClashStickerMobile,
   profileStickers,
   bookingLink,
   resumeLink,
@@ -217,6 +219,9 @@ export function ProfileSection({ initialContributions, scalioPRStats }: ProfileS
 
         <div className="relative w-full min-w-0 lg:col-start-2 lg:row-start-3">
           <CutoutStickers stickers={profileStickers} />
+          <div className="lg:hidden">
+            <CutoutStickers stickers={[profileClashStickerMobile]} />
+          </div>
           <TapedCard
             rotation={-0.4}
             className="w-full min-w-0 max-lg:!rotate-0 lg:max-w-full [&>div]:min-w-0 [&>div]:p-3"
@@ -231,6 +236,9 @@ export function ProfileSection({ initialContributions, scalioPRStats }: ProfileS
             />
           </TapedCard>
         </div>
+      </div>
+      <div className="hidden lg:block">
+        <CutoutStickers stickers={[profileClashSticker]} />
       </div>
     </section>
   );
