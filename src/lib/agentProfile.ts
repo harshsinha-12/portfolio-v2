@@ -9,6 +9,7 @@ import {
   socialMedia,
   techStack,
   type IntroSegment,
+  type PersonCredit,
 } from "@/data/portfolio";
 import { getPublishedArticles } from "@/lib/articles";
 import { getSiteUrl } from "@/lib/siteUrl";
@@ -24,6 +25,20 @@ const JSON_HEADERS = {
   "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400",
   "Access-Control-Allow-Origin": "*",
 } as const;
+
+function formatPeople(people: PersonCredit[] | undefined): string {
+  if (!people?.length) return "";
+  const credits = people
+    .map((person) => {
+      const links = [
+        person.github ? `[GitHub](${person.github})` : null,
+        person.twitter ? `[Twitter](${person.twitter})` : null,
+      ].filter(Boolean);
+      return links.length ? `${person.name} (${links.join(" · ")})` : person.name;
+    })
+    .join(", ");
+  return `With ${credits}.`;
+}
 
 export function flattenSegments(segments: IntroSegment[]): string {
   return segments
@@ -105,6 +120,7 @@ export function getAgentProfile() {
       stack: project.stack.map((item) => item.name),
       github: project.github,
       live: project.link,
+      people: project.people,
     })),
     achievements: achievements.map((item) => ({
       event: item.event,
@@ -112,6 +128,8 @@ export function getAgentProfile() {
       highlight: item.highlight,
       article: item.article,
       project: item.project,
+      github: item.github,
+      people: item.people,
     })),
     techStack: techStack.map((item) => item.name),
     machineReadable: {
@@ -232,7 +250,8 @@ export function buildLlmsFullTxt(): string {
         .filter(Boolean)
         .join(" · ");
       const stack = project.stack.map((item) => item.name).join(", ");
-      return `### ${project.title}\n\n${project.highlight ? `*${project.highlight}*\n\n` : ""}${project.content}${links ? `\n\n${links}` : ""}${stack ? `\n\nStack: ${stack}` : ""}`;
+      const people = formatPeople(project.people);
+      return `### ${project.title}\n\n${project.highlight ? `*${project.highlight}*\n\n` : ""}${project.content}${links ? `\n\n${links}` : ""}${people ? `\n\n${people}` : ""}${stack ? `\n\nStack: ${stack}` : ""}`;
     })
     .join("\n\n");
 
@@ -240,7 +259,8 @@ export function buildLlmsFullTxt(): string {
     .map((item) => {
       const proof = item.article ?? item.project;
       const proofMd = proof ? ` ([proof](${proof}))` : "";
-      return `- **${item.event}** — ${item.position}. ${item.highlight}${proofMd}`;
+      const people = formatPeople(item.people);
+      return `- **${item.event}** — ${item.position}. ${item.highlight}${proofMd}${people ? ` ${people}` : ""}`;
     })
     .join("\n");
 

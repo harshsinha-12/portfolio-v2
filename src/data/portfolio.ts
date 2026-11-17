@@ -864,6 +864,26 @@ export const educationList: Education[] = [
   },
 ];
 
+export type PersonCredit = {
+  name: string;
+  github?: string;
+  twitter?: string;
+};
+
+/** Harsh and Charan (pasandida aura, @huesofbanter) on Kaam Ki Baat. */
+export const kaamKiBaatPeople: PersonCredit[] = [
+  {
+    name: "Harsh",
+    github: "https://github.com/harshsinha-12",
+    twitter: "https://x.com/sinhaharsh12",
+  },
+  {
+    name: "Charan",
+    github: "https://github.com/charan-rathore",
+    twitter: "https://x.com/huesofbanter",
+  },
+];
+
 export type Achievement = {
   id: string;
   icon: string;
@@ -876,11 +896,26 @@ export type Achievement = {
   project?: string;
   youtube?: string;
   github?: string;
+  people?: PersonCredit[];
   rotation?: number;
 };
 
 // Competitions, awards & certifications — ordered by portfolio weight.
 export const achievements: Achievement[] = [
+  {
+    id: "a-build-out-loud",
+    icon: "/assets/build-out-loud.webp",
+    photo: "/assets/build-out-loud.webp",
+    event: "Build Out Loud · Wispr × Bolna",
+    position: "Built",
+    highlight:
+      "Voice-only hackathon in Bengaluru. Built Kaam Ki Baat with Charan.",
+    project: "https://kaam-ki-baat-xi.vercel.app",
+    github: "https://github.com/harshsinha-12/kaam-ki-baat",
+    article: "https://x.com/huesofbanter/status/2122036775095013728",
+    people: kaamKiBaatPeople,
+    rotation: -1.4,
+  },
   {
     id: "a-fintech-olympiad-24",
     icon: "/assets/fintech-olympiad-finale.webp",
@@ -1006,9 +1041,29 @@ export type Project = {
   content: string;
   stack: ProjectStackItem[];
   highlight?: string;
+  people?: PersonCredit[];
 };
 
 export const projects: Project[] = [
+  {
+    id: "kaam-ki-baat",
+    title: "Kaam Ki Baat",
+    github: "https://github.com/harshsinha-12/kaam-ki-baat",
+    readme: "https://github.com/harshsinha-12/kaam-ki-baat#readme",
+    link: "https://kaam-ki-baat-xi.vercel.app",
+    image: "/assets/kaam-ki-baat.webp",
+    content:
+      "A voice teammate for engineering teams, built with Charan at Build Out Loud in Bengaluru. Glance left for what the meeting decided, face forward to ask the lead, glance right for the exact line. Answers cite their source, and nothing is saved until it is read back.",
+    highlight: "Build Out Loud · Wispr × Bolna · proposed is not decided",
+    people: kaamKiBaatPeople,
+    stack: [
+      { name: "Next.js" },
+      { name: "TypeScript" },
+      { name: "React" },
+      { name: "GitHub" },
+      { name: "Vercel" },
+    ],
+  },
   {
     id: "tourist",
     title: "Tourist",

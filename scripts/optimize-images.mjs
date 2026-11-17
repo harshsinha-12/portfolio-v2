@@ -46,7 +46,7 @@ function getOptimizationPlan(relativePath) {
     return { kind: "webp", maxWidth: 96, quality: 80, trim: true };
   }
 
-  if (/assets\/(sadak|kahani|khoj|echo-1|hackclub|claude-city)\./i.test(normalized)) {
+  if (/assets\/(sadak|kahani|khoj|echo-1|hackclub|claude-city|kaam-ki-baat)\./i.test(normalized)) {
     return { kind: "webp", maxWidth: 960, quality: 82 };
   }
 
