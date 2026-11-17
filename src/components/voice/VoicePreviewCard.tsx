@@ -44,6 +44,7 @@ const CONTACT_COPY: Record<ContactKind, { title: string; summary: string }> = {
   resume: { title: "Résumé", summary: "PDF résumé — experience, projects, and education." },
   linkedin: { title: "LinkedIn", summary: "Connect with Harsh on LinkedIn." },
   github: { title: "GitHub", summary: `@${siteConfig.githubUsername} — source for the work on this site.` },
+  instagram: { title: "Instagram", summary: "Photos and updates from Harsh." },
   twitter: { title: "X / Twitter", summary: "Notes and launch posts." },
   email: { title: "Email", summary: "Write to Harsh directly." },
 };

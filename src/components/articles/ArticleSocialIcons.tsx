@@ -1,6 +1,6 @@
 "use client";
 
-import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
+import { AiFillGithub, AiFillInstagram, AiFillLinkedin } from "react-icons/ai";
 import { FaXTwitter } from "react-icons/fa6";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { socialMedia } from "@/data/portfolio";
@@ -14,10 +14,11 @@ type ArticleSocialIconsProps = {
 const ICONS = [
   { platform: "linkedin" as const, label: "LinkedIn", Icon: AiFillLinkedin },
   { platform: "github" as const, label: "GitHub", Icon: AiFillGithub },
+  { platform: "instagram" as const, label: "Instagram", Icon: AiFillInstagram },
   { platform: "twitter" as const, label: "X", Icon: FaXTwitter },
 ];
 
-function socialUrl(platform: "twitter" | "linkedin" | "github") {
+function socialUrl(platform: "twitter" | "linkedin" | "github" | "instagram") {
   return socialMedia.find((item) => item.platform === platform)?.link ?? "#";
 }
 

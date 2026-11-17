@@ -1,6 +1,7 @@
 import type { IconType } from "react-icons";
 import {
   AiFillGithub,
+  AiFillInstagram,
   AiFillLinkedin,
   AiFillYoutube,
 } from "react-icons/ai";
@@ -9,6 +10,7 @@ import { FaXTwitter } from "react-icons/fa6";
 const domainIcons: Record<string, IconType> = {
   "linkedin.com": AiFillLinkedin,
   "github.com": AiFillGithub,
+  "instagram.com": AiFillInstagram,
   "twitter.com": FaXTwitter,
   "x.com": FaXTwitter,
   "youtube.com": AiFillYoutube,

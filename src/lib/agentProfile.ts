@@ -128,6 +128,7 @@ export function buildLlmsTxt(): string {
   const email = emailAddress();
   const github = socialMedia.find((item) => item.platform === "github")?.link;
   const linkedin = socialMedia.find((item) => item.platform === "linkedin")?.link;
+  const instagram = socialMedia.find((item) => item.platform === "instagram")?.link;
   const twitter = socialMedia.find((item) => item.platform === "twitter")?.link;
   const articleLinks = publishedArticleLinks(siteUrl);
 
@@ -147,6 +148,7 @@ export function buildLlmsTxt(): string {
     email ? `- [Email](mailto:${email})` : null,
     linkedin ? `- [LinkedIn](${linkedin})` : null,
     github ? `- [GitHub](${github})` : null,
+    instagram ? `- [Instagram](${instagram})` : null,
     twitter ? `- [X](${twitter})` : null,
   ]
     .filter(Boolean)

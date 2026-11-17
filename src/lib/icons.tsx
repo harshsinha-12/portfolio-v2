@@ -1,5 +1,6 @@
 import {
   AiFillGithub,
+  AiFillInstagram,
   AiFillLinkedin,
   AiFillMail,
   AiFillYoutube,
@@ -77,6 +78,7 @@ import type { IconType } from "react-icons";
 export const socialIconMap: Record<string, IconType> = {
   linkedin: AiFillLinkedin,
   github: AiFillGithub,
+  instagram: AiFillInstagram,
   mail: AiFillMail,
   twitter: FaXTwitter,
 };

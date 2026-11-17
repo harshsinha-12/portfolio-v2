@@ -24,6 +24,7 @@ export type OutboundWhere = (typeof OUTBOUND_WHERE)[number];
 export const CONTACT_KINDS = [
   "linkedin",
   "github",
+  "instagram",
   "twitter",
   "email",
   "resume",
