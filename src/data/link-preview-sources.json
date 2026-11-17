@@ -237,5 +237,33 @@
     "href": "https://go-rabbit-sable.vercel.app",
     "image": "go-rabbit-live.webp",
     "fallback": "assets/go-rabbit.webp"
+  },
+  {
+    "href": "https://kaam-ki-baat-xi.vercel.app",
+    "image": "kaam-ki-baat-live.webp",
+    "fallback": "assets/kaam-ki-baat.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/kaam-ki-baat",
+    "image": "github-kaam-ki-baat.webp",
+    "fallback": "assets/kaam-ki-baat.webp"
+  },
+  {
+    "href": "https://github.com/harshsinha-12/kaam-ki-baat#readme",
+    "image": "github-kaam-ki-baat.webp",
+    "fallback": "assets/kaam-ki-baat.webp"
+  },
+  {
+    "href": "https://github.com/charan-rathore",
+    "image": "github-charan-rathore.webp"
+  },
+  {
+    "href": "https://x.com/huesofbanter",
+    "image": "x-social-huesofbanter.webp"
+  },
+  {
+    "href": "https://x.com/huesofbanter/status/2122036775095013728",
+    "image": "x-com-huesofbanter-status-2122036775095013728.webp",
+    "fallback": "assets/build-out-loud.webp"
   }
 ]

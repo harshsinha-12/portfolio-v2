@@ -17,6 +17,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { DraggableSticker } from "@/components/decor/DraggableSticker";
 import { Polaroid } from "@/components/decor/Decor";
 import { LinkPreview } from "@/components/ui/LinkPreview";
+import { PersonCredits } from "@/components/ui/PersonCredits";
 import { XactoKnife } from "@/components/decor/XactoKnife";
 import { useDraggableEnabled } from "@/components/decor/useDraggable";
 import {
@@ -93,7 +94,8 @@ function PositionBadge({ position }: { position: string }) {
 function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: number }) {
   const imageSrc = item.photo ?? item.icon;
   const hasPhoto = Boolean(item.photo);
-  const hasLinks = linkIcons.some(({ key }) => Boolean(item[key]));
+  const hasPeople = Boolean(item.people?.length);
+  const hasLinks = linkIcons.some(({ key }) => Boolean(item[key])) || hasPeople;
 
   return (
     <Polaroid
@@ -153,37 +155,53 @@ function AchievementPolaroid({ item, rotation }: { item: Achievement; rotation: 
       footer={
         <div
           className={cn(
-            "mt-auto flex min-h-6 flex-wrap gap-1 pt-1.5 sm:min-h-7",
+            "mt-auto flex min-h-6 flex-col gap-1 pt-1.5 sm:min-h-7",
             !hasLinks && "invisible",
           )}
         >
-          {linkIcons.map(({ key, Icon, label }) => {
-            const href = item[key];
-            if (!href) return null;
-            return (
-              <LinkPreview
-                key={key}
-                href={href}
-                ariaLabel={`${label} for ${item.event}`}
-                analytics={{
-                  kind: "achievement",
-                  achievement_id: item.id,
-                  achievement_name: item.event,
-                  link_type: key,
-                }}
-                onClick={() =>
-                  track("achievement_link_clicked", {
+          <div className="flex flex-wrap gap-1">
+            {linkIcons.map(({ key, Icon, label }) => {
+              const href = item[key];
+              if (!href) return null;
+              return (
+                <LinkPreview
+                  key={key}
+                  href={href}
+                  ariaLabel={`${label} for ${item.event}`}
+                  analytics={{
+                    kind: "achievement",
                     achievement_id: item.id,
                     achievement_name: item.event,
                     link_type: key,
-                  })
-                }
-                className="flex h-5 w-5 items-center justify-center rounded border border-[var(--color-ink-subtle)]/25 text-[var(--color-ink-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
-              >
-                <Icon size={10} aria-hidden="true" />
-              </LinkPreview>
-            );
-          })}
+                  }}
+                  onClick={() =>
+                    track("achievement_link_clicked", {
+                      achievement_id: item.id,
+                      achievement_name: item.event,
+                      link_type: key,
+                    })
+                  }
+                  className="flex h-5 w-5 items-center justify-center rounded border border-[var(--color-ink-subtle)]/25 text-[var(--color-ink-muted)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--color-focus)] sm:h-6 sm:w-6"
+                >
+                  <Icon size={10} aria-hidden="true" />
+                </LinkPreview>
+              );
+            })}
+          </div>
+          {hasPeople && item.people && (
+            <PersonCredits
+              people={item.people}
+              compact
+              onOpen={(person, kind) =>
+                track("achievement_link_clicked", {
+                  achievement_id: item.id,
+                  achievement_name: item.event,
+                  link_type: kind,
+                  person: person.name,
+                })
+              }
+            />
+          )}
         </div>
       }
     />

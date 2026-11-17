@@ -17,6 +17,7 @@ import { PushPin, WashiTape } from "@/components/decor/PushPin";
 import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { resetAllStickerPositions } from "@/components/decor/useDraggable";
 import { LinkPreview } from "@/components/ui/LinkPreview";
+import { PersonCredits } from "@/components/ui/PersonCredits";
 import { ProjectPreviewVideo } from "@/components/ui/ProjectPreviewVideo";
 import { useOpenGraphPreview } from "@/lib/useOpenGraphPreview";
 import { cn, placeholderGradient } from "@/lib/utils";
@@ -243,6 +244,20 @@ function ProjectStory({
           liveLinkTitle={liveLinkTitle}
           liveLinkDescription={liveLinkDescription}
         />
+        {project.people && project.people.length > 0 && (
+          <PersonCredits
+            people={project.people}
+            className="mt-1"
+            onOpen={(person, kind) =>
+              track("project_link_clicked", {
+                project_id: project.id,
+                project_name: project.title,
+                link_type: kind,
+                person: person.name,
+              })
+            }
+          />
+        )}
       </div>
     </article>
   );
@@ -285,6 +300,7 @@ function getProject(id: string) {
 }
 
 export function ProjectsSection() {
+  const kaamKiBaat = getProject("kaam-ki-baat");
   const recoveryOs = getProject("recovery-os");
   const lidarRoomCapture = getProject("lidar-room-capture");
   const librarySurvey = getProject("library-survey");
@@ -351,6 +367,7 @@ export function ProjectsSection() {
           <section className="project-storyboard-chapter project-storyboard-chapter--last xl:pl-6">
             <ChapterHeading number="3">Agents &amp; automation</ChapterHeading>
             <div className="grid gap-8 sm:grid-cols-2 xl:grid-cols-1">
+              <ProjectStory project={kaamKiBaat} shape="wide" />
               <ProjectStory project={lidarRoomCapture} shape="wide" />
               <ProjectStory project={librarySurvey} shape="wide" />
               <ProjectStory project={creativeIntelligence} shape="wide" />
