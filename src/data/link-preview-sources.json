@@ -20,6 +20,11 @@
     "fallback": "assets/profile-pic.jpg"
   },
   {
+    "href": "https://www.instagram.com/harshsinha.12/",
+    "image": "instagram-harshsinha-12.webp",
+    "fallback": "assets/profile-pic.jpg"
+  },
+  {
     "href": "https://www.multibagg.ai",
     "image": "multibagg-ai.webp",
     "fallback": "assets/multibagg-ai.webp"

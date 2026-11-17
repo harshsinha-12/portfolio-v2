@@ -52,7 +52,7 @@ export const ossContributions = [
 
 export type SocialLink = {
   id: string;
-  platform: "linkedin" | "github" | "mail" | "twitter";
+  platform: "linkedin" | "github" | "mail" | "twitter" | "instagram";
   link: string;
   label: string;
 };
@@ -75,6 +75,12 @@ export const socialMedia: SocialLink[] = [
     platform: "github",
     link: "https://www.github.com/harshsinha-12",
     label: "GitHub",
+  },
+  {
+    id: "social-media-5",
+    platform: "instagram",
+    link: "https://www.instagram.com/harshsinha.12/",
+    label: "Instagram",
   },
   {
     id: "social-media-3",

@@ -5,7 +5,7 @@ import { asRecord, readString } from "@/voice/functions/parse-args";
 export const openContactTool: SiteToolDefinition = {
   name: "open_contact",
   description:
-    "Open LinkedIn, GitHub, X/Twitter, email, or the résumé. Use only when the visitor asks to go there.",
+    "Open LinkedIn, GitHub, Instagram, X/Twitter, email, or the résumé. Use only when the visitor asks to go there.",
   parameters: {
     type: "object",
     properties: {

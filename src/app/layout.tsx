@@ -110,6 +110,7 @@ const personJsonLd = {
   sameAs: [
     "https://www.linkedin.com/in/harshsinha12",
     "https://github.com/harshsinha-12",
+    "https://www.instagram.com/harshsinha.12/",
     "https://x.com/sinhaharsh12",
   ],
   image: `${siteUrl}/assets/profile-pic.jpg`,

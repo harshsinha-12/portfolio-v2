@@ -106,6 +106,9 @@ export function getContactUrl(kind: ContactKind) {
   if (kind === "linkedin") {
     return socialMedia.find((item) => item.platform === "linkedin")?.link ?? null;
   }
+  if (kind === "instagram") {
+    return socialMedia.find((item) => item.platform === "instagram")?.link ?? null;
+  }
   return socialMedia.find((item) => item.platform === "github")?.link ?? null;
 }
 
