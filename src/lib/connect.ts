@@ -20,6 +20,9 @@ function socialHref(platform: SocialLink["platform"]): string {
 /** The address encoded in the QR. Scanning opens the chooser, not one network. */
 export const connectUrl = `${siteConfig.url}/go`;
 
+/** 9:19.5 artboard, the shape of a phone screen, so the saved image fills the display. */
+export const connectCardSize = { width: 1080, height: 2340 } as const;
+
 export const connectDestinations: readonly ConnectDestination[] = [
   {
     key: "site",

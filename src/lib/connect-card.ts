@@ -1,10 +1,12 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import QRCode from "qrcode";
-import { connectDestinations, connectUrl } from "@/lib/connect";
+import { connectCardSize, connectDestinations, connectUrl } from "@/lib/connect";
 
-const WIDTH = 1080;
-const HEIGHT = 1440;
+const WIDTH = connectCardSize.width;
+const HEIGHT = connectCardSize.height;
+/** The sticker was drawn on a 3:4 board. Shift it so it sits in the middle of the phone. */
+const CARD_SHIFT_Y = Math.round((HEIGHT - 1440) / 2);
 
 const ink = "#17221c";
 const inkMuted = "#54615a";
@@ -156,7 +158,7 @@ export function connectCardSvg(): string {
   ${rulerLabels()}
   <path d="M48 36 v18 M36 48 h18" fill="none" stroke="${onMat}" stroke-opacity="0.5" stroke-width="1.5"/>
   <path d="M${WIDTH - 48} ${HEIGHT - 36} v-18 M${WIDTH - 36} ${HEIGHT - 48} h-18" fill="none" stroke="${onMat}" stroke-opacity="0.5" stroke-width="1.5"/>
-  <g>
+  <g transform="translate(0 ${CARD_SHIFT_Y})">
     <rect x="${paperX + 12}" y="${paperY + 14}" width="${paperW}" height="${paperH}" rx="42" fill="#091a11" fill-opacity="0.34"/>
     <rect x="${paperX - 8}" y="${paperY - 8}" width="${paperW + 16}" height="${paperH + 16}" rx="48" fill="#ffffff"/>
     <rect x="${paperX}" y="${paperY}" width="${paperW}" height="${paperH}" rx="40" fill="${paper}" stroke="${paperMuted}" stroke-width="2"/>

@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { connectCardSize } from "@/lib/connect";
 
-const CARD_WIDTH = 1080;
-const CARD_HEIGHT = 1440;
+const CARD_WIDTH = connectCardSize.width;
+const CARD_HEIGHT = connectCardSize.height;
 const PNG_SCALE = 2;
 const MAT = "#1f432f";
 
