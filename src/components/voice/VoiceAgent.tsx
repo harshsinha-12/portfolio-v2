@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Keyboard, Mic, Send, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useVoiceAgent, type VoiceStatus } from "@/components/voice/useVoiceAgent";
@@ -18,7 +19,7 @@ const statusCopy: Record<VoiceStatus, string> = {
   error: "Try again",
 };
 
-export function VoiceAgent() {
+function VoiceAgentDock() {
   const [compose, setCompose] = useState(false);
   const [sheetHidden, setSheetHidden] = useState(false);
   const {
@@ -304,4 +305,11 @@ export function VoiceAgent() {
       </div>
     </div>
   );
+}
+
+/** The scan card and chooser are quiet pages. The voice dock stays on the rest of the site. */
+export function VoiceAgent() {
+  const pathname = usePathname();
+  if (pathname === "/go" || pathname === "/qr") return null;
+  return <VoiceAgentDock />;
 }

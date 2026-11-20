@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/og/spotify": ["./src/fonts/*.ttf", "./public/assets/profile-pic.jpg", "./public/og.jpg"],
+    "/qr": ["./src/fonts/*.ttf"],
   },
   async headers() {
     return [
