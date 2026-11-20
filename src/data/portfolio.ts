@@ -25,32 +25,28 @@ export const githubGraphConfig = {
   showMonthLabels: true,
 } as const;
 
-/** Public PRs and issues in repositories outside this GitHub account. */
+/** Public PRs and issues in repositories outside this GitHub account. Rows are labels, not links. */
 export const ossContributions = [
   {
     repository: "pingdotgg/t3code",
-    href: "https://github.com/pingdotgg/t3code/pull/37939",
     count: 1,
     kind: "PR",
     technologies: ["TypeScript"],
   },
   {
     repository: "superplanehq/superplane",
-    href: "https://github.com/superplanehq/superplane/pull/6454",
     count: 1,
     kind: "PR",
     technologies: ["Go"],
   },
   {
     repository: "OpenBB-finance/OpenBB",
-    href: "https://github.com/OpenBB-finance/OpenBB/issues/6845",
     count: 1,
     kind: "issue",
     technologies: ["Python"],
   },
   {
     repository: "codebasics/langchain",
-    href: "https://github.com/codebasics/langchain/issues/2",
     count: 1,
     kind: "issue",
     technologies: ["Python"],
