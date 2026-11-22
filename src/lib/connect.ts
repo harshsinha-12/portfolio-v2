@@ -1,6 +1,6 @@
 import { siteConfig, socialMedia, type SocialLink } from "@/data/portfolio";
 
-export type ConnectKey = "site" | "linkedin" | "twitter";
+export type ConnectKey = "site" | "linkedin" | "twitter" | "github";
 
 export type ConnectDestination = {
   key: ConnectKey;
@@ -41,6 +41,12 @@ export const connectDestinations: readonly ConnectDestination[] = [
     label: "Twitter",
     hint: "@sinhaharsh12",
     href: socialHref("twitter"),
+  },
+  {
+    key: "github",
+    label: "GitHub",
+    hint: "harshsinha-12",
+    href: socialHref("github"),
   },
 ];
 

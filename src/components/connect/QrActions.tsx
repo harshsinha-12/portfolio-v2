@@ -173,7 +173,7 @@ export function QrActions() {
         print it or save it
       </p>
       <h1 className="text-shadow-on-mat mt-2 text-[1.85rem] leading-[1.05] font-semibold tracking-tight text-[var(--color-heading-on-mat)] sm:text-4xl">
-        One card for the website, LinkedIn, and Twitter.
+        One card for the website, LinkedIn, Twitter, and GitHub.
       </h1>
       <p className="mt-3 max-w-md text-[0.95rem] leading-relaxed text-[var(--color-on-mat)]/78">
         The code opens harshsinha.dev/go. Whoever scans it picks a place from that page.
