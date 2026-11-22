@@ -2,14 +2,14 @@ import posthog from "posthog-js";
 import { ANALYTICS_APP } from "@/lib/analytics";
 
 const projectToken = process.env.NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN;
-const host =
-  process.env.NEXT_PUBLIC_POSTHOG_HOST ?? "https://us.i.posthog.com";
 
 // Session recordings require cookies / local storage, so cookieless mode is off.
 // Enable "Record user sessions" in the PostHog project settings after adding the token.
 if (projectToken) {
   posthog.init(projectToken, {
-    api_host: host,
+    // Reverse proxy defined in next.config.ts.
+    api_host: "/relay-hs",
+    ui_host: "https://us.posthog.com",
     defaults: "2026-01-30",
     autocapture: true,
     capture_pageview: true,

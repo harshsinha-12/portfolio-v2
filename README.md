@@ -42,7 +42,6 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ```bash
 NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN=phc_...
-NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 SPOTIFY_CLIENT_ID=...
 SPOTIFY_CLIENT_SECRET=...
 SPOTIFY_REFRESH_TOKEN=...
@@ -58,8 +57,8 @@ The canonical production URL is defined once in `src/data/portfolio.ts`. Metadat
 structured data, sitemaps, robots, feeds, and share links all derive from it.
 
 PostHog is initialized from `instrumentation-client.ts` when
-`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is set. `NEXT_PUBLIC_POSTHOG_HOST` defaults
-to `https://us.i.posthog.com`. The client enables autocapture (clicks),
+`NEXT_PUBLIC_POSTHOG_PROJECT_TOKEN` is set. Requests go through the `/relay-hs`
+reverse proxy in `next.config.ts`, so ad blockers do not drop them. The client enables autocapture (clicks),
 pageviews/pageleaves, exception capture, web vitals, and session recordings.
 In your PostHog project, turn on **Record user sessions** (and optionally
 console logs) under Project settings → Session replay. The SDK stays inert
