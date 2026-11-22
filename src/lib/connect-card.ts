@@ -118,26 +118,27 @@ export function connectCardSvg(): string {
 
   const columns = connectDestinations
     .map((destination, index) => {
-      const center = qrX + ((index + 0.5) * drawn) / 3;
+      const center = qrX + ((index + 0.5) * drawn) / connectDestinations.length;
       const dash = 22;
       return `
         <rect x="${center - dash / 2}" y="${legendTop}" width="${dash}" height="4" rx="2" fill="${accent}"/>
-        <text x="${center}" y="${legendTop + 40}" text-anchor="middle" fill="${ink}" font-family="CardSans" font-size="20" font-weight="600">${destination.label}</text>
-        <text x="${center}" y="${legendTop + 68}" text-anchor="middle" fill="${inkMuted}" font-family="CardSans" font-size="15">${destination.hint}</text>
+        <text x="${center}" y="${legendTop + 40}" text-anchor="middle" fill="${ink}" font-family="CardSans" font-size="16" font-weight="600">${destination.label}</text>
+        <text x="${center}" y="${legendTop + 64}" text-anchor="middle" fill="${inkMuted}" font-family="CardSans" font-size="13">${destination.hint}</text>
       `;
     })
     .join("");
 
-  const dividers = [1, 2]
-    .map((index) => {
-      const x = Math.round(qrX + (drawn / 3) * index);
+  const dividers = connectDestinations
+    .slice(1)
+    .map((_, index) => {
+      const x = Math.round(qrX + (drawn / connectDestinations.length) * (index + 1));
       return `<line x1="${x}" y1="${legendTop + 8}" x2="${x}" y2="${legendTop + 72}" stroke="${ink}" stroke-opacity="0.12" stroke-width="1.5"/>`;
     })
     .join("");
 
   cachedSvg = `<svg id="connect-card" xmlns="http://www.w3.org/2000/svg" width="${WIDTH}" height="${HEIGHT}" viewBox="0 0 ${WIDTH} ${HEIGHT}" role="img" aria-labelledby="connect-card-title connect-card-desc">
   <title id="connect-card-title">Harsh Sinha QR card</title>
-  <desc id="connect-card-desc">One QR code for ${connectUrl}. Scanning opens a page with Harsh Sinha's website, LinkedIn, and Twitter.</desc>
+  <desc id="connect-card-desc">One QR code for ${connectUrl}. Scanning opens a page with Harsh Sinha's website, LinkedIn, Twitter, and GitHub.</desc>
   <defs>
     <radialGradient id="connect-mat" cx="50%" cy="42%" r="78%">
       <stop offset="0%" stop-color="${mat}"/>
@@ -169,7 +170,7 @@ export function connectCardSvg(): string {
     <text x="${textX}" y="272" fill="${ink}" font-family="CardSans" font-size="68" font-weight="600" letter-spacing="-1.4">Harsh Sinha</text>
     <text x="${textX + 2}" y="336" fill="${accent}" font-family="CardHand" font-size="44" transform="rotate(-2.2 ${textX + 2} 336)">scan once.</text>
     <path d="M${textX} 358 C ${textX + 90} 348, ${textX + 180} 368, ${textX + 260} 352" fill="none" stroke="${accent}" stroke-width="3" stroke-linecap="round" opacity="0.9"/>
-    <text x="${textX}" y="412" fill="${inkMuted}" font-family="CardSans" font-size="22">Website, LinkedIn, or Twitter</text>
+    <text x="${textX}" y="412" fill="${inkMuted}" font-family="CardSans" font-size="20">Website, LinkedIn, Twitter, or GitHub</text>
     <g transform="rotate(8 868 214)">
       <circle cx="868" cy="214" r="46" fill="${paper}" stroke="${accent}" stroke-width="2.25" stroke-dasharray="3 3.5"/>
       <text x="868" y="228" text-anchor="middle" fill="${accent}" font-family="CardHand" font-size="36">HS</text>

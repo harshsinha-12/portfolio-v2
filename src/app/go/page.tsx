@@ -7,18 +7,18 @@ import { connectDestination } from "@/lib/connect";
 
 export const metadata: Metadata = {
   title: "Connect",
-  description: "Harsh Sinha — website, LinkedIn, or Twitter.",
+  description: "Harsh Sinha — website, LinkedIn, Twitter, or GitHub.",
   alternates: { canonical: "/go" },
   openGraph: {
     title: "Harsh Sinha",
-    description: "Website, LinkedIn, or Twitter.",
+    description: "Website, LinkedIn, Twitter, or GitHub.",
     url: "/go",
     images: ["/og.jpg"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Harsh Sinha",
-    description: "Website, LinkedIn, or Twitter.",
+    description: "Website, LinkedIn, Twitter, or GitHub.",
     creator: "@sinhaharsh12",
     images: ["/og.jpg"],
   },

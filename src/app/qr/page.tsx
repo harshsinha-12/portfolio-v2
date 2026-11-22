@@ -5,7 +5,7 @@ import { connectCardSvg } from "@/lib/connect-card";
 
 export const metadata: Metadata = {
   title: "QR card",
-  description: "A single QR card for Harsh Sinha's website, LinkedIn, and Twitter.",
+  description: "A single QR card for Harsh Sinha's website, LinkedIn, Twitter, and GitHub.",
   alternates: { canonical: "/qr" },
   robots: { index: false, follow: false },
 };

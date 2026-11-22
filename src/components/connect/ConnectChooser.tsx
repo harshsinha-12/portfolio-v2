@@ -1,14 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { AiFillLinkedin } from "react-icons/ai";
+import { AiFillGithub, AiFillLinkedin } from "react-icons/ai";
 import { FaXTwitter } from "react-icons/fa6";
 import { Polaroid } from "@/components/decor/Decor";
 import { connectDestinations, type ConnectDestination } from "@/lib/connect";
 import { track, trackOutboundClick } from "@/lib/analytics";
 import { siteConfig } from "@/data/portfolio";
 
-const tilts = [-1.15, 0.65, -0.4] as const;
+const tilts = [-1.15, 0.65, -0.4, 0.85] as const;
 
 function GlobeIcon() {
   return (
@@ -23,6 +23,7 @@ function GlobeIcon() {
 function DestinationIcon({ destination }: { destination: ConnectDestination }) {
   if (destination.key === "linkedin") return <AiFillLinkedin className="h-5 w-5" aria-hidden="true" />;
   if (destination.key === "twitter") return <FaXTwitter className="h-[1.05rem] w-[1.05rem]" aria-hidden="true" />;
+  if (destination.key === "github") return <AiFillGithub className="h-5 w-5" aria-hidden="true" />;
   return <GlobeIcon />;
 }
 
@@ -55,7 +56,7 @@ export function ConnectChooser() {
       </header>
 
       <p className="animate-fade-up mt-8 text-[0.95rem] leading-relaxed text-[var(--color-on-mat)]/75" style={{ animationDelay: "60ms" }}>
-        Pick where to go. This code always opens the same three places.
+        Pick where to go. This code always opens the same four places.
       </p>
 
       <ul className="mt-4 flex list-none flex-col gap-3.5 p-0">
