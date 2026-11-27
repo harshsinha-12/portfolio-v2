@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusEvent, type MouseEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore, type FocusEvent, type MouseEvent } from "react";
 import {
   loadGitHubContributions,
   multibaggContributionTotal,
@@ -164,6 +164,18 @@ export function GitHubGraph({
   const [error, setError] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const [selectedYear, setSelectedYear] = useState(() => new Date().getFullYear());
+  const [yearSwap, setYearSwap] = useState(0);
+  const [yearMotionReady, setYearMotionReady] = useState(false);
+  const yearMotionReadyRef = useRef(false);
+  const yearListRef = useRef<HTMLDivElement>(null);
+  const yearButtonRefs = useRef<Record<number, HTMLButtonElement | null>>({});
+  const [yearThumb, setYearThumb] = useState({
+    y: 0,
+    width: 0,
+    height: 0,
+    listWidth: 0,
+    visible: false,
+  });
 
   const currentYear = new Date().getFullYear();
   const resolvedCellSize = isMobileLayout ? MOBILE_GRAPH.cellSize : cellSize;
@@ -209,6 +221,42 @@ export function GitHubGraph({
     }
     return [...years].sort((a, b) => b - a);
   }, [currentYear, days]);
+
+  useLayoutEffect(() => {
+    const list = yearListRef.current;
+    const button = yearButtonRefs.current[selectedYear];
+    if (!list || !button) return;
+
+    function place() {
+      const current = yearButtonRefs.current[selectedYear];
+      const column = yearListRef.current;
+      if (!current || !column) return;
+      setYearThumb({
+        y: current.offsetTop,
+        width: current.offsetWidth,
+        height: current.offsetHeight,
+        listWidth: column.offsetWidth,
+        visible: true,
+      });
+    }
+
+    place();
+    if (!yearMotionReadyRef.current) {
+      yearMotionReadyRef.current = true;
+      requestAnimationFrame(() => setYearMotionReady(true));
+    }
+    const observer = new ResizeObserver(place);
+    observer.observe(list);
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, [selectedYear, availableYears]);
+
+  function selectYear(year: number) {
+    setTooltip(null);
+    if (year === selectedYear) return;
+    setSelectedYear(year);
+    setYearSwap((count) => count + 1);
+  }
 
   const visibleDays = useMemo(() => {
     const today = new Date();
@@ -292,7 +340,13 @@ export function GitHubGraph({
         <div>
           <p className="text-xs font-medium text-[var(--color-ink-muted)]">GitHub activity</p>
           {!loading && !error && (
-            <p className="mt-0.5 text-[11px] text-[var(--color-ink-subtle)]">
+            <p
+              key={yearSwap}
+              className={cn(
+                "mt-0.5 text-[11px] text-[var(--color-ink-subtle)]",
+                yearSwap > 0 && "year-swap",
+              )}
+            >
               {contributionTotal.toLocaleString("en-US")}{" "}
               {contributionTotal === 1 ? "contribution" : "contributions"}{" "}
               {selectedYear === currentYear ? "in the last year" : `in ${selectedYear}`}
@@ -368,7 +422,11 @@ export function GitHubGraph({
                     </div>
                   )}
                   <div ref={gridRef} className="relative">
-                    <div className="inline-flex" style={{ gap: resolvedCellGap }}>
+                    <div
+                      key={yearSwap}
+                      className={cn("inline-flex", yearSwap > 0 && "year-swap")}
+                      style={{ gap: resolvedCellGap }}
+                    >
                       {weeks.map((week, wi) => (
                         <div key={wi} className="flex flex-col" style={{ gap: resolvedCellGap }}>
                           {week.map((day, di) =>
@@ -410,28 +468,57 @@ export function GitHubGraph({
           </div>
             <div className="flex shrink-0 flex-col gap-1" role="group" aria-label="Contribution year">
               {showMonthLabels && <div className="mb-1.5 h-3.5" aria-hidden="true" />}
-              {availableYears.map((year) => {
-                const selected = year === selectedYear;
-                return (
-                  <button
-                    key={year}
-                    type="button"
-                    aria-pressed={selected}
-                    onClick={() => {
-                      setTooltip(null);
-                      setSelectedYear(year);
+              <div ref={yearListRef} className="relative flex flex-col gap-1">
+                <span
+                  aria-hidden="true"
+                  className={cn("year-thumb", !yearMotionReady && "is-instant")}
+                  style={{
+                    width: yearThumb.width,
+                    height: yearThumb.height,
+                    opacity: yearThumb.visible ? 1 : 0,
+                    transform: `translate3d(0, ${yearThumb.y}px, 0)`,
+                  }}
+                >
+                  <span
+                    className="year-thumb-labels"
+                    style={{
+                      width: yearThumb.listWidth,
+                      transform: `translate3d(0, ${-yearThumb.y}px, 0)`,
                     }}
-                    className={cn(
-                      "rounded-md px-1.5 py-0.5 text-center text-[11px] font-medium tabular-nums transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
-                      selected
-                        ? "bg-[var(--color-ink)] text-[var(--color-paper)]"
-                        : "text-[var(--color-ink-subtle)] hover:bg-[var(--color-paper-muted)] hover:text-[var(--color-ink)]",
-                    )}
                   >
-                    {year}
-                  </button>
-                );
-              })}
+                    {availableYears.map((year) => (
+                      <span
+                        key={year}
+                        className="block px-1.5 py-0.5 text-center text-[11px] font-medium text-[var(--color-paper)] tabular-nums"
+                      >
+                        {year}
+                      </span>
+                    ))}
+                  </span>
+                </span>
+                {availableYears.map((year) => {
+                  const selected = year === selectedYear;
+                  return (
+                    <button
+                      key={year}
+                      ref={(element) => {
+                        yearButtonRefs.current[year] = element;
+                      }}
+                      type="button"
+                      aria-pressed={selected}
+                      onClick={() => selectYear(year)}
+                      className={cn(
+                        "press rounded-md px-1.5 py-0.5 text-center text-[11px] font-medium tabular-nums focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
+                        selected && !yearThumb.visible
+                          ? "bg-[var(--color-ink)] text-[var(--color-paper)]"
+                          : "text-[var(--color-ink-subtle)] hover:bg-[var(--color-paper-muted)] hover:text-[var(--color-ink)]",
+                      )}
+                    >
+                      {year}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
 

@@ -185,17 +185,24 @@ function VoiceAgentDock() {
         onDismiss={hint.dismiss}
         onTryTalk={tryTalkFromHint}
       />
-      {showSheet ? (
+      <div className={cn("voice-sheet-slot", showSheet && "is-open")}>
+        <div className="voice-sheet-clip">
+          <div className="flex w-full justify-center px-1 pb-3">
         <section
           ref={sheetRef}
           aria-label="Conversation"
-          className="voice-sheet pointer-events-auto relative mb-2 flex max-h-[min(28rem,58dvh)] w-[min(52rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-[18px] border border-[var(--color-ink)]/10 bg-[var(--color-paper)] shadow-[3px_5px_0_var(--color-shadow)]"
+          inert={showSheet ? undefined : true}
+          aria-hidden={showSheet ? undefined : true}
+          className={cn(
+            "voice-sheet relative flex max-h-[min(28rem,58dvh)] w-[min(52rem,calc(100vw-1.5rem))] flex-col overflow-hidden rounded-[18px] border border-[var(--color-ink)]/10 bg-[var(--color-paper)] shadow-[3px_5px_0_var(--color-shadow)]",
+            showSheet ? "pointer-events-auto" : "pointer-events-none",
+          )}
         >
           <button
             type="button"
             onClick={hideSheet}
             aria-label="Hide transcript"
-            className="voice-sheet__close absolute top-2.5 right-2.5 z-10 inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-ink)]/6 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+            className="voice-sheet__close press absolute top-2.5 right-2.5 z-10 inline-flex h-7 w-7 items-center justify-center rounded-full text-[var(--color-ink-muted)] hover:bg-[var(--color-ink)]/6 hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           >
             <X size={14} strokeWidth={2.4} />
           </button>
@@ -211,7 +218,8 @@ function VoiceAgentDock() {
               <VoiceTranscript items={transcript} />
             )}
           </div>
-          {compose ? (
+          <div className={cn("disclosure", compose && "is-open")} inert={compose ? undefined : true}>
+            <div className="disclosure-clip">
             <form
               className="flex shrink-0 items-center gap-1.5 border-t border-[var(--color-ink)]/8 px-3 py-2.5"
               onSubmit={(event) => {
@@ -231,14 +239,17 @@ function VoiceAgentDock() {
                 type="submit"
                 aria-label="Send message"
                 disabled={spinning || !draft.trim() || !ready}
-                className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] disabled:opacity-35"
+                className="press inline-flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-ink)] text-[var(--color-paper)] disabled:opacity-35"
               >
                 <Send size={12} strokeWidth={2.4} />
               </button>
             </form>
-          ) : null}
+            </div>
+          </div>
         </section>
-      ) : null}
+          </div>
+        </div>
+      </div>
 
       {showCaption ? (
         <p
@@ -263,7 +274,7 @@ function VoiceAgentDock() {
           aria-pressed={voiceActive}
           title={label}
           className={cn(
-            "voice-pill flex h-11 min-w-[13.5rem] items-center gap-3 rounded-full py-2 pr-1.5 pl-4 transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-on-mat)] disabled:opacity-70",
+            "voice-pill press flex h-11 min-w-[13.5rem] items-center gap-3 rounded-full py-2 pr-1.5 pl-4 hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent-on-mat)] disabled:opacity-70",
             status === "error" && "voice-pill--error",
             isListening && "voice-pill--listening",
             hint.visible && "voice-pill--nudge",
@@ -298,7 +309,7 @@ function VoiceAgentDock() {
           }}
           aria-label={compose && !sheetHidden ? "Hide keyboard" : "Type a question"}
           aria-pressed={compose && !sheetHidden}
-          className="voice-pill-side flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-paper)] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+          className="voice-pill-side press flex h-11 w-11 items-center justify-center rounded-full text-[var(--color-paper)] hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         >
           <Keyboard size={15} strokeWidth={2.2} />
         </button>

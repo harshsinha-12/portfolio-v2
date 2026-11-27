@@ -10,7 +10,7 @@ import { CreditsLink } from "@/components/layout/CreditsNote";
 import { track, trackOutboundClick } from "@/lib/analytics";
 
 const socialButtonClassName =
-  "flex h-9 w-9 items-center justify-center rounded-full border-2 border-[var(--color-on-mat)]/40 bg-[var(--color-mat)]/50 text-[var(--color-on-mat)] shadow-[2px_3px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]";
+  "press flex h-9 w-9 items-center justify-center rounded-full border-2 border-[var(--color-on-mat)]/40 bg-[var(--color-mat)]/50 text-[var(--color-on-mat)] shadow-[2px_3px_0_var(--color-shadow)] hover:-translate-y-0.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -35,7 +35,7 @@ export function Footer() {
             track("booking_link_clicked", { placement: "footer" });
             trackOutboundClick(bookingLink, { kind: "booking", placement: "footer" });
           }}
-          className="group inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[var(--color-on-mat)]/25 bg-[var(--color-accent-on-mat)] px-4 py-2.5 text-sm font-semibold text-[var(--color-mat-deep)] shadow-[3px_4px_0_var(--color-shadow)] transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[4px_6px_0_var(--color-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+          className="press group inline-flex shrink-0 items-center gap-2 rounded-full border-2 border-[var(--color-on-mat)]/25 bg-[var(--color-accent-on-mat)] px-4 py-2.5 text-sm font-semibold text-[var(--color-mat-deep)] shadow-[3px_4px_0_var(--color-shadow)] hover:-translate-y-0.5 hover:shadow-[4px_6px_0_var(--color-shadow)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
         >
           <CalendarDays size={17} aria-hidden="true" />
           Book a call

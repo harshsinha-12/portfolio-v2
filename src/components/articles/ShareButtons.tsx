@@ -5,6 +5,7 @@ import { AiFillLinkedin } from "react-icons/ai";
 import { FaXTwitter } from "react-icons/fa6";
 import { FiCheck, FiCopy, FiFileText, FiShare2 } from "react-icons/fi";
 import { track, trackOutboundClick } from "@/lib/analytics";
+import { cn } from "@/lib/utils";
 import type { ArticleSocialLinks } from "@/types/articles";
 
 type ShareButtonsProps = {
@@ -106,9 +107,19 @@ export function ShareButtons({
           <span>{compact ? "Markdown" : "View Markdown"}</span>
         </a>
       ) : null}
-      <button type="button" className="article-share__action" onClick={copyLink}>
-        {copied ? <FiCheck aria-hidden="true" /> : <FiCopy aria-hidden="true" />}
-        <span>{copied ? "Copied" : compact ? "Copy" : "Copy link"}</span>
+      <button type="button" className="article-share__action" onClick={copyLink} aria-live="polite">
+        <span className="state-swap-stack">
+          <FiCopy aria-hidden="true" className={cn("state-swap", !copied && "is-shown")} />
+          <FiCheck aria-hidden="true" className={cn("state-swap", copied && "is-shown")} />
+        </span>
+        <span className="state-swap-stack">
+          <span className={cn("state-swap", !copied && "is-shown")} aria-hidden={copied}>
+            {compact ? "Copy" : "Copy link"}
+          </span>
+          <span className={cn("state-swap", copied && "is-shown")} aria-hidden={!copied}>
+            Copied
+          </span>
+        </span>
       </button>
       <button
         type="button"
