@@ -25,8 +25,24 @@ export const githubGraphConfig = {
   showMonthLabels: true,
 } as const;
 
-/** Public PRs and issues in repositories outside this GitHub account. Rows are labels, not links. */
+/**
+ * Fallback when GitHub search is unavailable.
+ * The homepage replaces this with every public pull request and issue
+ * authored outside this GitHub account. Rows are labels, not links.
+ */
 export const ossContributions = [
+  {
+    repository: "OrchestratorInc/agent-orchestrator",
+    count: 3,
+    kind: "PR",
+    technologies: ["TypeScript"],
+  },
+  {
+    repository: "itsmosin/ismegroutbhardenge",
+    count: 2,
+    kind: "PR",
+    technologies: ["HTML"],
+  },
   {
     repository: "pingdotgg/t3code",
     count: 1,
@@ -40,7 +56,7 @@ export const ossContributions = [
     technologies: ["Go"],
   },
   {
-    repository: "OpenBB-finance/OpenBB",
+    repository: "openbq-org/OpenBB",
     count: 1,
     kind: "issue",
     technologies: ["Python"],
