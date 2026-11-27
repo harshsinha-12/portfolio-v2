@@ -1,4 +1,5 @@
 import type { OSSContribution } from "@/components/sections/OSSContributions";
+import { ossContributions, ossExcluded, ossMinimumStars } from "@/data/portfolio";
 
 /** How long a successful GitHub search is reused. A new pull request shows up on the next refresh after this. */
 const REVALIDATE_SECONDS = 600;
@@ -13,7 +14,6 @@ const KNOWN_TECHNOLOGIES: Record<string, readonly string[]> = {
   "OrchestratorInc/agent-orchestrator": ["TypeScript"],
   "pingdotgg/t3code": ["TypeScript"],
   "superplanehq/superplane": ["Go"],
-  "itsmosin/ismegroutbhardenge": ["HTML"],
   "OpenBB-finance/OpenBB": ["Python"],
   "openbq-org/OpenBB": ["Python"],
   "codebasics/langchain": ["Python"],
@@ -87,28 +87,50 @@ async function searchAll(query: string): Promise<SearchItem[] | null> {
   return null;
 }
 
-async function technologiesFor(repository: string): Promise<readonly string[] | undefined> {
-  const known = KNOWN_TECHNOLOGIES[repository];
-  if (known) return known;
+type RepositoryDetails = {
+  language?: string | null;
+  stargazers_count?: number;
+};
 
+const listedRepositories = new Set<string>(ossContributions.map((item) => item.repository));
+
+function isExcluded(repository: string): boolean {
+  const owner = repository.slice(0, repository.indexOf("/"));
+  return ossExcluded.some((entry) => entry === repository || entry === owner);
+}
+
+async function repositoryDetails(repository: string): Promise<RepositoryDetails | null> {
   try {
     const response = await fetch(`https://api.github.com/repos/${repository}`, {
       headers,
       next: { revalidate: 86_400 },
     });
-    if (!response.ok) return undefined;
-    const data = (await response.json()) as { language?: string | null };
-    return data.language ? [data.language] : undefined;
+    if (!response.ok) return null;
+    return (await response.json()) as RepositoryDetails;
   } catch {
-    return undefined;
+    return null;
   }
+}
+
+function technologiesFor(
+  repository: string,
+  details: RepositoryDetails | null,
+): readonly string[] | undefined {
+  return KNOWN_TECHNOLOGIES[repository] ?? (details?.language ? [details.language] : undefined);
+}
+
+function visibleOnSite(repository: string, details: RepositoryDetails | null): boolean {
+  if (isExcluded(repository)) return false;
+  if (!details) return listedRepositories.has(repository);
+  return (details.stargazers_count ?? 0) >= ossMinimumStars;
 }
 
 /**
  * Public pull requests and issues authored outside this GitHub account.
  * One row per repository. Pull requests take the row when the repository has both.
- * There is no link. Other organizations cannot notify this site, so this asks
- * GitHub directly and the result is cached for ten minutes.
+ * Personal repositories stay off unless they have ossMinimumStars.
+ * Owners and repositories in ossExcluded never appear.
+ * There is no link. The result is cached for ten minutes.
  */
 export async function fetchExternalOSSContributions(
   username: string,
@@ -152,14 +174,21 @@ export async function fetchExternalOSSContributions(
       })
       .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt) || b.count - a.count);
 
-    const technologies = await Promise.all(rows.map((row) => technologiesFor(row.repository)));
+    const details = await Promise.all(rows.map((row) => repositoryDetails(row.repository)));
+    const visible = rows.flatMap((row, index) => {
+      const info = details[index];
+      if (!visibleOnSite(row.repository, info)) return [];
+      return [
+        {
+          repository: row.repository,
+          count: row.count,
+          kind: row.kind,
+          technologies: technologiesFor(row.repository, info),
+        },
+      ];
+    });
 
-    return rows.map((row, index) => ({
-      repository: row.repository,
-      count: row.count,
-      kind: row.kind,
-      technologies: technologies[index],
-    }));
+    return visible;
   } catch {
     return null;
   }
