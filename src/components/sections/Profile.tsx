@@ -23,6 +23,7 @@ import { CutoutStickers } from "@/components/decor/CutoutStickers";
 import { Polaroid, Stamp, StickyNote, TapedCard } from "@/components/decor/Decor";
 import { SoundToggle } from "@/components/sound/SoundToggle";
 import { track, trackOutboundClick } from "@/lib/analytics";
+import type { OSSContribution } from "@/components/sections/OSSContributions";
 import type { ScalioPRStats } from "@/lib/scalioPullRequests";
 import type { ContributionDay } from "@/lib/githubContributions";
 
@@ -141,10 +142,15 @@ function IntroList() {
 
 type ProfileSectionProps = {
   initialContributions?: ContributionDay[];
+  ossContributions?: readonly OSSContribution[];
   scalioPRStats?: ScalioPRStats | null;
 };
 
-export function ProfileSection({ initialContributions, scalioPRStats }: ProfileSectionProps) {
+export function ProfileSection({
+  initialContributions,
+  ossContributions: ossContributionsProp,
+  scalioPRStats,
+}: ProfileSectionProps) {
   return (
     <section id="profile" aria-labelledby="profile-heading" className="relative animate-fade-up">
       <LinkPreviewImagePreloader />
@@ -224,7 +230,7 @@ export function ProfileSection({ initialContributions, scalioPRStats }: ProfileS
             <GitHubGraph
               username={siteConfig.githubUsername}
               {...githubGraphConfig}
-              ossContributions={ossContributions}
+              ossContributions={ossContributionsProp ?? ossContributions}
               initialDays={initialContributions}
               scalioPRStats={scalioPRStats}
               className="w-full min-w-0"

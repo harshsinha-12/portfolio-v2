@@ -1,8 +1,9 @@
 import { SiteShell } from "@/components/layout/SiteShell";
 import { getAllArticles } from "@/lib/articles";
 import { fetchGitHubContributions } from "@/lib/githubContributions";
+import { fetchExternalOSSContributions } from "@/lib/externalContributions";
 import { fetchScalioPRStats } from "@/lib/scalioPullRequests";
-import { siteConfig } from "@/data/portfolio";
+import { ossContributions, siteConfig } from "@/data/portfolio";
 
 export default async function Home() {
   let initialContributions;
@@ -13,7 +14,11 @@ export default async function Home() {
     initialContributions = undefined;
   }
 
-  const scalioPRStats = await fetchScalioPRStats(siteConfig.githubUsername);
+  const [scalioPRStats, externalContributions] = await Promise.all([
+    fetchScalioPRStats(siteConfig.githubUsername),
+    fetchExternalOSSContributions(siteConfig.githubUsername),
+  ]);
+  const contributions = externalContributions ?? [...ossContributions];
 
   const allArticles = getAllArticles();
   const articles = allArticles.slice(0, 3);
@@ -21,6 +26,7 @@ export default async function Home() {
   return (
     <SiteShell
       initialContributions={initialContributions}
+      ossContributions={contributions}
       scalioPRStats={scalioPRStats}
       articles={articles}
       hasMoreArticles={allArticles.length > articles.length}
