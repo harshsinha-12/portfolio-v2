@@ -27,21 +27,21 @@ export const githubGraphConfig = {
 
 /**
  * Fallback when GitHub search is unavailable.
- * The homepage replaces this with every public pull request and issue
- * authored outside this GitHub account. Rows are labels, not links.
+ * The homepage replaces this with public pull requests and issues authored
+ * outside this GitHub account. A repository needs ossMinimumStars, and anything
+ * in ossExcluded stays off. Rows are labels, not links.
  */
+export const ossMinimumStars = 100;
+
+/** GitHub usernames, organizations, or owner/repo names that never appear. */
+export const ossExcluded = ["itsmosin"] as const;
+
 export const ossContributions = [
   {
     repository: "OrchestratorInc/agent-orchestrator",
     count: 3,
     kind: "PR",
     technologies: ["TypeScript"],
-  },
-  {
-    repository: "itsmosin/ismegroutbhardenge",
-    count: 2,
-    kind: "PR",
-    technologies: ["HTML"],
   },
   {
     repository: "pingdotgg/t3code",
