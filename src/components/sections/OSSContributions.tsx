@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { stackIconMap } from "@/lib/icons";
@@ -43,36 +44,47 @@ export function OSSContributions({
       <div className="flex items-center justify-between gap-3">
         <p className="text-sm font-medium sm:text-base">{heading}:</p>
         <div className="flex items-center gap-3">
-          {!expanded && (
-            <div className="flex items-center -space-x-2" aria-hidden="true">
-              {avatars.map((avatar) => (
-                <Image
-                  key={avatar}
-                  src={avatar}
-                  alt=""
-                  width={28}
-                  height={28}
-                  sizes="28px"
-                  unoptimized
-                  className="h-7 w-7 rounded-full border-2 border-[var(--color-paper)] bg-[var(--color-paper)] object-cover"
-                />
-              ))}
+          <div
+            className={cn("disclosure-h", !expanded && "is-open")}
+            aria-hidden={expanded}
+          >
+            <div className="disclosure-clip">
+              <div className="flex items-center -space-x-2 pr-1">
+                {avatars.map((avatar) => (
+                  <Image
+                    key={avatar}
+                    src={avatar}
+                    alt=""
+                    width={28}
+                    height={28}
+                    sizes="28px"
+                    unoptimized
+                    className="h-7 w-7 rounded-full border-2 border-[var(--color-paper)] bg-[var(--color-paper)] object-cover"
+                  />
+                ))}
+              </div>
             </div>
-          )}
+          </div>
           <button
             type="button"
             aria-label={`${expanded ? "Hide" : "Show"} ${heading}`}
             aria-expanded={expanded}
             aria-controls={panelId}
             onClick={() => setExpanded((value) => !value)}
-            className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--color-accent)] text-[var(--color-ink-muted)] transition-colors hover:bg-[var(--color-paper-muted)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+            className="press flex h-8 w-8 items-center justify-center rounded-full border-2 border-[var(--color-accent)] text-[var(--color-ink-muted)] hover:bg-[var(--color-paper-muted)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           >
-            <ChevronDown className={`h-5 w-5 transition-transform ${expanded ? "rotate-180" : ""}`} aria-hidden="true" />
+            <ChevronDown className={cn("twist h-5 w-5", expanded && "is-flipped")} aria-hidden="true" />
           </button>
         </div>
       </div>
 
-      <div id={panelId} hidden={!expanded} className="mt-2 space-y-1">
+      <div
+        id={panelId}
+        className={cn("disclosure", expanded && "is-open")}
+        inert={!expanded}
+      >
+        <div className="disclosure-clip">
+          <div className="mt-2 space-y-1">
         {contributions.map(({ repository, href, logo, count, kind, technologies }) => {
           const rowContent = (
             <>
@@ -121,6 +133,8 @@ export function OSSContributions({
             {summary}
           </p>
         )}
+          </div>
+        </div>
       </div>
     </div>
   );

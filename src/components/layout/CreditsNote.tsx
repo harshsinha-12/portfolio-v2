@@ -81,7 +81,7 @@ export function CreditsLink({ className }: { className?: string }) {
           <button
             type="button"
             aria-label="Close credits"
-            className="absolute right-3 top-3 rounded-full p-1 text-[var(--color-ink-subtle)] transition-colors hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+            className="press absolute top-3 right-3 rounded-full p-1 text-[var(--color-ink-subtle)] hover:text-[var(--color-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
             onClick={() => setOpen(false)}
           >
             <X size={16} strokeWidth={2.25} />

@@ -56,18 +56,27 @@ export function SoundToggle({ className }: { className?: string }) {
       title={muted ? "Unmute" : "Mute"}
       onClick={toggle}
       className={cn(
-        "inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--color-on-mat)]/40",
+        "press inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--color-on-mat)]/40",
         "hover:bg-[var(--color-mat-deep)]/50 hover:text-[var(--color-on-mat)]/65",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
         "sm:h-8 sm:w-8",
         className,
       )}
     >
-      {muted ? (
-        <VolumeX size={15} strokeWidth={2.3} aria-hidden="true" />
-      ) : (
-        <Volume2 size={15} strokeWidth={2.3} aria-hidden="true" />
-      )}
+      <span className="state-swap-stack">
+        <VolumeX
+          size={15}
+          strokeWidth={2.3}
+          aria-hidden="true"
+          className={cn("state-swap", muted && "is-shown")}
+        />
+        <Volume2
+          size={15}
+          strokeWidth={2.3}
+          aria-hidden="true"
+          className={cn("state-swap", !muted && "is-shown")}
+        />
+      </span>
     </button>
   );
 }

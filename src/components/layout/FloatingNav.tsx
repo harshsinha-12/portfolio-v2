@@ -11,16 +11,25 @@ type PillPosition = {
   y: number;
   width: number;
   height: number;
+  navWidth: number;
+  navHeight: number;
   visible: boolean;
 };
 
+const sectionLabelClass =
+  "shrink-0 rounded-full px-2 py-1 text-xs font-medium sm:px-3 sm:py-1.5 sm:text-sm";
+
 export function FloatingNav() {
   const [activeSection, setActiveSection] = useState(navSections[0].id);
+  const [motionReady, setMotionReady] = useState(false);
+  const motionReadyRef = useRef(false);
   const [pill, setPill] = useState<PillPosition>({
     x: 0,
     y: 0,
     width: 0,
     height: 0,
+    navWidth: 0,
+    navHeight: 0,
     visible: false,
   });
   const navRef = useRef<HTMLElement>(null);
@@ -81,6 +90,8 @@ export function FloatingNav() {
         y: link.offsetTop,
         width: link.offsetWidth,
         height: link.offsetHeight,
+        navWidth: navElement.clientWidth,
+        navHeight: navElement.clientHeight,
         visible: true,
       });
 
@@ -95,6 +106,10 @@ export function FloatingNav() {
     }
 
     placePill();
+    if (!motionReadyRef.current) {
+      motionReadyRef.current = true;
+      requestAnimationFrame(() => setMotionReady(true));
+    }
     const resizeObserver = new ResizeObserver(placePill);
     resizeObserver.observe(navElement);
     resizeObserver.observe(activeLink);
@@ -110,14 +125,38 @@ export function FloatingNav() {
       >
         <span
           aria-hidden="true"
-          className="nav-liquid-pill absolute left-0 top-0 z-0 rounded-full"
+          className={cn(
+            "nav-liquid-pill pointer-events-none absolute top-0 left-0 z-20 overflow-hidden rounded-full",
+            !motionReady && "is-instant",
+          )}
           style={{
             width: pill.width,
             height: pill.height,
             opacity: pill.visible ? 1 : 0,
             transform: `translate3d(${pill.x}px, ${pill.y}px, 0)`,
           }}
-        />
+        >
+          <span
+            className="nav-pill-labels absolute top-0 left-0 flex flex-nowrap items-center gap-0.5 px-1.5 py-1 sm:gap-1 sm:px-2 sm:py-1.5"
+            style={{
+              width: pill.navWidth,
+              height: pill.navHeight,
+              transform: `translate3d(${-pill.x}px, ${-pill.y}px, 0)`,
+            }}
+          >
+            {navSections.map((section) => (
+              <span key={section.id} className={cn(sectionLabelClass, "text-white")}>
+                {section.label}
+              </span>
+            ))}
+            <span
+              className="ml-0.5 inline-flex h-7 shrink-0 items-center px-2.5 text-[11px] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs"
+              aria-hidden="true"
+            >
+              Connect
+            </span>
+          </span>
+        </span>
         {navSections.map((section) => (
           <a
             key={section.id}
@@ -134,10 +173,8 @@ export function FloatingNav() {
               });
             }}
             className={cn(
-              "relative z-10 shrink-0 rounded-full px-2 py-1 text-xs font-medium transition-colors duration-[var(--dur-base)] hover:text-[var(--color-heading-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:px-3 sm:py-1.5 sm:text-sm",
-              activeSection === section.id
-                ? "text-white"
-                : "text-[var(--color-on-mat)]/78",
+              "nav-link relative z-10 text-[var(--color-on-mat)]/78 hover:text-[var(--color-heading-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
+              sectionLabelClass,
             )}
           >
             {section.label}
@@ -147,7 +184,7 @@ export function FloatingNav() {
           href={connectLink}
           onClick={() => track("connect_link_clicked", { placement: "nav" })}
           analytics={{ kind: "connect", placement: "nav" }}
-          className="relative z-10 ml-0.5 inline-flex h-7 shrink-0 items-center justify-center rounded-full border border-[var(--color-on-mat)]/30 bg-[var(--color-on-mat)]/8 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)]/85 transition-[color,background-color,transform] hover:-translate-y-px hover:bg-[var(--color-on-mat)]/14 hover:text-[var(--color-heading-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs"
+          className="press relative z-10 ml-0.5 inline-flex h-7 shrink-0 items-center justify-center rounded-full border border-[var(--color-on-mat)]/30 bg-[var(--color-on-mat)]/8 px-2.5 text-[11px] font-medium text-[var(--color-on-mat)]/85 hover:bg-[var(--color-on-mat)]/14 hover:text-[var(--color-heading-on-mat)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:ml-1 sm:h-8 sm:px-3 sm:text-xs"
         >
           Connect
         </LinkPreview>

@@ -193,11 +193,6 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
       : "";
   const hasMore =
     exp.positions.length > 1 || (latest?.content.length ?? 0) > 1;
-  const visiblePositions = expanded
-    ? exp.positions
-    : latest
-      ? [latest]
-      : [];
   const tenure = totalTenureFromDurations(
     exp.positions.map((position) => position.duration),
   );
@@ -217,42 +212,89 @@ function ExperienceCompany({ exp }: { exp: Experience }) {
           location={exp.location}
         />
 
-        <div className="mt-3.5 space-y-3.5">
-          {visiblePositions.map((position) => (
-            <TimelineEntry key={`${exp.id}-${position.title}`}>
-              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                <p className="text-xs font-semibold text-[var(--color-ink)]">
-                  {position.title}
+        <div className="mt-3.5">
+          {exp.positions.map((position, index) => {
+            const entry = (
+              <TimelineEntry>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <p className="text-xs font-semibold text-[var(--color-ink)]">
+                    {position.title}
+                  </p>
+                  {position.stack && position.stack.length > 0 && (
+                    <StackIconRow stack={position.stack} size={12} />
+                  )}
+                </div>
+                <p className="text-[11px] text-[var(--color-ink-subtle)]">
+                  {formatDurationWithTenure(position.duration)}
                 </p>
-                {position.stack && position.stack.length > 0 && (
-                  <StackIconRow stack={position.stack} size={12} />
-                )}
+                {index === 0 && !hasMore ? (
+                  <p className="mt-1 max-w-[96ch] text-xs leading-[1.65] text-[var(--color-ink-muted)]">
+                    {summary}
+                  </p>
+                ) : null}
+                {index === 0 && hasMore ? (
+                  <>
+                    <div
+                      className={cn("disclosure disclosure-swap", !expanded && "is-open")}
+                      inert={expanded}
+                    >
+                      <div className="disclosure-clip">
+                        <p className="mt-1 max-w-[96ch] text-xs leading-[1.65] text-[var(--color-ink-muted)]">
+                          {summary}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className={cn("disclosure disclosure-swap", expanded && "is-open")}
+                      inert={!expanded}
+                    >
+                      <div className="disclosure-clip">
+                        <ExpandedPositionContent content={position.content} />
+                      </div>
+                    </div>
+                  </>
+                ) : null}
+                {index > 0 ? <ExpandedPositionContent content={position.content} /> : null}
+              </TimelineEntry>
+            );
+
+            if (index === 0) {
+              return <div key={`${exp.id}-${position.title}`}>{entry}</div>;
+            }
+
+            return (
+              <div
+                key={`${exp.id}-${position.title}`}
+                className={cn("disclosure", expanded && "is-open")}
+                inert={!expanded}
+              >
+                <div className="disclosure-clip timeline-disclosure-clip">
+                  <div className="pt-3.5">{entry}</div>
+                </div>
               </div>
-              <p className="text-[11px] text-[var(--color-ink-subtle)]">
-                {formatDurationWithTenure(position.duration)}
-              </p>
-              {expanded ? (
-                <ExpandedPositionContent content={position.content} />
-              ) : (
-                <p className="mt-1 max-w-[96ch] text-xs leading-[1.65] text-[var(--color-ink-muted)]">
-                  {summary}
-                </p>
-              )}
-            </TimelineEntry>
-          ))}
+            );
+          })}
         </div>
 
         {hasMore && (
           <button
             type="button"
-            onClick={() => setExpanded((v) => !v)}
+            onClick={() => setExpanded((value) => !value)}
             aria-expanded={expanded}
-            className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
+            className="press mt-2 inline-flex items-center gap-1 text-xs font-medium text-[var(--color-accent)] hover:text-[var(--color-accent-hover)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]"
           >
-            {expanded ? "Show less" : "Show more"}
+            <span className="state-swap-stack">
+              <span className={cn("state-swap", !expanded && "is-shown")} aria-hidden={expanded}>
+                Show more
+              </span>
+              <span className={cn("state-swap", expanded && "is-shown")} aria-hidden={!expanded}>
+                Show less
+              </span>
+            </span>
             <ChevronDown
               size={14}
-              className={cn("transition-transform", expanded && "rotate-180")}
+              className={cn("twist", expanded && "is-flipped")}
+              aria-hidden="true"
             />
           </button>
         )}

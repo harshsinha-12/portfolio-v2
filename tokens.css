@@ -91,11 +91,17 @@
   --radius-xl: 1.25rem;
   --radius-squircle: 1.125rem;
 
-  /* Motion */
+  /* Motion
+     --ease-fluid is Apple's critically damped sheet curve (no overshoot).
+     --dur-state matches a 0.4s spring response for things that move on click.
+     --dur-press is the pointer-down response, before the click commits. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+  --dur-press: 140ms;
   --dur-fast: 150ms;
   --dur-base: 280ms;
+  --dur-state: 400ms;
   --dur-slow: 480ms;
   --dur-scratch-hold: 1s;
   --dur-scratch-heal: 1.2s;

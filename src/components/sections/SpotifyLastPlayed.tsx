@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaSpotify } from "react-icons/fa";
 import { PiWaveformBold } from "react-icons/pi";
 import { track as trackEvent, trackOutboundClick } from "@/lib/analytics";
+import { usePresence } from "@/lib/usePresence";
 import { cn } from "@/lib/utils";
 
 type LastPlayedTrack = {
@@ -38,6 +39,7 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
   const [track, setTrack] = useState<LastPlayedTrack | null>(null);
   const [retryAt, setRetryAt] = useState<string | null>(null);
   const [playerOpen, setPlayerOpen] = useState(true);
+  const player = usePresence(playerOpen);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -152,15 +154,13 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
           <button
             type="button"
             onClick={() => {
-              setPlayerOpen((open) => {
-                const nextOpen = !open;
-                trackEvent("spotify_player_toggled", {
-                  action: nextOpen ? "open" : "close",
-                  track_title: track.title,
-                  artist: track.artist,
-                });
-                return nextOpen;
+              const nextOpen = !playerOpen;
+              trackEvent("spotify_player_toggled", {
+                action: nextOpen ? "open" : "close",
+                track_title: track.title,
+                artist: track.artist,
               });
+              setPlayerOpen(nextOpen);
             }}
             aria-expanded={playerOpen}
             aria-controls="spotify-last-played-player"
@@ -171,7 +171,7 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
             }
             title={playerOpen ? "Close song player" : "Play this song"}
             className={cn(
-              "ml-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#1ed760]/55 bg-[var(--color-mat-deep)]/55 text-[#1ed760] shadow-[1px_1px_0_var(--color-shadow)] transition-transform hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
+              "press ml-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#1ed760]/55 bg-[var(--color-mat-deep)]/55 text-[#1ed760] shadow-[1px_1px_0_var(--color-shadow)] hover:-translate-y-0.5 hover:bg-[var(--color-mat-deep)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]",
               playerOpen && "bg-[#1ed760]/15",
             )}
           >
@@ -183,21 +183,26 @@ export function SpotifyLastPlayed({ className }: { className?: string }) {
         )}
       </div>
 
-      {playerOpen && embedUrl && (
+      {player.mounted && embedUrl && (
         <div
           id="spotify-last-played-player"
-          className="mt-2 w-full max-w-[28rem] overflow-hidden rounded-xl shadow-[2px_3px_0_var(--color-shadow)]"
+          className={cn("disclosure", player.visible && "is-open")}
+          inert={!playerOpen}
         >
-          <iframe
-            src={embedUrl}
-            title={`Spotify player: ${track.title} by ${track.artist}`}
-            width="100%"
-            height="80"
-            loading="lazy"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-            allowFullScreen
-            className="block border-0"
-          />
+          <div className="disclosure-clip">
+            <div className="mt-2 w-full max-w-[28rem] overflow-hidden rounded-xl shadow-[2px_3px_0_var(--color-shadow)]">
+              <iframe
+                src={playerOpen || player.visible ? embedUrl : undefined}
+                title={`Spotify player: ${track.title} by ${track.artist}`}
+                width="100%"
+                height="80"
+                loading="lazy"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                allowFullScreen
+                className="block border-0"
+              />
+            </div>
+          </div>
         </div>
       )}
     </div>
