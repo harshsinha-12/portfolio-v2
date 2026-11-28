@@ -10,7 +10,9 @@ import { cn } from "@/lib/utils";
 import { LinkPreview } from "@/components/ui/LinkPreview";
 import { track } from "@/lib/analytics";
 import type { ScalioPRStats } from "@/lib/scalioPullRequests";
+import type { GitHubActivity } from "@/lib/githubActivity";
 import { OSSContributions, type OSSContribution } from "@/components/sections/OSSContributions";
+import { ActivityCross } from "@/components/sections/ActivityCross";
 
 type TooltipState = {
   text: string;
@@ -30,6 +32,7 @@ export type GitHubGraphProps = {
   colors?: string[];
   ossContributions?: readonly OSSContribution[];
   scalioPRStats?: ScalioPRStats | null;
+  activity?: GitHubActivity | null;
   className?: string;
 };
 
@@ -154,6 +157,7 @@ export function GitHubGraph({
   colors = DEFAULT_COLORS,
   ossContributions = [],
   scalioPRStats,
+  activity,
   className,
 }: GitHubGraphProps) {
   const isMobileLayout = useMobileGraphLayout();
@@ -536,6 +540,7 @@ export function GitHubGraph({
               <span>More</span>
             </div>
           )}
+          {activity && <ActivityCross activity={activity} />}
           {scalioPRStats && (
             <OSSContributions
               heading="Scalio contributions"

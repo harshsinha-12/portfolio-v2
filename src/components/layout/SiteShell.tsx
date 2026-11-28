@@ -14,6 +14,7 @@ import { TechStackSection } from "@/components/sections/TechStack";
 import { ArticlesSection } from "@/components/sections/Articles";
 import type { OSSContribution } from "@/components/sections/OSSContributions";
 import type { ContributionDay } from "@/lib/githubContributions";
+import type { GitHubActivity } from "@/lib/githubActivity";
 import type { ScalioPRStats } from "@/lib/scalioPullRequests";
 import type { ArticleSummary } from "@/types/articles";
 
@@ -21,6 +22,7 @@ type SiteShellProps = {
   initialContributions?: ContributionDay[];
   ossContributions?: readonly OSSContribution[];
   scalioPRStats?: ScalioPRStats | null;
+  githubActivity?: GitHubActivity | null;
   articles?: ArticleSummary[];
   hasMoreArticles?: boolean;
 };
@@ -29,6 +31,7 @@ export function SiteShell({
   initialContributions,
   ossContributions,
   scalioPRStats,
+  githubActivity,
   articles = [],
   hasMoreArticles = false,
 }: SiteShellProps) {
@@ -46,6 +49,7 @@ export function SiteShell({
                 initialContributions={initialContributions}
                 ossContributions={ossContributions}
                 scalioPRStats={scalioPRStats}
+                githubActivity={githubActivity}
               />
               <TimelineSection />
               <ProjectsSection />

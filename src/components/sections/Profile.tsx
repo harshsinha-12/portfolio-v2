@@ -26,6 +26,7 @@ import { track, trackOutboundClick } from "@/lib/analytics";
 import type { OSSContribution } from "@/components/sections/OSSContributions";
 import type { ScalioPRStats } from "@/lib/scalioPullRequests";
 import type { ContributionDay } from "@/lib/githubContributions";
+import type { GitHubActivity } from "@/lib/githubActivity";
 
 function SocialStamps() {
   const stampLinkClassName =
@@ -144,12 +145,14 @@ type ProfileSectionProps = {
   initialContributions?: ContributionDay[];
   ossContributions?: readonly OSSContribution[];
   scalioPRStats?: ScalioPRStats | null;
+  githubActivity?: GitHubActivity | null;
 };
 
 export function ProfileSection({
   initialContributions,
   ossContributions: ossContributionsProp,
   scalioPRStats,
+  githubActivity,
 }: ProfileSectionProps) {
   return (
     <section id="profile" aria-labelledby="profile-heading" className="relative animate-fade-up">
@@ -233,6 +236,7 @@ export function ProfileSection({
               ossContributions={ossContributionsProp ?? ossContributions}
               initialDays={initialContributions}
               scalioPRStats={scalioPRStats}
+              activity={githubActivity}
               className="w-full min-w-0"
             />
           </TapedCard>
